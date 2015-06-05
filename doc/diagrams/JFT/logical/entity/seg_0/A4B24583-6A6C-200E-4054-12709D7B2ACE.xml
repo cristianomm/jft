@@ -1,0 +1,82 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="A4B24583-6A6C-200E-4054-12709D7B2ACE" name="INDOPC">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<commentInRDBMS>INDICADOR DE CORREÇÃO DE PREÇOS DE EXERCÍCIOS OU VALORES DE CONTRATO PARA OS MERCADOS DE&lt;br&gt; OPÇÕES OU TERMO SECUNDÁRIO</commentInRDBMS>
+<generatorID>33CF267A-22E8-EDA5-F89D-352A77C98298</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<shortName>INDOPC</shortName>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="codINDOPC" id="62E5F496-47C7-CB93-D058-1A33860E5897">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>39DE5D3C-2614-AC22-FB3B-14A03ACE00FD</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Attribute>
+<Attribute name="Valor" id="412E247E-927A-51E9-F469-C7ED53023BF9">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>57501A16-C3A4-FA07-D60A-C94936B790B6</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100 CHAR</dataTypeSize>
+</Attribute>
+<Attribute name="Descricao" id="A3E54A3F-0C46-3D31-6DE2-3743F82D9CF0">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>96635129-A6BC-A23B-2870-AF3B44C6D318</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255 CHAR</dataTypeSize>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="BB972897-90B2-34A7-85A5-AAFCAE96838B" name="INDOPC_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>0EEB36ED-7EC5-588D-18B2-803CA40036F9</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>62E5F496-47C7-CB93-D058-1A33860E5897</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

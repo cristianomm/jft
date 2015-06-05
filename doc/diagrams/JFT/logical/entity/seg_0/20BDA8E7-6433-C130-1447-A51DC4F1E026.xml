@@ -1,0 +1,429 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="20BDA8E7-6433-C130-1447-A51DC4F1E026" name="Cotacao">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>D08994EF-C0B2-46EA-6A2B-6367835D3D38</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="codCotacao" id="051F611D-9E2F-0935-5F0B-DC6E5C5EC20D">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>FF56853D-0210-37B6-2144-62C9CCD398B9</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+</Attribute>
+<Attribute name="dataPreg" id="798E8D3C-94F8-4BCA-E0CB-6EF4715D7FAA">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>046C8950-1F99-6E43-4934-ADBF2B672AD4</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+</Attribute>
+<Attribute name="codCODBDI" id="6092891B-FD87-535B-DB0A-063082C9CDDD">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>7C97C176-B436-AECC-B1D8-39592CA75FE9</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<referedAttribute>71B4EF8B-40ED-3DC2-5140-F0DF22DCF722</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<propertyMap>
+<property name="refers.attribute" value="71B4EF8B-40ED-3DC2-5140-F0DF22DCF722"/>
+</propertyMap>
+</Attribute>
+<Attribute name="CODNEG" id="3B08FE54-9BA6-DDF7-550C-F3711F26813F">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>C4B6FF5C-379B-741A-99CD-51DCDE020145</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12 CHAR</dataTypeSize>
+</Attribute>
+<Attribute name="codTPMERC" id="887C3D28-9115-88FD-FE37-AA316C4E8A36">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>C68B7FE4-DBC7-566D-F168-FA8D94DB9B98</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<referedAttribute>D4DA9676-1206-3180-CBB9-88EC74EF8C78</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>3 CHAR</dataTypeSize>
+</Attribute>
+<Attribute name="NOMRES" id="9B4C1A55-D40D-B8CD-AB91-8786FAFE03FA">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>3C0F59AF-7F9D-0B96-E18C-56CA67458722</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12 CHAR</dataTypeSize>
+</Attribute>
+<Attribute name="codESPECI" id="C9A74476-A6A2-559C-6F0F-EEBFB533F123">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>B7D4C6BC-4F68-304A-1901-799E683A7130</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<referedAttribute>DEC51E45-1B3B-8B98-BEA7-ED5A18313322</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10 CHAR</dataTypeSize>
+</Attribute>
+<Attribute name="PRAZOT" id="50E0CAB9-A883-B146-CCC0-33CC07DE61AA">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>E7EB8AC0-F032-89E9-2562-87E48F517016</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Attribute>
+<Attribute name="MODREF" id="DB9EEFB1-AC29-322B-17A8-604C4DDA817D">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>8838124B-4732-8A84-1955-12084FB82310</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>4 CHAR</dataTypeSize>
+</Attribute>
+<Attribute name="PREABE" id="5B63E3FB-D1D4-CAB5-54D7-4544763FD141">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>B71BF838-B2D8-0DB5-4B9E-D97392E4A14A</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Attribute>
+<Attribute name="PREMAX" id="7F9921B2-CDC6-6591-B552-81A71C9A3C2C">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>02634C70-47FA-8623-2B48-67C66D050C14</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Attribute>
+<Attribute name="PREMIN" id="89152C16-0906-753C-20C8-F15BF31340F8">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>5FDE455D-0C14-D9A0-C5B9-FD2A04920784</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Attribute>
+<Attribute name="PREMED" id="0B77BF43-93C8-5ABB-08CF-EA339BF05ECB">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>3E28A30C-7213-1B54-01D1-C5C948357EA8</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Attribute>
+<Attribute name="PREULT" id="8081D21F-460C-78D0-CB6C-5AED2D0EA2A9">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>78DF0E0F-3CFD-A371-4F49-9983BE33D753</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Attribute>
+<Attribute name="PREOFC" id="0BA431A7-3BAC-14F4-9610-73F8AD8325BC">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>001A26E9-EFB3-AF1C-4029-BC6AFA9743FB</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Attribute>
+<Attribute name="PREOFV" id="05A0DCE1-30B5-4248-941B-F985A316BF55">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>0FC2C1E4-F81C-020D-436D-EA0B134481FE</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Attribute>
+<Attribute name="TOTNEG" id="DE87F623-9B8B-F4F7-6683-6AE4A233336E">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>0C8B5DEE-D578-DB4A-72AE-ADEC7C987C15</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Attribute>
+<Attribute name="QUATOT" id="E2F19B76-7A27-2A4A-5F9F-7AD6C46F9C12">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>8B38C167-E674-6088-DD87-85CC8B0A28E4</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Attribute>
+<Attribute name="VOLTOT" id="83112DB1-D1C3-4153-C2E5-160E6BEEEC7B">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>603F82A4-FDA4-1FE4-B498-78B45AB59F99</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Attribute>
+<Attribute name="PREEXE" id="91F110D2-878C-34BD-A72F-99DDE06424C1">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>BB0DBD25-B3AB-D7B2-91D1-04DB228C0370</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Attribute>
+<Attribute name="codINDOPC" id="CD654088-0D62-CC0F-9603-30D4F458E3E8">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>4C02C694-1A3F-F2E7-22BC-6F2897503ACB</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<referedAttribute>62E5F496-47C7-CB93-D058-1A33860E5897</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Attribute>
+<Attribute name="DATVEN" id="ADF2EFC4-6FD4-7AF7-4D4D-7AD969D2777C">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>A773ED2A-D272-5BAC-01D6-D6AB2B013D59</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+</Attribute>
+<Attribute name="FATCOT" id="1CF06B96-ABD9-78EB-0F89-59D75FFBEA27">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>F17829A9-9311-B0ED-4321-1DB7F9FD5680</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Attribute>
+<Attribute name="PTOEXE" id="F41BA45F-A6E8-4A0F-2E89-878D7BB51ED1">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>ABCD3817-D613-040E-77B8-D92CBD675E54</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Attribute>
+<Attribute name="CODISI" id="CFF7ED1F-C776-A859-600E-5B0196B6B90C">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>F659EE8E-216E-26B6-5122-CBA1B5760B0B</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12 CHAR</dataTypeSize>
+</Attribute>
+<Attribute name="DISMES" id="C70C78EC-CDF8-ECC5-E8E2-F6E1C92DA2A5">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>FFBBAD36-589A-8AAF-4A31-7D977885BDB6</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="D70E66DA-03DF-2DDE-4E05-BD66A93F959B" name="Cotacao_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>9B72BDCB-46F9-5951-6685-49F66EAB4632</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>051F611D-9E2F-0935-5F0B-DC6E5C5EC20D</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

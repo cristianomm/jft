@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="6282D125-9BE7-0D3A-6BB2-470269717C25" name="EntryRegister_Account_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:43:08 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<containerWithKeyObject>ADE73A04-F2D6-584A-29B8-374E276DB56D</containerWithKeyObject>
+<deleteRule>NO ACTION</deleteRule>
+<localFKIndex>EFB200F3-CF60-55B8-93A8-D74B48649A64</localFKIndex>
+<keyObject>13574AED-AD35-2C72-4848-DB8A68E44AE1</keyObject>
+<mandatory>true</mandatory>
+<transferable>true</transferable>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

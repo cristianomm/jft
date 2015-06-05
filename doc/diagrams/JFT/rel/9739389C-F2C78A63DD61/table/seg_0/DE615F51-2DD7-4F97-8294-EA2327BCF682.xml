@@ -1,0 +1,166 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="DE615F51-2DD7-4F97-8294-EA2327BCF682" name="Trade">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-06 02:28:06 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="tradeID" id="19C5643F-C2FE-36BC-D58A-2888A38E9389">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-06 02:28:30 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="entryID" id="38D60439-7154-014F-680F-8FFF00E05DF9">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-06 02:51:12 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>4F3FBDCA-C8A4-5A7F-515D-09B2582C3950</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="FF1A52B3-2333-C6F9-2504-CD7210F71560" referredColumn="4F3FBDCA-C8A4-5A7F-515D-09B2582C3950"/>
+</associations>
+</Column>
+<Column name="TradeSerial" id="9DD7ABCB-360E-2D94-0E12-CC79A59A37F5">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-06 02:29:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>25</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Symbol" id="2B2A8F9E-06A9-33BE-801B-E94122D404E4">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-10 07:00:13 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="OpenDate" id="9E1DEAFE-6659-A0A3-E87D-73C0B03E7024">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-10 06:59:34 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CloseDate" id="29B828C9-A45B-C894-DD51-A596C775524E">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 05:09:59 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Profit" id="B3F2F442-AD9E-DB62-FACF-07AE66610080">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 05:10:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TradeType" id="1922A1A1-0A9C-1C3C-487F-D7E5AD0540E8">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 05:12:13 UTC</createdTime>
+<comment>DAY_TRADE(&quot;D&quot;), NORMAL(&quot;S&quot;);</comment>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TradeStatus" id="25EDCA79-2D8F-C1AC-9046-B927FB16339B">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 05:13:55 UTC</createdTime>
+<comment>ACTIVE, INACTIVE, CANCELED, OPEN, CLOSE</comment>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>15</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="brokerID" id="7CDFC5B4-A6F5-3144-AED3-6E9A5F2054FC">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 05:14:25 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>86565B8B-B602-C5CC-2269-A86FB909E45B</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="EF41AB60-3B91-3376-6494-7AABAB38F606" referredColumn="86565B8B-B602-C5CC-2269-A86FB909E45B"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="BF32E97F-BFBC-7B4F-928A-6D749E014901" name="Trade_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-06 02:28:30 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="19C5643F-C2FE-36BC-D58A-2888A38E9389"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="745DD975-B456-B680-7E1B-C6E6A22B8203" name="Trade_UN">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-06 02:29:30 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9DD7ABCB-360E-2D94-0E12-CC79A59A37F5"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="BD0BBE5D-8D2C-EA8F-9528-77CFB19FC463" name="Trade_Entry_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-06 02:51:28 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="38D60439-7154-014F-680F-8FFF00E05DF9"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="7E49F48D-97E3-A7C6-24F5-EC068B9755B8" name="Trade_Broker_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 03:55:18 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="7CDFC5B4-A6F5-3144-AED3-6E9A5F2054FC"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

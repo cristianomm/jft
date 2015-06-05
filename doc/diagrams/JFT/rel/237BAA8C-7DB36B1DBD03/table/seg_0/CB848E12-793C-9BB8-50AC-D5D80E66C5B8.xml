@@ -1,0 +1,74 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="CB848E12-793C-9BB8-50AC-D5D80E66C5B8" name="JournalEntry">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="entryID" id="CA5836DA-33BA-8255-518C-212995B0702E">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="EntryDate" id="18491216-AB18-69F1-7C20-5AC6ABCEEA06">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="EntryClose" id="7172C397-9477-55DE-B8D1-8E8628303DBC">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Description" id="FC84FA9A-27AE-3FEB-5DC3-66EE6872523E">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="EntryStatus" id="3F10829E-667D-0F02-9884-20AF94015EE3">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="E1705F11-338B-F636-B000-8EA4FC5926D6" name="Entry_PK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CA5836DA-33BA-8255-518C-212995B0702E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

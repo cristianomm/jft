@@ -1,0 +1,41 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="20B998EE-A679-955B-D2DE-2C75C0CAEF0A" name="TPMERC">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 18:57:32 UTC</createdTime>
+<commentInRDBMS>TIPO DE MERCADO - CÓD. DO MERCADO EM QUE O PAPEL ESTÁ CADASTRADO</commentInRDBMS>
+<ownerDesignName>JFT</ownerDesignName>
+<abbreviation>TPMERC</abbreviation>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="codTPMERC" id="844CAEA7-F78D-C269-E9F0-7D2B16DEF82F">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:10:27 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>3 CHAR</dataTypeSize>
+</Column>
+<Column name="Descricao" id="C3353FE5-63B3-8FDA-E2DF-6667C90745F5">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:10:44 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255 CHAR</dataTypeSize>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="9FFB1FE9-E533-E997-8A86-942A44342B2D" name="TPMERC_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:10:27 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<indexColumnUsage>
+<colUsage columnID="844CAEA7-F78D-C269-E9F0-7D2B16DEF82F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

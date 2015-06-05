@@ -1,0 +1,51 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="3BE7B4FB-E8D2-2762-EB08-367FAB3A59B0" name="StockExchange">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 01:46:04 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="stockExchangeID" id="56007DA1-300A-DC2E-102F-EE841EAD1955">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 01:56:16 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+</Column>
+<Column name="ExchangeName" id="3AA7A6E0-3B99-E29E-3C05-4E5186F8B3CA">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 02:01:12 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+</Column>
+<Column name="Country" id="AE239B15-E849-7210-F2DC-29BFED63B1F5">
+<createdBy>Cristiano Martins</createdBy>
+<createdTime>2013-07-10 17:16:46 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="BB2B0D5A-13E1-03BA-4F86-52AA3992E459" name="StockExchange_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 01:46:36 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<indexColumnUsage>
+<colUsage columnID="56007DA1-300A-DC2E-102F-EE841EAD1955"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

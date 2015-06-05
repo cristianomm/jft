@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<LogicalDesign class="oracle.dbtools.crest.model.design.logical.LogicalDesign" name="Logical" id="36B70F8D-2B54-30F2-2A24-E4CDF32E58B4" mainViewID="DCABB9C7-437D-0973-620C-60AC94BAEF4D">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 01:45:57 UTC</createdTime>
+<ownerDesignName>JFER</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</LogicalDesign>

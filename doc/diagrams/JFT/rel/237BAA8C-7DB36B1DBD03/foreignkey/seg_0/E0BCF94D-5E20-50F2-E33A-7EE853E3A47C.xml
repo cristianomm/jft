@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="E0BCF94D-5E20-50F2-E33A-7EE853E3A47C" name="MarketOrderEvent_MarketOrder_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:58 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<containerWithKeyObject>B0AAC5BE-770F-AC41-43C3-87D819E08423</containerWithKeyObject>
+<deleteRule>NO ACTION</deleteRule>
+<localFKIndex>23A2ED2F-BCC9-3DAF-E408-B8BD4D42E371</localFKIndex>
+<keyObject>7E1DAD88-78E7-7E32-1A7B-E1053D5C6212</keyObject>
+<mandatory>true</mandatory>
+<transferable>true</transferable>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

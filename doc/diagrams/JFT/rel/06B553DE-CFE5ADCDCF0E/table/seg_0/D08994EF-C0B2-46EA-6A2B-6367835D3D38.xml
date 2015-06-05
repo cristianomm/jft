@@ -1,0 +1,327 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="D08994EF-C0B2-46EA-6A2B-6367835D3D38" name="Cotacao">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:50:53 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="codCotacao" id="FF56853D-0210-37B6-2144-62C9CCD398B9">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:21:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+</Column>
+<Column name="dataPreg" id="046C8950-1F99-6E43-4934-ADBF2B672AD4">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:21:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+</Column>
+<Column name="codCODBDI" id="29846459-E2F4-760D-2F4E-9CBCC01B2EDB">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:21:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<delegate>A003FB29-0DB6-D2BE-796E-52B594E59622</delegate>
+<associations>
+<colAssociation fkAssociation="4B9FD895-3D03-02DF-033F-29F2795D671A" referredColumn="A003FB29-0DB6-D2BE-796E-52B594E59622"/>
+</associations>
+</Column>
+<Column name="CODNEG" id="C4B6FF5C-379B-741A-99CD-51DCDE020145">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:21:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12 CHAR</dataTypeSize>
+</Column>
+<Column name="codTPMERC" id="61072E29-DE74-D8D8-60C4-57AE9458E890">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:21:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>3 CHAR</dataTypeSize>
+<delegate>844CAEA7-F78D-C269-E9F0-7D2B16DEF82F</delegate>
+<associations>
+<colAssociation fkAssociation="1FBC3DE7-C42F-0828-F9BA-5747E7A38339" referredColumn="844CAEA7-F78D-C269-E9F0-7D2B16DEF82F"/>
+</associations>
+</Column>
+<Column name="NOMRES" id="3C0F59AF-7F9D-0B96-E18C-56CA67458722">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:21:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12 CHAR</dataTypeSize>
+</Column>
+<Column name="codESPECI" id="45A04BA8-AAB8-1873-856F-5A109CBB2D1E">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:21:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10 CHAR</dataTypeSize>
+<delegate>0BAFF470-E92C-28E2-C8D6-CE7FA60C6B72</delegate>
+<associations>
+<colAssociation fkAssociation="182B3932-E55E-81F4-F6DC-B4A090E6A4DD" referredColumn="0BAFF470-E92C-28E2-C8D6-CE7FA60C6B72"/>
+</associations>
+</Column>
+<Column name="PRAZOT" id="E7EB8AC0-F032-89E9-2562-87E48F517016">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:21:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Column>
+<Column name="MODREF" id="8838124B-4732-8A84-1955-12084FB82310">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:21:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>4 CHAR</dataTypeSize>
+</Column>
+<Column name="PREABE" id="B71BF838-B2D8-0DB5-4B9E-D97392E4A14A">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Column>
+<Column name="PREMAX" id="02634C70-47FA-8623-2B48-67C66D050C14">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Column>
+<Column name="PREMIN" id="5FDE455D-0C14-D9A0-C5B9-FD2A04920784">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Column>
+<Column name="PREMED" id="3E28A30C-7213-1B54-01D1-C5C948357EA8">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Column>
+<Column name="PREULT" id="78DF0E0F-3CFD-A371-4F49-9983BE33D753">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Column>
+<Column name="PREOFC" id="001A26E9-EFB3-AF1C-4029-BC6AFA9743FB">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Column>
+<Column name="PREOFV" id="0FC2C1E4-F81C-020D-436D-EA0B134481FE">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Column>
+<Column name="TOTNEG" id="0C8B5DEE-D578-DB4A-72AE-ADEC7C987C15">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Column>
+<Column name="QUATOT" id="8B38C167-E674-6088-DD87-85CC8B0A28E4">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Column>
+<Column name="VOLTOT" id="603F82A4-FDA4-1FE4-B498-78B45AB59F99">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Column>
+<Column name="PREEXE" id="BB0DBD25-B3AB-D7B2-91D1-04DB228C0370">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>100</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Column>
+<Column name="codINDOPC" id="99FEFCAB-3218-76DE-24ED-8B3C5F8270B6">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<delegate>39DE5D3C-2614-AC22-FB3B-14A03ACE00FD</delegate>
+<associations>
+<colAssociation fkAssociation="D35CAC8F-B387-99F3-A26D-9C9B4751A5A2" referredColumn="39DE5D3C-2614-AC22-FB3B-14A03ACE00FD"/>
+</associations>
+</Column>
+<Column name="DATVEN" id="A773ED2A-D272-5BAC-01D6-D6AB2B013D59">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+</Column>
+<Column name="FATCOT" id="F17829A9-9311-B0ED-4321-1DB7F9FD5680">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Column>
+<Column name="PTOEXE" id="ABCD3817-D613-040E-77B8-D92CBD675E54">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+</Column>
+<Column name="CODISI" id="F659EE8E-216E-26B6-5122-CBA1B5760B0B">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12 CHAR</dataTypeSize>
+</Column>
+<Column name="DISMES" id="FFBBAD36-589A-8AAF-4A31-7D977885BDB6">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:39:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="9B72BDCB-46F9-5951-6685-49F66EAB4632" name="Cotacao_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:21:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<indexColumnUsage>
+<colUsage columnID="FF56853D-0210-37B6-2144-62C9CCD398B9"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="85727A7A-C98D-7D7B-9F32-E61F57D59F95" name="Cotacao_CODBDI_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:40:23 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<indexColumnUsage>
+<colUsage columnID="29846459-E2F4-760D-2F4E-9CBCC01B2EDB"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="984B1DF2-5200-4105-1AE4-E3869AA558B5" name="Cotacao_ESPECI_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:41:44 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<indexColumnUsage>
+<colUsage columnID="45A04BA8-AAB8-1873-856F-5A109CBB2D1E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="69812E98-2907-5F29-C7C9-50268DF7A2B5" name="Cotacao_INDOPC_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:41:44 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<indexColumnUsage>
+<colUsage columnID="99FEFCAB-3218-76DE-24ED-8B3C5F8270B6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="C62DFEB2-600F-ABF9-3EB7-8CF312E0E7F4" name="Cotacao_TPMERC_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:41:44 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<indexColumnUsage>
+<colUsage columnID="61072E29-DE74-D8D8-60C4-57AE9458E890"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

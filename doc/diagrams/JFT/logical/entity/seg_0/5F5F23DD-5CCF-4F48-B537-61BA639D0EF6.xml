@@ -1,0 +1,68 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="5F5F23DD-5CCF-4F48-B537-61BA639D0EF6" name="ESPECI">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<commentInRDBMS>Especificacao do Papel</commentInRDBMS>
+<generatorID>9DF5BC07-3AF9-EB7B-DF64-0A0689C4F27C</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<shortName>ESPECI</shortName>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="codESPECI" id="DEC51E45-1B3B-8B98-BEA7-ED5A18313322">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>0BAFF470-E92C-28E2-C8D6-CE7FA60C6B72</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10 CHAR</dataTypeSize>
+</Attribute>
+<Attribute name="Descricao" id="EAC8A475-F082-FC7A-6DAB-4137A8ED861A">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>8EDF0D55-5656-6E95-0D55-2246C9D1131D</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255 CHAR</dataTypeSize>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="1CC694B1-40E3-0EB2-6DCA-E8B8B1FCAED4" name="ESPECI_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>D6B312EC-CBFF-228B-724D-106FD005BDB5</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>DEC51E45-1B3B-8B98-BEA7-ED5A18313322</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

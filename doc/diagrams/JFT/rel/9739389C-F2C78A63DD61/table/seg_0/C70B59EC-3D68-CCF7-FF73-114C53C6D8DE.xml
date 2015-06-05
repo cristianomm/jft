@@ -1,0 +1,43 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="C70B59EC-3D68-CCF7-FF73-114C53C6D8DE" name="DistributionRule">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:42:30 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="distributionRuleID" id="11D37365-ACD3-3960-2DEA-AFD009251E9F">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:43:32 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="RuleName" id="0999077B-3BCA-D5E6-DF70-093D9465072F">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:43:55 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="BED70AB2-6FA3-F44E-9683-677F3C0374BC" name="DistributionRule_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:43:32 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="11D37365-ACD3-3960-2DEA-AFD009251E9F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

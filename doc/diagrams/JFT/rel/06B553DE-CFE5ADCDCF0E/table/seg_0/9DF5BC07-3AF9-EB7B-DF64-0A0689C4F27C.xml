@@ -1,0 +1,41 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="9DF5BC07-3AF9-EB7B-DF64-0A0689C4F27C" name="ESPECI">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 18:58:33 UTC</createdTime>
+<commentInRDBMS>Especificacao do Papel</commentInRDBMS>
+<ownerDesignName>JFT</ownerDesignName>
+<abbreviation>ESPECI</abbreviation>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="codESPECI" id="0BAFF470-E92C-28E2-C8D6-CE7FA60C6B72">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:14:16 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10 CHAR</dataTypeSize>
+</Column>
+<Column name="Descricao" id="8EDF0D55-5656-6E95-0D55-2246C9D1131D">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:14:16 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255 CHAR</dataTypeSize>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="D6B312EC-CBFF-228B-724D-106FD005BDB5" name="ESPECI_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:14:16 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<indexColumnUsage>
+<colUsage columnID="0BAFF470-E92C-28E2-C8D6-CE7FA60C6B72"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

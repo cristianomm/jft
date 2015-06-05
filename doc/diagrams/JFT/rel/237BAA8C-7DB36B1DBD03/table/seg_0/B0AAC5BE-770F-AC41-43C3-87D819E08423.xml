@@ -1,0 +1,87 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="B0AAC5BE-770F-AC41-43C3-87D819E08423" name="MarketOrderEvent">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="marketEventID" directorySegmentName="seg_0" id="666E1DA1-47FD-949E-6A51-F492322BE415">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:34:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="marketOrderID" directorySegmentName="seg_0" id="A2E43EB3-29DE-6256-8532-229C909DA4FD">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:34:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>8F9870D0-FE98-3992-F1CB-7195091EB051</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="E0BCF94D-5E20-50F2-E33A-7EE853E3A47C" referredColumn="8F9870D0-FE98-3992-F1CB-7195091EB051"/>
+</associations>
+</Column>
+<Column name="eventDateTime" directorySegmentName="seg_0" id="C2FAF240-35E5-8532-FF08-7F558924F8AB">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:34:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Message" directorySegmentName="seg_0" id="29595305-E7E1-F07B-C389-1FE523F3F5C2">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:34:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="EventType" directorySegmentName="seg_0" id="5CBD8E31-2768-BA98-E040-294CC1354236">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:34:21 UTC</createdTime>
+<comment>Código do Evento da Ordem: 1 - New / 2 - Update / 3 - Cancel - Solicitado pelo participante / 4 - Trade / 5 - Reentry - Processo interno (quantidade escondida) / 6 - New Stop Price / 7 - Reject / 8 - Remove - Removida pelo Sistema (final de dia ou quando é totalmente fechada) / 9 - Stop Price Triggered / 11 - Expire - Oferta com validade expirada.</comment>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="F399BBA7-6B88-DA21-F3F6-129E0E556062" name="MarketOrderEvent_PK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:34:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="666E1DA1-47FD-949E-6A51-F492322BE415"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="23A2ED2F-BCC9-3DAF-E408-B8BD4D42E371" name="MarketOrderEvent_MarketOrder_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:58 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A2E43EB3-29DE-6256-8532-229C909DA4FD"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

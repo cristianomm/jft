@@ -1,0 +1,91 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="8444EA3E-0D1C-8990-DDB0-70F465F73FAF" name="Company">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 01:58:47 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="companyID" id="5CAC5B96-2529-F13C-2CF9-A87AF05EFC04">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 02:02:18 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+</Column>
+<Column name="Name" id="4F19F0B9-930C-BBB3-CF05-635B6A01DDE9">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-15 23:00:42 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CompanyName" id="EE19E409-8E8A-AE19-E723-A3C5B09ACF4F">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 02:02:47 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+</Column>
+<Column name="exchangeID" id="0F5C5566-E80A-239B-4E1B-EE6D6D11C1D9">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 02:03:05 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<delegate>56007DA1-300A-DC2E-102F-EE841EAD1955</delegate>
+<associations>
+<colAssociation fkAssociation="435CCE88-A8AF-5B72-95DB-3C4E7ED1061F" referredColumn="56007DA1-300A-DC2E-102F-EE841EAD1955"/>
+</associations>
+</Column>
+<Column name="OnShares" id="D3D21814-D668-7D5B-709F-ED52E8D12008">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-15 22:53:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PnShares" id="49F29F18-E923-8F8C-BC0D-CBD936DC69A7">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-15 22:54:16 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="FC109D9A-DADE-46EB-CF6C-1AD230540530" name="Company_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 02:02:18 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<indexColumnUsage>
+<colUsage columnID="5CAC5B96-2529-F13C-2CF9-A87AF05EFC04"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="ED90F86B-96DC-2348-0FF2-60231E414208" name="Company_Exchange_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 02:19:22 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<indexColumnUsage>
+<colUsage columnID="0F5C5566-E80A-239B-4E1B-EE6D6D11C1D9"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

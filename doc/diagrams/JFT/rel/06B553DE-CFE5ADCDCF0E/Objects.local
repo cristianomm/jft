@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<oracle.dbtools.crest.model.design.relational.RelationalDesign>
+   <object objectType="Table" objectID="0F0B1D9A-F727-A612-7633-554F748A0472" name="" seqName="seg_0"/>
+   <object objectType="Table" objectID="20B998EE-A679-955B-D2DE-2C75C0CAEF0A" name="" seqName="seg_0"/>
+   <object objectType="Table" objectID="33CF267A-22E8-EDA5-F89D-352A77C98298" name="" seqName="seg_0"/>
+   <object objectType="Table" objectID="3DCB8525-E9F7-970C-6969-45C08FF7FA31" name="" seqName="seg_0"/>
+   <object objectType="Table" objectID="9DF5BC07-3AF9-EB7B-DF64-0A0689C4F27C" name="" seqName="seg_0"/>
+   <object objectType="Table" objectID="D08994EF-C0B2-46EA-6A2B-6367835D3D38" name="" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="182B3932-E55E-81F4-F6DC-B4A090E6A4DD" name="" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="1FBC3DE7-C42F-0828-F9BA-5747E7A38339" name="" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="4B9FD895-3D03-02DF-033F-29F2795D671A" name="" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="D35CAC8F-B387-99F3-A26D-9C9B4751A5A2" name="" seqName="seg_0"/>
+</oracle.dbtools.crest.model.design.relational.RelationalDesign>

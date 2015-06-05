@@ -1,0 +1,50 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="3DCB8525-E9F7-970C-6969-45C08FF7FA31" name="IDENTI">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:20:20 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<abbreviation>IDENTI</abbreviation>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="codIDENTI" id="B29F165A-6372-9F59-461A-B38614A4B917">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:22:53 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<dataTypeSize>2 CHAR</dataTypeSize>
+</Column>
+<Column name="Indice" id="758D1B8A-9647-F622-33B6-C5826B07FD5B">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:22:53 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10 CHAR</dataTypeSize>
+</Column>
+<Column name="Descricao" id="45EB8975-7647-0C9A-6077-BFD62B1BC165">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:22:53 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255 CHAR</dataTypeSize>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="1A5F6AD4-A79F-A70A-D74D-F57528899F5F" name="IDENTI_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:23:12 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<indexColumnUsage>
+<colUsage columnID="B29F165A-6372-9F59-461A-B38614A4B917"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

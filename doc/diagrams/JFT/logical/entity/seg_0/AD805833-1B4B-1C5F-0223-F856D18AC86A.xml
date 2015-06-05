@@ -1,0 +1,67 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="AD805833-1B4B-1C5F-0223-F856D18AC86A" name="CODBDI">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<commentInRDBMS>UTILIZADO PARA CLASSIFICAR OS PAPÉIS NA EMISSÃO DO BOLETIM DIÁRIO DE INFORMAÇÕES</commentInRDBMS>
+<generatorID>0F0B1D9A-F727-A612-7633-554F748A0472</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<shortName>CODBDI</shortName>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="codCODBDI" id="71B4EF8B-40ED-3DC2-5140-F0DF22DCF722">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>A003FB29-0DB6-D2BE-796E-52B594E59622</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Attribute>
+<Attribute name="Descricao" id="E5CF0B21-F819-9C60-6FAC-ED433CE633C3">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>FBA79DD8-9AAD-5CA5-9BFF-8539DF744E83</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="05449877-35D7-0FA1-EE64-5324FF4F08D0" name="CODBDI_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>11990E31-8B80-DC0A-366A-3E96961F94AE</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>71B4EF8B-40ED-3DC2-5140-F0DF22DCF722</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

@@ -1,0 +1,125 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="4A07A437-9953-A45B-388D-2A7F5BE0248A" name="ISIN">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 00:13:32 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="isinID" id="8FAC85DC-BACD-3D5B-E76B-263D69511063">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 22:47:47 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ISIN" id="A55A3DC3-5495-3572-C3FE-EE3ACD45287C">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 00:13:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="companyID" id="FBB72364-3F46-23A2-32CF-2F8EE10B1D22">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 20:07:44 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>5CAC5B96-2529-F13C-2CF9-A87AF05EFC04</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="6389BDD6-1FF1-A30E-C90A-FE524CC9A445" referredColumn="5CAC5B96-2529-F13C-2CF9-A87AF05EFC04"/>
+</associations>
+</Column>
+<Column name="EmissionDate" id="AC4F3CFC-7734-03FD-B3CD-45EA6332C38D">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 03:15:17 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ExpirationDate" id="5100C5AF-44BC-ECB2-1274-DCCA9BBB22F4">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 03:14:17 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Status" id="7F2BDD31-7D90-8A00-6C18-08B780B50F06">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 21:53:01 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>15</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Description" id="4872E41D-2413-32C4-F34E-832857B01643">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 21:53:29 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="0A51C55B-3F66-A636-20AC-4C04F6363A2B" name="ISIN_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 00:13:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8FAC85DC-BACD-3D5B-E76B-263D69511063"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="FCCC7A2C-690C-8B3F-F3D1-4A7B863E14FA" name="ISIN_UN">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 22:48:06 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A55A3DC3-5495-3572-C3FE-EE3ACD45287C"/>
+<colUsage columnID="FBB72364-3F46-23A2-32CF-2F8EE10B1D22"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="2201F0BA-EA38-0A4A-5165-34316E90ABE7" name="ISIN_Currency_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 03:09:46 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+</ind_PK_UK>
+<ind_PK_UK id="591DF01B-BFB7-BF82-7DFB-AD91BB97AD24" name="ISIN_Company_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-29 03:34:53 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FBB72364-3F46-23A2-32CF-2F8EE10B1D22"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

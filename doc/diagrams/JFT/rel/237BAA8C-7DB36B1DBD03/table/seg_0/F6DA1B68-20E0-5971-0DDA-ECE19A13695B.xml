@@ -1,0 +1,108 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="F6DA1B68-20E0-5971-0DDA-ECE19A13695B" name="MarketTrade">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="marketTradeID" id="631440A6-2609-4CB4-19A0-FB8A6F61CF9F">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="sellOrderID" id="6DD2D485-023F-9EAA-9200-4CEAB2E9F676">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>8F9870D0-FE98-3992-F1CB-7195091EB051</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="6E0D7401-BCF9-E7C7-F050-76C776A9DBBA" referredColumn="8F9870D0-FE98-3992-F1CB-7195091EB051"/>
+</associations>
+</Column>
+<Column name="buyOrderID" id="9EC049A7-8BE0-0E49-401C-CF1C0B5FB8C2">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>8F9870D0-FE98-3992-F1CB-7195091EB051</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="0E344F7F-F12B-9D3C-A6C7-83B768CD970D" referredColumn="8F9870D0-FE98-3992-F1CB-7195091EB051"/>
+</associations>
+</Column>
+<Column name="Volume" id="DF417443-FF01-D38C-4531-E7AABAE3D9FE">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Price" id="B9537EB8-0F81-469F-2E67-EA68CB2A281E">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TradeDateTime" id="101BB876-8E90-30CD-B008-28CF0C827CEB">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="01E3ECC2-140B-2CEA-57D4-83AA9C16BA1B" name="OrderExecutions_PK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="631440A6-2609-4CB4-19A0-FB8A6F61CF9F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0887B140-0306-E92D-A52C-6631605C30F6" name="OrderExecutions_MarketOrder_FKv1">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:58 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9EC049A7-8BE0-0E49-401C-CF1C0B5FB8C2"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="7F222E93-7146-0FD7-B9AE-50256C778040" name="OrderExecutions_MarketOrder_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:58 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6DD2D485-023F-9EAA-9200-4CEAB2E9F676"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

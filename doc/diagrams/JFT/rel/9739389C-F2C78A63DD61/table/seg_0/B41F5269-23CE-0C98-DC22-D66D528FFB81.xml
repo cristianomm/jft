@@ -1,0 +1,87 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="B41F5269-23CE-0C98-DC22-D66D528FFB81" name="MarketOrderEvent">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 00:00:32 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="marketEventID" id="1C125C09-0EC4-6779-0D3B-DFB8A183A428">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 00:03:27 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="marketOrderID" id="1657C7E1-7273-4317-C5B2-FE760035F336">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 00:01:47 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>7A131EEF-DD16-48EC-B745-B7000CA6F69B</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="E59AAAA3-7AC2-E993-EC4F-B0894C5B9AAE" referredColumn="7A131EEF-DD16-48EC-B745-B7000CA6F69B"/>
+</associations>
+</Column>
+<Column name="eventDateTime" id="C14188F9-32D8-4759-0EDC-BEC7F21ACD6F">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 00:04:49 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Message" id="B2DA1DC7-7D17-4F4D-7BC8-79223E009C02">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 00:14:10 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="EventType" id="DF20B9C8-5B66-E606-49E9-F7B1A806E7B8">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 00:14:10 UTC</createdTime>
+<comment>Código do Evento da Ordem: 1 - New / 2 - Update / 3 - Cancel - Solicitado pelo participante / 4 - Trade / 5 - Reentry - Processo interno (quantidade escondida) / 6 - New Stop Price / 7 - Reject / 8 - Remove - Removida pelo Sistema (final de dia ou quando é totalmente fechada) / 9 - Stop Price Triggered / 11 - Expire - Oferta com validade expirada.</comment>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="2D32881D-6026-B209-96D6-314A18CE7435" name="MarketOrderEvent_PK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 00:03:33 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="1C125C09-0EC4-6779-0D3B-DFB8A183A428"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="7C80D509-459D-329C-FCFF-02B7FEFCAF07" name="MarketOrderEvent_MarketOrder_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 00:12:58 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="1657C7E1-7273-4317-C5B2-FE760035F336"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

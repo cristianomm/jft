@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="44F2510D-05B2-FD0D-4A32-4DCBE487F686" name="Earning_Security_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-31 23:39:05 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<containerWithKeyObject>5F5DDD99-45CC-026A-F5C3-7EBA8AC93B98</containerWithKeyObject>
+<deleteRule>NO ACTION</deleteRule>
+<localFKIndex>9740A2D5-7C5D-B6BD-D748-4BFA820516D3</localFKIndex>
+<keyObject>D31A0893-D185-732C-5A04-680CE406F2F5</keyObject>
+<mandatory>true</mandatory>
+<transferable>true</transferable>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

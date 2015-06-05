@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="E207CE51-E32B-5EB8-FF96-EF7A7DEEE809" name="Quote_ExchangeItem_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:58 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<containerWithKeyObject>09EF0E67-6147-B90E-B908-F40D405B0B92</containerWithKeyObject>
+<deleteRule>NO ACTION</deleteRule>
+<localFKIndex>ACA5D789-2A96-ADE6-D7A2-CB8162EE0B74</localFKIndex>
+<keyObject>4BA0F3E2-EADE-CA98-68B3-16B5A5C202CE</keyObject>
+<mandatory>true</mandatory>
+<transferable>true</transferable>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

@@ -1,0 +1,20 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="Cotacao_INDOPC_FK" directorySegmentName="seg_0" id="4C02C694-1A3F-F2E7-22BC-6F2897503ACB">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>D35CAC8F-B387-99F3-A26D-9C9B4751A5A2</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<sourcePk>BB972897-90B2-34A7-85A5-AAFCAE96838B</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>A4B24583-6A6C-200E-4054-12709D7B2ACE</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>20BDA8E7-6433-C130-1447-A51DC4F1E026</targetEntity>
+<transferable>true</transferable>
+</Relation>

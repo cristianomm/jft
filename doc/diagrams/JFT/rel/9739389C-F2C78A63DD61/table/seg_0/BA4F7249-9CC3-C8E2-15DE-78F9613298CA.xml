@@ -1,0 +1,55 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="BA4F7249-9CC3-C8E2-15DE-78F9613298CA" name="Currency">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:29:05 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="currencyID" id="D9F87063-080A-B134-ACE6-ED56BDBAB356">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:29:24 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>5</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CurrSymbol" id="CF7C6B9C-5580-68A5-546E-666A762BE62F">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:29:49 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>5</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Description" id="B95866F3-530A-A10C-1D50-8FA838BEB331">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:30:19 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="F75698CB-1B64-EFEB-B25D-90654B35ADE4" name="Currency_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:31:06 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D9F87063-080A-B134-ACE6-ED56BDBAB356"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

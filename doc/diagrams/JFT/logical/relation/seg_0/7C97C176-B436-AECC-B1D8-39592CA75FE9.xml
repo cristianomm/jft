@@ -1,0 +1,20 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="Cotacao_CODBDI_FK" directorySegmentName="seg_0" id="7C97C176-B436-AECC-B1D8-39592CA75FE9">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:54:32 UTC</createdTime>
+<generatorID>4B9FD895-3D03-02DF-033F-29F2795D671A</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<engineerTo>
+<item key="06B553DE-366D-2FFE-2CDC-CFE5ADCDCF0E" value="true"/>
+<item key="9739389C-FB78-376E-38F4-F2C78A63DD61" value="true"/>
+</engineerTo>
+<sourcePk>05449877-35D7-0FA1-EE64-5324FF4F08D0</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>AD805833-1B4B-1C5F-0223-F856D18AC86A</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>20BDA8E7-6433-C130-1447-A51DC4F1E026</targetEntity>
+<transferable>true</transferable>
+</Relation>

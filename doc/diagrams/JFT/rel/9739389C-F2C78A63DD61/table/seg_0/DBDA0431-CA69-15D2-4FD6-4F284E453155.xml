@@ -1,0 +1,192 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="DBDA0431-CA69-15D2-4FD6-4F284E453155" name="HistoricalQuote">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 01:58:10 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="historicalQuoteID" id="FC72AA70-D129-D094-CBA8-844F50E668A3">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 02:14:20 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+</Column>
+<Column name="securityID" id="CA978CA0-DE3B-2F69-996A-5D853142172D">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 02:31:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>B2F2A14C-6E9F-32D6-0910-1D0AD59BDDB9</delegate>
+<associations>
+<colAssociation fkAssociation="ACD87D97-D538-43BD-1FDC-A718182792C1" referredColumn="A80C8B03-0D21-1949-A325-34CD19343264"/>
+</associations>
+</Column>
+<Column name="QDateTime" id="01FAA9D0-F4EF-202F-74F7-F33C630EEC7D">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 03:09:10 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<dataTypePrecision>6</dataTypePrecision>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Open" id="EA6C81A0-0E2F-1312-2028-20D5233E42B5">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 03:09:47 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Close" id="8FD68C93-6A2A-2F04-74E0-AFC0CC4830AB">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 03:09:56 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="High" id="91CA4E4A-B637-F61B-A068-16248E6C01E5">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 03:12:55 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Low" id="1064A882-3AB2-18D8-E69D-A662AC2013B4">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 03:13:04 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Bid" id="570DA0B9-C842-C4FF-5E0F-EF2C23378A44">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 03:42:25 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Ask" id="19F00959-BCD3-402B-80AC-60DEB0B614B6">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 03:42:35 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="AvgPrice" id="81E6A113-7975-410A-F94B-ACB2B55D65F1">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-26 01:20:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="QuoteFactor" id="38E13F24-6170-6760-1379-5555A6A9F2D7">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-26 05:16:31 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Volume" id="E25AC0ED-2B26-4531-6771-81133AFDAACD">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 04:33:36 UTC</createdTime>
+<comment>Volume Total de Titulos Negociado</comment>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>22</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TradedUnits" id="49476ADE-9513-6E38-A2DF-73F005985513">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 04:35:08 UTC</createdTime>
+<comment>Numero de Negocios</comment>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TradedQuantity" id="5C25E58B-DEB9-FA2C-CCCA-66E0CF445F66">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 04:37:40 UTC</createdTime>
+<comment>Quantidade de Titulos Negociados</comment>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="8C71FFAB-1851-7C47-9324-FA456F41BABB" name="HistoricalQuote_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 02:14:20 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<indexColumnUsage>
+<colUsage columnID="FC72AA70-D129-D094-CBA8-844F50E668A3"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="46001F96-2A3F-05AB-E11F-F34133522CC8" name="Quote_ExchangeItem_FK">
+<createdBy>Cristiano Martins</createdBy>
+<createdTime>2013-07-10 17:14:32 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CA978CA0-DE3B-2F69-996A-5D853142172D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

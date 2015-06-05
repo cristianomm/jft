@@ -1,0 +1,64 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="1FCD4526-67B8-5CCE-AEB6-27293FA192CC" name="AccountTypes">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 10:52:04 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="accountTypeID" id="628BD79D-3BBE-6DAF-69EA-FA3F64DD5018">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 10:52:56 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TypeName" id="AA82599A-AAFF-23F1-A723-57EBE7278B66">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 10:56:14 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Description" id="0328086B-7498-7B30-F67D-F6C4D0660533">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 10:58:49 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="0488DA6F-4734-B610-744A-4FD006230D50" name="AccountTypes_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 10:52:56 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="628BD79D-3BBE-6DAF-69EA-FA3F64DD5018"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9CB2385B-E29A-D921-E761-B515E6FCC79E" name="AccountTypes_UN">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 10:57:15 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="AA82599A-AAFF-23F1-A723-57EBE7278B66"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

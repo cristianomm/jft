@@ -1,0 +1,78 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="7157CB55-9651-D598-C615-319A80B951C9" name="Brokerage">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 03:39:33 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="brokerageID" id="346DFA8F-EA56-A01C-9A01-A662C3468C11">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 03:39:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="brokerID" id="C027A1A3-DCDD-B826-6C5D-4B6D32C45F11">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 03:54:33 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>86565B8B-B602-C5CC-2269-A86FB909E45B</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="8537B79D-E47D-4824-568E-853E78C109D0" referredColumn="86565B8B-B602-C5CC-2269-A86FB909E45B"/>
+</associations>
+</Column>
+<Column name="TradeType" id="908E5E8E-CB55-20E7-3EBB-F118C44185CC">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 03:53:03 UTC</createdTime>
+<comment>DAY_TRADE(&quot;D&quot;), NORMAL(&quot;S&quot;);</comment>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Category" id="CA673C8E-81B4-6DF5-A9C3-987E286A02CD">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 03:53:35 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="57725082-2EE2-524E-46C0-39B697E66694" name="Brokerage_PK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 03:39:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="346DFA8F-EA56-A01C-9A01-A662C3468C11"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="FFF92EAB-851A-F052-7C53-96DB085603DE" name="Brokerage_Broker_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 03:54:43 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C027A1A3-DCDD-B826-6C5D-4B6D32C45F11"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

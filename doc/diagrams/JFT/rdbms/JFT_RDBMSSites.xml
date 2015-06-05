@@ -1,0 +1,6 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<metadatadoc version="2.0">
+   <site name="DB2/UDB 9" type="10" oid="112220E5-3DBD-675C-4CE0-50DE0C486937" pathid="10"/>
+   <site name="DB2/UDB 8.1" type="3" oid="2BAE410E-5CEB-5134-8F33-CCB20E003569" pathid="11"/>
+   <site name="DB2/UDB 7.1" type="2" oid="BA6252DC-29CE-184D-7701-48F55E3954D4" pathid="12"/>
+</metadatadoc>

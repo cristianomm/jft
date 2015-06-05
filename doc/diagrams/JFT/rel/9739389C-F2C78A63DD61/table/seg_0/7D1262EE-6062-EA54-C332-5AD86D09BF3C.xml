@@ -1,0 +1,66 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="7D1262EE-6062-EA54-C332-5AD86D09BF3C" name="Segment">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 03:59:25 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="segmentID" id="624D2554-A6D2-4A8E-80F8-B9AEBBFAFC86">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 03:59:43 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="subsectorID" id="11E1257A-7DD7-91C3-D2C1-8E771DB07B91">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 04:01:44 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>B83688FE-CE78-5754-13B9-700DF363CF56</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="4694159C-0846-2142-5C24-A4857E10FEA1" referredColumn="B83688FE-CE78-5754-13B9-700DF363CF56"/>
+</associations>
+</Column>
+<Column name="SegmentName" id="D06BC59B-33BB-925C-C827-24504E20FF00">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 04:01:14 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="E76719EC-B31D-2FBC-F8B2-3C3CEBC60B66" name="Segment_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 03:59:43 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="624D2554-A6D2-4A8E-80F8-B9AEBBFAFC86"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="F94A3C04-3718-E875-6A30-F98CB74D7DD9" name="Segment_Subsector_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 04:02:01 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="11E1257A-7DD7-91C3-D2C1-8E771DB07B91"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

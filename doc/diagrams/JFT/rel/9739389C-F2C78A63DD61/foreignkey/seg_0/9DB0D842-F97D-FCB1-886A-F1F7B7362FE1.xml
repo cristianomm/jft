@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="9DB0D842-F97D-FCB1-886A-F1F7B7362FE1" name="Security_ISIN_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-29 22:49:08 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<containerWithKeyObject>3C0785C1-13FD-726B-ABAE-AEFAF894DD8F</containerWithKeyObject>
+<deleteRule>NO ACTION</deleteRule>
+<localFKIndex>4B4E2AC0-16E3-614F-DA3B-F1A1538F37F3</localFKIndex>
+<keyObject>0A51C55B-3F66-A636-20AC-4C04F6363A2B</keyObject>
+<mandatory>true</mandatory>
+<transferable>true</transferable>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

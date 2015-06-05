@@ -1,0 +1,50 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="33CF267A-22E8-EDA5-F89D-352A77C98298" name="INDOPC">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:02:15 UTC</createdTime>
+<commentInRDBMS>INDICADOR DE CORREÇÃO DE PREÇOS DE EXERCÍCIOS OU VALORES DE CONTRATO PARA OS MERCADOS DE&lt;br&gt; OPÇÕES OU TERMO SECUNDÁRIO</commentInRDBMS>
+<ownerDesignName>JFT</ownerDesignName>
+<abbreviation>INDOPC</abbreviation>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="codINDOPC" id="39DE5D3C-2614-AC22-FB3B-14A03ACE00FD">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:17:41 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+</Column>
+<Column name="Valor" id="57501A16-C3A4-FA07-D60A-C94936B790B6">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:17:41 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100 CHAR</dataTypeSize>
+</Column>
+<Column name="Descricao" id="96635129-A6BC-A23B-2870-AF3B44C6D318">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:17:41 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255 CHAR</dataTypeSize>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="0EEB36ED-7EC5-588D-18B2-803CA40036F9" name="INDOPC_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 19:17:41 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<indexColumnUsage>
+<colUsage columnID="39DE5D3C-2614-AC22-FB3B-14A03ACE00FD"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

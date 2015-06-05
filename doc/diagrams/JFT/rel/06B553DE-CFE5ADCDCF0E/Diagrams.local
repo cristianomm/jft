@@ -1,0 +1,4 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<oracle.dbtools.crest.model.design.relational.RelationalDesign>
+   <object objectType="main_view" objectID="1DBAE8EA-F63C-28F4-0BA3-7DF14DEBE54B" name="JFinancialTimes" visible="false"/>
+</oracle.dbtools.crest.model.design.relational.RelationalDesign>

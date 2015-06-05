@@ -1,0 +1,101 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="5F5DDD99-45CC-026A-F5C3-7EBA8AC93B98" name="Earning">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-31 23:34:04 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="earningID" id="EDACC2C4-41D4-F26A-C2E2-3D7BB086E775">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-31 23:34:48 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="EarningType" id="0204B560-550B-C089-A747-22261FB5AF32">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-31 23:36:49 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="EarningValue" id="A4D2BAB7-9AA4-E3C1-3E69-C811C24BC9DE">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-31 23:37:25 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ExDate" id="4EAB6C23-ECA5-72B7-ACBF-0829238B5D84">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-31 23:37:56 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ExPrice" id="9B744EFD-142A-9289-272F-D8EA62460AE5">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-31 23:38:28 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="securityID" id="37C647BC-15F3-3F7D-ADBE-45426754AD67">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-31 23:38:48 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>A80C8B03-0D21-1949-A325-34CD19343264</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="44F2510D-05B2-FD0D-4A32-4DCBE487F686" referredColumn="A80C8B03-0D21-1949-A325-34CD19343264"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="79120135-AE1F-6EE4-FC6B-DC632BD1CB63" name="Earning_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-31 23:34:48 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="EDACC2C4-41D4-F26A-C2E2-3D7BB086E775"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9740A2D5-7C5D-B6BD-D748-4BFA820516D3" name="Earning_Security_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-10-31 23:39:05 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="37C647BC-15F3-3F7D-ADBE-45426754AD67"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

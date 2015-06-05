@@ -1,0 +1,38 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<oracle.dbtools.crest.model.design.relational.RelationalDesign>
+   <object objectType="Table" objectID="32158FD9-CD39-D06D-56FA-43BE027D0D91" name="Account" seqName="seg_0"/>
+   <object objectType="Table" objectID="5846DE94-C40E-B3B4-2496-416615ECF3E1" name="AccountTypes" seqName="seg_0"/>
+   <object objectType="Table" objectID="F61A1855-C45F-30DC-B586-5952C0B28543" name="Broker" seqName="seg_0"/>
+   <object objectType="Table" objectID="B4FF8B0D-AFAA-3EA1-707D-22EE7F380EF2" name="Brokerage" seqName="seg_0"/>
+   <object objectType="Table" objectID="8701AF57-FFE2-B87D-31C4-87709EB5776A" name="Commission" seqName="seg_0"/>
+   <object objectType="Table" objectID="785AF6AA-B0F4-7035-3DEB-20CF05FDC299" name="Currency" seqName="seg_0"/>
+   <object objectType="Table" objectID="C841748D-9C8B-DD25-4E02-E2CCF93D27DF" name="CurrencyQuote" seqName="seg_0"/>
+   <object objectType="Table" objectID="ADE73A04-F2D6-584A-29B8-374E276DB56D" name="EntryRegister" seqName="seg_0"/>
+   <object objectType="Table" objectID="A1D277EE-DFC1-D740-E099-94AB5E767562" name="ExchangeTax" seqName="seg_0"/>
+   <object objectType="Table" objectID="09EF0E67-6147-B90E-B908-F40D405B0B92" name="HistoricalQuote" seqName="seg_0"/>
+   <object objectType="Table" objectID="CB848E12-793C-9BB8-50AC-D5D80E66C5B8" name="JournalEntry" seqName="seg_0"/>
+   <object objectType="Table" objectID="E4FBAF34-94BD-CA3C-1DDF-3D416174BC34" name="MarketOrder" seqName="seg_0"/>
+   <object objectType="Table" objectID="B0AAC5BE-770F-AC41-43C3-87D819E08423" name="MarketOrderEvent" seqName="seg_0"/>
+   <object objectType="Table" objectID="F6DA1B68-20E0-5971-0DDA-ECE19A13695B" name="MarketTrade" seqName="seg_0"/>
+   <object objectType="Table" objectID="16DF40E0-F6F4-BD3F-C496-5ED12BD94083" name="Orders" seqName="seg_0"/>
+   <object objectType="Table" objectID="D5C64FFC-A18E-D07A-08EB-91A25F3A357B" name="Security" seqName="seg_0"/>
+   <object objectType="Table" objectID="C3570B9E-9AA5-0C9A-E909-69D9D1A0C39B" name="SecurityInfo" seqName="seg_0"/>
+   <object objectType="Table" objectID="732FF53B-7037-527E-EB57-193855E181A0" name="StockExchange" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="784EC017-F323-6E82-C1E5-09F6F0A4BF5A" name="Account_AccountTypes_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="9376BD69-EDA3-94C1-0134-4477743569F9" name="Account_Currency_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="3A638348-4EA1-841E-2C4F-A34CEF7030D5" name="Brokerage_Broker_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="ED8FAAD3-7F3D-C7E5-A1DE-ECA511A46E47" name="Commission_Brokerage_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="549B6691-E5DB-5056-EB91-E4008656D426" name="CurrencyQuote_Currency_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="6282D125-9BE7-0D3A-6BB2-470269717C25" name="EntryRegister_Account_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="B1D855E7-714D-F5D1-A811-28340F30B32E" name="EntryRegister_JournalEntry_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="B876063A-F716-7FEC-1C78-988BC1AEE519" name="ExchangeTax_Brokerage_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="AD71E921-E50E-B345-EC42-1DF445C6565C" name="EntryRegister_Account_FKv1" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="E0BCF94D-5E20-50F2-E33A-7EE853E3A47C" name="MarketOrderEvent_MarketOrder_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="588909CD-8C34-39CB-D6AD-3C152E4A0537" name="MarketTrades_ExchangeItem_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="6E0D7401-BCF9-E7C7-F050-76C776A9DBBA" name="OrderExecutions_MarketOrder_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="0E344F7F-F12B-9D3C-A6C7-83B768CD970D" name="OrderExecutions_MarketOrder_FKv1" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="E1713B22-174F-5A0C-5A93-3665BF208890" name="Order_ExchangeItem_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="E207CE51-E32B-5EB8-FF96-EF7A7DEEE809" name="Quote_ExchangeItem_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="BCB5B403-8F38-0EBC-6103-0DE328BF8D14" name="SecurityInfo_Currency_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="027CACD8-FFD6-3D16-195D-1C2F3B87EA5C" name="SecurityInfo_Security_FK" seqName="seg_0"/>
+</oracle.dbtools.crest.model.design.relational.RelationalDesign>

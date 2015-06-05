@@ -1,0 +1,43 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="21F0D59A-58A5-1888-ED8F-7F3DEB999161" name="MarketTypes">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-15 04:48:05 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="marketTypeID" id="DB093032-CB10-8AFA-7271-C97F19AA6C3E">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-15 04:48:41 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Description" id="69ACDE1B-98FE-0497-8FF9-B770360B687D">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-15 04:49:06 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="1E899FD5-6365-9FD8-72AC-8B2169CFD115" name="MarketType_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-15 04:48:41 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DB093032-CB10-8AFA-7271-C97F19AA6C3E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

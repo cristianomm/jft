@@ -1,0 +1,125 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="63A6470C-6104-9C99-DBE2-1C19FE3D5D32" name="Account">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:25:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="accountID" id="493D5205-4773-E7CE-E919-F59BC8D7A960">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:26:18 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="currencyID" id="EAB4444D-9C71-3549-14E1-EC359CA7AB53">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:28:38 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>5</dataTypeSize>
+<delegate>D9F87063-080A-B134-ACE6-ED56BDBAB356</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="D7D83955-B2ED-D25A-5D24-E3717ABFC0C2" referredColumn="D9F87063-080A-B134-ACE6-ED56BDBAB356"/>
+</associations>
+</Column>
+<Column name="accountTypesID" id="28CCA076-46B1-EA7C-E728-4F9AC8FF2D34">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 10:57:45 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>628BD79D-3BBE-6DAF-69EA-FA3F64DD5018</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="040C3CBF-8DAD-89FF-8D12-DDED3062725C" referredColumn="628BD79D-3BBE-6DAF-69EA-FA3F64DD5018"/>
+</associations>
+</Column>
+<Column name="AccName" id="846B4923-D24E-02B4-867B-0A5ADD3404DE">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:26:39 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Description" id="B0935875-9803-5D93-9AE5-B98B5A7A5CE0">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:26:55 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Balance" id="52E124A8-766D-79A9-76A0-43BFD7A20080">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:27:35 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Open" id="D8AFA2FC-C30C-2593-69EE-CE5A2FAC021E">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:27:54 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="8FD7607F-206D-8B96-C23D-94AA5DBA4190" name="Account_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:26:18 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="493D5205-4773-E7CE-E919-F59BC8D7A960"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="48FE7D01-F767-3719-2CA5-D6158CFC6397" name="Account_Currency_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 09:33:44 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="EAB4444D-9C71-3549-14E1-EC359CA7AB53"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="497ED89A-E2DF-DC6A-D192-4D08321C18CD" name="Account_AccountTypes_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 15:00:10 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="28CCA076-46B1-EA7C-E728-4F9AC8FF2D34"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

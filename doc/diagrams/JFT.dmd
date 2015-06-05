@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="JFT" id="C60EDC1C-CEE2-5293-995B-B589C78F6769" version="3.5">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 01:45:57 UTC</createdTime>
+<ownerDesignName>JFER</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>C60EDC1C-CEE2-5293-995B-B589C78F6769</designId>
+</OSDM_Design>

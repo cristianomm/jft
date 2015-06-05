@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="DA577EFE-69DB-1C0D-C729-2E1C00EF158E" name="Rule_DistributionRule_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:49:07 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<containerWithKeyObject>651018F9-8CE1-715A-FC15-B1B2D0307C52</containerWithKeyObject>
+<deleteRule>NO ACTION</deleteRule>
+<localFKIndex>9A60324F-CF3E-DC88-93E9-FD740793350E</localFKIndex>
+<keyObject>BED70AB2-6FA3-F44E-9683-677F3C0374BC</keyObject>
+<mandatory>true</mandatory>
+<transferable>true</transferable>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

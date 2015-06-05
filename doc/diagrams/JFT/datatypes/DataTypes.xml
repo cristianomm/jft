@@ -1,0 +1,9 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<DataTypesDesign class="oracle.dbtools.crest.model.design.datatypes.DataTypesDesign" name="DataTypes" id="5516F269-B961-9DDB-D9A6-22E9229EC122" mainViewID="FD513A3A-6662-1328-6464-6CFE58DB4019">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-07-10 01:45:57 UTC</createdTime>
+<ownerDesignName>JFER</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+<defaultArrayLimit>10</defaultArrayLimit>
+<useRoleInAssociationEndAsName>true</useRoleInAssociationEndAsName>
+</DataTypesDesign>

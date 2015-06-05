@@ -1,0 +1,6 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SchemaObject class="oracle.dbtools.crest.model.design.relational.SchemaObject" name="stockdata" directorySegmentName="seg_0" id="FBFA8D07-F4F3-32B4-9A5D-0071C017A979">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 14:49:07 UTC</createdTime>
+<ownerDesignName>JFER</ownerDesignName>
+</SchemaObject>

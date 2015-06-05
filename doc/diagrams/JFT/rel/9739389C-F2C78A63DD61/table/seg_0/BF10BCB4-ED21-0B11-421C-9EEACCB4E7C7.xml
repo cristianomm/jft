@@ -1,0 +1,43 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="BF10BCB4-ED21-0B11-421C-9EEACCB4E7C7" name="Tax">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:32:53 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="taxID" id="CEA5C4D8-3018-03B5-369E-564FF72F23E8">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:33:18 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TaxName" id="A7F82A16-2634-3649-EEDC-D0BF3F5BE3C0">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:33:34 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="C912B3AB-A31B-5140-0704-79405E434710" name="Tax_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:33:18 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CEA5C4D8-3018-03B5-369E-564FF72F23E8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

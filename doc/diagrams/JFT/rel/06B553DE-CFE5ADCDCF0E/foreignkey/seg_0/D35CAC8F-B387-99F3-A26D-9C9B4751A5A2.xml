@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="D35CAC8F-B387-99F3-A26D-9C9B4751A5A2" name="Cotacao_INDOPC_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2011-04-22 20:41:44 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<containerWithKeyObject>D08994EF-C0B2-46EA-6A2B-6367835D3D38</containerWithKeyObject>
+<deleteRule>RESTRICT</deleteRule>
+<localFKIndex>69812E98-2907-5F29-C7C9-50268DF7A2B5</localFKIndex>
+<keyObject>0EEB36ED-7EC5-588D-18B2-803CA40036F9</keyObject>
+<mandatory>true</mandatory>
+<transferable>true</transferable>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

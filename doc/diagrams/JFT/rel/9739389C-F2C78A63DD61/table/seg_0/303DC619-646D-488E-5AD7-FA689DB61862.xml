@@ -1,0 +1,85 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="303DC619-646D-488E-5AD7-FA689DB61862" name="TaxSetup">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:34:28 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="taxSetupID" id="33B64FA4-0A04-6753-6CC5-38B147E999CB">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:35:13 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="taxID" id="32A10553-0362-1684-2CCB-59B9B4651805">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:35:29 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<delegate>CEA5C4D8-3018-03B5-369E-564FF72F23E8</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="8DC034F4-BC0D-F4E9-5CA2-B05EEA567A2B" referredColumn="CEA5C4D8-3018-03B5-369E-564FF72F23E8"/>
+</associations>
+</Column>
+<Column name="SetupName" id="0718ECBC-1C9D-44C1-56DF-574AAB910305">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:35:55 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Aliquota" id="731744AE-7B90-5C75-0350-5B5A5E84F6C3">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:40:40 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT022</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TaxValue" id="85945E39-B972-E02B-E36E-B9BE2251D2D9">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:42:14 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="EFC0B26A-A259-78F7-080A-F15736720BD1" name="TaxSetup_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:35:13 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="33B64FA4-0A04-6753-6CC5-38B147E999CB"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B285E31B-470F-6B9D-5280-9E7CF92CC111" name="TaxSetup_Tax_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-04 12:48:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="32A10553-0362-1684-2CCB-59B9B4651805"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

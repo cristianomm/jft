@@ -1,0 +1,130 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="AD03DC20-C775-D820-2088-BEA4CAFA645E" name="MarketOrder">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-05 04:18:42 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="marketOrderID" id="7A131EEF-DD16-48EC-B745-B7000CA6F69B">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-05 04:19:13 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="secutityID" id="4904B25B-DC5A-8A56-4201-17C3A466CB28">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-05 04:22:04 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>A80C8B03-0D21-1949-A325-34CD19343264</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="01D8E9BC-C1C8-4836-FE01-449B10936410" referredColumn="A80C8B03-0D21-1949-A325-34CD19343264"/>
+</associations>
+</Column>
+<Column name="Side" id="F3ADA4A5-72F4-9980-FA17-02E9CB71E5C2">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-18 19:32:16 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Price" id="B48AFB32-24EF-CEB1-89CE-FBF2DB83A40E">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-05 04:21:11 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Volume" id="C9F4EDFA-BF1B-FC8A-9FC6-BCC11936FE3B">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-05 04:21:32 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ExpirationDate" id="663DF229-2E1B-EDFB-F9BF-5D6CCED2B2C5">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-05 04:19:43 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="OrderDate" id="B6991086-2A35-AA76-E740-20EB61450710">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-18 19:32:59 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="OrderStatus" id="14258C34-7EFF-5F22-E148-8B724DEDD7B1">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-09-18 19:34:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="brokerID" id="62CB3F7A-3397-9C8A-192F-91656A49D00E">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-19 00:11:50 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="B4AD0F74-CA18-7849-08D2-670CEA71F236" name="MarketOrder_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-05 04:19:13 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="7A131EEF-DD16-48EC-B745-B7000CA6F69B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0A323E3E-6003-6C4B-1D9E-B84A1EAD9D37" name="MarketTrades_ExchangeItem_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2013-08-05 04:22:17 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4904B25B-DC5A-8A56-4201-17C3A466CB28"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

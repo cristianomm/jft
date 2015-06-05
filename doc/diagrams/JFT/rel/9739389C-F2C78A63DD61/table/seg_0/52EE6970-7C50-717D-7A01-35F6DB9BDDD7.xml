@@ -1,0 +1,88 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="52EE6970-7C50-717D-7A01-35F6DB9BDDD7" name="ExchangeTax">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 20:07:17 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="exchangeTaxID" id="3CFB5606-BE64-1596-1D99-38650D15AAAF">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 20:07:39 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="brokerageID" id="F201BE70-1E7C-30FD-B264-8DCCA0C11F15">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 20:08:18 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>346DFA8F-EA56-A01C-9A01-A662C3468C11</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="E08BFBA3-CDD9-9CB0-C601-BAC36FDE04F6" referredColumn="346DFA8F-EA56-A01C-9A01-A662C3468C11"/>
+</associations>
+</Column>
+<Column name="TaxName" id="81FA77B7-D8B2-EAE0-7CC3-81A0B01ABF98">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 20:08:00 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Tax" id="FCF253D9-67C4-4A60-09CF-599188E0B764">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 20:08:00 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CalcType" id="C2C380C8-8827-61A1-97E0-0DFAACE8650F">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 20:08:00 UTC</createdTime>
+<comment>OPEN, CLOSE, MIN, MAX, VOLUME, VALUE, TAX, PERCENTUAL, FINANCIAL_VOLUME, TRADES</comment>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="3B745AC0-2CEB-978B-7085-A76A577D8178" name="ExchangeTax_PK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 20:07:39 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="3CFB5606-BE64-1596-1D99-38650D15AAAF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="8BC92956-421F-356C-6E37-953F921CED52" name="ExchangeTax_Brokerage_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-05-25 20:10:54 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F201BE70-1E7C-30FD-B264-8DCCA0C11F15"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

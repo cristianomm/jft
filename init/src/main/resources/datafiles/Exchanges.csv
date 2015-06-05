@@ -1,0 +1,25 @@
+#ID;Stock Exchange;Economy;Head­quarters
+NYSE;NYSE;United States;New York City
+NASDAQ;NASDAQ;United States;New York City
+TSE;Tokyo Stock Exchange;Japan;Tokyo
+LSE;London Stock Exchange;United Kingdom;London
+EURONEXT;Euronext;France;Amsterdam
+EURONEXT;Euronext;Netherlands;Amsterdam
+EURONEXT;Euronext;Belgium;Amsterdam
+EURONEXT;Euronext;Portugal;Amsterdam
+HKE;Hong Kong Stock Exchange;Hong Kong;Hong Kong
+SSE;Shanghai Stock Exchange;China;Shanghai
+TSX;Toronto Stock Exchange;Canada;Toronto
+FWB;Frankfurt Stock Exchange;Germany;Frankfurt
+ASX;Australian Securities Exchange;Australia;Sydney
+BSE;Bombay Stock Exchange;India;Mumbai
+NSE;National Stock Exchange of India;India;Mumbai
+SWX;SIX Swiss Exchange;Switzerland;Zurich
+BM&FBOVESPA;BM&F Bovespa;Brazil;São Paulo
+KRX;Korea Exchange;South Korea;Seoul
+SZSE;Shenzhen Stock Exchange;China;Shenzhen
+BME;BME Spanish Exchanges;Spain;Madrid
+JSE;JSE Limited;South Africa;Johannesburg
+MOEX;Moscow Exchange;Russia;Moscow
+SGX;Singapore Exchange;Singapore;Singapore
+TSEC;Taiwan Stock Exchange;Taiwan;Taipei
