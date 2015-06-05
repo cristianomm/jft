@@ -17,14 +17,15 @@
 <logicalDatatype>LOGDT027</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="isinID" id="95818216-B66F-52AD-7F91-126F07ADF724">
+<Column name="ISIN" id="95818216-B66F-52AD-7F91-126F07ADF724">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <generatorID>Gerado pelo usuário</generatorID>
 <ownerDesignName>JFT</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT027</logicalDatatype>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Symbol" id="24415DEB-F60B-852F-E68D-F0758B7CDD36">

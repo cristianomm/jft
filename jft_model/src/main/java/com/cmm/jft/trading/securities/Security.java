@@ -65,20 +65,11 @@ public class Security implements DBObject<Security> {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "securityID", fetch = FetchType.LAZY)
 	private Set<HistoricalQuote> historicalQuoteSet;
 
-	@JoinColumn(name = "isinID", referencedColumnName = "isinID")
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-	private Isin isinID;
-	
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "securityID")
-	private Set<Earning> earningSet;
-
 	@OneToOne
 	private SecurityInfo securityInfoID;
 
 	public Security() {
 		this.ordersSet = new HashSet<Orders>();
-		this.earningSet = new HashSet<Earning>();
 		this.marketOrderSet = new HashSet<MarketOrder>();
 		this.historicalQuoteSet = new HashSet<HistoricalQuote>();
 	}
@@ -86,7 +77,6 @@ public class Security implements DBObject<Security> {
 	public Security(String symbol) {
 		this.symbol = symbol;
 		this.ordersSet = new HashSet<Orders>();
-		this.earningSet = new HashSet<Earning>();
 		this.marketOrderSet = new HashSet<MarketOrder>();
 		this.historicalQuoteSet = new HashSet<HistoricalQuote>();
 	}
@@ -126,22 +116,7 @@ public class Security implements DBObject<Security> {
 	public Set<HistoricalQuote> getHistoricalQuoteSet() {
 		return this.historicalQuoteSet;
 	}
-
-	/**
-	 * @return the isinID
-	 */
-	public Isin getIsinID() {
-		return this.isinID;
-	}
-
-	/**
-	 * @param isinID
-	 *            the isinID to set
-	 */
-	public void setIsinID(Isin isinID) {
-		this.isinID = isinID;
-	}
-
+	
 	/**
 	 * @return the marketOrderSet
 	 */
@@ -162,13 +137,6 @@ public class Security implements DBObject<Security> {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	/**
-	 * @return the earningSet
-	 */
-	public Set<Earning> getEarningSet() {
-		return this.earningSet;
 	}
 
 	/**
@@ -196,10 +164,8 @@ public class Security implements DBObject<Security> {
 				+ ", historicalQuoteSet="
 				+ (this.historicalQuoteSet != null ? this.toString(
 						this.historicalQuoteSet, maxLen) : null)
-				+ ", isinID=" + this.isinID
-				+ ", description=" + this.description
-				+ ", earningSet="
-				+ (this.earningSet != null ? this.toString(this.earningSet, maxLen) : null) + "]";
+				+", description=" + this.description
+				+ "]";
 	}
 
 	private String toString(Collection<?> collection, int maxLen) {

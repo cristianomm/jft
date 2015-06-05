@@ -138,7 +138,7 @@
 <logicalDatatype>LOGDT007</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="SecurityType" id="509749B1-83E1-5893-8E85-6BB27EE7BE18">
+<Column name="SecurityCategory" id="509749B1-83E1-5893-8E85-6BB27EE7BE18">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -147,6 +147,17 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>30</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="QuoteFactor" id="3777A073-44BB-E2CC-AB9D-20BE8865D230">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 18:04:00 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>

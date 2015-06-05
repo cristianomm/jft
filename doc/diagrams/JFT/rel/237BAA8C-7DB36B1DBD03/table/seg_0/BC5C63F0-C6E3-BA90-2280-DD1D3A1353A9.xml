@@ -1,0 +1,94 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="BC5C63F0-C6E3-BA90-2280-DD1D3A1353A9" name="OrderExecution">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:48:24 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="orderExecutionID" id="A0B46223-9BEA-DAE7-3F0A-BB040F6E0CAC">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:48:41 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="orderID" id="6E146EEA-3F0E-E276-2B3C-C08B8F23AD2C">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:48:50 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>1E1C15FF-7FEE-18F8-F743-439CA9DC95B9</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="06D8CAEA-0FD4-9C4C-34C0-793EEA6F6F3A" referredColumn="1E1C15FF-7FEE-18F8-F743-439CA9DC95B9"/>
+</associations>
+</Column>
+<Column name="Volume" id="8F736723-B444-5FEE-69CD-82952821686F">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:49:00 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Price" id="22AA2D72-89E4-8FDC-EF9D-A93BA201C225">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:49:13 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ExecutionDateTime" id="3C1BE49D-5A77-8467-B998-E99508345C56">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:49:31 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="711A61E3-1227-67DC-C535-B15F7FBD7CB9" name="OrderExecution_PK">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:49:46 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A0B46223-9BEA-DAE7-3F0A-BB040F6E0CAC"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="18555BE8-90FB-CA92-76C9-FAAF0EC516AB" name="OrderExecution_Orders_FK">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:49:50 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6E146EEA-3F0E-E276-2B3C-C08B8F23AD2C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -14,6 +14,8 @@
    <object objectType="Table" objectID="E4FBAF34-94BD-CA3C-1DDF-3D416174BC34" name="MarketOrder" seqName="seg_0"/>
    <object objectType="Table" objectID="B0AAC5BE-770F-AC41-43C3-87D819E08423" name="MarketOrderEvent" seqName="seg_0"/>
    <object objectType="Table" objectID="F6DA1B68-20E0-5971-0DDA-ECE19A13695B" name="MarketTrade" seqName="seg_0"/>
+   <object objectType="Table" objectID="94C36974-55DF-2582-12E8-3550813024E1" name="OrderEvent" seqName="seg_0"/>
+   <object objectType="Table" objectID="BC5C63F0-C6E3-BA90-2280-DD1D3A1353A9" name="OrderExecution" seqName="seg_0"/>
    <object objectType="Table" objectID="16DF40E0-F6F4-BD3F-C496-5ED12BD94083" name="Orders" seqName="seg_0"/>
    <object objectType="Table" objectID="D5C64FFC-A18E-D07A-08EB-91A25F3A357B" name="Security" seqName="seg_0"/>
    <object objectType="Table" objectID="C3570B9E-9AA5-0C9A-E909-69D9D1A0C39B" name="SecurityInfo" seqName="seg_0"/>
@@ -24,14 +26,16 @@
    <object objectType="FKIndexAssociation" objectID="ED8FAAD3-7F3D-C7E5-A1DE-ECA511A46E47" name="Commission_Brokerage_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="549B6691-E5DB-5056-EB91-E4008656D426" name="CurrencyQuote_Currency_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="6282D125-9BE7-0D3A-6BB2-470269717C25" name="EntryRegister_Account_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="AD71E921-E50E-B345-EC42-1DF445C6565C" name="EntryRegister_Account_FKv1" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="B1D855E7-714D-F5D1-A811-28340F30B32E" name="EntryRegister_JournalEntry_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="B876063A-F716-7FEC-1C78-988BC1AEE519" name="ExchangeTax_Brokerage_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="AD71E921-E50E-B345-EC42-1DF445C6565C" name="EntryRegister_Account_FKv1" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="06D8CAEA-0FD4-9C4C-34C0-793EEA6F6F3A" name="OrderExecution_Orders_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="E0BCF94D-5E20-50F2-E33A-7EE853E3A47C" name="MarketOrderEvent_MarketOrder_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="588909CD-8C34-39CB-D6AD-3C152E4A0537" name="MarketTrades_ExchangeItem_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="EF30FA89-EF8B-F2AB-BDE5-A28309C2AE24" name="OrderEvent_Orders_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="6E0D7401-BCF9-E7C7-F050-76C776A9DBBA" name="OrderExecutions_MarketOrder_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="0E344F7F-F12B-9D3C-A6C7-83B768CD970D" name="OrderExecutions_MarketOrder_FKv1" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="E1713B22-174F-5A0C-5A93-3665BF208890" name="Order_ExchangeItem_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="E1713B22-174F-5A0C-5A93-3665BF208890" name="Order_Security_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="E207CE51-E32B-5EB8-FF96-EF7A7DEEE809" name="Quote_ExchangeItem_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="BCB5B403-8F38-0EBC-6103-0DE328BF8D14" name="SecurityInfo_Currency_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="027CACD8-FFD6-3D16-195D-1C2F3B87EA5C" name="SecurityInfo_Security_FK" seqName="seg_0"/>

@@ -18,7 +18,7 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 
-		// DDEStream dde = new DDEStream("Excel", "Teste");
+		 DDEStream dde = new DDEStream("Excel", "Teste");
 		//
 		// dde.addSymbol("IBOV");
 		// dde.addSymbol("PETR4");
@@ -27,7 +27,7 @@ public class Test {
 		// dde.addSymbol("BBAS3");
 		// dde.addSymbol("TIMP3");
 		// dde.addSymbol("BVMF3");
-		// dde.addSymbol("WINV13");
+		 dde.addSymbol("WINM15");
 		// dde.addSymbol("ELET6");
 		// dde.addSymbol("ALLL3");
 		// dde.addSymbol("ITUB4");
@@ -41,9 +41,9 @@ public class Test {
 		// dde.addSymbol("RSID3");
 		// dde.addSymbol("USIM5");
 		//
-		// dde.open();
+		 dde.open();
 		//
-		// dde.acquireData(50);
+		 dde.acquireData(50);
 
 		Logging.getInstance().log(Test.class, "Teste", Level.ALL);
 		// testNegLoader();

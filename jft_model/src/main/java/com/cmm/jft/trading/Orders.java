@@ -20,6 +20,7 @@ import com.cmm.jft.trading.enums.MarketEvents;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.jft.trading.securities.Security;
 import com.cmm.logging.Logging;
@@ -88,7 +89,17 @@ public class Orders implements DBObject<Orders> {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "OrderStatus", nullable = false)
 	private OrderStatus orderStatus;
-
+	
+	@Enumerated(EnumType.STRING)
+	@Basic(optional = false)
+	@Column(name = "OrderType", nullable = false, updatable = false)
+	private OrderTypes orderType;
+	
+	@Enumerated(EnumType.STRING)
+	@Basic(optional = false)
+	@Column(name = "TradeType", nullable = false, updatable = false)
+	private TradeTypes tradeType;
+	
 	@Enumerated(EnumType.STRING)
 	@Basic(optional = false)
 	@Column(name = "Side", nullable = false, updatable = false)
@@ -97,18 +108,9 @@ public class Orders implements DBObject<Orders> {
 	@Column(name="Comment", length=250)
 	private String comment;
 
-	@Enumerated(EnumType.STRING)
-	@Basic(optional = false)
-	@Column(name = "OrderType", nullable = false, updatable = false)
-	private OrderTypes orderType;
-
 	@Basic(optional = false)
 	@Column(name = "OrderSerial", length = 25, updatable = false, nullable = false)
 	private String orderSerial;
-
-	@JoinColumn(name = " tradeID", referencedColumnName = "tradeID", nullable = false)
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	private Trade tradeID;
 
 	@JoinColumn(name = "securityID", referencedColumnName = "securityID", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -143,12 +145,10 @@ public class Orders implements DBObject<Orders> {
 	 * @throws OrderException 
 	 */
 	public Orders(OrdersPrices prices, Integer volume, Date duration, Side side,
-			OrderTypes orderType, Trade tradeID, Security securityID) throws OrderException {
+			OrderTypes orderType, TradeTypes tradeType, Security securityID) throws OrderException {
 		super();
-		putPrices(prices);
 //		this.limitPrice = new BigDecimal(0);
 //		this.price = new BigDecimal(0);
-//		this.startPrice = new BigDecimal(0);
 //		this.stopGain = new BigDecimal(0);
 //		this.stopPrice = new BigDecimal(0);
 		this.volume = volume;
@@ -156,12 +156,13 @@ public class Orders implements DBObject<Orders> {
 		this.orderDateTime = new Date();
 		this.side = side;
 		this.orderType = orderType;
-		this.tradeID = tradeID;
+		this.tradeType = tradeType;
 		this.securityID = securityID;
 		this.orderStatus = OrderStatus.CREATED;
 		this.orderSerial = UUID.randomUUID().toString();
 		this.eventsList = new ArrayList<OrderEvent>();
 		this.executionsList = new ArrayList<OrderExecution>();
+		putPrices(prices);
 	}
 
 	public void refreshOrder() throws OrderException {
@@ -311,14 +312,6 @@ public class Orders implements DBObject<Orders> {
 		this.side = side;
 	}
 
-	public Trade getTradeID() {
-		return tradeID;
-	}
-
-	public void setTradeID(Trade tradeID) {
-		this.tradeID = tradeID;
-	}
-
 	public Security getSecurityID() {
 		return securityID;
 	}
@@ -355,6 +348,10 @@ public class Orders implements DBObject<Orders> {
 		return this.comment;
 	}
 	
+	public TradeTypes getTradeType() {
+		return tradeType;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -378,7 +375,6 @@ public class Orders implements DBObject<Orders> {
 				+ (this.side != null ? "side=" + this.side + ", " : "")
 				+ (this.orderType != null ? "orderType=" + this.orderType + ", " : "")
 				+ (this.orderSerial != null ? "orderSerial=" + this.orderSerial + ", " : "")
-				+ (this.tradeID != null ? "tradeID=" + this.tradeID + ", " : "")
 				+ (this.securityID != null ? "securityID=" + this.securityID + ", " : "")
 				+ (this.eventsList != null ? "eventsList="
 						+ this.eventsList.subList(0,

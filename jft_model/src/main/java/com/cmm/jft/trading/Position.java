@@ -5,6 +5,8 @@ import com.cmm.jft.core.enums.GeneralStatus;
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.financial.JournalEntry;
 import com.cmm.jft.financial.services.JournalService;
+import com.cmm.jft.trading.account.Broker;
+import com.cmm.jft.trading.account.Brokerage;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
@@ -23,103 +25,41 @@ import javax.persistence.*;
 /**
  * 
  * <p>
- * <code>Trade</code>
+ * <code>Position</code>
  * </p>
  * 
  * @author Cristiano M Martins
  * @version Aug 6, 2013 2:00:40 AM
  */
-@Entity
-@Table(name = "Trade")
-@NamedQueries({
-		@NamedQuery(name = "Trade.findAll", query = "SELECT t FROM Trade t"),
-		@NamedQuery(name = "Trade.findByTradeID", query = "SELECT t FROM Trade t WHERE t.tradeID = :tradeID"),
-		@NamedQuery(name = "Trade.findByTradeSerial", query = "SELECT t FROM Trade t WHERE t.tradeSerial = :tradeSerial"),
-		//, uniqueConstraints = { @UniqueConstraint(columnNames = { "TradeSerial" }) }
-		// @NamedQuery(name = "Trade.findOpenSymbol", query =
-// "SELECT t FROM Trade t INNER JOIN journalentry je ON t.entryid = je.entryid WHERE je.journalstatus = 'OPEN' AND je.entryclose IS NULL AND t.symbol = :symbol"),
-})
-public class Trade implements DBObject<Trade> {
+public class Position implements DBObject<Position> {
 
-	@Id
-	@SequenceGenerator(name = "TRADE_SEQ", sequenceName = "TRADE_SEQ", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(generator = "TRADE_SEQ", strategy = GenerationType.AUTO)
-	@Basic(optional = false)
-	@Column(name = "tradeID", nullable = false)
-	private Long tradeID;
-
-	@Column(name = "TradeSerial", length = 25, updatable = false, nullable = false, unique=true)
-	private String tradeSerial;
-
-	@JoinColumn(name = "entryID", referencedColumnName = "entryID", nullable = false)
-	@OneToOne(optional = false, fetch = FetchType.LAZY)
-	private JournalEntry entryID;
+	private String positionSerial;
 	
-	@Column(name = "Symbol", length = 10)
 	private String symbol;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "OpenDate")
 	private Date openDate;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CloseDate")
 	private Date closeDate;
 
-	@Column(name = "Profit", precision = 19, scale = 6)
 	private BigDecimal profit;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "TradeType", length = 20)
-	private TradeTypes tradeType;
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "TradeStatus")
-	private GeneralStatus tradeStatus;
-
-	@JoinColumn(name = "brokerID", referencedColumnName = "brokerID", nullable = false)
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-	private Broker brokerID;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "tradeID", fetch = FetchType.LAZY)
 	private List<Orders> ordersList;
 	
-	
-	public Trade() {
-		this.symbol = "";
-		this.tradeType = TradeTypes.NORMAL;
-		init();
-	}
 
 	/**
 	 * @param symbol
 	 */
-	public Trade(String symbol, TradeTypes type, Broker brokerID) {
+	public Position(String symbol) {
 		this.symbol = symbol;
-		this.tradeType = type;
-		this.brokerID = brokerID;
-		init();
-	}
-
-	private void init() {
 		this.openDate = new Date();
-		this.entryID = JournalService.getInstance().createEntry();
-		this.tradeSerial = UUID.randomUUID().toString();
-		this.entryID.setDescription("Created by Trade: " + tradeSerial);
+		this.positionSerial = UUID.randomUUID().toString();
 		this.ordersList = new ArrayList<Orders>();
-		this.tradeStatus = GeneralStatus.OPEN;
 	}
 
 	public void refreshTrade() {
 
 		// calcula o lucro
 		getProfit();
-
-		// ajusta o status e a data de fechamento caso tenha sido completado
-		if (getPosition() == 0) {
-			tradeStatus = GeneralStatus.CLOSE;
-			closeDate = new Date();
-		}
 
 	}
 
@@ -231,64 +171,10 @@ public class Trade implements DBObject<Trade> {
 	}
 
 	/**
-	 * @return the entryID
-	 */
-	public JournalEntry getEntryID() {
-		return this.entryID;
-	}
-
-	/**
-	 * @param entryID
-	 *            the entryID to set
-	 */
-	public void setEntryID(JournalEntry entryID) {
-		this.entryID = entryID;
-	}
-
-	/**
-	 * @return the tradeID
-	 */
-	public Long getTradeID() {
-		return this.tradeID;
-	}
-
-	/**
-	 * @return the tradeSerial
-	 */
-	public String getTradeSerial() {
-		return this.tradeSerial;
-	}
-
-	/**
 	 * @return the symbol
 	 */
 	public String getSymbol() {
 		return this.symbol;
-	}
-
-	/**
-	 * @return the tradeStatus
-	 */
-	public GeneralStatus getTradeStatus() {
-		return this.tradeStatus;
-	}
-
-	/**
-	 * @return the tradeType
-	 */
-	public TradeTypes getTradeType() {
-		return this.tradeType;
-	}
-
-	/**
-	 * @return the brokerID
-	 */
-	public Broker getBrokerID() {
-		return this.brokerID;
-	}
-
-	public boolean isOpen() {
-		return tradeStatus==GeneralStatus.OPEN; //entryID. getJournalStatus() == JournalStatus.OPEN ? true : false;
 	}
 
 	public void addOrder(Orders orders) {
@@ -340,24 +226,23 @@ public class Trade implements DBObject<Trade> {
 
 		return buy - sell;
 	}
-
 	
 	public Brokerage getBrokerage() {
 
 		Brokerage brokerage = null;
-		Orders ordr = ordersList.iterator().next();
-		for (Brokerage brkg : brokerID.getBrokerageList()) {
-			if (tradeType == brkg.getTradeType()) {
-				if (ordr.getSecurityID().getSecurityInfoID().getCategory() == brkg.getCategory()) {
-					brokerage = brkg;
-					break;
-				}
-			}
-		}
+//		Orders ordr = ordersList.iterator().next();
+//		for (Brokerage brkg : brokerID.getBrokerageList()) {
+//			if (tradeType == brkg.getTradeType()) {
+//				if (ordr.getSecurityID().getSecurityInfoID().getCategory() == brkg.getCategory()) {
+//					brokerage = brkg;
+//					break;
+//				}
+//			}
+//		}
 
 		return brokerage;
 	}
-
+	
 	/**
 	 * @return the closeDate
 	 */
@@ -405,15 +290,12 @@ public class Trade implements DBObject<Trade> {
 	@Override
 	public String toString() {
 		final int maxLen = 10;
-		return "Trade [tradeID=" + this.tradeID
-				+ ", tradeSerial=" + this.tradeSerial
-				+ ", entryID=" + this.entryID
+		return "Position [positionSerial=" + this.positionSerial
 				+ ", ordersSet="
 				+ (this.ordersList != null ? this.toString(this.ordersList, maxLen) : null) 
 				+ ", symbol=" + this.symbol
 				+ ", openDate=" + this.openDate + ", closeDate="
-				+ this.closeDate + ", tradeType=" + this.tradeType
-				+ ", tradeStatus=" + this.tradeStatus + "]";
+				+ this.closeDate + "]";
 	}
 
 	private String toString(Collection<?> collection, int maxLen) {

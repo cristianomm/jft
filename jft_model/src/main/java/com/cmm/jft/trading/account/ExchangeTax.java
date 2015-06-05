@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.trading;
+package com.cmm.jft.trading.account;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;

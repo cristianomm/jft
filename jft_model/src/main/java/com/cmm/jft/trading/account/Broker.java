@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.trading;
+package com.cmm.jft.trading.account;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -61,9 +61,6 @@ public class Broker implements DBObject<Broker> {
 	private List<Brokerage> brokerageList;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "brokerID")
-	private Set<Trade> tradeSet;
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "brokerID")
 	private Set<MarketOrder> marketOrderSet;
 
 	
@@ -71,7 +68,6 @@ public class Broker implements DBObject<Broker> {
      * 
      */
 	public Broker() {
-		this.tradeSet = new HashSet<Trade>();
 		this.marketOrderSet = new HashSet<MarketOrder>();
 		this.brokerageList = new ArrayList<Brokerage>();
 	}
@@ -84,7 +80,6 @@ public class Broker implements DBObject<Broker> {
 		super();
 		this.brokerCode = brokerCode;
 		this.brokerName = brokerName;
-		this.tradeSet = new HashSet<Trade>();
 		this.marketOrderSet = new HashSet<MarketOrder>();
 		this.brokerageList = new ArrayList<Brokerage>();
 	}
@@ -131,13 +126,6 @@ public class Broker implements DBObject<Broker> {
 	 */
 	public List<Brokerage> getBrokerageList() {
 		return this.brokerageList;
-	}
-
-	/**
-	 * @return the tradeSet
-	 */
-	public Set<Trade> getTradeSet() {
-		return this.tradeSet;
 	}
 	
 	/**

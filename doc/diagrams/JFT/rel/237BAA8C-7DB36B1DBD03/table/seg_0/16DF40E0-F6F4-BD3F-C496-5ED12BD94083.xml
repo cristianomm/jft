@@ -15,7 +15,7 @@
 <logicalDatatype>LOGDT027</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="exchangeItemID" id="0FA0BF55-FA3F-9FE5-A9D3-01C1EE8C5E98">
+<Column name="securityID" id="0FA0BF55-FA3F-9FE5-A9D3-01C1EE8C5E98">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -85,9 +85,10 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="ExecutedPrice" id="320F0BB6-79DB-21AE-9710-EA458A567473">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<Column name="AveragePrice" id="F30E48D2-15AD-2F6B-51BB-1D7D5D54C5AC">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:53:03 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
 <ownerDesignName>JFT</ownerDesignName>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -118,6 +119,17 @@
 <dataTypeScale>0</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column name="OrderDateTime" id="72C6963D-06DC-B4DA-BAC4-E5386A9C0E6B">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:54:07 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 <Column name="OrderStatus" id="92B353AF-55C2-78A6-E953-B1E8AE0ACDE7">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
@@ -126,7 +138,8 @@
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="OrderType" id="8A24C482-63D0-B39D-A47F-B2199AEB6B6B">
@@ -135,10 +148,11 @@
 <ownerDesignName>JFT</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="Operation" id="7A8622BB-4E24-04EB-14EC-A61374083AEE">
+<Column name="Side" id="7A8622BB-4E24-04EB-14EC-A61374083AEE">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <comment>Buy, Sell</comment>
@@ -147,6 +161,18 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>10</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Comment" id="63AA7E53-74FF-801D-1F4A-BD7902B3EE3C">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:57:27 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="OrderSerial" id="F39DA452-6E76-5B0E-DE82-1B3B9941FDCE">
@@ -182,7 +208,7 @@
 <colUsage columnID="F39DA452-6E76-5B0E-DE82-1B3B9941FDCE"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="810C645F-364E-6926-2984-C4D55943DE3D" name="Order_ExchangeItem_FK">
+<ind_PK_UK id="810C645F-364E-6926-2984-C4D55943DE3D" name="Order_Security_FK">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:58 UTC</createdTime>
 <generatorID>Gerado pelo usuário</generatorID>

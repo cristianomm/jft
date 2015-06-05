@@ -21,9 +21,9 @@ public enum MarketEvents {
 	 * Sistema (final de dia ou quando é totalmente fechada) 9 - Stop Price
 	 * Triggered 11 - Expire - Oferta com validade expirada.
 	 */
-	NEW("1"), UPDATE("2"), CANCEL("3"), TRADE("4"), REENTRY("5"), NEW_STOP_PRICE(
-			"6"), REJECT("7"), REMOVE("8"), STOP_PRICE_TRIGGERED("9"), EXPIRE(
-			"11");
+	NEW("1"), UPDATE("2"), CANCEL("3"), TRADE("4"), 
+	REENTRY("5"), NEW_STOP_PRICE("6"), REJECT("7"), 
+	REMOVE("8"), STOP_PRICE_TRIGGERED("9"), EXPIRE("11");
 
 	String value;
 

@@ -71,12 +71,11 @@ public class DDEMapping {
 
 		Properties p = new Properties();
 		try {
-			p.load(new FileInputStream("./mapdde.properties"));
+			p.load(new FileInputStream("./src/main/resources/mapdde.properties"));
 			int iniRow = Integer.parseInt(p.getProperty("initialRow", "8"));
 			boolean pt = Boolean.parseBoolean(p.getProperty("excelLangPT",
 					"true"));
-			String colFile = p.getProperty("columnsFile",
-					"MapColumns.properties");
+			String colFile = p.getProperty("columnsFile","MapColumns.properties");
 
 			if (pt) {
 				lang = Language.PORTUGUESE;

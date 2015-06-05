@@ -30,13 +30,13 @@ import com.cmm.jft.financial.JournalEntry;
 import com.cmm.jft.financial.Rule;
 import com.cmm.jft.financial.exceptions.RegistrationException;
 import com.cmm.jft.financial.services.JournalService;
-import com.cmm.jft.trading.Broker;
-import com.cmm.jft.trading.Brokerage;
-import com.cmm.jft.trading.Commission;
-import com.cmm.jft.trading.ExchangeTax;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.OrdersPrices;
-import com.cmm.jft.trading.Trade;
+import com.cmm.jft.trading.Position;
+import com.cmm.jft.trading.account.Broker;
+import com.cmm.jft.trading.account.Brokerage;
+import com.cmm.jft.trading.account.Commission;
+import com.cmm.jft.trading.account.ExchangeTax;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
@@ -70,7 +70,7 @@ public class TradingService {
 	private Connection connection;
 	
 	/**
-	 * Map to the existing orders, orders are referenced by Trade,
+	 * Map to the existing orders, orders are referenced by Position,
 	 * the orderkey are the key.
 	 */
 	private ConcurrentHashMap<String, Orders> orders;
@@ -78,12 +78,7 @@ public class TradingService {
 	/**
 	 * Map to get open trades. The String key are the symbol.
 	 */
-	private ConcurrentHashMap<String, Trade> openTrades;
-	
-	/**
-	 * This list contais newest trades with CLOSED status. 
-	 */
-	private ArrayList<Trade> closedTrades;
+	private ConcurrentHashMap<String, Position> openPositions;
 	
 	/**
 	 * 
@@ -94,8 +89,8 @@ public class TradingService {
 				"Broker.findByBrokerCode", "brokerCode", strBroker);
 		
 		this.orders = new ConcurrentHashMap<String, Orders>();
-		this.openTrades = new ConcurrentHashMap<String, Trade>();
-		this.closedTrades = new ArrayList<Trade>();
+		this.openPositions = new ConcurrentHashMap<String, Position>();
+		
 	}
 
 	/**
@@ -106,23 +101,7 @@ public class TradingService {
 			instance = new TradingService();
 		}
 		return instance;
-	}
-
-	public Trade getTrade(String symbol, TradeTypes tradeType) {
-		Trade trade = null;
-		if(openTrades.contains(symbol) && openTrades.get(symbol).isOpen() && openTrades.get(symbol).getTradeType() == tradeType){
-			trade = openTrades.get(symbol);
-		}
-		else{//cria o trade pois ele nao existe ou esta fechado
-			trade = new Trade(symbol, tradeType, brokerID);
-			
-			//adiciona em abertos
-			openTrades.put(symbol, trade);
-		}
-		
-		return trade;
-	}
-	
+	}	
 	
 	/**
 	 * Load trades with OPEN status from database;
@@ -130,12 +109,12 @@ public class TradingService {
 	public void loadOpenTrades(){
 		try {
 			//searches for open trades with the brokerid
-			String query = String.format("select tradeID from Trade "
+			String query = String.format("select tradeID from Position "
 					+ "where tradestatus = 'OPEN' and brokerID = %d", 
 					brokerID.getBrokerID());
 			List rs = DBFacade.getInstance().queryNative(query);
-			for(Trade tr : (List<Trade>)rs){
-				openTrades.put(tr.getSymbol(), tr);
+			for(Position tr : (List<Position>)rs){
+				openPositions.put(tr.getSymbol(), tr);
 			}
 
 		} catch (DataBaseException e) {
@@ -165,7 +144,7 @@ public class TradingService {
 
 			DBFacade.getInstance().beginTransaction();
 			// obtem o trade
-			Trade trade = getTrade(symbol, tradeType);
+			Position trade = openPositions.get(symbol);
 
 			// gera as ordens
 			Orders buyOrder = newOrder(orderTypes, Side.BUY, symbol, volume, buyPrices, tradeDate, tradeType);
@@ -194,11 +173,18 @@ public class TradingService {
 		Orders ordr = null;
 
 		try {
-			Trade t = getTrade(symbol, tradeType);
-			Security securityID = SecurityService.getInstance().provideSecurity(symbol);
-			ordr = new Orders(prices, volume, duration, side, orderType, t, securityID);
+			Position position = null;
 			
-			t.addOrder(ordr);
+			if(!openPositions.containsKey(symbol)){
+				openPositions.put(symbol, new Position(symbol)); 
+			}
+			
+			position = openPositions.get(symbol);
+			
+			Security securityID = SecurityService.getInstance().provideSecurity(symbol);
+			ordr = new Orders(prices, volume, duration, side, orderType, tradeType, securityID);
+			
+			position.addOrder(ordr);
 			orders.put(ordr.getOrderSerial(), ordr);
 			
 			//Cria o evento e adiciona no mercado
@@ -212,70 +198,33 @@ public class TradingService {
 		return ordr;
 	}	
 
-	/**
-	 * Retorna uma ordem reversa a ordem passada por parametro
-	 * 
-	 * @param order
-	 *            Ordem que tera os parametros copiados para gerar uma ordem
-	 *            reversa
-	 * @return Ordem de sentido contrario a ordem enviada por parametro, ou null
-	 *         caso ocorra algum erro.
-	 */
-	public void reverseTrade(Trade trade) {
-		
-//		try {
-//			
-//			int position = trade.getPosition();
-//			closePosition(trade);
-//			
-//			if (position != 0) {
-//				Side side = position < 0 ? Side.BUY : Side.SELL;//se ta comprado passa vendido ou vv
-//				int volume = position>0?position:position*-1;//ajusta o volume para nao passar negativo
-//				
-//				//calcula a duracao da ordem - ate o fim do dia
-//				LocalDateTime ldt = LocalDate.now().atTime(23, 59, 50);
-//				Date duration = Date.from(ZonedDateTime.of(ldt, ZoneId.systemDefault()).toInstant());
-//				
-//				// lanca ordem inversa(a posicao) a mercado do mesmo tipo do Trade
-//				newOrder(OrderTypes.MARKET, side, trade.getSymbol(), volume, null, duration, trade.getTradeType());
-//				
-//			}		
-//		} catch (Exception e) {
-//			Logging.getInstance().log(getClass(),
-//					"Erro ao criar ordem reversa: " + e.getMessage(), e,
-//					Level.ERROR, false);
-//		}
-		
-	}
 	
 	/**
 	 * 
 	 * @param trade
 	 */
-	public void closePosition(Trade trade) {
+	public void closePosition(Position position) {
 
 		try {
 			
-			if (trade.isOpen()) {
-				// cancela as ordens abertas
-				for (Orders order : trade.getOrdersList()) {
-					cancelOrder(order.getOrderSerial()); 
-				}
-
-				// cria ordem de acordo com posicao aberta
-				int position = trade.getPosition();
-				if (position != 0) {
-					Side side = position < 0 ? Side.BUY : Side.SELL;//se ta comprado passa vendido ou vv
-					int volume = position>0?position:position*-1;//ajusta o volume para nao passar negativo
-					
-					//calcula a duracao da ordem - ate o fim do dia
-					LocalDateTime ldt = LocalDate.now().atTime(23, 59, 50);
-					Date duration = Date.from(ZonedDateTime.of(ldt, ZoneId.systemDefault()).toInstant());
-					
-					// lanca ordem inversa(a posicao) a mercado do mesmo tipo do Trade
-					newOrder(OrderTypes.MARKET, side, trade.getSymbol(), volume, null, duration, trade.getTradeType());
-					
-				}
+			// cancela as ordens abertas
+			for (Orders order : position.getOrdersList()) {
+				cancelOrder(order.getOrderSerial()); 
+			}
+			
+			// cria ordem de acordo com posicao aberta
+			int openPosition = position.getPosition();
+			if (openPosition != 0) {
+				Side side = openPosition < 0 ? Side.BUY : Side.SELL;//se ta comprado passa vendido ou vv
+				int volume = openPosition>0?openPosition:openPosition*-1;//ajusta o volume para nao passar negativo
+				
+				//calcula a duracao da ordem - ate o fim do dia
+				LocalDateTime ldt = LocalDate.now().atTime(23, 59, 50);
+				Date duration = Date.from(ZonedDateTime.of(ldt, ZoneId.systemDefault()).toInstant());
+				
+				// lanca ordem inversa(a posicao) a mercado do mesmo tipo do Position
+				newOrder(OrderTypes.MARKET, side, position.getSymbol(), volume, null, duration, TradeTypes.DAY_TRADE);
+				
 			}
 
 		} catch (Exception e) {
@@ -414,7 +363,7 @@ public class TradingService {
 	 * Realiza a contabilidade de um trade apos este ser fechado
 	 * @param trade
 	 */
-	public void registerTrade(Trade trade) {
+	public void registerTrade(Position trade) {
 
 		try {
 			// verifica se o trade esta aberto
@@ -495,7 +444,7 @@ public class TradingService {
 							}
 						}
 
-						String descr = "Profit of Trade: " + trade.getTradeSerial();
+						String descr = "Profit of Position: " + trade.getTradeSerial();
 						BigDecimal profit = buyPrice.subtract(sellPrice).multiply(new BigDecimal(volume));
 						
 						JournalService.getInstance().registerEntry(trade.getEntryID(),

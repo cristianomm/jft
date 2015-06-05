@@ -50,8 +50,7 @@ public class DDEStream implements DataStream {
 		this.data = new LinkedBlockingQueue<QuoteData>();
 		this.lastQuotes = new HashMap<String, QuoteData>();
 		try {
-			this.fos = new FileOutputStream(System.currentTimeMillis()
-					+ "quotes.csv");
+			this.fos = new FileOutputStream(System.currentTimeMillis() + "quotes.csv");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -141,17 +140,16 @@ public class DDEStream implements DataStream {
 			qd.updateDateTime();
 
 			// verifica se nao eh cotacao repetida
-			if (lastQuotes.containsKey(symbol)
-					&& !lastQuotes.get(symbol).equals(qd)) {
+			if (lastQuotes.containsKey(symbol)	&& !lastQuotes.get(symbol).equals(qd)) {
 				// caso nao seja, adiciona na fila
 				data.add(qd);
 				lastQuotes.put(symbol, qd);
-				// try {
-				// fos.write((qd.toString()+"\n").getBytes());
-				// } catch (IOException e) {
-				// e.printStackTrace();
-				// Logging.getInstance().log(DDEStream.class, e, Level.ERROR);
-				// }
+//				try {
+//					fos.write((qd.toString()+"\n").getBytes());
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//					Logging.getInstance().log(DDEStream.class, e, Level.ERROR);
+//				}
 			} else if (!lastQuotes.containsKey(symbol)) {
 				data.add(qd);
 				lastQuotes.put(symbol, qd);
