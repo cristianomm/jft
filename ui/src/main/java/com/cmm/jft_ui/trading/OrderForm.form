@@ -296,16 +296,16 @@
                               <Component id="txtEvntMessage" max="32767" attributes="0"/>
                               <Component id="cmbEvntEvent" min="-2" pref="100" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="53" max="32767" attributes="0"/>
                           <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Component id="btnEvntSave" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnEvntRemove" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="dtEvntDateTime" min="-2" pref="134" max="-2" attributes="0"/>
+                              <Component id="dtDuration" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -323,18 +323,20 @@
                                       <Component id="txtEvntMessage" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="jLabel17" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="cmbEvntEvent" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
+                                  <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="dtEvntDateTime" min="-2" pref="16" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="dtDuration" min="-2" pref="16" max="-2" attributes="0"/>
+                                      <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="btnEvntRemove" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                                       <Component id="btnEvntSave" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                                   </Group>
-                              </Group>
-                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                  <Component id="cmbEvntEvent" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
-                                  <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -377,15 +379,12 @@
                     <Property name="text" type="java.lang.String" value="Date Time"/>
                   </Properties>
                 </Component>
-                <Component class="com.toedter.calendar.JDateChooser" name="dtEvntDateTime">
-                  <Properties>
-                    <Property name="dateFormatString" type="java.lang.String" value="dd MM yy HH:mm:ss"/>
-                  </Properties>
-                </Component>
                 <Component class="javax.swing.JButton" name="btnEvntRemove">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Remove"/>
                   </Properties>
+                </Component>
+                <Component class="com.toedter.calendar.JDateChooser" name="dtDuration">
                 </Component>
               </SubComponents>
             </Container>
@@ -429,7 +428,6 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="cmbOrderType" max="32767" attributes="0"/>
-                          <Component id="dtDuration" max="32767" attributes="0"/>
                           <Component id="cmbOrderStatus" min="-2" pref="100" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -456,17 +454,12 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="cmbOrderStatus" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="dtDuration" min="-2" pref="16" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cmbOrderStatus" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -542,11 +535,6 @@
                 <StringItem index="3" value="Item 4"/>
               </StringArray>
             </Property>
-          </Properties>
-        </Component>
-        <Component class="com.toedter.calendar.JDateChooser" name="dtDuration">
-          <Properties>
-            <Property name="dateFormatString" type="java.lang.String" value="d MMM yyyy"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="ftxtVolume">

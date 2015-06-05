@@ -55,6 +55,8 @@ public class BookOptionsForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Book Options");
+        setResizable(false);
+        setType(java.awt.Window.Type.UTILITY);
 
         jButton1.setText("Save");
 
@@ -69,13 +71,10 @@ public class BookOptionsForm extends javax.swing.JFrame {
         pnlGroupingLayout.setHorizontalGroup(
             pnlGroupingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlGroupingLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(pnlGroupingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlGroupingLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(chkBrokerFilter))
-                    .addGroup(pnlGroupingLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(chkPriceFilter)))
+                    .addComponent(chkBrokerFilter)
+                    .addComponent(chkPriceFilter))
                 .addContainerGap(247, Short.MAX_VALUE))
         );
         pnlGroupingLayout.setVerticalGroup(
@@ -187,9 +186,9 @@ public class BookOptionsForm extends javax.swing.JFrame {
                             .addComponent(spnLessColor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnLessColor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGreatherColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(109, Short.MAX_VALUE))
+                            .addComponent(btnLessColor, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGreatherColor, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
         pnlColorLayout.setVerticalGroup(
             pnlColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

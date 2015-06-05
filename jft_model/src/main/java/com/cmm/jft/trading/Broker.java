@@ -3,7 +3,6 @@
  */
 package com.cmm.jft.trading;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -57,14 +56,6 @@ public class Broker implements DBObject<Broker> {
 
 	@Column(name = "BrokerName", nullable = false)
 	private String brokerName;
-	
-	@JoinColumn(name="creditAccountID", referencedColumnName="accountID", nullable=false)
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	private Account creditAccountID;
-	
-	@JoinColumn(name="debitAccountID", referencedColumnName="accountID", nullable=false)
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	private Account debitAccountID;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "brokerID")
 	private List<Brokerage> brokerageList;

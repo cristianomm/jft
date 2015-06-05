@@ -394,6 +394,8 @@ public class Trade implements DBObject<Trade> {
 	public List<Orders> getOrdersList() {
 		return this.ordersList;
 	}
+	
+	
 
 	/*
 	 * (non-Javadoc)

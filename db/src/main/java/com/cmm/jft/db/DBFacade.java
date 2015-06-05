@@ -24,6 +24,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.jdbc.Work;
 import org.hibernate.service.ServiceRegistry;
@@ -49,10 +50,10 @@ public class DBFacade {
 	private EntityManagerFactory emf;
 
 	private static Configuration configuration = new Configuration();
-	/* Constante de caminho do arquivo de configuração do Hibernate */
-	private static String DEFAULT_CONFIG_FILE_LOCATION = "./hibernate.cfg.xml";
+	/* Constante de caminho do arquivo de configuraï¿½ï¿½o do Hibernate */
+	private static String DEFAULT_CONFIG_FILE_LOCATION = "./META-INF/hibernate.cfg.xml";
 
-	/* Threads que controlarão a sessão e a transação */
+	/* Threads que controlarï¿½o a sessï¿½o e a transaï¿½ï¿½o */
 	private static final ThreadLocal<Session> threadSession = new ThreadLocal<Session>();
 	private static final ThreadLocal<Transaction> threadTransaction = new ThreadLocal<Transaction>();
 
@@ -72,8 +73,13 @@ public class DBFacade {
 
 		try {
 			configuration.configure(DEFAULT_CONFIG_FILE_LOCATION);
-			ServiceRegistry sr = new ServiceRegistryBuilder().buildServiceRegistry();
-			sessionFactory = configuration.buildSessionFactory(sr);
+			//ServiceRegistry sr = new ServiceRegistryBuilder().buildServiceRegistry();
+			//sessionFactory = configuration.buildSessionFactory(sr);
+			
+			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+			.applySettings(configuration.getProperties()).build();
+		    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+			
 		} catch (Exception e) {
 			throw e;
 		}
@@ -97,7 +103,7 @@ public class DBFacade {
 	}
 
 	//    /**
-	//     * Método que retorna a instancia da Sessão utilizando o arquivo default do hibernate (/hibernate.cfg.xml).
+	//     * Mï¿½todo que retorna a instancia da Sessï¿½o utilizando o arquivo default do hibernate (/hibernate.cfg.xml).
 	//     * @return Session
 	//     * @throws SessionFactoryException
 	//     */
@@ -133,7 +139,7 @@ public class DBFacade {
 
 	int ss=0;
 	/**
-	 * Método que retorna a instancia da Sessão.
+	 * Mï¿½todo que retorna a instancia da Sessï¿½o.
 	 * @return Session
 	 * @throws SessionFactoryException
 	 */
@@ -155,7 +161,7 @@ public class DBFacade {
 	}
 
 	/**
-	 * Método que fecha a sessão do Hibernate.
+	 * Mï¿½todo que fecha a sessï¿½o do Hibernate.
 	 * @throws SessionFactoryException
 	 */
 	public synchronized void closeSession() throws DataBaseException {
@@ -186,7 +192,7 @@ public class DBFacade {
 
 
 	/**
-	 * Método que inicia a transação do Hibernate.
+	 * Mï¿½todo que inicia a transaï¿½ï¿½o do Hibernate.
 	 * @throws SessionFactoryException
 	 */
 	public synchronized void beginTransaction() throws DataBaseException {
@@ -204,7 +210,7 @@ public class DBFacade {
 	}
 
 	/**
-	 * Método que executa o rollback da transação.
+	 * Mï¿½todo que executa o rollback da transaï¿½ï¿½o.
 	 * @throws SessionFactoryException
 	 */
 	public synchronized void rollback() throws DataBaseException {
@@ -224,7 +230,7 @@ public class DBFacade {
 	}
 
 	/**
-	 * Método que commita a transação.
+	 * Mï¿½todo que commita a transaï¿½ï¿½o.
 	 * @throws SessionFactoryException
 	 */
 	public synchronized void commit() throws DataBaseException {

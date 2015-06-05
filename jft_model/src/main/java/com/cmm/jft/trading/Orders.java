@@ -347,7 +347,14 @@ public class Orders implements DBObject<Orders> {
 	public List<OrderExecution> getExecutionsList() {
 		return this.executionsList;
 	}
-
+	
+	/**
+	 * @return the comment
+	 */
+	public String getComment() {
+		return this.comment;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -507,5 +514,7 @@ public class Orders implements DBObject<Orders> {
 		prices.stop = getStopPrice().doubleValue();
 		return prices;
 	}
+	
+	
 
 }

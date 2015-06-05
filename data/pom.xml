@@ -28,11 +28,6 @@
     	<version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-    	<groupId>jft</groupId>
-    	<artifactId>core</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
     	<groupId>org.apache.pdfbox</groupId>
     	<artifactId>pdfbox-ant</artifactId>
     	<version>1.8.9</version>
@@ -45,6 +40,11 @@
     <dependency>
     	<groupId>jft</groupId>
     	<artifactId>db</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>jft</groupId>
+    	<artifactId>core</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>

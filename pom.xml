@@ -12,8 +12,8 @@
     <module>logging</module>
     <module>db</module>
     <module>data</module>
-    <module>financial</module>
-    <module>trading</module>
     <module>ui</module>
+    <module>init</module>
+    <module>jft_model</module>
   </modules>
 </project>

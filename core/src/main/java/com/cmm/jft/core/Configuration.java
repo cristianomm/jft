@@ -37,9 +37,9 @@ import com.cmm.logging.Logging;
  */
 @Entity
 @Table(name = "Configuration")
-@NamedQueries({
-		@NamedQuery(name = "Configuration.findAll", query = "SELECT c FROM Configuration c"),
-		@NamedQuery(name = "Configuration.findByConfigurationID", query = "SELECT c FROM Configuration c WHERE c.configurationID = :configurationID") })
+//@NamedQueries({
+//		@NamedQuery(name = "Configuration.findAll", query = "SELECT c FROM Configuration c"),
+//		@NamedQuery(name = "Configuration.findByConfigurationID", query = "SELECT c FROM Configuration c WHERE c.configurationID = :configurationID") })
 public class Configuration implements DBObject<Configuration> {
 
 	@Id

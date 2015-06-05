@@ -40,65 +40,65 @@ public class OrderManagerForm extends AbstractForm {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-	jToolBar = new javax.swing.JToolBar();
-	btnAddOrder = new javax.swing.JButton();
-	btnEditOrder = new javax.swing.JButton();
-	btnCancelOrder = new javax.swing.JButton();
-	jScrollPane = new javax.swing.JScrollPane();
-	tblOrders = new javax.swing.JTable();
+        jToolBar = new javax.swing.JToolBar();
+        btnAddOrder = new javax.swing.JButton();
+        btnEditOrder = new javax.swing.JButton();
+        btnCancelOrder = new javax.swing.JButton();
+        jScrollPane = new javax.swing.JScrollPane();
+        tblOrders = new javax.swing.JTable();
 
-	setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-	jToolBar.setFloatable(false);
-	jToolBar.setRollover(true);
+        jToolBar.setFloatable(false);
+        jToolBar.setRollover(true);
 
-	btnAddOrder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/resources/icons/ticket--plus.png"))); // NOI18N
-	btnAddOrder.setFocusable(false);
-	btnAddOrder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-	btnAddOrder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-	jToolBar.add(btnAddOrder);
+        btnAddOrder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons/ticket--plus.png"))); // NOI18N
+        btnAddOrder.setFocusable(false);
+        btnAddOrder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAddOrder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar.add(btnAddOrder);
 
-	btnEditOrder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/resources/icons/ticket--pencil.png"))); // NOI18N
-	btnEditOrder.setFocusable(false);
-	btnEditOrder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-	btnEditOrder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-	jToolBar.add(btnEditOrder);
+        btnEditOrder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons/ticket--pencil.png"))); // NOI18N
+        btnEditOrder.setFocusable(false);
+        btnEditOrder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEditOrder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar.add(btnEditOrder);
 
-	btnCancelOrder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/resources/icons/ticket--minus.png"))); // NOI18N
-	btnCancelOrder.setFocusable(false);
-	btnCancelOrder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-	btnCancelOrder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-	jToolBar.add(btnCancelOrder);
+        btnCancelOrder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons/ticket--minus.png"))); // NOI18N
+        btnCancelOrder.setFocusable(false);
+        btnCancelOrder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnCancelOrder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar.add(btnCancelOrder);
 
-	tblOrders.setModel(new javax.swing.table.DefaultTableModel(
-		new Object [][] {
-			{null, null, null, null, null, null},
-			{null, null, null, null, null, null},
-			{null, null, null, null, null, null},
-			{null, null, null, null, null, null}
-		},
-		new String [] {
-			"Order", "Security", "Side", "Volume", "Price", "Status"
-		}
-		));
-	jScrollPane.setViewportView(tblOrders);
+        tblOrders.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Order", "Security", "Side", "Volume", "Price", "Status"
+            }
+        ));
+        jScrollPane.setViewportView(tblOrders);
 
-	javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-	getContentPane().setLayout(layout);
-	layout.setHorizontalGroup(
-		layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		.addComponent(jToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-		.addComponent(jScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
-		);
-	layout.setVerticalGroup(
-		layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		.addGroup(layout.createSequentialGroup()
-			.addComponent(jToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-			.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-			.addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
-		);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(jScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE))
+        );
 
-	pack();
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
