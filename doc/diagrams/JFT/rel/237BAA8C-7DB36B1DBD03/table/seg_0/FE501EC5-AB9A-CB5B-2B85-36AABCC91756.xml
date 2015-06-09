@@ -1,0 +1,77 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="FE501EC5-AB9A-CB5B-2B85-36AABCC91756" name="Country">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-09 21:26:07 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="countryID" id="E5BCD2A0-EB24-3864-B46E-13963440091B">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-09 21:26:36 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>3</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CountryName" id="661A2ED6-BFAB-2F89-3C70-7A581CC2740C">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-09 21:27:06 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Area" id="BC05E06E-0BCD-4B92-F556-18A1BFAFDF9A">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-09 21:27:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>12</dataTypePrecision>
+<dataTypeScale>2</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Population" id="18FF57E6-7F61-963C-3310-850864017BC2">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-09 21:27:43 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Continent" id="8F3E017A-4736-7EBA-20BE-3815B039FBE6">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-09 21:28:02 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>2</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="3C3AA46C-6D07-72EA-0432-10CE3E20D714" name="Country_PK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-09 21:26:36 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E5BCD2A0-EB24-3864-B46E-13963440091B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
