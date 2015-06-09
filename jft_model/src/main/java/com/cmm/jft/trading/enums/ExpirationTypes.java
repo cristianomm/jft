@@ -11,7 +11,19 @@ package com.cmm.jft.trading.enums;
  */
 public enum ExpirationTypes {
 	
-	Today, Expiration_Date
+	Today, Expiration_Date;
 	
+
+	public static ExpirationTypes getByValue(String value) {
+		ExpirationTypes et = null;
+
+		for (ExpirationTypes ets : ExpirationTypes.values()) {
+			if (ets.name().equalsIgnoreCase(value)) {
+				et = ets;
+			}
+		}
+
+		return et;
+	}
 	
 }

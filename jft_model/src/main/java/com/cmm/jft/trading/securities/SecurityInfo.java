@@ -6,6 +6,7 @@ package com.cmm.jft.trading.securities;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -52,6 +53,10 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 
 	@OneToOne(mappedBy = "securityInfoID")
 	private Security securityID;
+	
+	@JoinColumn(name="currencyID", referencedColumnName="currencyID")
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private Currency currencyID;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "EmissionDate")

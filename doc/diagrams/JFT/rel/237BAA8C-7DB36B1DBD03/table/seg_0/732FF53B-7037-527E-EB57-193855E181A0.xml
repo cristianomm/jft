@@ -23,17 +23,20 @@
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>100</dataTypeSize>
 </Column>
-<Column name="Country" id="B3F37658-15D5-7BB9-2E1A-689128C924C0">
+<Column name="countryID" id="B3F37658-15D5-7BB9-2E1A-689128C924C0">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <generatorID>Gerado pelo usuário</generatorID>
 <ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>50</dataTypeSize>
+<dataTypeSize>3</dataTypeSize>
+<delegate>E5BCD2A0-EB24-3864-B46E-13963440091B</delegate>
 <autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="36B7E672-FCCF-0D27-72DE-67FADE2DA656" referredColumn="E5BCD2A0-EB24-3864-B46E-13963440091B"/>
+</associations>
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
@@ -45,6 +48,16 @@
 <indexState>Primary Constraint</indexState>
 <indexColumnUsage>
 <colUsage columnID="E7991A1F-AEAE-5FEE-7EF1-F8DFFD2C8BCA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="724F85C9-3EA5-7243-2D10-83206F714343" name="StockExchange_Country_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-09 21:28:15 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B3F37658-15D5-7BB9-2E1A-689128C924C0"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

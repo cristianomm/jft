@@ -11,7 +11,6 @@ import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.Trade;
 import com.cmm.jft.trading.enums.MarketEvents;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
@@ -522,9 +521,6 @@ public class OrderForm extends AbstractForm {
 		int volume = (int) ob;
 
 		if(tt!=null && symbol !=null) {
-
-		    Trade t = TradingService.getInstance().getTrade(symbol, tt);
-
 		    HashMap<String, Object> params = new HashMap<String, Object>();
 		    params.put("symbol", symbol);
 
@@ -620,31 +616,25 @@ public class OrderForm extends AbstractForm {
 		    }
 		    else {
 			switch(ot) {
-			case LIMIT:
+			case Limit:
 			    ftxtGain.setEnabled(false);
 			    ftxtPrice.setEnabled(true);
 			    ftxtStart.setEnabled(false);
 			    ftxtStop.setEnabled(false);
 			    break;
-			case MARKET:
+			case Market:
 			    ftxtGain.setEnabled(false);
 			    ftxtPrice.setEnabled(false);
 			    ftxtStart.setEnabled(false);
 			    ftxtStop.setEnabled(false);
 			    break;
-			case STOP:
+			case Stop:
 			    ftxtGain.setEnabled(false);
 			    ftxtPrice.setEnabled(false);
 			    ftxtStart.setEnabled(false);
 			    ftxtStop.setEnabled(true);
 			    break;
-			case STOP_GAIN:
-			    ftxtGain.setEnabled(true);
-			    ftxtPrice.setEnabled(true);
-			    ftxtStart.setEnabled(false);
-			    ftxtStop.setEnabled(true);
-			    break;
-			case STOP_LIMIT:
+			case StopLimit:
 			    ftxtGain.setEnabled(false);
 			    ftxtPrice.setEnabled(true);
 			    ftxtStart.setEnabled(false);

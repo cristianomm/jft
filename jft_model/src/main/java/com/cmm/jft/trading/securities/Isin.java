@@ -45,7 +45,7 @@ import com.cmm.jft.trading.enums.AssetTypes;
  */
 @Entity
 @Table(name = "Isin", uniqueConstraints = { @UniqueConstraint(columnNames = {
-		"ISIN", "companyID" }) })
+		"ISIN"}) })
 @NamedQueries({ @NamedQuery(name = "Isin.findAll", query = "SELECT i FROM Isin i") })
 public class Isin implements DBObject<Isin> {
 
@@ -66,21 +66,11 @@ public class Isin implements DBObject<Isin> {
 	@Column(name = "Status", length = 50)
 	private GeneralStatus status;
 
-	@JoinColumn(name = "companyID", referencedColumnName = "companyID", nullable = false)
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	private Company companyID;
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "isinID")
-	private Set<Security> securitySet;
-
 	public Isin() {
-		this.securitySet = new HashSet<Security>();
 	}
 
-	public Isin(String isin, Currency currencyID, Company company) {
+	public Isin(String isin) {
 		this.isin = isin;
-		this.companyID = company;
-		this.securitySet = new HashSet<Security>();
 	}
 
 	/**
@@ -95,21 +85,6 @@ public class Isin implements DBObject<Isin> {
 	 */
 	public String getIsin() {
 		return this.isin;
-	}
-
-	/**
-	 * @return the companyID
-	 */
-	public Company getCompanyID() {
-		return this.companyID;
-	}
-
-	/**
-	 * @param companyID
-	 *            the companyID to set
-	 */
-	public void setCompanyID(Company companyID) {
-		this.companyID = companyID;
 	}
 
 	/**
@@ -142,11 +117,5 @@ public class Isin implements DBObject<Isin> {
 		this.status = status;
 	}
 
-	/**
-	 * @return the securitySet
-	 */
-	public Set<Security> getSecuritySet() {
-		return this.securitySet;
-	}
 
 }

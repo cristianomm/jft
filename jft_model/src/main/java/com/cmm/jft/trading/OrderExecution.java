@@ -48,7 +48,7 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	private int volume;
 
 	@Column(name = "Price", precision = 19, scale = 6)
-	private BigDecimal price;
+	private double price;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "ExecutionDateTime")
@@ -71,8 +71,7 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	 * @param price
 	 * @param orderID
 	 */
-	public OrderExecution(Date executionDateTime, int volume, BigDecimal price,
-			Orders orderID) {
+	public OrderExecution(Date executionDateTime, int volume, double price, Orders orderID) {
 		super();
 		this.executionDateTime = executionDateTime;
 		this.volume = volume;
@@ -113,7 +112,7 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	/**
 	 * @return the price
 	 */
-	public BigDecimal getPrice() {
+	public double getPrice() {
 		return this.price;
 	}
 
@@ -121,7 +120,7 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	 * @param price
 	 *            the price to set
 	 */
-	public void setPrice(BigDecimal price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 

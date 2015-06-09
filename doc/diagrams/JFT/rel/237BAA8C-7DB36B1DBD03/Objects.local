@@ -5,6 +5,7 @@
    <object objectType="Table" objectID="F61A1855-C45F-30DC-B586-5952C0B28543" name="Broker" seqName="seg_0"/>
    <object objectType="Table" objectID="B4FF8B0D-AFAA-3EA1-707D-22EE7F380EF2" name="Brokerage" seqName="seg_0"/>
    <object objectType="Table" objectID="8701AF57-FFE2-B87D-31C4-87709EB5776A" name="Commission" seqName="seg_0"/>
+   <object objectType="Table" objectID="FE501EC5-AB9A-CB5B-2B85-36AABCC91756" name="Country" seqName="seg_0"/>
    <object objectType="Table" objectID="785AF6AA-B0F4-7035-3DEB-20CF05FDC299" name="Currency" seqName="seg_0"/>
    <object objectType="Table" objectID="C841748D-9C8B-DD25-4E02-E2CCF93D27DF" name="CurrencyQuote" seqName="seg_0"/>
    <object objectType="Table" objectID="ADE73A04-F2D6-584A-29B8-374E276DB56D" name="EntryRegister" seqName="seg_0"/>
@@ -29,10 +30,11 @@
    <object objectType="FKIndexAssociation" objectID="AD71E921-E50E-B345-EC42-1DF445C6565C" name="EntryRegister_Account_FKv1" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="B1D855E7-714D-F5D1-A811-28340F30B32E" name="EntryRegister_JournalEntry_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="B876063A-F716-7FEC-1C78-988BC1AEE519" name="ExchangeTax_Brokerage_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="06D8CAEA-0FD4-9C4C-34C0-793EEA6F6F3A" name="OrderExecution_Orders_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="36B7E672-FCCF-0D27-72DE-67FADE2DA656" name="StockExchange_Country_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="E0BCF94D-5E20-50F2-E33A-7EE853E3A47C" name="MarketOrderEvent_MarketOrder_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="588909CD-8C34-39CB-D6AD-3C152E4A0537" name="MarketTrades_ExchangeItem_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="EF30FA89-EF8B-F2AB-BDE5-A28309C2AE24" name="OrderEvent_Orders_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="06D8CAEA-0FD4-9C4C-34C0-793EEA6F6F3A" name="OrderExecution_Orders_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="6E0D7401-BCF9-E7C7-F050-76C776A9DBBA" name="OrderExecutions_MarketOrder_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="0E344F7F-F12B-9D3C-A6C7-83B768CD970D" name="OrderExecutions_MarketOrder_FKv1" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="E1713B22-174F-5A0C-5A93-3665BF208890" name="Order_Security_FK" seqName="seg_0"/>

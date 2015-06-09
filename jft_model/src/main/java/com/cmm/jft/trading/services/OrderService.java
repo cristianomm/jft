@@ -8,14 +8,23 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 
+import quickfix.examples.banzai.OrderSide;
+import quickfix.examples.banzai.OrderType;
+import quickfix.examples.ordermatch.OrderMatcher;
+import quickfix.field.OrderCategory;
+import quickfix.field.SecurityType;
+import quickfix.fix50.OrderStatusRequest;
+
+import com.cmm.jft.core.Configuration;
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.OrdersPrices;
-import com.cmm.jft.trading.Trade;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.exceptions.InvalidOrderException;
+import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.jft.trading.securities.Security;
 import com.cmm.logging.Logging;
 
@@ -29,6 +38,7 @@ import com.cmm.logging.Logging;
  *
  */
 public class OrderService {
+	
 	
 	private static OrderService instance;
 	
@@ -45,30 +55,151 @@ public class OrderService {
 	}
 
 	
-	public Orders newLimitOrder(Security security, Side side, int volume, double limitPrice){
+	public Orders[] newOrder(OrderTypes orderType, Security security, Side side, double price, double stopPrice, int volume){
+		
+		Orders[] ordrs = null;
+		switch (orderType) {
+		case CounterOrderSelection:
+			break;
+			
+		case ForexSwap:
+			break;
+			
+		case Funari:
+			break;
+			
+		case Limit:
+			ordrs = newLimitOrder(security, side, volume, price);
+			break;
+			
+		case LimitOrBetter:
+			break;
+			
+		case LimitWithOrWithout:
+			break;
+			
+		case Market:
+			ordrs = newMarketOrder(security, side, volume, price, stopPrice);
+			break;
+			
+		case MarketIfTouched:
+			break;
+			
+		case MarketWithLeftOverAsLimit:
+			break;
+			
+		case NextFundValuationPoint:
+			break;
+			
+		case OnBasis:
+			break;
+			
+		case Pegged:
+			break;
+		
+		case PreviousFundValuationPoint:
+			break;
+			
+		case PreviouslyIndicated:
+			break;
+			
+		case PreviouslyQuoted:
+			break;
+			
+		case Stop:
+			ordrs = newStopOrder(security, side, volume, stopPrice);
+			break;
+			
+		case StopLimit:
+			ordrs = newStopLimitOrder(security, side, volume, price, stopPrice);
+			break;
+			
+		case WithOrWithout:
+			break;
+
+		default:
+			break;
+		}
+		
+		return ordrs;
+	}
+	
+	public Orders[] newLimitOrder(Security security, Side side, int volume, double limitPrice){
+		Orders[] ordr = new Orders[1];
+		try {
+			ordr[0] = new Orders(security, side, limitPrice, 0d, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+		} catch (OrderException e) {
+			e.printStackTrace();
+		}
+		
+		return ordr;
+	}
+	
+	public Orders[] newStopOrder(Security security, Side side, int volume, double stopPrice){
+		Orders[] ordr = new Orders[1];
+		try {
+			double discount = (stopPrice * (Double)Configuration.getInstance().getConfiguration("MarketDiscount"));
+			discount = side == Side.BUY?discount:-discount;
+			discount = stopPrice + discount;
+			ordr[0] = new Orders(security, side, discount, stopPrice, volume, OrderTypes.Stop, TradeTypes.DAY_TRADE);
+		} catch (OrderException e) {
+			e.printStackTrace();
+		}
+		
+		return ordr;
+	}
+	
+	public Orders[] newStopLimitOrder(Security security, Side side, int volume, double limitPrice, double stopPrice){
+		Orders[] ordrs = new Orders[2];
+		try {
+			Side stopSide = side==Side.BUY?Side.SELL:Side.BUY;
+			
+			ordrs[0] = newLimitOrder(security, side, volume, limitPrice)[0];
+			ordrs[1] = newStopOrder(security, stopSide, volume, stopPrice)[0];
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ordrs;
+	}
+	
+	public Orders[] newMarketOrder(Security security, Side side, int volume, double gainPrice, double stopPrice){
+		Orders[] ordrs = new Orders[1];
+		try {
+			ordrs[0] = new Orders(security, side, 0, 0, volume, OrderTypes.Market, TradeTypes.DAY_TRADE);
+		} catch (OrderException e) {
+			e.printStackTrace();
+		}
+		
+		return ordrs;
+	}
+	
+	public Orders newTrailingStopOrder(Security security, Side side, int volume, double stopPrice){
 		
 		return null;
 	}
 	
-	public Orders newStopOrder(Security security, Side side, int volume, double stopPrice){
-		return null;
+	public Orders[] newOTOOrder(Security security, Side side, int volume, double limitPrice, double gainPrice, double stopPrice){
+		Orders[] ordrs = new Orders[3];
+		try {
+			Side stopSide = side==Side.BUY?Side.SELL:Side.BUY;
+			
+			ordrs[0] = newLimitOrder(security, side, volume, limitPrice)[0];//ordem de entrada
+			ordrs[1] = newLimitOrder(security, side, volume, gainPrice)[0];//ordem de ganho
+			ordrs[2] = newStopOrder(security, stopSide, volume, stopPrice)[0];//stop loss
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ordrs;
 	}
 	
-	public Orders newStopLimitOrder(Security security, Side side, int volume, double limitPrice, double stopPrice){
-		return null;
-	}
-	
-	public Orders newTrailingStopOrder(Security security, Side side, int volume, double stopPrice){
-		return null;
-	}
-	
-	public Orders newMarketOrder(Security security, Side side, int volume){
-		return null;
-	}
 	
 	
-	public Orders getOrder(OrderTypes orderType, Side side, String symbol,
-			int volume, OrdersPrices prices, Trade tradeID)
+	
+	public Orders createAndPersistOrder(OrderTypes orderType, Side side, String symbol, int volume, double price, double stopPrice)
 			throws InvalidOrderException, DataBaseException {
 
 		Orders ordr = new Orders();
@@ -83,22 +214,15 @@ public class OrderService {
 			if (l == null || l.size() == 0) {
 				throw new InvalidOrderException("Symbol not exists:" + symbol);
 			}
-
-			// verifica se o volume esta de acordo com o lote padrao do simbolo,
-			// caso n esteja, lanca exception
+			
 			Security exItem = l.get(0);
 
-			if ((volume % exItem.getSecurityInfoID().getMinimalVolume()) != 0) {
-				throw new InvalidOrderException("Invalid Volume:" + volume);
-			}
-
-			ordr.changeVolume(volume);
 			ordr.setSecurityID(exItem);
 			ordr.setSide(side);
 			ordr.setOrderType(orderType);
-			ordr.changePrice(prices);
-			ordr.setTradeID(tradeID);
-
+			ordr.changePrice(price);
+			ordr.changeStopPrice(stopPrice);
+			ordr.changeVolume(volume);
 			ordr = (Orders) DBFacade.getInstance()._persist(ordr);
 
 		} catch (Exception e) {

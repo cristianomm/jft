@@ -1,6 +1,7 @@
 package com.cmm.jft.init;
 
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -32,6 +33,7 @@ import com.cmm.jft.trading.securities.Country;
 import com.cmm.jft.trading.securities.Isin;
 import com.cmm.jft.trading.securities.Security;
 import com.cmm.jft.trading.securities.SecurityInfo;
+import com.cmm.jft.trading.securities.StockExchange;
 import com.cmm.logging.Logging;
 
 
@@ -45,6 +47,10 @@ public class DBInitialization {
 
 
 	public static void main(String[] args) {
+		
+//		System.out.println(new File("../file/Country.csv").exists());
+//		System.exit(0);
+		
 		//
 		//	//	String[] s = {"1\r"};
 		//	//	System.out.println(Long.parseLong(s[0].toString()));
@@ -93,17 +99,19 @@ public class DBInitialization {
 
 
 	public void initializeDB() {
-		addCountries("../jft_core/file/Country.csv");
-		addCurrencies("../jft_core/file/Currencies.csv");
-		addAccounts("../jft_core/file/Accounts.csv");
+		addCountries("../file/Country.csv");
+		addCurrencies("../file/Currencies.csv");
+		addAccounts("../file/Accounts.csv");
 				
-		addBrokers("../jft_core/file/Brokers.csv");
-		addBrokerage("../jft_core/file/Brokerage.csv");
+		addBrokers("../file/Brokers.csv");
+		addBrokerage("../file/Brokerage.csv");
 		//		addIsin("../jft_core/file/Isin.csv");
-		//		addSecurities("../jft_core/file/Securities.csv");
-				
+		addSecurities("../file/Securities.csv");
+		addExchanges("../file/Exchanges.csv");				
+		
+		
 		//inuteis
-//		addExchanges("../jft_core/file/Exchanges.csv");
+
 //		addCompanies("../jft_core/file/Companies.csv");
 //		addMarketCodes("../jft_core/file/MarketCodes.csv");
 //		addSecurityTypes("../jft_core/file/SecurityTypes.csv");
@@ -239,16 +247,17 @@ public class DBInitialization {
 	
 
 	private void addBrokers(String fileName) {
-
+		String repName = "Brokers";
+		report.startReport(repName);
 		CSV csv = new CSV(fileName, ";", "#");
 		while(csv.hasNext()) {
 			try {
 				String[] vs = csv.readLine();
-
 				Broker b = new Broker(vs[0], vs[1]);
 				DBFacade.getInstance()._persist(b);
-				
+				report.count(repName);
 			}catch(Exception | DataBaseException e) {
+				report.reportError(repName, e.getMessage());
 				Logging.getInstance().log(getClass(), "Erro ao adicionar Corretora.", e, Level.ERROR, false);
 			}
 		}
@@ -257,7 +266,9 @@ public class DBInitialization {
 
 
 	private void addBrokerage(String fileName) {
+		String repName = "Brokerage";
 		try {
+			report.startReport(repName);
 			DoubleFormatter dblFrt = (DoubleFormatter) FormatterFactory.getFormatter(FormatterTypes.DOUBLE);
 			CSV csv = new CSV(fileName, ";", "#");
 			String[] vs = csv.readLine();
@@ -271,7 +282,7 @@ public class DBInitialization {
 					Broker broker = (Broker) DBFacade.getInstance().findObject("Broker.findByBrokerCode", "brokerCode", vs[3]);
 					brk = new Brokerage(tradeTypes, securityCategory, broker);
 					brk = (Brokerage) DBFacade.getInstance()._persist(brk);
-					
+					report.count(repName);
 					vs=csv.readLine();
 					while(vs!= null && !vs[0].equals("01")) {
 
@@ -304,7 +315,7 @@ public class DBInitialization {
 				}
 			}
 		}catch(DataBaseException e) {
-			e.printStackTrace();
+			report.reportError(repName, e.getMessage());
 			Logging.getInstance().log(getClass(), "Erro ao adicionar Corretagem.", e, Level.ERROR, false);
 		}
 
@@ -316,8 +327,8 @@ public class DBInitialization {
 		try {
 			report.startReport(repName);
 
-			HashMap<String, Isin> isins = new HashMap<String, Isin>();
-			DBFacade.getInstance().queryAsMap("Isin.findAll", isins, Isin.class, "getIsin");
+//			HashMap<String, Isin> isins = new HashMap<String, Isin>();
+//			DBFacade.getInstance().queryAsMap("Isin.findAll", isins, Isin.class, "getIsin");
 
 			//HashMap<String, SecurityType> specis = new HashMap<String, SecurityType>();
 			//DBFacade.getInstance().queryAsMap("SecurityType.findAll", specis, SecurityType.class, "getCode");
@@ -351,16 +362,28 @@ public class DBInitialization {
 					gc.setTime(expirationDate);
 					year = gc.get(Calendar.YEAR);
 				}
+				
+				
+				
 				SecurityCategory secCat = SecurityCategory.getByValue(category);
 				AssetTypes objAsset = AssetTypes.getByValue(tipoAtivoObjeto);
 				StockSpecifications stcSpeci = StockSpecifications.getByValue(secSpeci);
 
 				Security security = new Security(symbol);
 				security.setDescription(description);
+				
 				security = (Security) DBFacade.getInstance()._persist(security);
 								
 				SecurityInfo info = new SecurityInfo(security, secCat);
+				info.setEmissionDate(emissionDate);
+				info.setExercisePrice(exercisePrice);
+				info.setExpirationDate(expirationDate);
+				//info.setMinimalVolume(minimalVolume);
+				//info.setOptionStyle(estiloOpcao);
+				//info.setQuoteFactor(quoteFactor);
+				
 				info = (SecurityInfo) DBFacade.getInstance()._persist(info);
+				
 				
 				//caso tipo:
 				//acao
@@ -416,9 +439,6 @@ public class DBInitialization {
 	}
 	
 	
-	
-	
-	/*
 	private void addExchanges(String fileName) {
 		String repName = "Exchanges";
 		try {
@@ -434,7 +454,7 @@ public class DBInitialization {
 				String[] vs = csv.readLine();
 				if(countries.containsKey(vs[2])) {
 					StockExchange  se = new StockExchange(vs[0], vs[1], countries.get(vs[2]));
-					se.add();
+					DBFacade.getInstance()._persist(se);
 					report.count(repName);
 				}
 			}
@@ -444,7 +464,7 @@ public class DBInitialization {
 			e.printStackTrace();
 			report.reportError(repName, e.getMessage());
 		}
-	}*/
+	}
 	
 	
 	//    private void addCompanies(String fileName) {

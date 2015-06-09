@@ -6,7 +6,8 @@ package com.cmm.jft_ui.trading;
 
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
-import com.cmm.jft.trading.Trade;
+import com.cmm.jft.trading.Position;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 
@@ -138,7 +139,7 @@ public class TradeManagerForm extends AbstractForm {
     @Override
     public void loadData() {
 
-	GenericTableModel<Trade> mTrade = new GenericTableModel<Trade>(Trade.class);
+	GenericTableModel<Position> mTrade = new GenericTableModel<Position>(Position.class);
 
 	mTrade.showColumnWithAlias("symbol", "Symbol");
 	mTrade.showColumnWithAlias("tradeSerial", "Trade Serial");
@@ -205,7 +206,7 @@ public class TradeManagerForm extends AbstractForm {
 	public void windowActivated(WindowEvent e) {
 	    try {
 		DBFacade.getInstance().closeSession();
-		((GenericTableModel<Trade>)tblTrades.getModel()).setValues(DBFacade.getInstance()._listResults("Trade.findAll", null));
+		//((GenericTableModel<Position>)tblTrades.getModel()).setValues(DBFacade.getInstance()._listResults("Trade.findAll", null));
 	    } catch (DataBaseException ex) {
 		Logging.getInstance().log(getClass(), ex, Level.ERROR);	    
 	    }

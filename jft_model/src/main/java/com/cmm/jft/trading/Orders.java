@@ -21,6 +21,7 @@ import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
+import com.cmm.jft.trading.exceptions.InvalidOrderException;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.jft.trading.securities.Security;
 import com.cmm.logging.Logging;
@@ -42,7 +43,6 @@ import com.cmm.logging.Logging;
 		@NamedQuery(name = "Orders.findByVolume", query = "SELECT o FROM Orders o WHERE o.volume = :volume"),
 		@NamedQuery(name = "Orders.findByAveragePrice", query = "SELECT o FROM Orders o WHERE o.averagePrice = :averagePrice"),
 		@NamedQuery(name = "Orders.findByExecutedVolume", query = "SELECT o FROM Orders o WHERE o.executedVolume = :executedVolume"),
-		@NamedQuery(name = "Orders.findByDuration", query = "SELECT o FROM Orders o WHERE o.duration = :duration"),
 		@NamedQuery(name = "Orders.findByOrderStatus", query = "SELECT o FROM Orders o WHERE o.orderStatus = :orderStatus"),
 		@NamedQuery(name = "Orders.findBySide", query = "SELECT o FROM Orders o WHERE o.side = :side") })
 public class Orders implements DBObject<Orders> {
@@ -55,16 +55,10 @@ public class Orders implements DBObject<Orders> {
 	private Long orderID;
 
 	@Column(name = "Price", precision = 19, scale = 6)
-	private BigDecimal price;
-		
-	@Column(name = "LimitPrice", precision = 19, scale = 6)
-	private BigDecimal limitPrice;
+	private Double price;
 
 	@Column(name = "StopPrice", precision = 19, scale = 6)
-	private BigDecimal stopPrice;
-
-	@Column(name = "StopGain", precision = 19, scale = 6)
-	private BigDecimal stopGain;
+	private Double stopPrice;
 
 	@Basic(optional = false)
 	@Column(name = "Volume", nullable = false)
@@ -122,11 +116,11 @@ public class Orders implements DBObject<Orders> {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orderID")
 	private List<OrderExecution> executionsList;
 
+	
+	
 	public Orders() {
-		this.limitPrice = new BigDecimal(0);
-		this.price = new BigDecimal(0);
-		this.stopGain = new BigDecimal(0);
-		this.stopPrice = new BigDecimal(0);
+		this.price =  0d;
+		this.stopPrice =  0d;
 		this.duration = new Date();
 		this.orderDateTime = new Date();
 		this.orderStatus = OrderStatus.CREATED;
@@ -134,38 +128,44 @@ public class Orders implements DBObject<Orders> {
 		this.eventsList = new ArrayList<OrderEvent>();
 		this.executionsList = new ArrayList<OrderExecution>();
 	}
+	
+	
+	
 
 	/**
+	 * @param limitPrice
 	 * @param volume
-	 * @param duration
-	 * @param operation
 	 * @param orderType
-	 * @param tradeID
-	 * @param securityID
+	 * @param tradeType
+	 * @param side
 	 * @throws OrderException 
 	 */
-	public Orders(OrdersPrices prices, Integer volume, Date duration, Side side,
-			OrderTypes orderType, TradeTypes tradeType, Security securityID) throws OrderException {
+	public Orders(Security security,  Side side, double price, double stop, Integer volume, 
+			OrderTypes orderType, TradeTypes tradeType) throws OrderException {
 		super();
-//		this.limitPrice = new BigDecimal(0);
-//		this.price = new BigDecimal(0);
-//		this.stopGain = new BigDecimal(0);
-//		this.stopPrice = new BigDecimal(0);
+		this.price = price;
+		this.stopPrice = stop;
+		this.securityID = security;
 		this.volume = volume;
-		this.duration = duration;
-		this.orderDateTime = new Date();
-		this.side = side;
 		this.orderType = orderType;
 		this.tradeType = tradeType;
-		this.securityID = securityID;
+		this.side = side;
+		init();
+		//putPrices(orderPrices);
+	}
+	
+
+	private void init(){
+		this.orderDateTime = new Date();
 		this.orderStatus = OrderStatus.CREATED;
 		this.orderSerial = UUID.randomUUID().toString();
 		this.eventsList = new ArrayList<OrderEvent>();
 		this.executionsList = new ArrayList<OrderExecution>();
-		putPrices(prices);
 	}
-
-	public void refreshOrder() throws OrderException {
+	
+	
+	
+	private void refreshOrder() throws OrderException {
 
 		try {
 			// calcula o preco medio
@@ -192,23 +192,22 @@ public class Orders implements DBObject<Orders> {
 
 	public BigDecimal calculateAveragePrice() {
 		int sumVolume = 0;
-		BigDecimal sumTotal = new BigDecimal(0);
+		double sumTotal = 0d;
 		for (OrderExecution oe : executionsList) {
 			sumVolume += oe.getVolume();
-			sumTotal = sumTotal.add(oe.getPrice().multiply(
-					new BigDecimal(oe.getVolume())));
+			sumTotal += oe.getPrice() * oe.getVolume();
 		}
 
 		// ajusta os valores de execucao da ordem
 		executedVolume = sumVolume;
 		int sv = executionsList.size() > 0 ? executionsList.size() : 1;
-		averagePrice = sumTotal.divide(new BigDecimal(sv));
+		averagePrice = new BigDecimal(sumTotal/sv);
 
 		return averagePrice;
 	}
 
-	public BigDecimal getOrderValue() {
-		return price.multiply(new BigDecimal(volume));
+	public double getOrderValue() {
+		return price * volume;
 	}
 
 	public BigDecimal getExecutedOrderValue() {
@@ -222,28 +221,15 @@ public class Orders implements DBObject<Orders> {
 	/**
 	 * @return the price
 	 */
-	public BigDecimal getPrice() {
+	public Double getPrice() {
 		return this.price;
 	}
-
-	/**
-	 * @return the limitPrice
-	 */
-	public BigDecimal getLimitPrice() {
-		return this.limitPrice;
-	}
+	
 	/**
 	 * @return the stopPrice
 	 */
-	public BigDecimal getStopPrice() {
+	public Double getStopPrice() {
 		return this.stopPrice;
-	}
-
-	/**
-	 * @return the stopGain
-	 */
-	public BigDecimal getStopGain() {
-		return this.stopGain;
 	}
 
 	/**
@@ -352,6 +338,13 @@ public class Orders implements DBObject<Orders> {
 		return tradeType;
 	}
 	
+	/**
+	 * @param tradeType the tradeType to set
+	 */
+	public void setTradeType(TradeTypes tradeType) {
+		this.tradeType = tradeType;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -363,9 +356,7 @@ public class Orders implements DBObject<Orders> {
 		return "Orders ["
 				+ (this.orderID != null ? "orderID=" + this.orderID + ", " : "")
 				+ (this.price != null ? "price=" + this.price + ", " : "")
-				+ (this.limitPrice != null ? "limitPrice=" + this.limitPrice + ", " : "")
 				+ (this.stopPrice != null ? "stopPrice=" + this.stopPrice + ", " : "")
-				+ (this.stopGain != null ? "stopGain=" + this.stopGain + ", " : "")
 				+ (this.volume != null ? "volume=" + this.volume + ", " : "")
 				+ (this.averagePrice != null ? "averagePrice=" + this.averagePrice + ", " : "")
 				+ (this.executedVolume != null ? "executedVolume=" + this.executedVolume + ", " : "")
@@ -376,20 +367,15 @@ public class Orders implements DBObject<Orders> {
 				+ (this.orderType != null ? "orderType=" + this.orderType + ", " : "")
 				+ (this.orderSerial != null ? "orderSerial=" + this.orderSerial + ", " : "")
 				+ (this.securityID != null ? "securityID=" + this.securityID + ", " : "")
-				+ (this.eventsList != null ? "eventsList="
-						+ this.eventsList.subList(0,
-								Math.min(this.eventsList.size(), maxLen))
-						+ ", " : "")
-				+ (this.executionsList != null ? "executionsList="
-						+ this.executionsList.subList(0,
-								Math.min(this.executionsList.size(), maxLen))
+				+ (this.eventsList != null ? "eventsList="+ this.eventsList.subList(0,Math.min(this.eventsList.size(), maxLen))+ ", " : "")
+				+ (this.executionsList != null ? "executionsList="+ this.executionsList.subList(0,Math.min(this.executionsList.size(), maxLen))
 						: "") + "]";
 	}
 
 	
 	
 	
-	public boolean addExecution(Date executionDateTime, int execVolume, BigDecimal execPrice) throws OrderException{
+	public boolean addExecution(Date executionDateTime, int execVolume, double execPrice) throws OrderException{
 		boolean ret = false;
 		
 		if(orderStatus == OrderStatus.OPEN || orderStatus == OrderStatus.PARTIALLY_FILLED){
@@ -422,10 +408,22 @@ public class Orders implements DBObject<Orders> {
 	}
 	
 	
-	public boolean changePrice(OrdersPrices prices) throws OrderException {
+	public boolean changePrice(double price) throws OrderException {
 		boolean ret = false;
 		if(orderStatus == OrderStatus.OPEN){
-			putPrices(prices);
+			this.price = price;
+			ret = true;
+		}else{
+			ret = false;
+			throw new OrderException("Invalid Order status: " + orderStatus);
+		}
+		return ret;
+	}
+	
+	public boolean changeStopPrice(double stopPrice) throws OrderException {
+		boolean ret = false;
+		if(orderStatus == OrderStatus.OPEN){
+			this.stopPrice = stopPrice;
 			ret = true;
 		}else{
 			ret = false;
@@ -437,6 +435,13 @@ public class Orders implements DBObject<Orders> {
 	public boolean changeVolume(int volume) throws OrderException {
 		boolean ret = false;
 		if(orderStatus == OrderStatus.OPEN){
+			
+			// verifica se o volume esta de acordo com o lote padrao do simbolo,
+			// caso n esteja, lanca exception
+			if ((volume % securityID.getSecurityInfoID().getMinimalVolume()) != 0) {
+				throw new OrderException("Invalid Volume:" + volume);
+			}
+			
 			this.volume = volume;
 			ret = true;
 		}else{
@@ -446,71 +451,70 @@ public class Orders implements DBObject<Orders> {
 		return ret;
 	}
 	
+	
+	/*
 	private void putPrices(OrdersPrices prices) throws OrderException {
 
 		switch (orderType) {
-		case LIMIT:
+		case Limit:
 			if (prices.price <= 0) {
 				throw new OrderException(String.format(
 						"Invalid Prices to Limit Orders(price): %f",
 						prices.price));
-			} else {
-				price = new BigDecimal("" + prices.price);
+			} else {				
+				price = prices.price;
 			}
 
 			break;
-		case MARKET:
+		case Market:
 
 			break;
-		case STOP:
-			if (prices.limit <= 0 || prices.stop <= 0) {
+		case Stop:
+			if (prices.stop <= 0) {
 				throw new OrderException(String.format(
-						"Invalid Prices to Stop Orders(limit, stop): %f, %f",
-						prices.limit, prices.stop));
+						"Invalid Prices to Stop Orders(stop): %f, %f", prices.stop));
 			} else {
-				limitPrice = new BigDecimal("" + prices.limit);
-				stopPrice = new BigDecimal("" + prices.stop);
+				stopPrice = prices.stop;
 			}
 			break;
-		case STOP_GAIN:
+		case StopLimit:
 			if (prices.limit <= 0 || prices.stop <= 0 || prices.gain <= 0) {
 				throw new OrderException(
 						String.format(
 								"Invalid Prices to StopGain Orders(limit, stop, gain): %f, %f, %f",
 								prices.limit, prices.stop, prices.gain));
 			} else {
-				limitPrice = new BigDecimal("" + prices.limit);
-				stopPrice = new BigDecimal("" + prices.stop);
-				stopGain = new BigDecimal("" + prices.gain);
+				price = prices.limit;
+				stopPrice = prices.stop;
 			}
 			break;
-		case STOP_LIMIT:
+		case StopLimit:
 			if (prices.price <= 0 || prices.limit <= 0 || prices.stop <= 0) {
 				throw new OrderException(
 						String.format(
 								"Invalid Prices to StopLimit Orders(price, limit, stop): %f, %f, %f",
 								prices.price, prices.limit, prices.stop));
 			} else {
-				price = new BigDecimal("" + prices.price);
-				limitPrice = new BigDecimal("" + prices.limit);
-				stopPrice = new BigDecimal("" + prices.stop);
+				price = prices.price;
+				stopPrice = prices.stop;
+				
+				if(side==Side.BUY){
+					if(stopPrice<price){
+						throw new OrderException("Stop Price must be greater than Limit Price.");
+					}
+				}
+				else if(side == Side.SELL){
+					if(stopPrice>price){
+						throw new OrderException("Limit Price must be greater than Stop Price.");
+					}
+				}
+				
 			}
 
 		default:
 			throw new OrderException("Order type not allowed:" + orderType);
 		}
 
-	}
-
-	public OrdersPrices getOrdersPrices() {
-		OrdersPrices prices = new OrdersPrices();
-		prices.gain = getStopGain().doubleValue();
-		prices.limit = getLimitPrice().doubleValue();
-		prices.price = getPrice().doubleValue();
-		prices.stop = getStopPrice().doubleValue();
-		return prices;
-	}
-	
-	
+	}*/
 
 }

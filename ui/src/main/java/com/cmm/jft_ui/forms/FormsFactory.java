@@ -23,6 +23,7 @@ import com.cmm.jft_ui.masterdata.CurrencyQuoteForm;
 import com.cmm.jft_ui.simulation.BacktestForm;
 import com.cmm.jft_ui.trading.OrderForm;
 import com.cmm.jft_ui.trading.OrderManagerForm;
+import com.cmm.jft_ui.trading.PlaceOrderForm;
 import com.cmm.jft_ui.trading.TradeForm;
 import com.cmm.jft_ui.trading.TradeManagerForm;
 import com.cmm.jft_ui.utils.GenericTableModel;
@@ -92,10 +93,13 @@ public class FormsFactory {
 	    break;
 	case ORDER:
 	    frm = new OrderForm();
-	    break;
+	    break;    
 	case ORDER_MANAGEMENT:
 	    frm = new OrderManagerForm();
 	    break;
+	case PLACE_ORDER:
+		frm = new PlaceOrderForm();
+		break;
 	case POSITION:
 	    break;
 	case PROGRAM:

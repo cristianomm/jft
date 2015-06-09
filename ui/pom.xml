@@ -24,10 +24,14 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+      <groupId>com.toedter</groupId>
+      <artifactId>jcalendar</artifactId>
+      <version>1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>unknown.binary</groupId>
+      <artifactId>SearchBox</artifactId>
+      <version>SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>jft</groupId>
@@ -43,16 +47,6 @@
     	<groupId>jft_model</groupId>
     	<artifactId>jft_model</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.toedter</groupId>
-      <artifactId>jcalendar</artifactId>
-      <version>1.4</version>
-    </dependency>
-    <dependency>
-      <groupId>unknown.binary</groupId>
-      <artifactId>SearchBox</artifactId>
-      <version>SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

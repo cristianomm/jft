@@ -9,8 +9,10 @@ import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.db.exceptions.DataBaseException;
 import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.Trade;
+import com.cmm.jft.trading.Position;
 import com.cmm.jft.trading.enums.TradeTypes;
+import com.cmm.jft.trading.services.TradingService;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 
@@ -314,13 +316,13 @@ public class TradeForm extends AbstractForm  {
         
         model.rebuildColumns();
         if(data!=null) {
-            DBFacade.getInstance().attachToSession(data, ((Trade)data).getTradeID());
-            model.setValues(((Trade)data).getOrdersList());
+            
+        	//model.setValues(((Trade)data).getOrdersList());
         }
         
         switch(state) {
         case ADD:
-            data = new Trade();
+            //data = new Trade();
             btnAdd.setEnabled(false);
             btnEdit.setEnabled(false);
             btnRemove.setEnabled(false);
@@ -370,10 +372,10 @@ public class TradeForm extends AbstractForm  {
 	public void actionPerformed(ActionEvent e) {
 	    //super.actionPerformed(e);
 	    if(e.getSource() == btnAdd) {
-		Trade t = (Trade) data;
-		FormUtils.getInstance().clearParameters();
-		FormUtils.getInstance().addParameter("TradeType", t.getTradeType());
-		FormUtils.getInstance().addParameter("Symbol", t.getSymbol());
+//		Position p = (Position) data;
+//		FormUtils.getInstance().clearParameters();
+//		FormUtils.getInstance().addParameter("TradeType", p..getTradeType());
+//		FormUtils.getInstance().addParameter("Symbol", t.getSymbol());
 		
 		FormsFactory.openForm(ObjectForms.ORDER, FormStates.ADD);
 	    }else if(e.getSource() == btnEdit) {
@@ -388,12 +390,12 @@ public class TradeForm extends AbstractForm  {
 	 */
 	@Override
 	public void windowActivated(WindowEvent e) {
-	    try {
-		data = (DBObject) DBFacade.getInstance()._findByKey(Trade.class, ((Trade)data).getTradeID());
-		((GenericTableModel<Orders>)tblOrders.getModel()).setValues(((Trade)data).getOrdersList());
-	    } catch (DataBaseException ex) {
-		ex.printStackTrace();
-	    }
+//	    try {
+//		data = (DBObject) DBFacade.getInstance()._findByKey(Trade.class, ((Trade)data).getTradeID());
+//		((GenericTableModel<Orders>)tblOrders.getModel()).setValues(((Trade)data).getOrdersList());
+//	    } catch (DataBaseException ex) {
+//		ex.printStackTrace();
+//	    }
 	    
 	}
 

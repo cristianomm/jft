@@ -23,17 +23,21 @@
 		<property name="current_session_context_class">thread</property>
 
 		<!-- Disable the second-level cache -->
-		<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+		<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+  		<property name="hibernate.cache.use_second_level_cache">true</property>
+  		<property name="hibernate.cache.use_query_cache">true</property>
 
 		<!-- Echo all executed SQL to stdout -->
-		<property name="show_sql">true</property>
+		<property name="show_sql">false</property>
 
 		<!-- Drop and re-create the database schema on startup -->
-		<property name="hbm2ddl.auto">update</property>
+		<property name="hbm2ddl.auto">create-drop</property>
 
 		
 		<!-- Core -->
 		<!-- 
+		<property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</property>
+		<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
 		<mapping resource="org/hibernate/tutorial/domain/Event.hbm.xml" />
 		-->
 		<mapping class="com.cmm.jft.core.Configuration" />
@@ -60,15 +64,14 @@
 		
 		<!-- Trading -->
 		
-		<mapping class="com.cmm.jft.trading.Broker"/>
-		<mapping class="com.cmm.jft.trading.Brokerage"/>
-		<mapping class="com.cmm.jft.trading.Commission"/>
-		<mapping class="com.cmm.jft.trading.ExchangeTax"/>
+		<mapping class="com.cmm.jft.trading.account.Broker"/>
+		<mapping class="com.cmm.jft.trading.account.Brokerage"/>
+		<mapping class="com.cmm.jft.trading.account.Commission"/>
+		<mapping class="com.cmm.jft.trading.account.ExchangeTax"/>
 		<mapping class="com.cmm.jft.trading.OrderEvent"/>
 		<mapping class="com.cmm.jft.trading.OrderExecution"/>
 		<mapping class="com.cmm.jft.trading.Orders"/>
 		
-		<mapping class="com.cmm.jft.trading.Trade"/>
 		
 		<mapping class="com.cmm.jft.trading.marketdata.HistoricalQuote"/>
 		<mapping class="com.cmm.jft.trading.marketdata.MarketEvent"/>

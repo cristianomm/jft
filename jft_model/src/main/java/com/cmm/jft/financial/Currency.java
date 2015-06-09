@@ -7,10 +7,13 @@ package com.cmm.jft.financial;
 
 import com.cmm.jft.financial.Account;
 import com.cmm.jft.financial.EntryRegister;
+import com.cmm.jft.trading.securities.SecurityInfo;
 import com.cmm.jft.db.DBObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -60,11 +63,15 @@ public class Currency implements Serializable, DBObject<Currency> {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "currencyID", fetch = FetchType.LAZY)
 	private Set<EntryRegister> entryRegisterSet;
 	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="currencyID", fetch=FetchType.LAZY)
+	private List<SecurityInfo> securityInfoList;
+	
 	
 	public Currency() {
 		this.accountSet = new HashSet<Account>();
 		this.currencyQuoteSet = new HashSet<CurrencyQuote>();
 		this.entryRegisterSet = new HashSet<EntryRegister>();
+		this.securityInfoList = new ArrayList<SecurityInfo>();
 	}
 
 	public Currency(String currencyID) {
@@ -72,6 +79,7 @@ public class Currency implements Serializable, DBObject<Currency> {
 		this.accountSet = new HashSet<Account>();
 		this.currencyQuoteSet = new HashSet<CurrencyQuote>();
 		this.entryRegisterSet = new HashSet<EntryRegister>();
+		this.securityInfoList = new ArrayList<SecurityInfo>();
 	}
 
 	/**
@@ -161,10 +169,26 @@ public class Currency implements Serializable, DBObject<Currency> {
 	public Set<EntryRegister> getEntryRegisterSet() {
 		return this.entryRegisterSet;
 	}
+	
+	/**
+	 * @return the securityInfoList
+	 */
+	public List<SecurityInfo> getSecurityInfoList() {
+		return this.securityInfoList;
+	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "com.cmm.jft_core.Currency[ currencyID=" + currencyID + " ]";
+		return "Currency [currencyID=" + this.currencyID + ", currSymbol="
+				+ this.currSymbol + ", sign=" + this.sign + ", fractionalUnit="
+				+ this.fractionalUnit + ", description=" + this.description
+				+ ", currencyQuoteSet=" + this.currencyQuoteSet
+				+ ", accountSet=" + this.accountSet + ", entryRegisterSet="
+				+ this.entryRegisterSet + ", securityInfoList="
+				+ this.securityInfoList + "]";
 	}
 
 }

@@ -8,9 +8,7 @@ package com.cmm.jft.trading.securities;
 import com.cmm.jft.core.enums.GeneralStatus;
 import com.cmm.jft.db.DBObject;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -77,12 +75,8 @@ public class Company implements DBObject<Company> {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private StockExchange stockExchangeID;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "companyID", fetch = FetchType.LAZY)
-	private Set<Isin> isinSet;
-
 
 	public Company() {
-		this.isinSet = new HashSet<Isin>();
 		this.segmentSet = new HashSet<Segment>();
 	}
 
@@ -99,7 +93,6 @@ public class Company implements DBObject<Company> {
 		this.onShares = onShares;
 		this.pnShares = pnShares;
 		this.stockExchangeID = stockExchangeID;
-		this.isinSet = new HashSet<Isin>();
 		this.segmentSet = new HashSet<Segment>();
 	}
 
@@ -257,12 +250,5 @@ public class Company implements DBObject<Company> {
 	public void setCompanyDate(Date companyDate) {
 		this.companyDate = companyDate;
 	}
-
-	/**
-	 * @return the isinSet
-	 */
-	public Set<Isin> getIsinSet() {
-		return this.isinSet;
-	}
-
+	
 }

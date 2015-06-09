@@ -57,7 +57,7 @@ public class DateTimeFormatter implements Formatter<Date> {
 		try {
 			ret = formatter.parse(st);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
 		}
 
