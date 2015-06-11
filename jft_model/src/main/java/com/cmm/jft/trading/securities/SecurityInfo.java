@@ -27,6 +27,7 @@ import com.cmm.jft.db.DBObject;
 import com.cmm.jft.financial.Currency;
 import com.cmm.jft.trading.enums.AssetTypes;
 import com.cmm.jft.trading.enums.FutureSeries;
+import com.cmm.jft.trading.enums.OptionRights;
 import com.cmm.jft.trading.enums.OptionSeries;
 import com.cmm.jft.trading.enums.OptionStyles;
 import com.cmm.jft.trading.enums.SecurityCategory;
@@ -57,48 +58,93 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 	@JoinColumn(name="currencyID", referencedColumnName="currencyID")
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private Currency currencyID;
+	
+	
+	//SYMBOL;DESCRIPTION;ISIN;CURRENCY_BASE;CONTRACT_SIZE;TICK_SIZE;TICK_VALUE;DIGITS;MINIMAL_VOLUME;STEP_VOLUME
+	@Column(name="ISIN", length=12, nullable=false)
+	private String isin;
+	
+	/**
+	 * Trade contract size
+	 */
+	@Column(name="ContractSize")
+	private int contractSize;
+	
+	/**
+	 * Minimal price change
+	 */
+	@Column(name="TickSize", precision = 19, scale = 6)
+	private double tickSize;
+	
+	/**
+	 * 
+	 */
+	@Column(name="TickValue", precision = 19, scale = 6)
+	private double tickValue;
+	
+	/**
+	 * 
+	 */
+	@Column(name="Digits")
+	private int digits;
+	
+	/**
+	 * Minimal volume for a deal
+	 */
+	@Column(name="MinimalVolume")
+	private int minimalVolume;
+	
+	/**
+	 * Minimal volume change step for deal execution
+	 */
+	@Column(name="StepVolume")
+	private int stepVolume;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "ObjectAsset", length = 1)
+	private AssetTypes objectAsset;	
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "Category", length = 30)
+	private SecurityCategory category;	
+	
+	/**
+	 * Date of the symbol trade beginning (usually used for futures)
+	 */
 	@Temporal(TemporalType.DATE)
 	@Column(name = "EmissionDate")
 	private Date emissionDate;
-
+	
+	/**
+	 * Date of the symbol trade end (usually used for futures)
+	 */
 	@Temporal(TemporalType.DATE)
 	@Column(name = "ExpirationDate")
 	private Date expirationDate;
-
-	@Column(name = "ExcercisePrice", precision = 19, scale = 6)
-	private double exercisePrice;
-
+	
+	//-------------------------------OptionSpecific
 	@Enumerated(EnumType.STRING)
 	@Column(name = "OptionStyle", length = 25)
 	private OptionStyles optionStyle;
+	
+	/**
+	 * Option right (Call/Put)
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name="OptionRight")
+	private OptionRights optionRight;
+	
+	/**
+	 * The strike price of an option. 
+	 * The price at which an option buyer can buy (in a Call option) or sell (in a Put option) 
+	 * the underlying asset, and the option seller is obliged to sell or buy 
+	 * the appropriate amount of the underlying asset.
+	 */
+	@Column(name = "StrikePrice", precision = 19, scale = 6)
+	private double strikePrice;
+	
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "ObjectAsset", length = 1)
-	private AssetTypes objectAsset;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "OptionSerie", length = 1)
-	private OptionSeries optionSerie;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "FutureSerie", length = 1)
-	private FutureSeries futureSerie;
-	
-	@Column(name = "MinimalVolume")
-	private int minimalVolume;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "SymbolDate")
-	private Date symbolDate;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "Category", length = 30)
-	private SecurityCategory category;
-	
-	@Column(name = "QuoteFactor")
-	private int quoteFactor;
-	
+
 
 	public SecurityInfo() {
 
@@ -117,41 +163,162 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 
 
 	/**
-	 * @param securityID
-	 * @param emissionDate
-	 * @param expirationDate
-	 * @param exercisePrice
-	 * @param optionStyle
-	 * @param objectAsset
-	 * @param optionSerie
+	 * @return the currencyID
 	 */
-	public SecurityInfo(Security securityID, Date emissionDate,
-			Date expirationDate, double exercisePrice,
-			OptionStyles optionStyle, AssetTypes objectAsset,
-			OptionSeries optionSerie) {
-		super();
-		this.securityID = securityID;
-		this.emissionDate = emissionDate;
-		this.expirationDate = expirationDate;
-		this.exercisePrice = exercisePrice;
-		this.optionStyle = optionStyle;
-		this.objectAsset = objectAsset;
-		this.optionSerie = optionSerie;
+	public Currency getCurrencyID() {
+		return this.currencyID;
 	}
 
+
 	/**
-	 * @param securityID
-	 * @param expirationDate
-	 * @param objectAsset
-	 * @param futureSerie
+	 * @param currencyID the currencyID to set
 	 */
-	public SecurityInfo(Security securityID, Date expirationDate,
-			AssetTypes objectAsset, FutureSeries futureSerie) {
-		super();
-		this.securityID = securityID;
-		this.expirationDate = expirationDate;
+	public void setCurrencyID(Currency currencyID) {
+		this.currencyID = currencyID;
+	}
+
+
+	/**
+	 * @return the isin
+	 */
+	public String getIsin() {
+		return this.isin;
+	}
+
+
+	/**
+	 * @param isin the isin to set
+	 */
+	public void setIsin(String isin) {
+		this.isin = isin;
+	}
+
+
+	/**
+	 * @return the contractSize
+	 */
+	public int getContractSize() {
+		return this.contractSize;
+	}
+
+
+	/**
+	 * @param contractSize the contractSize to set
+	 */
+	public void setContractSize(int contractSize) {
+		this.contractSize = contractSize;
+	}
+
+
+	/**
+	 * @return the tickSize
+	 */
+	public double getTickSize() {
+		return this.tickSize;
+	}
+
+
+	/**
+	 * @param tickSize the tickSize to set
+	 */
+	public void setTickSize(double tickSize) {
+		this.tickSize = tickSize;
+	}
+
+
+	/**
+	 * @return the tickValue
+	 */
+	public double getTickValue() {
+		return this.tickValue;
+	}
+
+
+	/**
+	 * @param tickValue the tickValue to set
+	 */
+	public void setTickValue(double tickValue) {
+		this.tickValue = tickValue;
+	}
+
+
+	/**
+	 * @return the digits
+	 */
+	public int getDigits() {
+		return this.digits;
+	}
+
+
+	/**
+	 * @param digits the digits to set
+	 */
+	public void setDigits(int digits) {
+		this.digits = digits;
+	}
+
+
+	/**
+	 * @return the minimalVolume
+	 */
+	public int getMinimalVolume() {
+		return this.minimalVolume;
+	}
+
+
+	/**
+	 * @param minimalVolume the minimalVolume to set
+	 */
+	public void setMinimalVolume(int minimalVolume) {
+		this.minimalVolume = minimalVolume;
+	}
+
+
+	/**
+	 * @return the stepVolume
+	 */
+	public int getStepVolume() {
+		return this.stepVolume;
+	}
+
+
+	/**
+	 * @param stepVolume the stepVolume to set
+	 */
+	public void setStepVolume(int stepVolume) {
+		this.stepVolume = stepVolume;
+	}
+
+
+	/**
+	 * @return the objectAsset
+	 */
+	public AssetTypes getObjectAsset() {
+		return this.objectAsset;
+	}
+
+
+	/**
+	 * @param objectAsset the objectAsset to set
+	 */
+	public void setObjectAsset(AssetTypes objectAsset) {
 		this.objectAsset = objectAsset;
-		this.futureSerie = futureSerie;
+	}
+
+
+	/**
+	 * @return the category
+	 */
+	public SecurityCategory getCategory() {
+		return this.category;
+	}
+
+
+	/**
+	 * @param category the category to set
+	 */
+	public void setCategory(SecurityCategory category) {
+		this.category = category;
 	}
 
 
@@ -162,13 +329,14 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 		return this.emissionDate;
 	}
 
+
 	/**
-	 * @param emissionDate
-	 *            the emissionDate to set
+	 * @param emissionDate the emissionDate to set
 	 */
 	public void setEmissionDate(Date emissionDate) {
 		this.emissionDate = emissionDate;
 	}
+
 
 	/**
 	 * @return the expirationDate
@@ -177,28 +345,14 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 		return this.expirationDate;
 	}
 
+
 	/**
-	 * @param expirationDate
-	 *            the expirationDate to set
+	 * @param expirationDate the expirationDate to set
 	 */
 	public void setExpirationDate(Date expirationDate) {
 		this.expirationDate = expirationDate;
 	}
 
-	/**
-	 * @return the exercisePrice
-	 */
-	public double getExercisePrice() {
-		return this.exercisePrice;
-	}
-
-	/**
-	 * @param exercisePrice
-	 *            the exercisePrice to set
-	 */
-	public void setExercisePrice(double exercisePrice) {
-		this.exercisePrice = exercisePrice;
-	}
 
 	/**
 	 * @return the optionStyle
@@ -207,41 +361,55 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 		return this.optionStyle;
 	}
 
+
 	/**
-	 * @param optionStyle
-	 *            the optionStyle to set
+	 * @param optionStyle the optionStyle to set
 	 */
 	public void setOptionStyle(OptionStyles optionStyle) {
 		this.optionStyle = optionStyle;
 	}
-	
+
+
 	/**
-	 * @return the futureSeries
+	 * @return the optionRight
 	 */
-	public FutureSeries getFutureSeries() {
-		return this.futureSerie;
+	public OptionRights getOptionRight() {
+		return this.optionRight;
 	}
-	
+
+
 	/**
-	 * @return the objectAsset
+	 * @param optionRight the optionRight to set
 	 */
-	public AssetTypes getObjectAsset() {
-		return this.objectAsset;
+	public void setOptionRight(OptionRights optionRight) {
+		this.optionRight = optionRight;
 	}
-	
+
+
 	/**
-	 * @return the optionSeries
+	 * @return the strikePrice
 	 */
-	public OptionSeries getOptionSeries() {
-		return this.optionSerie;
+	public double getStrikePrice() {
+		return this.strikePrice;
 	}
+
+
+	/**
+	 * @param strikePrice the strikePrice to set
+	 */
+	public void setStrikePrice(double strikePrice) {
+		this.strikePrice = strikePrice;
+	}
+
+
 	/**
 	 * @return the securityInfoID
 	 */
 	public Long getSecurityInfoID() {
 		return this.securityInfoID;
 	}
-	
+
+
 	/**
 	 * @return the securityID
 	 */
@@ -249,74 +417,5 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 		return this.securityID;
 	}
 	
-	/**
-	 * @return the futureSerie
-	 */
-	public FutureSeries getFutureSerie() {
-		return this.futureSerie;
-	}
-	
-	/**
-	 * @return the optionSerie
-	 */
-	public OptionSeries getOptionSerie() {
-		return this.optionSerie;
-	}
-	
-	/**
-	 * @return the quoteFactor
-	 */
-	public int getQuoteFactor() {
-		return this.quoteFactor;
-	}
-	
-	/**
-	 * @return the symbolDate
-	 */
-	public Date getSymbolDate() {
-		return this.symbolDate;
-	}
-		
-	/**
-	 * @param quoteFactor the quoteFactor to set
-	 */
-	public void setQuoteFactor(int quoteFactor) {
-		this.quoteFactor = quoteFactor;
-	}
-	
-	/**
-	 * @param symbolDate the symbolDate to set
-	 */
-	public void setSymbolDate(Date symbolDate) {
-		this.symbolDate = symbolDate;
-	}
-	
-	/**
-	 * @return the minimalVolume
-	 */
-	public int getMinimalVolume() {
-		return this.minimalVolume;
-	}
-	
-	/**
-	 * @param minimalVolume the minimalVolume to set
-	 */
-	public void setMinimalVolume(int minimalVolume) {
-		this.minimalVolume = minimalVolume;
-	}
-	 
-	/**
-	 * @return the category
-	 */
-	public SecurityCategory getCategory() {
-		return this.category;
-	}
-	
-	/**
-	 * @param category the category to set
-	 */
-	public void setCategory(SecurityCategory category) {
-		this.category = category;
-	}
 	
 }

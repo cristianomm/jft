@@ -11,7 +11,7 @@ package com.cmm.jft.trading.enums;
  */
 public enum ExpirationTypes {
 	
-	Today, Expiration_Date;
+	Today, ExpirationDate;
 	
 
 	public static ExpirationTypes getByValue(String value) {

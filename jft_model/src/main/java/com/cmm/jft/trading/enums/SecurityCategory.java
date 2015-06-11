@@ -73,5 +73,18 @@ public enum SecurityCategory {
 
 		return ret;
 	}
+	
+	public static SecurityCategory getByISIN(String isin){
+		SecurityCategory category =  null;
+		
+		//BRVALEACNPA3
+		//BR
+		//VALE
+		//ACN
+		//PA
+		//3
+		
+		return category;
+	}
 
 }
