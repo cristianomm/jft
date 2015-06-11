@@ -128,7 +128,13 @@ public enum FormatterTypes {
 	/**
 	 * yyyy-MM-dd hh:mm:ss,S
 	 */
-	DATE_TIME_F9("yyyy-MM-dd hh:mm:ss,S", Date.class);
+	DATE_TIME_F9("yyyy-MM-dd hh:mm:ss,S", Date.class),
+	
+	/**
+	 * yyyy.MM.dd hh:mm
+	 */
+	DATE_TIME_F10("yyyy.MM.dd hh:mm", Date.class);
+	
 
 	Class classType;
 	String format;

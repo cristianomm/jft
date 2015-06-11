@@ -25,6 +25,8 @@ import com.cmm.jft.trading.account.Brokerage;
 import com.cmm.jft.trading.account.Commission;
 import com.cmm.jft.trading.account.ExchangeTax;
 import com.cmm.jft.trading.enums.AssetTypes;
+import com.cmm.jft.trading.enums.OptionRights;
+import com.cmm.jft.trading.enums.OptionStyles;
 import com.cmm.jft.trading.enums.SecurityCategory;
 import com.cmm.jft.trading.enums.StockSpecifications;
 import com.cmm.jft.trading.enums.TradeTypes;
@@ -47,9 +49,6 @@ public class DBInitialization {
 
 
 	public static void main(String[] args) {
-		
-//		System.out.println(new File("../file/Country.csv").exists());
-//		System.exit(0);
 		
 		//
 		//	//	String[] s = {"1\r"};
@@ -106,12 +105,11 @@ public class DBInitialization {
 		addBrokers("../file/Brokers.csv");
 		addBrokerage("../file/Brokerage.csv");
 		//		addIsin("../jft_core/file/Isin.csv");
-		addSecurities("../file/Securities.csv");
+		addSecurities("../file/SecuritiesMT.csv");
 		addExchanges("../file/Exchanges.csv");				
 		
 		
 		//inuteis
-
 //		addCompanies("../jft_core/file/Companies.csv");
 //		addMarketCodes("../jft_core/file/MarketCodes.csv");
 //		addSecurityTypes("../jft_core/file/SecurityTypes.csv");
@@ -327,104 +325,67 @@ public class DBInitialization {
 		try {
 			report.startReport(repName);
 
+		    HashMap<String, Currency> currencies = new HashMap<String, Currency>();
+			DBFacade.getInstance().queryAsMap("Currency.findAll", currencies, Currency.class, "getCurrencyID");
+			
+			
 //			HashMap<String, Isin> isins = new HashMap<String, Isin>();
 //			DBFacade.getInstance().queryAsMap("Isin.findAll", isins, Isin.class, "getIsin");
 
 			//HashMap<String, SecurityType> specis = new HashMap<String, SecurityType>();
 			//DBFacade.getInstance().queryAsMap("SecurityType.findAll", specis, SecurityType.class, "getCode");
-
 			//Symbol;ISIN;StockCode;Descricao;TipoAtivoObjeto;EstiloOpcao;Situacao;DataEmissao;DataExpiracao;PrecoExercicio;TipoAtivo;Categoria;secType;secSpeci 
-			CSV csv = new CSV(fileName, ";");
+			
+			//SYMBOL;DESCRIPTION;ISIN;CURRENCY_BASE;CONTRACT_SIZE;TICK_SIZE;TICK_VALUE;DIGITS;MINIMAL_VOLUME;STEP_VOLUME;START_TIME;EXPIRATION_TIME;OPTION_MODE;OPTION_RIGHT;OPTION_STRIKE
+			CSV csv = new CSV(fileName, ";","#");
+			String[] vs = csv.readLine();
 			while(csv.hasNext()) {
-
-				String[] vs = csv.readLine();
-
+				
+				vs = csv.readLine();
 				if(vs.length<16)continue;
-
+				
 				String symbol=vs[0];
-				String ISIN=vs[1].trim();
-				String stockCode = vs[2];
-				String description = vs[3];
-				String tipoAtivoObjeto=vs[4];
-				String estiloOpcao=vs[5];
-				String status = vs[6];
-				Date emissionDate=((Date)FormatterFactory.getFormatter(FormatterTypes.DATE_F9).parse(vs[7]));
-				Date expirationDate=((Date)FormatterFactory.getFormatter(FormatterTypes.DATE_F9).parse(vs[8]));
-				double exercisePrice = (Double)FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[9]);
+				String description = vs[1];
+				String ISIN=vs[2].trim();
+				String currency = vs[3];
+				int contractSize = ((int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[4]));
+				double tickSize = ((double)FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[5]));
+				double tickValue = ((double)FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[6]));
+				int digits = ((int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[7]));
+				int minVolume = ((int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[8]));
+				int stepVolume = ((int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[9]));
 				String assetType = vs[10];
 				String category = vs[11];
-				String secType = vs[14];
-				String secSpeci = vs[15];
-
-				int year=0;
-				if(expirationDate!=null) {
-					GregorianCalendar gc = new GregorianCalendar();
-					gc.setTime(expirationDate);
-					year = gc.get(Calendar.YEAR);
-				}
+				Date emissionDate=((Date)FormatterFactory.getFormatter(FormatterTypes.DATE_TIME_F10).parse(vs[12]));
+				Date expirationDate=((Date)FormatterFactory.getFormatter(FormatterTypes.DATE_TIME_F10).parse(vs[13]));
+				OptionStyles style = OptionStyles.getByValue(vs[14]);
+				OptionRights optionRight = OptionRights.getByValue(vs[15]);
+				double strikePrice = (Double)FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[16]);
 				
-				
-				
-				SecurityCategory secCat = SecurityCategory.getByValue(category);
-				AssetTypes objAsset = AssetTypes.getByValue(tipoAtivoObjeto);
-				StockSpecifications stcSpeci = StockSpecifications.getByValue(secSpeci);
-
+				SecurityCategory secCat = SecurityCategory.getByISIN(ISIN);
+				//AssetTypes objAsset = AssetTypes.getByValue(tipoAtivoObjeto);
 				Security security = new Security(symbol);
 				security.setDescription(description);
-				
 				security = (Security) DBFacade.getInstance()._persist(security);
 								
 				SecurityInfo info = new SecurityInfo(security, secCat);
+				info.setIsin(ISIN);
+				info.setCurrencyID(currencies.get(currency));
+				info.setContractSize(contractSize);
+				info.setTickSize(tickSize);
+				info.setTickValue(tickValue);
+				info.setDigits(digits);
+				info.setMinimalVolume(minVolume);
+				info.setStepVolume(stepVolume);
+				info.setObjectAsset(null);
+				info.setCategory(secCat);
 				info.setEmissionDate(emissionDate);
-				info.setExercisePrice(exercisePrice);
 				info.setExpirationDate(expirationDate);
-				//info.setMinimalVolume(minimalVolume);
-				//info.setOptionStyle(estiloOpcao);
-				//info.setQuoteFactor(quoteFactor);
+				info.setOptionStyle(style);
+				info.setOptionRight(optionRight);
+				info.setStrikePrice(strikePrice);
 				
 				info = (SecurityInfo) DBFacade.getInstance()._persist(info);
-				
-				
-				//caso tipo:
-				//acao
-				//indice
-				//opcao
-				//outrosavista
-				//		switch (secCat) {
-				//		case FIXED_INCOME:
-				//		    security=new FixedIncome(symbol);
-				//		    break;
-				//		case FUTURE:
-				//		    security=new Future(symbol);
-				//		    ((Future)security).setExpirationDate(expirationDate);
-				//		    ((Future)security).setObjectAsset(objAsset);
-				//		    ((Future)security).setYear(year);
-				//		    break;
-				//		case OPTION:
-				//		    security=new Option(symbol, emissionDate, expirationDate, exercisePrice, objAsset);
-				//		    ((Option)security).setOptionStyle(OptionStyles.getByValue(estiloOpcao));
-				//		    break;
-				//		case OTHERS:
-				//		    break;
-				//		case RIGHTS:
-				//		    break;
-				//		case STOCK:
-				//		    security=new Stock(symbol);
-				//		    security.setDescription(description);
-				//		    ((Stock)security).setStockSpecification(stcSpeci);
-				//		    break;
-				//		default:
-				//		    break;
-				//		}
-/*
-				if(isins.containsKey(ISIN)) {
-					security.setIsinID(isins.get(ISIN));
-				}
-
-				if(security!=null && specis.containsKey(secType)) {
-					security.setSecurityTypeID(specis.get(secType));
-					security = security.add();
-				}*/
 
 				report.count(repName);
 			}
@@ -433,6 +394,7 @@ public class DBInitialization {
 
 		} catch (DataBaseException e) {
 			e.printStackTrace();
+			System.out.println();
 			report.reportError(repName, e.getMessage());
 			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
 		}

@@ -32,6 +32,7 @@ public class CSV {
 	private String footerPrefix;
 	private Scanner scanner;
 	private String fileName;
+	private String encoding;
 	private HashMap<String, ArrayList<String[]>> columns;
 
 	public CSV(String fileName, String delimiter) {
@@ -40,16 +41,16 @@ public class CSV {
 		this.lineDelimiter = "\n";
 		this.delimiter = delimiter;
 		this.fileName = fileName;
-		startScanner();
+		startScanner("UTF8");
 	}
-
+	
 	public CSV(String fileName, String delimiter, String headerPrefix) {
 		this.footerPrefix = "";
 		this.headerPrefix = headerPrefix;
 		this.lineDelimiter = "\n";
 		this.delimiter = delimiter;
 		this.fileName = fileName;
-		startScanner();
+		startScanner("UTF8");
 	}
 
 	public CSV(String fileName, String delimiter, String headerPrefix,
@@ -59,7 +60,7 @@ public class CSV {
 		this.lineDelimiter = "\n";
 		this.delimiter = delimiter;
 		this.fileName = fileName;
-		startScanner();
+		startScanner("UTF8");
 	}
 
 	public CSV(String fileName, String delimiter, String headerPrefix,
@@ -69,12 +70,12 @@ public class CSV {
 		this.lineDelimiter = lineDelimiter;
 		this.delimiter = delimiter;
 		this.fileName = fileName;
-		startScanner();
+		startScanner("UTF8");
 	}
 
-	private void startScanner() {
+	private void startScanner(String encoding) {
 		try {
-			this.scanner = new Scanner(new FileInputStream(fileName));
+			this.scanner = new Scanner(new FileInputStream(fileName), encoding);
 			this.scanner.useDelimiter(lineDelimiter);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -140,6 +141,21 @@ public class CSV {
 	 */
 	public void setFooterPrefix(String footerPrefix) {
 		this.footerPrefix = footerPrefix;
+	}
+	
+	/**
+	 * @return the encoding
+	 */
+	public String getEncoding() {
+		return this.encoding;
+	}
+	
+	/**
+	 * @param encoding the encoding to set
+	 */
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+		startScanner(encoding);
 	}
 
 	/**
