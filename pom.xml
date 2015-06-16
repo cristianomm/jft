@@ -15,5 +15,6 @@
     <module>ui</module>
     <module>init</module>
     <module>jft_model</module>
+    <module>engine</module>
   </modules>
 </project>

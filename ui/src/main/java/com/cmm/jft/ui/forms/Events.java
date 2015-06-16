@@ -10,13 +10,16 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 /**
  * <p><code>Events.java</code></p>
  * @author Cristiano Martins
  * @version 03/01/2014 16:06:48
  *
  */
-public abstract class Events implements ActionListener, WindowListener, ItemListener{
+public abstract class Events implements ActionListener, WindowListener, ItemListener, DocumentListener{
 
     protected AbstractForm frame;
     
@@ -114,7 +117,32 @@ public abstract class Events implements ActionListener, WindowListener, ItemList
         
     }
     
+    /* (non-Javadoc)
+     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+     */
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+    	// TODO Auto-generated method stub
+    	
+    }
     
+    /* (non-Javadoc)
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+    	// TODO Auto-generated method stub
+    	
+    }
+    
+    /* (non-Javadoc)
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+    	// TODO Auto-generated method stub
+    	
+    }
     
     
 }

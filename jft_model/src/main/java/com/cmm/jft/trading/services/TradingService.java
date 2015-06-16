@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +15,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.log4j.Level;
 
 import com.cmm.jft.core.Configuration;
-import com.cmm.jft.core.enums.GeneralStatus;
 import com.cmm.jft.core.enums.Objects;
 import com.cmm.jft.data.connection.Connection;
 import com.cmm.jft.data.connection.Event;
@@ -31,7 +29,6 @@ import com.cmm.jft.financial.Rule;
 import com.cmm.jft.financial.exceptions.RegistrationException;
 import com.cmm.jft.financial.services.JournalService;
 import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.OrdersPrices;
 import com.cmm.jft.trading.Position;
 import com.cmm.jft.trading.account.Broker;
 import com.cmm.jft.trading.account.Brokerage;
@@ -79,7 +76,9 @@ public class TradingService {
 	 * Map to get open trades. The String key are the symbol.
 	 */
 	private ConcurrentHashMap<String, Position> openPositions;
-
+	
+	
+	
 	/**
 	 * 
 	 */
@@ -167,10 +166,9 @@ public class TradingService {
 	//
 	//	}
 
-	public Orders newOrder(OrderTypes orderType, Side side, String symbol,
-			int volume, double price, double stopPrice, Date duration, TradeTypes tradeType) {
-
-		Orders ordr = null;
+	public void newOrder(OrderTypes orderType, Side side, String symbol, int volume, 
+			double price, double limitPrice, double stopLoss, double stopGain, 
+			Date duration, TradeTypes tradeType) {
 
 		try {
 			Position position = null;
@@ -178,28 +176,30 @@ public class TradingService {
 			if(!openPositions.containsKey(symbol)){
 				openPositions.put(symbol, new Position(symbol)); 
 			}
-
+			
 			position = openPositions.get(symbol);
-
+			
 			Security securityID = SecurityService.getInstance().provideSecurity(symbol);
-			Orders[] ordrs = OrderService.getInstance().newOrder(orderType, securityID, side, price, stopPrice, volume);
-			for(Orders o:ordrs){
-
+			List<Orders> ordrs = OrderService.getInstance().newOrder(
+					orderType, securityID, side,volume, 
+					price, limitPrice, stopLoss, stopGain);
+			for(Orders ordr : ordrs){
 				ordr.setDuration(duration);
 				ordr.setTradeType(tradeType);
-
+				
 				position.addOrder(ordr);
 				orders.put(ordr.getOrderSerial(), ordr);
+				
+				//Cria o evento e adiciona no mercado
+				sendNewOrderEvent(ordr);
 			}
-			//Cria o evento e adiciona no mercado
-			sendNewOrderEvent(ordr);
-
+			
 		} catch (OrderException e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		} catch (Exception e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
-		return ordr;
+		
 	}	
 
 
@@ -227,7 +227,7 @@ public class TradingService {
 				Date duration = Date.from(ZonedDateTime.of(ldt, ZoneId.systemDefault()).toInstant());
 
 				// lanca ordem inversa(a posicao) a mercado do mesmo tipo do Position
-				newOrder(OrderTypes.Market, side, position.getSymbol(), volume, 0, 0, duration, TradeTypes.DAY_TRADE);
+				newOrder(OrderTypes.Market, side, position.getSymbol(), volume, 0, 0, 0, 0, duration, TradeTypes.DAY_TRADE);
 
 			}
 
@@ -253,7 +253,7 @@ public class TradingService {
 		// verifica se a ordem pode ser alterada
 		Orders order = orders.get(orderSerial);
 		try{
-			if (order.changePrice(price) && order.changeStopPrice(stopPrice)) {
+			if (order.changePrice(price)) {
 				sendChangeOrderEvent(order);
 				orders.put(order.getOrderSerial(), order);
 			}
@@ -288,10 +288,11 @@ public class TradingService {
 		event.addValue(EventFields.OrderSide, ordr.getSide());
 		event.addValue(EventFields.OrderDate, ordr.getOrderDateTime());
 		event.addValue(EventFields.OrderExpireDate, ordr.getDuration());
-		event.addValue(EventFields.OrderType, ordr.getOrderType());	
+		event.addValue(EventFields.OrderType, ordr.getOrderType());
+		event.addValue(EventFields.OrderSymbol, ordr.getSecurityID().getSymbol());
 		event.addValue(EventFields.OrderVolume, ordr.getVolume());
-		event.addValue(EventFields.OrderStopPrice, ordr.getStopPrice());
-
+		event.addValue(EventFields.OrderPrice, ordr.getPrice());
+		
 		//envia o evento para a conexao
 		Event retev = connection.sendEvent(event);
 
@@ -325,7 +326,6 @@ public class TradingService {
 		event.addValue(EventFields.EventType, Events.ORDER_UPDATE);
 		event.addValue(EventFields.OrderID, ordr.getOrderSerial());
 		event.addValue(EventFields.OrderVolume, ordr.getVolume());
-		event.addValue(EventFields.OrderStopPrice, ordr.getStopPrice());
 
 		Event ret = connection.sendEvent(event);
 		if(ret.getValue(EventFields.EventType) == Events.ORDER_UPDATE){
@@ -353,8 +353,7 @@ public class TradingService {
 			}
 		} catch (OrderException e) {
 			Logging.getInstance().log(getClass(),
-					"Erro ao criar execucao de ordem: " + e.getMessage(), e,
-					Level.ERROR, false);
+					"Erro ao criar execucao de ordem: " + e.getMessage(), e, Level.ERROR, false);
 		}
 		return ret;
 	}
@@ -404,7 +403,6 @@ public class TradingService {
 										commValue, "Commission");
 								break;
 							}
-
 						}
 					}
 
@@ -450,12 +448,10 @@ public class TradingService {
 						JournalService.getInstance().registerEntry(je,
 								rule.getCreditAccountID(), rule.getDebitAccountID(), profit, descr);	
 					}
-
 				}
 
 				//fecha o je
 				je = JournalService.getInstance().closeEntry(je);
-
 			}
 
 		} catch (DataBaseException | RegistrationException e) {

@@ -5,8 +5,14 @@
  */
 package com.cmm.jft.ui.trading;
 
+import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.trading.enums.ExpirationTypes;
 import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.trading.enums.TradeTypes;
+import com.cmm.jft.trading.securities.Security;
+import com.cmm.jft.trading.securities.SecurityInfo;
+import com.cmm.jft.trading.services.TradingService;
 import com.cmm.jft.ui.forms.AbstractForm;
 import com.cmm.jft.ui.forms.Events;
 import com.cmm.jft.ui.utils.FormUtils;
@@ -14,6 +20,9 @@ import com.cmm.jft.ui.utils.FormUtils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.Date;
+
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.DocumentEvent;
 
 /**
  *
@@ -49,7 +58,7 @@ public class PlaceOrderForm extends AbstractForm {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        btnPlaceOrder = new javax.swing.JButton();
+        btnSellOrder = new javax.swing.JButton();
         sbSecurity = new com.cmm.searchbox.SearchBox();
         jLabel8 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -58,6 +67,8 @@ public class PlaceOrderForm extends AbstractForm {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         dtExpiration = new com.toedter.calendar.JDateChooser();
+        btnBuyOrder = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -87,7 +98,11 @@ public class PlaceOrderForm extends AbstractForm {
 
         jLabel7.setText("Limit Price");
 
-        btnPlaceOrder.setText("Place Order");
+        btnSellOrder.setText("Sell");
+
+        sbSecurity.setQuery("select symbol from security");
+        sbSecurity.setResultField("");
+        sbSecurity.setSearchField("security");
 
         jLabel8.setText("Security");
 
@@ -101,6 +116,8 @@ public class PlaceOrderForm extends AbstractForm {
 
         dtExpiration.setDateFormatString("d MMM yyyy");
 
+        btnBuyOrder.setText("Buy");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -108,20 +125,10 @@ public class PlaceOrderForm extends AbstractForm {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator2)
                     .addComponent(jSeparator1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sbSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbOrderTypes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnPlaceOrder)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancel))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,8 +155,23 @@ public class PlaceOrderForm extends AbstractForm {
                                     .addComponent(spnLimitPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dtExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(dtExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel8))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sbSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbOrderTypes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBuyOrder)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSellOrder)
+                .addGap(134, 134, 134))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,10 +210,14 @@ public class PlaceOrderForm extends AbstractForm {
                             .addComponent(jLabel9)
                             .addComponent(jLabel10)))
                     .addComponent(dtExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(81, 81, 81)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPlaceOrder)
-                    .addComponent(btnCancel))
+                    .addComponent(btnSellOrder)
+                    .addComponent(btnBuyOrder))
+                .addGap(31, 31, 31)
+                .addComponent(btnCancel)
                 .addContainerGap())
         );
 
@@ -234,8 +260,9 @@ public class PlaceOrderForm extends AbstractForm {
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuyOrder;
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnPlaceOrder;
+    private javax.swing.JButton btnSellOrder;
     private javax.swing.JComboBox cmbExpirationType;
     private javax.swing.JComboBox cmbOrderTypes;
     private com.toedter.calendar.JDateChooser dtExpiration;
@@ -249,6 +276,7 @@ public class PlaceOrderForm extends AbstractForm {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private com.cmm.searchbox.SearchBox sbSecurity;
     private javax.swing.JSpinner spnLimitPrice;
     private javax.swing.JSpinner spnPrice;
@@ -259,8 +287,9 @@ public class PlaceOrderForm extends AbstractForm {
 
 	@Override
 	public void addListeners() {
+		sbSecurity.getResultField().getDocument().addDocumentListener(new GerEvents(this));
 		btnCancel.addActionListener(new GerEvents(this));
-		btnPlaceOrder.addActionListener(new GerEvents(this));
+		btnSellOrder.addActionListener(new GerEvents(this));
 		cmbOrderTypes.addItemListener(new GerEvents(this));
 		cmbExpirationType.addItemListener(new GerEvents(this));
 	}
@@ -292,8 +321,32 @@ public class PlaceOrderForm extends AbstractForm {
 			if(e.getSource() == btnCancel){
 				frame.dispose();
 			}
-			else if(e.getSource() == btnPlaceOrder){
-
+			else if(e.getSource() == btnSellOrder){
+				
+				try{
+					
+					OrderTypes orderType = (OrderTypes)cmbOrderTypes.getSelectedItem();
+					Side side = Side.BUY;
+					String symbol = sbSecurity.getResultField();
+					
+					double price = (double)spnPrice.getValue();
+					double limitPrice = (double)spnLimitPrice.getValue();
+					double stopPrice = (double)spnStopLoss.getValue();
+					double stopGain = (double)spnStopGain.getValue();
+					int volume = (int)spnVolume.getValue();
+					
+					Date duration = dtExpiration.getDate();
+					boolean day = duration.toInstant().isAfter(new Date().toInstant());
+					TradeTypes tradeType = day?TradeTypes.DAY_TRADE:TradeTypes.NORMAL;
+					
+					TradingService.getInstance().newOrder(
+							orderType, side, symbol, volume, 
+							price, limitPrice, stopPrice, stopGain, 
+							duration, tradeType);
+					
+				}catch(Exception ex){
+					
+				}
 			}
 		}
 
@@ -357,7 +410,32 @@ public class PlaceOrderForm extends AbstractForm {
 			}
 
 		}
-
+		
+		
+		/* (non-Javadoc)
+		 * @see com.cmm.jft.ui.forms.Events#changedUpdate(javax.swing.event.DocumentEvent)
+		 */
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+			String symbol = sbSecurity.getResultFieldValue();
+			Security s = (Security) DBFacade.getInstance().findObject("Security.findBySymbol", "symbol", symbol);
+			SecurityInfo si = s.getSecurityInfoID();
+			si.getMinimalVolume();
+			si.getDigits();
+			si.getTickSize();
+			si.getTickValue();
+			
+			double actualPrice = 0;
+			
+			spnVolume.setModel(new SpinnerNumberModel(Integer.valueOf(0), si.getMinimalVolume(), null, si.getMinimalVolume()));
+	        spnPrice.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
+	        spnLimitPrice.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
+	        
+	        spnStopLoss.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
+	        spnStopGain.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
+			
+		}
+		
 	}
 
 

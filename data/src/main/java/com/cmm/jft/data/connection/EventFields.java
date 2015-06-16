@@ -17,9 +17,9 @@ public enum EventFields {
 	
 	
 	//--------------------------------------------ORDER
-	OrderID, OrderSequence,
+	OrderID, OrderSequence, OrderPrice,
 	OrderLimitPrice, OrderStopPrice, 
 	OrderGainPrice, OrderAvgPrice, OrderStartPrice,
 	OrderVolume, OrderSide, OrderStatus, OrderDate, OrderExpireDate,
-	OrderType
+	OrderType, OrderSymbol
 }

@@ -3,6 +3,7 @@
  */
 package com.cmm.jft.trading.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,9 +56,10 @@ public class OrderService {
 	}
 
 	
-	public Orders[] newOrder(OrderTypes orderType, Security security, Side side, double price, double stopPrice, int volume){
+	public List<Orders> newOrder(OrderTypes orderType, Security security, Side side, int volume,
+			double price, double limitPrice, double stopLoss, double stopGain){
 		
-		Orders[] ordrs = null;
+		List<Orders> ordrs = new ArrayList<Orders>();
 		switch (orderType) {
 		case CounterOrderSelection:
 			break;
@@ -69,7 +71,7 @@ public class OrderService {
 			break;
 			
 		case Limit:
-			ordrs = newLimitOrder(security, side, volume, price);
+			ordrs.add(newLimitOrder(security, side, volume, price));
 			break;
 			
 		case LimitOrBetter:
@@ -79,7 +81,7 @@ public class OrderService {
 			break;
 			
 		case Market:
-			ordrs = newMarketOrder(security, side, volume, price, stopPrice);
+			ordrs.add(newMarketOrder(security, side, volume));
 			break;
 			
 		case MarketIfTouched:
@@ -107,11 +109,11 @@ public class OrderService {
 			break;
 			
 		case Stop:
-			ordrs = newStopOrder(security, side, volume, stopPrice);
+			ordrs.add(newStopOrder(security, side, volume, stopLoss));
 			break;
 			
 		case StopLimit:
-			ordrs = newStopLimitOrder(security, side, volume, price, stopPrice);
+			ordrs.add(newLimitOrder(security, side, volume, price));
 			break;
 			
 		case WithOrWithout:
@@ -121,82 +123,80 @@ public class OrderService {
 			break;
 		}
 		
+		Side sideExit = side == Side.BUY?Side.SELL:Side.BUY;
+		for(Orders ordr:createLossAndGain(security, sideExit, volume, price, stopLoss, stopGain)){
+			ordrs.add(ordr);
+		}
+		
 		return ordrs;
 	}
 	
-	public Orders[] newLimitOrder(Security security, Side side, int volume, double limitPrice){
-		Orders[] ordr = new Orders[1];
+	public Orders newLimitOrder(Security security, Side side, int volume, double limitPrice){
+		Orders ordr = null;
 		try {
-			ordr[0] = new Orders(security, side, limitPrice, 0d, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+			ordr = new Orders(security, side, limitPrice, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE);			
 		} catch (OrderException e) {
 			e.printStackTrace();
+			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
 		
 		return ordr;
 	}
 	
-	public Orders[] newStopOrder(Security security, Side side, int volume, double stopPrice){
-		Orders[] ordr = new Orders[1];
+	public Orders newStopOrder(Security security, Side side, int volume, double stopPrice){
+		Orders ordr = null;
 		try {
+			//calcula o valor maximo limite que a ordem podera ser executada
 			double discount = (stopPrice * (Double)Configuration.getInstance().getConfiguration("MarketDiscount"));
 			discount = side == Side.BUY?discount:-discount;
 			discount = stopPrice + discount;
-			ordr[0] = new Orders(security, side, discount, stopPrice, volume, OrderTypes.Stop, TradeTypes.DAY_TRADE);
+			ordr = new Orders(security, side, stopPrice, volume, OrderTypes.Stop, TradeTypes.DAY_TRADE);
 		} catch (OrderException e) {
 			e.printStackTrace();
+			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
 		
 		return ordr;
 	}
-	
-	public Orders[] newStopLimitOrder(Security security, Side side, int volume, double limitPrice, double stopPrice){
-		Orders[] ordrs = new Orders[2];
-		try {
-			Side stopSide = side==Side.BUY?Side.SELL:Side.BUY;
 			
-			ordrs[0] = newLimitOrder(security, side, volume, limitPrice)[0];
-			ordrs[1] = newStopOrder(security, stopSide, volume, stopPrice)[0];
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return ordrs;
-	}
-	
-	public Orders[] newMarketOrder(Security security, Side side, int volume, double gainPrice, double stopPrice){
-		Orders[] ordrs = new Orders[1];
+	public Orders newMarketOrder(Security security, Side side, int volume){
+		Orders ordrs = null;
 		try {
-			ordrs[0] = new Orders(security, side, 0, 0, volume, OrderTypes.Market, TradeTypes.DAY_TRADE);
+			ordrs = new Orders(security, side, 0, volume, OrderTypes.Market, TradeTypes.DAY_TRADE);
 		} catch (OrderException e) {
 			e.printStackTrace();
+			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
 		
 		return ordrs;
 	}
+	
 	
 	public Orders newTrailingStopOrder(Security security, Side side, int volume, double stopPrice){
 		
 		return null;
-	}
+	}	
 	
-	public Orders[] newOTOOrder(Security security, Side side, int volume, double limitPrice, double gainPrice, double stopPrice){
-		Orders[] ordrs = new Orders[3];
-		try {
-			Side stopSide = side==Side.BUY?Side.SELL:Side.BUY;
-			
-			ordrs[0] = newLimitOrder(security, side, volume, limitPrice)[0];//ordem de entrada
-			ordrs[1] = newLimitOrder(security, side, volume, gainPrice)[0];//ordem de ganho
-			ordrs[2] = newStopOrder(security, stopSide, volume, stopPrice)[0];//stop loss
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	
+	private Orders[] createLossAndGain(Security security, Side sideExit, int volume, double price, double stopLoss, double stopGain){
 		
+		Orders[] ordrs = new Orders[2];
+		
+		try{
+			//StopLoss
+			if(stopLoss!= price && stopLoss != stopGain && stopLoss > 0){
+				ordrs[0] = (new Orders(security, sideExit, stopLoss, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+			}
+			
+			//StopGain
+			if(stopGain != price && stopGain != stopLoss && stopGain > 0){
+				ordrs[1] = (new Orders(security, sideExit, stopGain, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+			}
+		} catch(OrderException e){
+			Logging.getInstance().log(getClass(), e, Level.ERROR);
+		}
 		return ordrs;
 	}
-	
-	
 	
 	
 	public Orders createAndPersistOrder(OrderTypes orderType, Side side, String symbol, int volume, double price, double stopPrice)
@@ -221,7 +221,6 @@ public class OrderService {
 			ordr.setSide(side);
 			ordr.setOrderType(orderType);
 			ordr.changePrice(price);
-			ordr.changeStopPrice(stopPrice);
 			ordr.changeVolume(volume);
 			ordr = (Orders) DBFacade.getInstance()._persist(ordr);
 

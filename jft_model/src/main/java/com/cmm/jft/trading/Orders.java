@@ -57,9 +57,6 @@ public class Orders implements DBObject<Orders> {
 	@Column(name = "Price", precision = 19, scale = 6)
 	private Double price;
 
-	@Column(name = "StopPrice", precision = 19, scale = 6)
-	private Double stopPrice;
-
 	@Basic(optional = false)
 	@Column(name = "Volume", nullable = false)
 	private Integer volume;
@@ -120,7 +117,6 @@ public class Orders implements DBObject<Orders> {
 	
 	public Orders() {
 		this.price =  0d;
-		this.stopPrice =  0d;
 		this.duration = new Date();
 		this.orderDateTime = new Date();
 		this.orderStatus = OrderStatus.CREATED;
@@ -140,11 +136,10 @@ public class Orders implements DBObject<Orders> {
 	 * @param side
 	 * @throws OrderException 
 	 */
-	public Orders(Security security,  Side side, double price, double stop, Integer volume, 
+	public Orders(Security security,  Side side, double price, Integer volume, 
 			OrderTypes orderType, TradeTypes tradeType) throws OrderException {
 		super();
 		this.price = price;
-		this.stopPrice = stop;
 		this.securityID = security;
 		this.volume = volume;
 		this.orderType = orderType;
@@ -225,13 +220,6 @@ public class Orders implements DBObject<Orders> {
 		return this.price;
 	}
 	
-	/**
-	 * @return the stopPrice
-	 */
-	public Double getStopPrice() {
-		return this.stopPrice;
-	}
-
 	/**
 	 * @return the orderType
 	 */
@@ -356,7 +344,6 @@ public class Orders implements DBObject<Orders> {
 		return "Orders ["
 				+ (this.orderID != null ? "orderID=" + this.orderID + ", " : "")
 				+ (this.price != null ? "price=" + this.price + ", " : "")
-				+ (this.stopPrice != null ? "stopPrice=" + this.stopPrice + ", " : "")
 				+ (this.volume != null ? "volume=" + this.volume + ", " : "")
 				+ (this.averagePrice != null ? "averagePrice=" + this.averagePrice + ", " : "")
 				+ (this.executedVolume != null ? "executedVolume=" + this.executedVolume + ", " : "")
@@ -419,19 +406,7 @@ public class Orders implements DBObject<Orders> {
 		}
 		return ret;
 	}
-	
-	public boolean changeStopPrice(double stopPrice) throws OrderException {
-		boolean ret = false;
-		if(orderStatus == OrderStatus.OPEN){
-			this.stopPrice = stopPrice;
-			ret = true;
-		}else{
-			ret = false;
-			throw new OrderException("Invalid Order status: " + orderStatus);
-		}
-		return ret;
-	}
-	
+		
 	public boolean changeVolume(int volume) throws OrderException {
 		boolean ret = false;
 		if(orderStatus == OrderStatus.OPEN){
