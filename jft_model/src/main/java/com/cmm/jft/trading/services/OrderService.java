@@ -9,18 +9,10 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 
-import quickfix.examples.banzai.OrderSide;
-import quickfix.examples.banzai.OrderType;
-import quickfix.examples.ordermatch.OrderMatcher;
-import quickfix.field.OrderCategory;
-import quickfix.field.SecurityType;
-import quickfix.fix50.OrderStatusRequest;
-
 import com.cmm.jft.core.Configuration;
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
 import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.OrdersPrices;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
