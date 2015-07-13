@@ -8,28 +8,41 @@ import quickfix.FieldMap;
 import quickfix.Message.Header;
 import quickfix.Message.Trailer;
 import quickfix.MessageUtils;
+import quickfix.field.AvgPx;
 import quickfix.field.BeginSeqNo;
 import quickfix.field.BeginString;
 import quickfix.field.BodyLength;
 import quickfix.field.CheckSum;
+import quickfix.field.CumQty;
 import quickfix.field.DeliverToCompID;
 import quickfix.field.EncryptMethod;
 import quickfix.field.EndSeqNo;
+import quickfix.field.ExecID;
+import quickfix.field.ExecType;
 import quickfix.field.HeartBtInt;
+import quickfix.field.LastPx;
+import quickfix.field.LastQty;
+import quickfix.field.LeavesQty;
 import quickfix.field.MsgSeqNum;
 import quickfix.field.MsgType;
 import quickfix.field.NewPassword;
 import quickfix.field.NewSeqNo;
 import quickfix.field.NextExpectedMsgSeqNum;
+import quickfix.field.OrdStatus;
+import quickfix.field.OrderID;
+import quickfix.field.OrderQty;
 import quickfix.field.OrigSendingTime;
 import quickfix.field.PossDupFlag;
 import quickfix.field.PossResend;
+import quickfix.field.Price;
 import quickfix.field.RawData;
 import quickfix.field.RawDataLength;
 import quickfix.field.RefSeqNum;
 import quickfix.field.ResetSeqNumFlag;
 import quickfix.field.SenderCompID;
 import quickfix.field.SendingTime;
+import quickfix.field.Side;
+import quickfix.field.StopPx;
 import quickfix.field.TargetCompID;
 import quickfix.field.TestReqID;
 import quickfix.field.Text;
@@ -97,7 +110,7 @@ public class MessageEncoder {
 	
 	
 	
-	//-------------------------------------------Session Specific
+	//[start]-------------------------------------------Session Specific
 	public Heartbeat heartbeat(){
 		Heartbeat heartbeat = new Heartbeat();
 		heartbeat.setFields(buildHeader());
@@ -155,10 +168,10 @@ public class MessageEncoder {
 		TestRequest testRequest = new TestRequest(new TestReqID());
 		return testRequest;
 	}
+	//[end]
 	
 	
-	
-	//-------------------------------------------Application Specific
+	//[start]-------------------------------------------Application Specific
 	
 	public AllocationInstruction allocationInstruction(){
 		AllocationInstruction instruction = new AllocationInstruction();
@@ -198,8 +211,25 @@ public class MessageEncoder {
 		return messageReject;
 	}
 	
-	public ExecutionReport executionReport(){
+	public ExecutionReport executionReport(String orderID, String execID, 
+			char execType, char orderStatus, String symbol, char side, 
+			double lastQty, double orderQty , double leavesQty, double cumQty, 
+			double price, double stopPx, double lastPx){
+		
 		ExecutionReport executionReport = new ExecutionReport();
+		
+		executionReport = new ExecutionReport(
+				new OrderID(orderID), new ExecID(execID),
+				new ExecType(execType), new OrdStatus(orderStatus),
+				new Side(side), new LeavesQty(leavesQty), 
+				new CumQty(cumQty), new AvgPx(cumQty)
+				);
+		
+		executionReport.set(new OrderQty(orderQty));
+		executionReport.set(new Price(price));
+		executionReport.set(new StopPx(stopPx));
+		executionReport.set(new LastQty(lastQty));
+		executionReport.set(new LastPx(lastPx));
 		
 		return executionReport;
 	}
@@ -222,7 +252,7 @@ public class MessageEncoder {
 		
 		return cancelReject;
 	}
-	
+		
 	public OrderCancelReplaceRequest orderCancelReplaceRequest(){
 		OrderCancelReplaceRequest replaceRequest = new OrderCancelReplaceRequest();
 		
@@ -231,6 +261,9 @@ public class MessageEncoder {
 	
 	public OrderCancelRequest orderCancelRequest(){
 		OrderCancelRequest cancelRequest = new OrderCancelRequest();
+		
+		
+		
 		
 		return cancelRequest;
 	}
@@ -288,6 +321,8 @@ public class MessageEncoder {
 		
 		return request;
 	}
-	
+	//[end]
 
+	
+	
 }
