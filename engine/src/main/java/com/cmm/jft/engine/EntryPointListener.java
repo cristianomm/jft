@@ -6,6 +6,8 @@ package com.cmm.jft.engine;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import com.cmm.jft.core.services.Service;
+
 import quickfix.Acceptor;
 import quickfix.Application;
 import quickfix.ConfigError;
@@ -26,18 +28,36 @@ import quickfix.ThreadedSocketInitiator;
  * @version 13 de jul de 2015 00:05:40
  *
  */
-public class EntryPointListener {
+public class EntryPointListener implements Service {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new EntryPointListener().runEngine();
+		new EntryPointListener().start();
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.core.services.Service#start()
+	 */
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.core.services.Service#stop()
+	 */
+	@Override
+	public void stop() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 
-
-	private void runEngine(){
+	private void initListener(){
 		try{
 			// FooApplication is your class that implements the Application interface
 			Application application = new EntryPoint();
@@ -47,14 +67,8 @@ public class EntryPointListener {
 			LogFactory logFactory = new FileLogFactory(settings);
 			MessageFactory messageFactory = new DefaultMessageFactory();
 			
-			ThreadedSocketInitiator initiator = 
-					new ThreadedSocketInitiator(application, storeFactory, settings, logFactory, messageFactory);
-			
-			
-			
 			ThreadedSocketAcceptor acceptor = new ThreadedSocketAcceptor(application, storeFactory, settings, logFactory, messageFactory);
-			
-			
+						
 			acceptor.start();
 			//while( condition == true ) { do something; }
 			acceptor.stop();
