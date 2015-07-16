@@ -13,9 +13,9 @@ package com.cmm.jft.core.services;
 public interface Service {
 	
 	
-	void start();
+	boolean start();
 	
-	void stop();
+	boolean stop();
 	
 	
 	

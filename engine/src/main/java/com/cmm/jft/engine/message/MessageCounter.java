@@ -36,7 +36,6 @@ public class MessageCounter {
 	
 	public int getMessageCount(){
 		return messageCount++;
-		
 	}
 	
 }
