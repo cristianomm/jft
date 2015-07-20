@@ -21,18 +21,6 @@ import quickfix.SessionID;
 import quickfix.SessionSettings;
 import quickfix.UnsupportedMessageType;
 import quickfix.field.OrdType;
-import quickfix.fix44.AllocationInstruction;
-import quickfix.fix44.NewOrderCross;
-import quickfix.fix44.NewOrderSingle;
-import quickfix.fix44.OrderCancelReplaceRequest;
-import quickfix.fix44.OrderCancelRequest;
-import quickfix.fix44.PositionMaintenanceRequest;
-import quickfix.fix44.Quote;
-import quickfix.fix44.QuoteCancel;
-import quickfix.fix44.QuoteRequest;
-import quickfix.fix44.QuoteRequestReject;
-import quickfix.fix44.SecurityDefinitionRequest;
-import quickfix.fix50sp1.ApplicationMessageRequest;
 
 /**
  * <p><code>EntryPoint.java</code></p>
@@ -44,6 +32,8 @@ public class EntryPoint extends MessageCracker implements Application {
 
 	private static final String VALID_ORDER_TYPES_KEY = "ValidOrderTypes";
 	
+	
+	private SessionRepository sessionRepository;
 	private HashSet<String> validOrderTypes;
 	
 	
@@ -54,7 +44,9 @@ public class EntryPoint extends MessageCracker implements Application {
 	 * 
 	 */
 	public EntryPoint(SessionSettings settings) throws ConfigError, FieldConvertError {
+		sessionRepository = SessionRepository.getInstance();
 		initializeValidOrderTypes(settings);
+		
 	}
 	
 	
@@ -74,23 +66,21 @@ public class EntryPoint extends MessageCracker implements Application {
 	 */
 	public void onCreate(SessionID sessionId) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	/* (non-Javadoc)
 	 * @see quickfix.Application#onLogon(quickfix.SessionID)
 	 */
 	public void onLogon(SessionID sessionId) {
-		// TODO Auto-generated method stub
-
+		sessionRepository.addSession(sessionId);
 	}
 
 	/* (non-Javadoc)
 	 * @see quickfix.Application#onLogout(quickfix.SessionID)
 	 */
 	public void onLogout(SessionID sessionId) {
-		// TODO Auto-generated method stub
-
+		sessionRepository.removeSession(sessionId);
 	}
 
 	/* (non-Javadoc)
@@ -108,7 +98,7 @@ public class EntryPoint extends MessageCracker implements Application {
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
 			RejectLogon {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	/* (non-Javadoc)
@@ -116,7 +106,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	 */
 	public void toApp(Message message, SessionID sessionId) throws DoNotSend {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	/* (non-Javadoc)
@@ -127,72 +117,11 @@ public class EntryPoint extends MessageCracker implements Application {
 			UnsupportedMessageType {
 		
 		crack(message, sessionId);
-
-	}
-	
-	
-	
-	
-	
-	public void onMessage(NewOrderSingle message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
 	}
 	
-	public void onMessage(OrderCancelReplaceRequest message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
 	
-	public void onMessage(OrderCancelRequest message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
 	
-	public void onMessage(NewOrderCross message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(SecurityDefinitionRequest message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(QuoteRequest message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(Quote message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(QuoteCancel message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(QuoteRequestReject message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(PositionMaintenanceRequest message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(AllocationInstruction message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(ApplicationMessageRequest message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
 	
 /*
 	public void onMessage(NewOrderSingle order, SessionID sessionID) throws FieldNotFound,
