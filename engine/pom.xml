@@ -14,5 +14,10 @@
   		<artifactId>core</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>jft_model</groupId>
+  		<artifactId>jft_model</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
 </project>
