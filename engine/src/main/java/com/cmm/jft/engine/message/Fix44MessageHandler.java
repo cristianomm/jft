@@ -18,10 +18,8 @@ import quickfix.fix44.QuoteRequestReject;
 import quickfix.fix44.SecurityDefinitionRequest;
 import quickfix.fix50sp1.ApplicationMessageRequest;
 
-public class Fix44MessageHandler extends MessageCracker {
 
-	
-		
+public class Fix44MessageHandler extends MessageCracker {
 	
 	
 	public void onMessage(NewOrderSingle message, SessionID sessionID)
