@@ -30,23 +30,22 @@ import quickfix.field.OrdType;
  */
 public class EntryPoint extends MessageCracker implements Application {
 
+	
+	private HashSet<String> validOrderTypes;
 	private static final String VALID_ORDER_TYPES_KEY = "ValidOrderTypes";
 	
 	
-	private SessionRepository sessionRepository;
-	private HashSet<String> validOrderTypes;
-	
 	
 	/**
+	 * http://www.codeproject.com/Articles/757708/Mock-FIX-Trading-Server
 	 * @param settings 
 	 * @throws FieldConvertError 
 	 * @throws ConfigError 
 	 * 
 	 */
 	public EntryPoint(SessionSettings settings) throws ConfigError, FieldConvertError {
-		sessionRepository = SessionRepository.getInstance();
+		this.validOrderTypes = new HashSet<String>();
 		initializeValidOrderTypes(settings);
-		
 	}
 	
 	
@@ -73,14 +72,14 @@ public class EntryPoint extends MessageCracker implements Application {
 	 * @see quickfix.Application#onLogon(quickfix.SessionID)
 	 */
 	public void onLogon(SessionID sessionId) {
-		sessionRepository.addSession(sessionId);
+		SessionRepository.getInstance().addSession(sessionId);
 	}
 
 	/* (non-Javadoc)
 	 * @see quickfix.Application#onLogout(quickfix.SessionID)
 	 */
 	public void onLogout(SessionID sessionId) {
-		sessionRepository.removeSession(sessionId);
+		SessionRepository.getInstance().removeSession(sessionId);
 	}
 
 	/* (non-Javadoc)

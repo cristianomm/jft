@@ -7,8 +7,6 @@ import static quickfix.Acceptor.SETTING_ACCEPTOR_TEMPLATE;
 import static quickfix.Acceptor.SETTING_SOCKET_ACCEPT_ADDRESS;
 import static quickfix.Acceptor.SETTING_SOCKET_ACCEPT_PORT;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +25,6 @@ import org.quickfixj.jmx.JmxExporter;
 import com.cmm.jft.core.services.Service;
 import com.cmm.logging.Logging;
 
-import quickfix.Acceptor;
 import quickfix.Application;
 import quickfix.ConfigError;
 import quickfix.DefaultMessageFactory;
@@ -40,20 +37,19 @@ import quickfix.MessageStoreFactory;
 import quickfix.RuntimeError;
 import quickfix.SessionID;
 import quickfix.SessionSettings;
-import quickfix.SocketAcceptor;
 import quickfix.ThreadedSocketAcceptor;
-import quickfix.ThreadedSocketInitiator;
 import quickfix.mina.acceptor.DynamicAcceptorSessionProvider;
 import quickfix.mina.acceptor.DynamicAcceptorSessionProvider.TemplateMapping;
 
 /**
  * <p><code>EntryPointListener.java</code></p>
- * @author Cristiano
+ * @author Cristiano M Martins
  * @version 13 de jul de 2015 00:05:40
  *
  */
 public class EntryPointListener implements Service {
 	
+	private EntryPoint entryPoint;
 	private JmxExporter jmxExporter;
 	private ThreadedSocketAcceptor acceptor;
 	private ObjectName connectorObjectName;
@@ -61,17 +57,10 @@ public class EntryPointListener implements Service {
 
 
 	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new EntryPointListener().start();
-	}
-
-
-	/**
 	 * 
 	 */
 	public EntryPointListener() {
+		
 		this.dynamicSessionMappings = new HashMap<InetSocketAddress, List<TemplateMapping>>();
 		initListener();
 	}
@@ -165,14 +154,14 @@ public class EntryPointListener implements Service {
 		try{
 			SessionSettings settings = new SessionSettings(EntryPointListener.class.getResourceAsStream("EntryPointListener.cfg"));
 			
-			Application application = new EntryPoint(settings);
+			entryPoint = new EntryPoint(settings);
 			MessageStoreFactory storeFactory = new FileStoreFactory(settings);
 			LogFactory logFactory = new FileLogFactory(settings);
 			MessageFactory messageFactory = new DefaultMessageFactory();
-
-			acceptor = new ThreadedSocketAcceptor(application, storeFactory, settings, logFactory, messageFactory);
 			
-			configureDynamicSessions(settings, application, storeFactory, logFactory, messageFactory);
+			acceptor = new ThreadedSocketAcceptor(entryPoint, storeFactory, settings, logFactory, messageFactory);
+			
+			configureDynamicSessions(settings, entryPoint, storeFactory, logFactory, messageFactory);
 			
 			jmxExporter = new JmxExporter();
 	        connectorObjectName = jmxExporter.register(acceptor);
@@ -182,5 +171,10 @@ public class EntryPointListener implements Service {
 		}
 
 	}
+	
+	
+	
+	
+	
 
 }

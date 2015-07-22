@@ -294,7 +294,7 @@ public class TradingService {
 		event.addValue(EventFields.OrderPrice, ordr.getPrice());
 		
 		//envia o evento para a conexao
-		Event retev = connection.sendEvent(event);
+		Event retev = null;//connection.sendEvent(event);
 
 		//verifica o retorno
 		if(retev.getValue(EventFields.EventType) == Events.ORDER_SEND){
@@ -311,7 +311,7 @@ public class TradingService {
 		event.addValue(EventFields.EventType, Events.ORDER_CANCEL);
 		event.addValue(EventFields.OrderID, ordr.getOrderSerial());
 
-		Event ret = connection.sendEvent(event);
+		Event ret = null;//connection.sendEvent(event);
 		if(ret.getValue(EventFields.EventType) == Events.ORDER_CANCEL){
 			Logging.getInstance().log(getClass(), "Order " + ordr.getOrderSerial() + " has cancelled.", Level.INFO);
 		}else{
@@ -327,7 +327,7 @@ public class TradingService {
 		event.addValue(EventFields.OrderID, ordr.getOrderSerial());
 		event.addValue(EventFields.OrderVolume, ordr.getVolume());
 
-		Event ret = connection.sendEvent(event);
+		Event ret = null;//connection.sendEvent(event);
 		if(ret.getValue(EventFields.EventType) == Events.ORDER_UPDATE){
 			Logging.getInstance().log(getClass(), "Order " + ordr.getOrderSerial() + " has changed.", Level.INFO);
 		}else{
