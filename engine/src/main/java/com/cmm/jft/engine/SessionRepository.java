@@ -9,6 +9,7 @@ import quickfix.SessionStateListener;
 public class SessionRepository {
 	
 	
+	
 	private class SessionListener implements SessionStateListener{
 
 		@Override

@@ -40,6 +40,7 @@ public interface MessageEncoder {
 	Logon logon(String authData, boolean resetSeqNum,
 			String newPassword);
 
+	
 	Logout logout(String text);
 
 	Reject reject(int refMsgSeqNum);

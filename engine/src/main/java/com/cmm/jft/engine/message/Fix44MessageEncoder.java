@@ -148,6 +148,7 @@ public class Fix44MessageEncoder implements MessageEncoder {
 			message.setField(new NewPassword(newPassword));
 		}
 		
+		
 		return message;
 	}
 	

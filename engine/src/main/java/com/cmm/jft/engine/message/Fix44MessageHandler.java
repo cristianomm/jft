@@ -22,6 +22,7 @@ import quickfix.fix50sp1.ApplicationMessageRequest;
 public class Fix44MessageHandler extends MessageCracker {
 	
 	
+	
 	public void onMessage(NewOrderSingle message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		

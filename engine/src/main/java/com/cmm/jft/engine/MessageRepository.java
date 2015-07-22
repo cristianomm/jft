@@ -19,6 +19,7 @@ public class MessageRepository {
 	private ConcurrentLinkedQueue<Message> messages;
 	
 	
+	
 	private MessageRepository() {
 		this.messages = new ConcurrentLinkedQueue<Message>();
 	}

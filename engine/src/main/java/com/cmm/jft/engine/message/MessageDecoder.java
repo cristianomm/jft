@@ -11,4 +11,5 @@ package com.cmm.jft.engine.message;
  */
 public class MessageDecoder {
 
+	
 }

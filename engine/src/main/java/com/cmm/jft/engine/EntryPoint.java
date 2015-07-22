@@ -122,6 +122,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	
 	
 	
+	
 /*
 	public void onMessage(NewOrderSingle order, SessionID sessionID) throws FieldNotFound,
 	UnsupportedMessageType, IncorrectTagValue {

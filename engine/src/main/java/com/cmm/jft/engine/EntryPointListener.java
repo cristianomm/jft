@@ -149,6 +149,7 @@ public class EntryPointListener implements Service {
 
 		return running;
 	}
+	
 
 	private void initListener(){
 		try{
