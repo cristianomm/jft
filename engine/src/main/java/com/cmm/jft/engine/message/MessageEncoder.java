@@ -53,6 +53,8 @@ public interface MessageEncoder {
 
 	//[end]
 
+	
+	//[start]-------------------------------------------Application Specific
 	AllocationInstruction allocationInstruction();
 
 	AllocationReport allocationReport();

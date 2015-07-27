@@ -2,7 +2,6 @@ package com.cmm.jft.engine.message;
 
 import quickfix.FieldNotFound;
 import quickfix.IncorrectTagValue;
-import quickfix.MessageCracker;
 import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
 import quickfix.fix44.AllocationInstruction;
@@ -19,7 +18,7 @@ import quickfix.fix44.SecurityDefinitionRequest;
 import quickfix.fix50sp1.ApplicationMessageRequest;
 
 
-public class Fix44MessageHandler extends MessageCracker {
+public class Fix44MessageHandler extends MessageHandler {
 	
 	
 	

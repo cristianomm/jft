@@ -8,61 +8,7 @@ import quickfix.SessionStateListener;
 
 public class SessionRepository {
 	
-	
-	
-	private class SessionListener implements SessionStateListener{
-
-		@Override
-		public void onConnect() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onDisconnect() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onHeartBeatTimeout() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onLogon() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onLogout() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onMissedHeartBeat() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onRefresh() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onReset() {
-			// TODO Auto-generated method stub
-			
-		}
 		
-	}
-	
-	
 	private static SessionRepository instance;
 	private HashMap<String, SessionID> sessions;
 	
