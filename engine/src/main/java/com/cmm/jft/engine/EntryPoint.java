@@ -4,6 +4,7 @@
 package com.cmm.jft.engine;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -24,7 +25,7 @@ import quickfix.field.OrdType;
 
 /**
  * <p><code>EntryPoint.java</code></p>
- * @author Cristiano
+ * @author Cristiano M Martins
  * @version 17/06/2015 17:00:55
  *
  */
@@ -33,8 +34,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	
 	private HashSet<String> validOrderTypes;
 	private static final String VALID_ORDER_TYPES_KEY = "ValidOrderTypes";
-	
-	
+		
 	
 	/**
 	 * http://www.codeproject.com/Articles/757708/Mock-FIX-Trading-Server
@@ -45,11 +45,19 @@ public class EntryPoint extends MessageCracker implements Application {
 	 */
 	public EntryPoint(SessionSettings settings) throws ConfigError, FieldConvertError {
 		this.validOrderTypes = new HashSet<String>();
-		initializeValidOrderTypes(settings);
+		initEntryPoint(settings);
+	}
+	
+	private void initEntryPoint(SessionSettings settings) throws ConfigError, FieldConvertError {
+		initValidOrderTypes(settings);
+		initEncoders(settings);
+		initHandlers(settings);
+		initRepositories();
+		
 	}
 	
 	
-	private void initializeValidOrderTypes(SessionSettings settings) throws ConfigError, FieldConvertError {
+	private void initValidOrderTypes(SessionSettings settings) throws ConfigError, FieldConvertError {
         if (settings.isSetting(VALID_ORDER_TYPES_KEY)) {
             List<String> orderTypes = Arrays
                     .asList(settings.getString(VALID_ORDER_TYPES_KEY).trim().split("\\s*,\\s*"));
@@ -64,7 +72,6 @@ public class EntryPoint extends MessageCracker implements Application {
 	 * @see quickfix.Application#onCreate(quickfix.SessionID)
 	 */
 	public void onCreate(SessionID sessionId) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -72,7 +79,11 @@ public class EntryPoint extends MessageCracker implements Application {
 	 * @see quickfix.Application#onLogon(quickfix.SessionID)
 	 */
 	public void onLogon(SessionID sessionId) {
-		SessionRepository.getInstance().addSession(sessionId);
+		if(verifyLogon(sessionId)) {
+			SessionRepository.getInstance().addSession(sessionId);
+			
+		}
+		
 	}
 
 	/* (non-Javadoc)
@@ -118,5 +129,39 @@ public class EntryPoint extends MessageCracker implements Application {
 		crack(message, sessionId);
 		
 	}
-
+	
+	private boolean verifyLogon(SessionID sessionId) {
+		
+		boolean logon = false;
+		
+		logon = true;
+		
+		return logon;
+	}
+	
+	
+	
+	public void initEncoders(SessionSettings settings) {
+		
+	}
+	
+	public void initHandlers(SessionSettings settings) {
+		
+	}
+	
+	public void initRepositories() {
+		
+		MessageRepository.getInstance();
+		SessionRepository.getInstance();
+		
+	}
+	
+	public void initOrderBooks(SessionSettings settings) {
+		
+		
+		
+	}
+	
+	
+	
 }

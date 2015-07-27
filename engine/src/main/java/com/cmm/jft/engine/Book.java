@@ -15,11 +15,13 @@ import com.cmm.jft.trading.marketdata.MarketOrder;
  */
 public class Book {
 	
+	private String symbol;
 	private ConcurrentLinkedQueue<MarketOrder> buyOrders;
 	private ConcurrentLinkedQueue<MarketOrder> sellOrders;
 	
 	
-	public Book(){
+	public Book(String symbol){
+		this.symbol = symbol;
 		this.buyOrders = new ConcurrentLinkedQueue<>();
 		this.sellOrders = new ConcurrentLinkedQueue<>();
 	}
@@ -39,6 +41,8 @@ public class Book {
 		return this.sellOrders;
 	}
 	
-	
+	public String getSymbol() {
+		return symbol;
+	}
 	
 }
