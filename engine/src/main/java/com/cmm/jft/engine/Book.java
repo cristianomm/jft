@@ -16,14 +16,14 @@ import com.cmm.jft.trading.marketdata.MarketOrder;
 public class Book {
 	
 	private String symbol;
-	private ConcurrentLinkedQueue<MarketOrder> buyOrders;
-	private ConcurrentLinkedQueue<MarketOrder> sellOrders;
+	private ConcurrentLinkedQueue<MarketOrder> buyQueue;
+	private ConcurrentLinkedQueue<MarketOrder> sellQueue;
 	
 	
 	public Book(String symbol){
 		this.symbol = symbol;
-		this.buyOrders = new ConcurrentLinkedQueue<>();
-		this.sellOrders = new ConcurrentLinkedQueue<>();
+		this.buyQueue = new ConcurrentLinkedQueue<>();
+		this.sellQueue = new ConcurrentLinkedQueue<>();
 	}
 	
 	
@@ -31,14 +31,14 @@ public class Book {
 	 * @return the buyOrders
 	 */
 	public ConcurrentLinkedQueue<MarketOrder> getBuyOrders() {
-		return this.buyOrders;
+		return this.buyQueue;
 	}
 	
 	/**
 	 * @return the sellOrders
 	 */
 	public ConcurrentLinkedQueue<MarketOrder> getSellOrders() {
-		return this.sellOrders;
+		return this.sellQueue;
 	}
 	
 	public String getSymbol() {
