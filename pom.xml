@@ -16,5 +16,6 @@
     <module>init</module>
     <module>jft_model</module>
     <module>engine</module>
+    <module>conector</module>
   </modules>
 </project>

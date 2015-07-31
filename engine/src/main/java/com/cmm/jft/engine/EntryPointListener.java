@@ -174,7 +174,12 @@ public class EntryPointListener implements Service {
 	}
 	
 	
-	
+	public static void main(String[] args) {
+		EntryPointListener listener = new EntryPointListener();
+		listener.start();
+		
+		
+	}
 	
 	
 

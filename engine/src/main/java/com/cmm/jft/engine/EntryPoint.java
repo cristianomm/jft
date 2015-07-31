@@ -72,7 +72,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	 * @see quickfix.Application#onCreate(quickfix.SessionID)
 	 */
 	public void onCreate(SessionID sessionId) {
-		
+		System.out.println("create " + sessionId.getSenderCompID());
 	}
 
 	/* (non-Javadoc)
@@ -125,7 +125,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	public void fromApp(Message message, SessionID sessionId)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
 			UnsupportedMessageType {
-		
+		verifyLogon(sessionId);
 		crack(message, sessionId);
 		
 	}
@@ -133,7 +133,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	private boolean verifyLogon(SessionID sessionId) {
 		
 		boolean logon = false;
-		
+		System.out.println("trying connection: " + sessionId.getSenderCompID());
 		logon = true;
 		
 		return logon;
