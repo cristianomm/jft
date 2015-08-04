@@ -15,12 +15,27 @@ import quickfix.fix44.QuoteCancel;
 import quickfix.fix44.QuoteRequest;
 import quickfix.fix44.QuoteRequestReject;
 import quickfix.fix44.SecurityDefinitionRequest;
-import quickfix.fix50sp1.ApplicationMessageRequest;
 
 
 public class Fix44MessageHandler extends MessageHandler {
 	
 	
+	private static Fix44MessageHandler instance;
+	
+	
+	private Fix44MessageHandler(){
+		
+	}
+	
+	/**
+	 * @return the instance
+	 */
+	public static Fix44MessageHandler getInstance() {
+		if(instance == null){
+			instance = new Fix44MessageHandler();
+		}
+		return instance;
+	}
 	
 	public void onMessage(NewOrderSingle message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
@@ -73,11 +88,6 @@ public class Fix44MessageHandler extends MessageHandler {
 	}
 	
 	public void onMessage(AllocationInstruction message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(ApplicationMessageRequest message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
 	}

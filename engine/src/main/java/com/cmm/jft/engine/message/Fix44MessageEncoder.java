@@ -47,9 +47,6 @@ import quickfix.fix44.Reject;
 import quickfix.fix44.ResendRequest;
 import quickfix.fix44.SequenceReset;
 import quickfix.fix44.TestRequest;
-import quickfix.fix50sp1.ApplicationMessageReport;
-import quickfix.fix50sp1.ApplicationMessageRequest;
-import quickfix.fix50sp1.ApplicationMessageRequestAck;
 import quickfix.fix44.ExecutionReport;
 import quickfix.fix44.NewOrderCross;
 import quickfix.fix44.NewOrderSingle;
@@ -221,33 +218,33 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see com.cmm.jft.engine.message.MessageEncoder#applicationMessageReport()
-	 */
-	public ApplicationMessageReport applicationMessageReport(){
-		ApplicationMessageReport report = new ApplicationMessageReport();
-		
-		return report;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.cmm.jft.engine.message.MessageEncoder#applicationMessageRequest()
-	 */
-	public ApplicationMessageRequest applicationMessageRequest(){
-		ApplicationMessageRequest request = new ApplicationMessageRequest();
-		
-		return request;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.cmm.jft.engine.message.MessageEncoder#applicationMessageRequestAck()
-	 */
-	public ApplicationMessageRequestAck applicationMessageRequestAck(){
-		ApplicationMessageRequestAck ack = new ApplicationMessageRequestAck();
-		
-		return ack;
-	}
-	
+//	/* (non-Javadoc)
+//	 * @see com.cmm.jft.engine.message.MessageEncoder#applicationMessageReport()
+//	 */
+//	public ApplicationMessageReport applicationMessageReport(){
+//		ApplicationMessageReport report = new ApplicationMessageReport();
+//		
+//		return report;
+//	}
+//	
+//	/* (non-Javadoc)
+//	 * @see com.cmm.jft.engine.message.MessageEncoder#applicationMessageRequest()
+//	 */
+//	public ApplicationMessageRequest applicationMessageRequest(){
+//		ApplicationMessageRequest request = new ApplicationMessageRequest();
+//		
+//		return request;
+//	}
+//	
+//	/* (non-Javadoc)
+//	 * @see com.cmm.jft.engine.message.MessageEncoder#applicationMessageRequestAck()
+//	 */
+//	public ApplicationMessageRequestAck applicationMessageRequestAck(){
+//		ApplicationMessageRequestAck ack = new ApplicationMessageRequestAck();
+//		
+//		return ack;
+//	}
+//	
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageEncoder#businessMessageReject()
 	 */

@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import com.cmm.jft.engine.message.Fix44MessageEncoder;
+import com.cmm.jft.engine.message.Fix44MessageHandler;
+import com.cmm.jft.engine.message.MessageEncoder;
+import com.cmm.jft.engine.message.MessageHandler;
+
 import quickfix.Application;
 import quickfix.ConfigError;
 import quickfix.DoNotSend;
@@ -30,11 +35,12 @@ import quickfix.field.OrdType;
  *
  */
 public class EntryPoint extends MessageCracker implements Application {
-
 	
-	private HashSet<String> validOrderTypes;
-	private static final String VALID_ORDER_TYPES_KEY = "ValidOrderTypes";
-		
+	
+	private HashMap<String, MessageHandler> handlers;
+	private HashMap<String, MessageEncoder> encoders;
+	
+	
 	
 	/**
 	 * http://www.codeproject.com/Articles/757708/Mock-FIX-Trading-Server
@@ -44,28 +50,15 @@ public class EntryPoint extends MessageCracker implements Application {
 	 * 
 	 */
 	public EntryPoint(SessionSettings settings) throws ConfigError, FieldConvertError {
-		this.validOrderTypes = new HashSet<String>();
 		initEntryPoint(settings);
 	}
 	
 	private void initEntryPoint(SessionSettings settings) throws ConfigError, FieldConvertError {
-		initValidOrderTypes(settings);
 		initEncoders(settings);
 		initHandlers(settings);
 		initRepositories();
 		
 	}
-	
-	
-	private void initValidOrderTypes(SessionSettings settings) throws ConfigError, FieldConvertError {
-        if (settings.isSetting(VALID_ORDER_TYPES_KEY)) {
-            List<String> orderTypes = Arrays
-                    .asList(settings.getString(VALID_ORDER_TYPES_KEY).trim().split("\\s*,\\s*"));
-            validOrderTypes.addAll(orderTypes);
-        } else {
-            validOrderTypes.add(OrdType.LIMIT + "");
-        }
-    }
 	
 	
 	/* (non-Javadoc)
@@ -142,11 +135,13 @@ public class EntryPoint extends MessageCracker implements Application {
 	
 	
 	public void initEncoders(SessionSettings settings) {
-		
+		this.encoders = new HashMap<>();
+		this.encoders.put("FIX.4.4", Fix44MessageEncoder.getInstance());
 	}
 	
 	public void initHandlers(SessionSettings settings) {
-		
+		this.handlers = new HashMap<>();
+		this.handlers.put("FIX.4.4", Fix44MessageHandler.getInstance());
 	}
 	
 	public void initRepositories() {
@@ -157,8 +152,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	}
 	
 	public void initOrderBooks(SessionSettings settings) {
-		
-		
+		BookRepository.getInstance();
 		
 	}
 	

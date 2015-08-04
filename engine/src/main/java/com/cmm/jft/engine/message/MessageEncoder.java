@@ -26,9 +26,9 @@ import quickfix.fix44.SecurityDefinition;
 import quickfix.fix44.SecurityDefinitionRequest;
 import quickfix.fix44.SequenceReset;
 import quickfix.fix44.TestRequest;
-import quickfix.fix50sp1.ApplicationMessageReport;
-import quickfix.fix50sp1.ApplicationMessageRequest;
-import quickfix.fix50sp1.ApplicationMessageRequestAck;
+//import quickfix.fix50sp1.ApplicationMessageReport;
+//import quickfix.fix50sp1.ApplicationMessageRequest;
+//import quickfix.fix50sp1.ApplicationMessageRequestAck;
 
 public interface MessageEncoder {
 
@@ -58,12 +58,12 @@ public interface MessageEncoder {
 	AllocationInstruction allocationInstruction();
 
 	AllocationReport allocationReport();
-
-	ApplicationMessageReport applicationMessageReport();
-
-	ApplicationMessageRequest applicationMessageRequest();
-
-	ApplicationMessageRequestAck applicationMessageRequestAck();
+//
+//	ApplicationMessageReport applicationMessageReport();
+//
+//	ApplicationMessageRequest applicationMessageRequest();
+//
+//	ApplicationMessageRequestAck applicationMessageRequestAck();
 
 	BusinessMessageReject businessMessageReject();
 

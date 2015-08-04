@@ -3,6 +3,7 @@
  */
 package com.cmm.jft.engine;
 
+import java.util.HashSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.cmm.jft.trading.marketdata.MarketOrder;
@@ -16,12 +17,14 @@ import com.cmm.jft.trading.marketdata.MarketOrder;
 public class Book {
 	
 	private String symbol;
+	private HashSet<String> validOrderTypes;
 	private ConcurrentLinkedQueue<MarketOrder> buyQueue;
 	private ConcurrentLinkedQueue<MarketOrder> sellQueue;
 	
 	
-	public Book(String symbol){
+	public Book(String symbol, HashSet<String> orderTypes){
 		this.symbol = symbol;
+		this.validOrderTypes = orderTypes;
 		this.buyQueue = new ConcurrentLinkedQueue<>();
 		this.sellQueue = new ConcurrentLinkedQueue<>();
 	}
