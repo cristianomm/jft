@@ -26,12 +26,12 @@ import quickfix.SocketInitiator;
 import quickfix.fix44.Heartbeat;
 
 /**
- * <p><code>Main.java</code></p>
+ * <p><code>App.java</code></p>
  * @author Cristiano
  * @version 31 de jul de 2015 00:00:55
  *
  */
-public class Main {
+public class App {
 
 	private static final CountDownLatch shutdownLatch = new CountDownLatch(1);
 
@@ -41,7 +41,7 @@ public class Main {
 	
 	
 	public void init() throws Exception {
-		InputStream inputStream = Main.class.getResourceAsStream("ClientConnector.cfg");
+		InputStream inputStream = App.class.getResourceAsStream("ClientConnector.cfg");
 		
 		SessionSettings settings = new SessionSettings(inputStream);
 		inputStream.close();
@@ -85,7 +85,7 @@ public class Main {
 	}
 	public static void main(String[] args) throws Exception {
 
-		Main main = new Main();
+		App main = new App();
 		main.init();
 		if (!System.getProperties().containsKey("openfix")) {
 			main.logon();
