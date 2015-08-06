@@ -3,10 +3,7 @@
  */
 package com.cmm.jft.engine;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 
 import com.cmm.jft.engine.message.Fix44MessageEncoder;
 import com.cmm.jft.engine.message.Fix44MessageHandler;
@@ -21,12 +18,10 @@ import quickfix.FieldNotFound;
 import quickfix.IncorrectDataFormat;
 import quickfix.IncorrectTagValue;
 import quickfix.Message;
-import quickfix.MessageCracker;
 import quickfix.RejectLogon;
 import quickfix.SessionID;
 import quickfix.SessionSettings;
 import quickfix.UnsupportedMessageType;
-import quickfix.field.OrdType;
 
 /**
  * <p><code>EntryPoint.java</code></p>
@@ -34,7 +29,7 @@ import quickfix.field.OrdType;
  * @version 17/06/2015 17:00:55
  *
  */
-public class EntryPoint extends MessageCracker implements Application {
+public class EntryPoint implements Application {
 	
 	
 	private HashMap<String, MessageHandler> handlers;
@@ -65,7 +60,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	 * @see quickfix.Application#onCreate(quickfix.SessionID)
 	 */
 	public void onCreate(SessionID sessionId) {
-		System.out.println("create " + sessionId.getSenderCompID());
+		System.out.println("create " + sessionId.getTargetCompID());
 	}
 
 	/* (non-Javadoc)
@@ -119,9 +114,10 @@ public class EntryPoint extends MessageCracker implements Application {
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
 			UnsupportedMessageType {
 		verifyLogon(sessionId);
-		crack(message, sessionId);
+		//crack(message, sessionId);
 		
 	}
+			
 	
 	private boolean verifyLogon(SessionID sessionId) {
 		
@@ -141,7 +137,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	
 	public void initHandlers(SessionSettings settings) {
 		this.handlers = new HashMap<>();
-		this.handlers.put("FIX.4.4", Fix44MessageHandler.getInstance());
+		this.handlers.put("FIX.4.4", new Fix44MessageHandler());
 	}
 	
 	public void initRepositories() {

@@ -37,7 +37,7 @@ import quickfix.MessageStoreFactory;
 import quickfix.RuntimeError;
 import quickfix.SessionID;
 import quickfix.SessionSettings;
-import quickfix.ThreadedSocketAcceptor;
+import quickfix.SocketAcceptor;
 import quickfix.mina.acceptor.DynamicAcceptorSessionProvider;
 import quickfix.mina.acceptor.DynamicAcceptorSessionProvider.TemplateMapping;
 
@@ -49,30 +49,24 @@ import quickfix.mina.acceptor.DynamicAcceptorSessionProvider.TemplateMapping;
  */
 public class EntryPointListener implements Service {
 	
+	
 	private EntryPoint entryPoint;
+	private SocketAcceptor acceptor;
+	
 	private JmxExporter jmxExporter;
-	private ThreadedSocketAcceptor acceptor;
 	private ObjectName connectorObjectName;
-	private final Map<InetSocketAddress, List<TemplateMapping>> dynamicSessionMappings;
-
-
-	/**
-	 * 
-	 */
-	public EntryPointListener() {
 		
-		this.dynamicSessionMappings = new HashMap<InetSocketAddress, List<TemplateMapping>>();
+	
+	public EntryPointListener() {
 		initListener();
 	}
-
+/*
 	private void configureDynamicSessions(SessionSettings settings, Application application,
 			MessageStoreFactory messageStoreFactory, LogFactory logFactory,
 			MessageFactory messageFactory) throws ConfigError, FieldConvertError {
 		//
 		// If a session template is detected in the settings, then
 		// set up a dynamic session provider.
-		//
-
 		Iterator<SessionID> sectionIterator = settings.sectionIterator();
 		while (sectionIterator.hasNext()) {
 			SessionID sessionID = sectionIterator.next();
@@ -82,11 +76,9 @@ public class EntryPointListener implements Service {
 			}
 		}
 
-		for (Map.Entry<InetSocketAddress, List<TemplateMapping>> entry : dynamicSessionMappings
-				.entrySet()) {
+		for (Map.Entry<InetSocketAddress, List<TemplateMapping>> entry : dynamicSessionMappings.entrySet()) {
 			acceptor.setSessionProvider(entry.getKey(), new DynamicAcceptorSessionProvider(
-					settings, entry.getValue(), application, messageStoreFactory, logFactory,
-					messageFactory));
+					settings, entry.getValue(), application, messageStoreFactory, logFactory, messageFactory));
 		}
 	}
 
@@ -115,6 +107,7 @@ public class EntryPointListener implements Service {
 		return settings.isSetting(sessionID, SETTING_ACCEPTOR_TEMPLATE)
 				&& settings.getBool(sessionID, SETTING_ACCEPTOR_TEMPLATE);
 	}
+*/
 
 
 	/* (non-Javadoc)
@@ -160,9 +153,9 @@ public class EntryPointListener implements Service {
 			LogFactory logFactory = new FileLogFactory(settings);
 			MessageFactory messageFactory = new DefaultMessageFactory();
 			
-			acceptor = new ThreadedSocketAcceptor(entryPoint, storeFactory, settings, logFactory, messageFactory);
+			acceptor = new SocketAcceptor(entryPoint, storeFactory, settings, logFactory, messageFactory);
 			
-			configureDynamicSessions(settings, entryPoint, storeFactory, logFactory, messageFactory);
+			//configureDynamicSessions(settings, entryPoint, storeFactory, logFactory, messageFactory);
 			
 			jmxExporter = new JmxExporter();
 	        connectorObjectName = jmxExporter.register(acceptor);
@@ -175,12 +168,23 @@ public class EntryPointListener implements Service {
 	
 	
 	public static void main(String[] args) {
-		EntryPointListener listener = new EntryPointListener();
-		listener.start();
 		
+		/*
+		System.out.println(StrictMath.multiplyExact(7, 4));
+		
+		float num = 0f;
+		
+		for(int i=0;i<10000;i++) {
+			num+= .0000001;
+		}
+		System.out.println(String.format("%.25f", num));
+		System.exit(0);
+		*/
+		
+		EntryPointListener listener = new EntryPointListener();
+		listener.start();		
 		
 	}
-	
 	
 
 }

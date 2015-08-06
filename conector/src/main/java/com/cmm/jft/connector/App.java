@@ -23,7 +23,12 @@ import quickfix.Session;
 import quickfix.SessionID;
 import quickfix.SessionSettings;
 import quickfix.SocketInitiator;
+import quickfix.field.ClOrdID;
+import quickfix.field.OrdType;
+import quickfix.field.Side;
+import quickfix.field.TransactTime;
 import quickfix.fix44.Heartbeat;
+import quickfix.fix44.NewOrderSingle;
 
 /**
  * <p><code>App.java</code></p>
@@ -33,7 +38,7 @@ import quickfix.fix44.Heartbeat;
  */
 public class App {
 
-	private static final CountDownLatch shutdownLatch = new CountDownLatch(1);
+	//private static final CountDownLatch shutdownLatch = new CountDownLatch(1);
 
 	private boolean initiatorStarted = false;
 	private Initiator initiator = null;
@@ -67,11 +72,12 @@ public class App {
 			} catch (Exception e) {
 				Logging.getInstance().log(getClass(), e, Level.ERROR);
 			}
-		} else {
-			for (SessionID sessionId : initiator.getSessions()) {
-				Session.lookupSession(sessionId).logon();
-			}
+		} 
+		
+		for (SessionID sessionId : initiator.getSessions()) {
+			Session.lookupSession(sessionId).logon();
 		}
+		
 	}
 
 	public void logout() {
@@ -81,7 +87,7 @@ public class App {
 	}
 
 	public void stop() {
-		shutdownLatch.countDown();
+		//shutdownLatch.countDown();
 	}
 	public static void main(String[] args) throws Exception {
 
@@ -90,7 +96,11 @@ public class App {
 		if (!System.getProperties().containsKey("openfix")) {
 			main.logon();
 		}
-		shutdownLatch.await();
+		
+		Thread.sleep(1000);
+		
+		main.connector.sendTestMessage();
+		
 	}
 
 }
