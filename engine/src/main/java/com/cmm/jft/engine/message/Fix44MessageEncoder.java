@@ -6,6 +6,7 @@ package com.cmm.jft.engine.message;
 import quickfix.Message.Header;
 import quickfix.field.AvgPx;
 import quickfix.field.BeginSeqNo;
+import quickfix.field.ClOrdID;
 import quickfix.field.CumQty;
 import quickfix.field.DeliverToCompID;
 import quickfix.field.EncryptMethod;
@@ -19,7 +20,9 @@ import quickfix.field.LeavesQty;
 import quickfix.field.MsgSeqNum;
 import quickfix.field.NewPassword;
 import quickfix.field.NewSeqNo;
+import quickfix.field.NoPartyIDs;
 import quickfix.field.OrdStatus;
+import quickfix.field.OrdType;
 import quickfix.field.OrderID;
 import quickfix.field.OrderQty;
 import quickfix.field.OrigSendingTime;
@@ -34,9 +37,11 @@ import quickfix.field.SenderCompID;
 import quickfix.field.SendingTime;
 import quickfix.field.Side;
 import quickfix.field.StopPx;
+import quickfix.field.Symbol;
 import quickfix.field.TargetCompID;
 import quickfix.field.TestReqID;
 import quickfix.field.Text;
+import quickfix.field.TransactTime;
 import quickfix.fix44.AllocationInstruction;
 import quickfix.fix44.AllocationReport;
 import quickfix.fix44.BusinessMessageReject;
@@ -296,6 +301,15 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	public NewOrderSingle newOrderSingle(){
 		NewOrderSingle orderSingle = new NewOrderSingle();
 		
+		orderSingle.set(new ClOrdID("123456")); 
+		orderSingle.set(new NoPartyIDs(0));
+		
+		orderSingle.set(new Symbol("WINV15"));		
+		orderSingle.set(new Side('1')); 
+		orderSingle.set(new TransactTime());
+		
+		orderSingle.set(new OrderQty(1));
+		orderSingle.set(new OrdType('1'));
 		
 		return orderSingle;
 	}

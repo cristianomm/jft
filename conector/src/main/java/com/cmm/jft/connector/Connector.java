@@ -3,7 +3,6 @@
  */
 package com.cmm.jft.connector;
 
-import org.apache.mina.util.SessionUtil;
 
 import quickfix.Application;
 import quickfix.DoNotSend;
@@ -41,7 +40,6 @@ public class Connector extends MessageCracker implements Application{
 	 */
 	@Override
 	public void onCreate(SessionID sessionId) {
-		System.out.println("create " + sessionId.getSenderCompID());
 		
 	}
 
@@ -50,9 +48,7 @@ public class Connector extends MessageCracker implements Application{
 	 */
 	@Override
 	public void onLogon(SessionID sessionId) {
-		System.out.println("logon " + sessionId.getSenderCompID());
 		this.sessionID  = sessionId;
-		
 	}
 
 	/* (non-Javadoc)
@@ -60,8 +56,7 @@ public class Connector extends MessageCracker implements Application{
 	 */
 	@Override
 	public void onLogout(SessionID sessionId) {
-		System.out.println("logout " + sessionId.getSenderCompID());
-		this.sessionID = sessionId;
+		
 	}
 
 	/* (non-Javadoc)
@@ -69,7 +64,6 @@ public class Connector extends MessageCracker implements Application{
 	 */
 	@Override
 	public void toAdmin(Message message, SessionID sessionId) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -79,7 +73,6 @@ public class Connector extends MessageCracker implements Application{
 	@Override
 	public void fromAdmin(Message message, SessionID sessionId)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, RejectLogon {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -88,7 +81,6 @@ public class Connector extends MessageCracker implements Application{
 	 */
 	@Override
 	public void toApp(Message message, SessionID sessionId) throws DoNotSend {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -98,7 +90,6 @@ public class Connector extends MessageCracker implements Application{
 	@Override
 	public void fromApp(Message message, SessionID sessionId)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -131,6 +122,7 @@ public class Connector extends MessageCracker implements Application{
 				
 		if(Session.doesSessionExist(sessionID)) {
 			System.out.println("Sending test message: " + message);
+			ret = send(message, this.sessionID);
 			ret = send(message, this.sessionID);
 			System.out.println("Send status: " + ret);
 		}

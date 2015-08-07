@@ -19,13 +19,13 @@ import quickfix.fix44.QuoteRequestReject;
 import quickfix.fix44.SecurityDefinitionRequest;
 
 
-public class Fix44MessageHandler extends MessageCracker implements MessageHandler {
+public class Fix44MessageHandler implements MessageHandler {
 	
 	
 	//private static Fix44MessageHandler instance;
 		
 	public Fix44MessageHandler(){
-		initialize(this);
+		//initialize(this);
 		System.out.println(getClass() + " initialized.");
 	}
 	
@@ -40,67 +40,58 @@ public class Fix44MessageHandler extends MessageCracker implements MessageHandle
 		return instance;
 	}*/
 	
-	@Handler
+	
 	public void onMessage(NewOrderSingle message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		System.out.println("MH: " + message);
 	}
 	
-	@Handler
+	
 	public void onMessage(OrderCancelReplaceRequest message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
 	}
 	
-	@Handler
 	public void onMessage(OrderCancelRequest message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
 	}
 	
-	@Handler
 	public void onMessage(NewOrderCross message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
 	}
 	
-	@Handler
 	public void onMessage(SecurityDefinitionRequest message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
 	}
 	
-	@Handler
 	public void onMessage(QuoteRequest message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
 	}
 	
-	@Handler
 	public void onMessage(Quote message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
 	}
 	
-	@Handler
 	public void onMessage(QuoteCancel message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
 	}
 	
-	@Handler
 	public void onMessage(QuoteRequestReject message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
 	}
 	
-	@Handler
 	public void onMessage(PositionMaintenanceRequest message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
 	}
 	
-	@Handler
 	public void onMessage(AllocationInstruction message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		

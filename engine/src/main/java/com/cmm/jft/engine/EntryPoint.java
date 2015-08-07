@@ -18,6 +18,7 @@ import quickfix.FieldNotFound;
 import quickfix.IncorrectDataFormat;
 import quickfix.IncorrectTagValue;
 import quickfix.Message;
+import quickfix.MessageCracker;
 import quickfix.RejectLogon;
 import quickfix.SessionID;
 import quickfix.SessionSettings;
@@ -29,7 +30,7 @@ import quickfix.UnsupportedMessageType;
  * @version 17/06/2015 17:00:55
  *
  */
-public class EntryPoint implements Application {
+public class EntryPoint extends MessageCracker implements Application {
 	
 	
 	private HashMap<String, MessageHandler> handlers;
@@ -113,8 +114,10 @@ public class EntryPoint implements Application {
 	public void fromApp(Message message, SessionID sessionId)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
 			UnsupportedMessageType {
-		verifyLogon(sessionId);
-		//crack(message, sessionId);
+		
+		if(verifyLogon(sessionId)){
+			crack(message, sessionId);
+		}
 		
 	}
 			
@@ -137,7 +140,11 @@ public class EntryPoint implements Application {
 	
 	public void initHandlers(SessionSettings settings) {
 		this.handlers = new HashMap<>();
-		this.handlers.put("FIX.4.4", new Fix44MessageHandler());
+		
+		MessageHandler handler = new Fix44MessageHandler();
+		initialize(handler);
+		this.handlers.put("FIX.4.4", handler);
+		
 	}
 	
 	public void initRepositories() {

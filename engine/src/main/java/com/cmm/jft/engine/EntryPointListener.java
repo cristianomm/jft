@@ -55,12 +55,38 @@ public class EntryPointListener implements Service {
 	
 	private JmxExporter jmxExporter;
 	private ObjectName connectorObjectName;
+	private HashMap<InetSocketAddress, List<TemplateMapping>> dynamicSessionMappings;
 		
 	
 	public EntryPointListener() {
+		this.dynamicSessionMappings = new HashMap<InetSocketAddress, List<TemplateMapping>>();
 		initListener();
 	}
-/*
+	
+	
+	private void initListener(){
+		try{
+			SessionSettings settings = new SessionSettings(EntryPointListener.class.getResourceAsStream("EntryPointListener.cfg"));
+			
+			entryPoint = new EntryPoint(settings);
+			MessageStoreFactory storeFactory = new FileStoreFactory(settings);
+			LogFactory logFactory = new FileLogFactory(settings);
+			MessageFactory messageFactory = new DefaultMessageFactory();
+			
+			acceptor = new SocketAcceptor(entryPoint, storeFactory, settings, logFactory, messageFactory);
+			
+			configureDynamicSessions(settings, entryPoint, storeFactory, logFactory, messageFactory);
+			
+			jmxExporter = new JmxExporter();
+	        connectorObjectName = jmxExporter.register(acceptor);
+	        
+		}catch(ConfigError | FieldConvertError | JMException e){
+			Logging.getInstance().log(getClass(), e, Level.FATAL);
+		}
+
+	}
+	
+
 	private void configureDynamicSessions(SessionSettings settings, Application application,
 			MessageStoreFactory messageStoreFactory, LogFactory logFactory,
 			MessageFactory messageFactory) throws ConfigError, FieldConvertError {
@@ -107,7 +133,6 @@ public class EntryPointListener implements Service {
 		return settings.isSetting(sessionID, SETTING_ACCEPTOR_TEMPLATE)
 				&& settings.getBool(sessionID, SETTING_ACCEPTOR_TEMPLATE);
 	}
-*/
 
 
 	/* (non-Javadoc)
@@ -141,29 +166,6 @@ public class EntryPointListener implements Service {
 		}
 
 		return running;
-	}
-	
-
-	private void initListener(){
-		try{
-			SessionSettings settings = new SessionSettings(EntryPointListener.class.getResourceAsStream("EntryPointListener.cfg"));
-			
-			entryPoint = new EntryPoint(settings);
-			MessageStoreFactory storeFactory = new FileStoreFactory(settings);
-			LogFactory logFactory = new FileLogFactory(settings);
-			MessageFactory messageFactory = new DefaultMessageFactory();
-			
-			acceptor = new SocketAcceptor(entryPoint, storeFactory, settings, logFactory, messageFactory);
-			
-			//configureDynamicSessions(settings, entryPoint, storeFactory, logFactory, messageFactory);
-			
-			jmxExporter = new JmxExporter();
-	        connectorObjectName = jmxExporter.register(acceptor);
-	        
-		}catch(ConfigError | FieldConvertError | JMException e){
-			Logging.getInstance().log(getClass(), e, Level.FATAL);
-		}
-
 	}
 	
 	

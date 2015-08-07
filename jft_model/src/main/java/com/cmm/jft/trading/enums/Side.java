@@ -13,7 +13,7 @@ package com.cmm.jft.trading.enums;
  *
  */
 public enum Side {
-	BUY("B"), SELL("S");
+	BUY("1"), SELL("2");
 
 	String value;
 
@@ -24,9 +24,9 @@ public enum Side {
 	public static Side getByValue(String value) {
 
 		Side s = null;
-		if (value.equalsIgnoreCase("b") || value.equalsIgnoreCase("c")) {
+		if (value.equalsIgnoreCase("b") || value.equalsIgnoreCase("c") || value.equals("1")) {
 			s = BUY;
-		} else if (value.equalsIgnoreCase("s") || value.equalsIgnoreCase("v")) {
+		} else if (value.equalsIgnoreCase("s") || value.equalsIgnoreCase("v") || value.equals("2")) {
 			s = SELL;
 		}
 		return s;
