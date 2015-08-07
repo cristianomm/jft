@@ -48,4 +48,22 @@ public class Book {
 		return symbol;
 	}
 	
+	public void getBookInfo() {
+		
+	}
+	
+	public void validateOrder() {
+		
+	}
+	
+	public void addOrder() {
+		
+	}
+	
+	public void removeOrder() {
+		
+	}
+	
+	
+	
 }

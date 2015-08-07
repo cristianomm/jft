@@ -218,7 +218,7 @@ public class Position implements DBObject<Position> {
 	public int getOpenPosition() {
 		int buy = 0, sell = 0;
 		for (Orders o : ordersList) {
-			if (o.getOrderStatus() == OrderStatus.OPEN || o.getOrderStatus() == OrderStatus.PARTIALLY_FILLED) {
+			if (o.getOrderStatus() == OrderStatus.NEW || o.getOrderStatus() == OrderStatus.PARTIALLY_FILLED) {
 				buy += o.getSide() == Side.BUY ? o.getExecutedVolume() : 0;
 				sell += o.getSide() == Side.SELL ? o.getExecutedVolume() : 0;
 			}

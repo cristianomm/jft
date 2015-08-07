@@ -365,7 +365,7 @@ public class Orders implements DBObject<Orders> {
 	public boolean addExecution(Date executionDateTime, int execVolume, double execPrice) throws OrderException{
 		boolean ret = false;
 		
-		if(orderStatus == OrderStatus.OPEN || orderStatus == OrderStatus.PARTIALLY_FILLED){
+		if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED){
 			//volume executado eh menor que o volume total e menor que o volume atual
 			if(execVolume<=volume && execVolume <= (volume-executedVolume)){
 				// cria o evento
@@ -397,7 +397,7 @@ public class Orders implements DBObject<Orders> {
 	
 	public boolean changePrice(double price) throws OrderException {
 		boolean ret = false;
-		if(orderStatus == OrderStatus.OPEN){
+		if(orderStatus == OrderStatus.NEW){
 			this.price = price;
 			ret = true;
 		}else{
@@ -409,7 +409,7 @@ public class Orders implements DBObject<Orders> {
 		
 	public boolean changeVolume(int volume) throws OrderException {
 		boolean ret = false;
-		if(orderStatus == OrderStatus.OPEN){
+		if(orderStatus == OrderStatus.NEW){
 			
 			// verifica se o volume esta de acordo com o lote padrao do simbolo,
 			// caso n esteja, lanca exception

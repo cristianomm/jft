@@ -3,7 +3,6 @@ package com.cmm.jft.engine.message;
 
 import quickfix.FieldNotFound;
 import quickfix.IncorrectTagValue;
-import quickfix.MessageCracker;
 import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
 import quickfix.fix44.AllocationInstruction;
@@ -29,18 +28,7 @@ public class Fix44MessageHandler implements MessageHandler {
 		System.out.println(getClass() + " initialized.");
 	}
 	
-	/**
-	 * @return the instance
-	 */
-	/*public static Fix44MessageHandler getInstance() {
-		if(instance == null){
-			instance = new Fix44MessageHandler();
-			instance.initialize(instance);
-		}
-		return instance;
-	}*/
-	
-	
+		
 	public void onMessage(NewOrderSingle message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		System.out.println("MH: " + message);

@@ -26,8 +26,9 @@ public enum OrderStatus {
 	 * valorizados com: Order status: 0 - New 1 - Partially Filled 2 - Filled 4
 	 * - Canceled 5 - Replaced 8 - Rejected C - Expired
 	 */
-	OPEN("0"), PARTIALLY_FILLED("1"), FILLED("2"), CANCELED("4"), 
-	REPLACED("5"), REJECTED("8"), EXPIRED("C"),
+	NEW("0"), PARTIALLY_FILLED("1"), FILLED("2"), CANCELED("4"), 
+	REPLACED("5"), REJECTED("8"), SUSPENDED("9"), EXPIRED("C"),
+	PREVIOUSFS("Z"),
 	// JFT
 	CREATED("N"), SUBMITTED("S");
 
