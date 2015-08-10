@@ -1,5 +1,9 @@
 package com.cmm.jft.engine.message;
 
+import java.util.Date;
+
+import com.cmm.jft.trading.enums.OrderTypes;
+
 import quickfix.Message.Header;
 import quickfix.fix44.AllocationInstruction;
 import quickfix.fix44.AllocationReport;
@@ -74,13 +78,16 @@ public interface MessageEncoder {
 
 	NewOrderCross newOrderCross();
 
-	NewOrderSingle newOrderSingle();
+	NewOrderSingle newOrderSingle(String symbol, com.cmm.jft.trading.enums.Side side, 
+			double ordrQty, OrderTypes type, double ordrPrice, double stopPx, 
+			com.cmm.jft.trading.enums.TimeInForce tif, Date expireDt, String memo);
 
 	OrderCancelReject orderCancelReject();
 
 	OrderCancelReplaceRequest orderCancelReplaceRequest();
 
-	OrderCancelRequest orderCancelRequest();
+	OrderCancelRequest orderCancelRequest(String origClordID, String clOrdID, String symbol, 
+			com.cmm.jft.trading.enums.Side side, double ordQty, String memo);
 
 	PositionMaintenanceReport positionMaintenanceReport();
 

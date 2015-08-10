@@ -30,7 +30,7 @@ public class MessageRepositoryTest {
 				public void run() {
 					for(int i=0;i<b;i++) {
 						Message message = Fix44MessageEncoder.getInstance().heartbeat();
-						repo.addMessage(message);
+						//repo.addMessage(message);
 					}
 				}
 			}).start();
@@ -45,7 +45,7 @@ public class MessageRepositoryTest {
 		MessageRepository repo = MessageRepository.getInstance();
 		for(int i=0;i<10000;i++) {
 			Logon message = new Logon(new EncryptMethod(0), new HeartBtInt(30));
-			repo.addMessage(message);
+			//repo.addMessage(message);
 		}
 		
 		assertNotNull(MessageRepository.getInstance().retrieveMessage());

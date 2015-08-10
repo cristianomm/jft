@@ -3,6 +3,13 @@
  */
 package com.cmm.jft.engine.message;
 
+import java.util.Date;
+
+import com.cmm.jft.core.format.DateTimeFormatter;
+import com.cmm.jft.core.format.FormatterFactory;
+import com.cmm.jft.core.format.FormatterTypes;
+import com.cmm.jft.trading.enums.OrderTypes;
+
 import quickfix.Message.Header;
 import quickfix.field.AvgPx;
 import quickfix.field.BeginSeqNo;
@@ -13,6 +20,7 @@ import quickfix.field.EncryptMethod;
 import quickfix.field.EndSeqNo;
 import quickfix.field.ExecID;
 import quickfix.field.ExecType;
+import quickfix.field.ExpireDate;
 import quickfix.field.HeartBtInt;
 import quickfix.field.LastPx;
 import quickfix.field.LastQty;
@@ -25,6 +33,7 @@ import quickfix.field.OrdStatus;
 import quickfix.field.OrdType;
 import quickfix.field.OrderID;
 import quickfix.field.OrderQty;
+import quickfix.field.OrigClOrdID;
 import quickfix.field.OrigSendingTime;
 import quickfix.field.PossDupFlag;
 import quickfix.field.PossResend;
@@ -33,6 +42,7 @@ import quickfix.field.RawData;
 import quickfix.field.RawDataLength;
 import quickfix.field.RefSeqNum;
 import quickfix.field.ResetSeqNumFlag;
+import quickfix.field.SecurityExchange;
 import quickfix.field.SenderCompID;
 import quickfix.field.SendingTime;
 import quickfix.field.Side;
@@ -41,6 +51,7 @@ import quickfix.field.Symbol;
 import quickfix.field.TargetCompID;
 import quickfix.field.TestReqID;
 import quickfix.field.Text;
+import quickfix.field.TimeInForce;
 import quickfix.field.TransactTime;
 import quickfix.fix44.AllocationInstruction;
 import quickfix.fix44.AllocationReport;
@@ -298,18 +309,28 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageEncoder#newOrderSingle()
 	 */
-	public NewOrderSingle newOrderSingle(){
+	public NewOrderSingle newOrderSingle(String symbol, com.cmm.jft.trading.enums.Side side, 
+			double ordrQty, OrderTypes type, double ordrPrice, double stopPx, 
+			com.cmm.jft.trading.enums.TimeInForce tif, Date expireDt, String memo){
+		
 		NewOrderSingle orderSingle = new NewOrderSingle();
 		
 		orderSingle.set(new ClOrdID("123456")); 
 		orderSingle.set(new NoPartyIDs(0));
 		
-		orderSingle.set(new Symbol("WINV15"));		
-		orderSingle.set(new Side('1')); 
+		orderSingle.set(new Symbol(symbol));
+		orderSingle.set(new SecurityExchange("BVMF"));
+		orderSingle.set(new Side(side. name().charAt(0))); 
 		orderSingle.set(new TransactTime());
 		
-		orderSingle.set(new OrderQty(1));
-		orderSingle.set(new OrdType('1'));
+		orderSingle.set(new OrderQty(ordrQty));
+		orderSingle.set(new OrdType(type.name().charAt(0)));
+		orderSingle.set(new Price(ordrPrice));
+		orderSingle.set(new StopPx(stopPx));
+		orderSingle.set(new TimeInForce(tif.getValue()));
+		
+		orderSingle.set(new ExpireDate(((DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).format(expireDt)));
+		orderSingle.set(new Text(memo));
 		
 		return orderSingle;
 	}
@@ -327,7 +348,11 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	 * @see com.cmm.jft.engine.message.MessageEncoder#orderCancelReplaceRequest()
 	 */
 	public OrderCancelReplaceRequest orderCancelReplaceRequest(){
+		
 		OrderCancelReplaceRequest replaceRequest = new OrderCancelReplaceRequest();
+		
+		
+		
 		
 		return replaceRequest;
 	}
@@ -335,11 +360,19 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageEncoder#orderCancelRequest()
 	 */
-	public OrderCancelRequest orderCancelRequest(){
+	public OrderCancelRequest orderCancelRequest(String origClordID, String clOrdID, String symbol, 
+			com.cmm.jft.trading.enums.Side side, double ordQty, String memo){
+		
 		OrderCancelRequest cancelRequest = new OrderCancelRequest();
 		
-		
-		
+		cancelRequest.set(new OrigClOrdID(origClordID));
+		cancelRequest.set(new ClOrdID(clOrdID));
+		cancelRequest.set(new NoPartyIDs(0));
+		cancelRequest.set(new Symbol(symbol));
+		cancelRequest.set(new Side(side.getValue()));
+		cancelRequest.set(new TransactTime(new Date()));
+		cancelRequest.set(new OrderQty(ordQty));
+		cancelRequest.set(new Text(memo));
 		
 		return cancelRequest;
 	}
@@ -411,8 +444,11 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	 * @see com.cmm.jft.engine.message.MessageEncoder#securityDefinition()
 	 */
 	public SecurityDefinition securityDefinition(){
+		
 		SecurityDefinition securityDefinition = new SecurityDefinition();
-
+		
+		
+		
 		return securityDefinition;
 	}
 	

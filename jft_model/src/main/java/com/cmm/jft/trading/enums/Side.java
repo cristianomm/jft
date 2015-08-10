@@ -13,14 +13,18 @@ package com.cmm.jft.trading.enums;
  *
  */
 public enum Side {
-	BUY("1"), SELL("2");
+	BUY('1'), SELL('2');
 
-	String value;
+	char value;
 
-	Side(String value) {
+	Side(char value) {
 		this.value = value;
 	}
 
+	public char getValue(){
+		return value;
+	}
+	
 	public static Side getByValue(String value) {
 
 		Side s = null;

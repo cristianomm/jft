@@ -1,11 +1,19 @@
 package com.cmm.jft.engine.message;
 
 
+import com.cmm.jft.engine.Book;
+import com.cmm.jft.engine.BookRepository;
+import com.cmm.jft.engine.MessageRepository;
+import com.cmm.jft.trading.marketdata.MarketOrder;
+
+import quickfix.Field;
 import quickfix.FieldNotFound;
 import quickfix.IncorrectTagValue;
 import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
+import quickfix.field.Symbol;
 import quickfix.fix44.AllocationInstruction;
+import quickfix.fix44.ExecutionReport;
 import quickfix.fix44.NewOrderCross;
 import quickfix.fix44.NewOrderSingle;
 import quickfix.fix44.OrderCancelReplaceRequest;
@@ -31,7 +39,20 @@ public class Fix44MessageHandler implements MessageHandler {
 		
 	public void onMessage(NewOrderSingle message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		System.out.println("MH: " + message);
+		//System.out.println("MH: " + message);
+		
+		Book book = null;
+		boolean add = false; 
+		
+		if((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null){
+			MarketOrder order = new MarketOrder();
+			
+			
+			
+			//try to add the order in the book
+			add = book.addOrder(order);
+		}
+		
 	}
 	
 	

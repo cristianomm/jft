@@ -115,9 +115,7 @@ public class EntryPoint extends MessageCracker implements Application {
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
 			UnsupportedMessageType {
 		
-		if(verifyLogon(sessionId)){
-			crack(message, sessionId);
-		}
+		crack(message, sessionId);
 		
 	}
 			

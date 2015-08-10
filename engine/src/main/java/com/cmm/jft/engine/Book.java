@@ -6,7 +6,15 @@ package com.cmm.jft.engine;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.cmm.jft.engine.message.MessageSender;
 import com.cmm.jft.trading.marketdata.MarketOrder;
+import com.cmm.jft.trading.securities.Security;
+import com.cmm.jft.trading.services.SecurityService;
+
+import quickfix.Message;
+import quickfix.SessionID;
+import quickfix.fix44.ExecutionReport;
+import quickfix.fix44.NewOrderSingle;
 
 /**
  * <p><code>Book.java</code></p>
@@ -14,16 +22,16 @@ import com.cmm.jft.trading.marketdata.MarketOrder;
  * @version 26 de jul de 2015 02:23:19
  *
  */
-public class Book {
+public class Book implements MessageSender {
 	
-	private String symbol;
+	private Security security;
 	private HashSet<String> validOrderTypes;
 	private ConcurrentLinkedQueue<MarketOrder> buyQueue;
 	private ConcurrentLinkedQueue<MarketOrder> sellQueue;
 	
 	
 	public Book(String symbol, HashSet<String> orderTypes){
-		this.symbol = symbol;
+		this.security = SecurityService.getInstance().provideSecurity(symbol);
 		this.validOrderTypes = orderTypes;
 		this.buyQueue = new ConcurrentLinkedQueue<>();
 		this.sellQueue = new ConcurrentLinkedQueue<>();
@@ -44,24 +52,38 @@ public class Book {
 		return this.sellQueue;
 	}
 	
-	public String getSymbol() {
-		return symbol;
+	public Security getSymbol() {
+		return security;
 	}
 	
 	public void getBookInfo() {
 		
 	}
 	
-	public void validateOrder() {
+	private void validateOrder(MarketOrder orders) {
 		
 	}
 	
-	public void addOrder() {
+	public boolean addOrder(MarketOrder order) {
+		boolean added = false;
 		
+		
+		
+		return added;
 	}
 	
 	public void removeOrder() {
 		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.engine.message.MessageSender#sendMessage(quickfix.Message, quickfix.SessionID)
+	 */
+	@Override
+	public boolean sendMessage(Message message, SessionID sessionID) {
+		
+		return MessageRepository.getInstance().addMessage(message, sessionID);
 	}
 	
 	

@@ -2,7 +2,10 @@ package com.cmm.jft.engine;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.cmm.jft.engine.message.Tuple;
+
 import quickfix.Message;
+import quickfix.SessionID;
 
 
 
@@ -14,14 +17,13 @@ import quickfix.Message;
  */
 public class MessageRepository {
 
-	
 	private static MessageRepository instance;
-	private ConcurrentLinkedQueue<Message> messages;
+	private ConcurrentLinkedQueue<Tuple> messages;
 	
 	
 	
 	private MessageRepository() {
-		this.messages = new ConcurrentLinkedQueue<Message>();
+		this.messages = new ConcurrentLinkedQueue<Tuple>();
 	}
 	
 	public static synchronized MessageRepository getInstance() {
@@ -33,11 +35,12 @@ public class MessageRepository {
 	}
 	
 	
-	public boolean addMessage(Message message) {
-		return this.messages.offer(message);
+	public boolean addMessage(Message message, SessionID sessionID) {
+		return this.messages.offer(new Tuple(message, sessionID));
 	}
 	
-	public Message retrieveMessage() {
+	public Tuple retrieveMessage() {
+		
 		return messages.poll();
 	}
 	
