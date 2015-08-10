@@ -436,9 +436,9 @@ public class TradingService {
 						for (Orders order : position.getOrdersList()) {
 							if (order.getSide() == Side.BUY) {
 								volume = order.getExecutedVolume();
-								buyPrice = buyPrice.add(order.getAveragePrice());
+								buyPrice = buyPrice.add(order.getAvgPrice());
 							} else if (order.getSide() == Side.SELL) {
-								sellPrice = sellPrice.add(order.getAveragePrice());
+								sellPrice = sellPrice.add(order.getAvgPrice());
 							}
 						}
 

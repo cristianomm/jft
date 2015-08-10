@@ -16,9 +16,11 @@ import javax.persistence.*;
 import org.apache.log4j.Level;
 
 import com.cmm.jft.db.DBObject;
+import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.MarketEvents;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.exceptions.InvalidOrderException;
@@ -63,8 +65,8 @@ public class Orders implements DBObject<Orders> {
 
 	// @Max(value=?) @Min(value=?)//if you know range of your decimal fields
 	// consider using these annotations to enforce field validation
-	@Column(name = "AveragePrice", precision = 19, scale = 6)
-	private BigDecimal averagePrice;
+	@Column(name = "AvgPrice", precision = 19, scale = 6)
+	private BigDecimal avgPrice;
 
 	@Column(name = "ExecutedVolume")
 	private Integer executedVolume;
@@ -80,6 +82,10 @@ public class Orders implements DBObject<Orders> {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "OrderStatus", nullable = false)
 	private OrderStatus orderStatus;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "OrderValidityType", nullable = false)
+	private OrderValidityTypes validityType;
 	
 	@Enumerated(EnumType.STRING)
 	@Basic(optional = false)
@@ -102,13 +108,13 @@ public class Orders implements DBObject<Orders> {
 	@Basic(optional = false)
 	@Column(name = "OrderSerial", length = 25, updatable = false, nullable = false)
 	private String orderSerial;
-
+	
+	@Column(name="Serial", length=25, updatable=false, nullable=false)
+	private String Serial;
+	
 	@JoinColumn(name = "securityID", referencedColumnName = "securityID", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Security securityID;
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orderID")
-	private List<OrderEvent> eventsList;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orderID")
 	private List<OrderExecution> executionsList;
@@ -121,7 +127,6 @@ public class Orders implements DBObject<Orders> {
 		this.orderDateTime = new Date();
 		this.orderStatus = OrderStatus.CREATED;
 		this.orderSerial = UUID.randomUUID().toString();
-		this.eventsList = new ArrayList<OrderEvent>();
 		this.executionsList = new ArrayList<OrderExecution>();
 	}
 	
@@ -154,7 +159,6 @@ public class Orders implements DBObject<Orders> {
 		this.orderDateTime = new Date();
 		this.orderStatus = OrderStatus.CREATED;
 		this.orderSerial = UUID.randomUUID().toString();
-		this.eventsList = new ArrayList<OrderEvent>();
 		this.executionsList = new ArrayList<OrderExecution>();
 	}
 	
@@ -196,9 +200,9 @@ public class Orders implements DBObject<Orders> {
 		// ajusta os valores de execucao da ordem
 		executedVolume = sumVolume;
 		int sv = executionsList.size() > 0 ? executionsList.size() : 1;
-		averagePrice = new BigDecimal(sumTotal/sv);
+		avgPrice = new BigDecimal(sumTotal/sv);
 
-		return averagePrice;
+		return avgPrice;
 	}
 
 	public double getOrderValue() {
@@ -206,7 +210,7 @@ public class Orders implements DBObject<Orders> {
 	}
 
 	public BigDecimal getExecutedOrderValue() {
-		return averagePrice.multiply(new BigDecimal(executedVolume));
+		return avgPrice.multiply(new BigDecimal(executedVolume));
 	}
 
 	public Long getOrderID() {
@@ -239,8 +243,8 @@ public class Orders implements DBObject<Orders> {
 		return volume;
 	}
 
-	public BigDecimal getAveragePrice() {
-		return averagePrice;
+	public BigDecimal getAvgPrice() {
+		return avgPrice;
 	}
 
 	public Integer getExecutedVolume() {
@@ -268,6 +272,14 @@ public class Orders implements DBObject<Orders> {
 	 */
 	public void setOrderDateTime(Date orderDateTime) {
 		this.orderDateTime = orderDateTime;
+	}
+	
+	public OrderValidityTypes getValidityType() {
+		return validityType;
+	}
+	
+	public void setValidityType(OrderValidityTypes validityType) {
+		this.validityType = validityType;
 	}
 
 	public OrderStatus getOrderStatus() {
@@ -300,14 +312,6 @@ public class Orders implements DBObject<Orders> {
 	public String getOrderSerial() {
 		return orderSerial;
 	}
-
-	/**
-	 * @return the eventsList
-	 */
-	public List<OrderEvent> getEventsList() {
-		return this.eventsList;
-	}
-
 	/**
 	 * @return the executionsList
 	 */
@@ -345,7 +349,7 @@ public class Orders implements DBObject<Orders> {
 				+ (this.orderID != null ? "orderID=" + this.orderID + ", " : "")
 				+ (this.price != null ? "price=" + this.price + ", " : "")
 				+ (this.volume != null ? "volume=" + this.volume + ", " : "")
-				+ (this.averagePrice != null ? "averagePrice=" + this.averagePrice + ", " : "")
+				+ (this.avgPrice != null ? "averagePrice=" + this.avgPrice + ", " : "")
 				+ (this.executedVolume != null ? "executedVolume=" + this.executedVolume + ", " : "")
 				+ (this.duration != null ? "duration=" + this.duration + ", " : "")
 				+ (this.orderDateTime != null ? "orderDateTime=" + this.orderDateTime + ", " : "")
@@ -354,7 +358,6 @@ public class Orders implements DBObject<Orders> {
 				+ (this.orderType != null ? "orderType=" + this.orderType + ", " : "")
 				+ (this.orderSerial != null ? "orderSerial=" + this.orderSerial + ", " : "")
 				+ (this.securityID != null ? "securityID=" + this.securityID + ", " : "")
-				+ (this.eventsList != null ? "eventsList="+ this.eventsList.subList(0,Math.min(this.eventsList.size(), maxLen))+ ", " : "")
 				+ (this.executionsList != null ? "executionsList="+ this.executionsList.subList(0,Math.min(this.executionsList.size(), maxLen))
 						: "") + "]";
 	}
@@ -368,14 +371,10 @@ public class Orders implements DBObject<Orders> {
 		if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED){
 			//volume executado eh menor que o volume total e menor que o volume atual
 			if(execVolume<=volume && execVolume <= (volume-executedVolume)){
-				// cria o evento
-				OrderEvent oev = new OrderEvent(MarketEvents.TRADE, "Execution of "
-				+ execVolume + " at price " + execPrice, executionDateTime, this);
-				
 				// cria a execucao
-				OrderExecution oex = new OrderExecution(executionDateTime, execVolume, execPrice, this);
-
-				eventsList.add(oev);
+				OrderExecution oex = new OrderExecution(ExecutionTypes.TRADE, executionDateTime, execVolume, execPrice, this);
+				oex.setMessage("Execution of " + execVolume + " at price " + execPrice);
+								
 				executionsList.add(oex);
 				
 				//ajusta o estado da ordem

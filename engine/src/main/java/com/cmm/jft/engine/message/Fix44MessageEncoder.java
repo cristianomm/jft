@@ -8,8 +8,10 @@ import java.util.Date;
 import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
+import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.enums.OrderTypes;
 
+import quickfix.Message;
 import quickfix.Message.Header;
 import quickfix.field.AvgPx;
 import quickfix.field.BeginSeqNo;
@@ -110,28 +112,7 @@ public class Fix44MessageEncoder implements MessageEncoder {
 		System.out.println(new Fix44MessageEncoder().testRequest());
 	}
 	
-	
-	
-	/* (non-Javadoc)
-	 * @see com.cmm.jft.engine.message.MessageEncoder#buildHeader()
-	 */
-	public Header buildHeader(){
-		Header header = new Header();
-		header.setField(new SenderCompID(""));
-		header.setField(new TargetCompID(""));
-		header.setField(new DeliverToCompID(""));
-		header.setField(new MsgSeqNum(MessageCounter.getInstance().getMessageCount()));
-		header.setField(new PossDupFlag(false));
-		header.setField(new PossResend(false));
-		header.setField(new SendingTime());
-		header.setField(new OrigSendingTime());
 		
-		return header;
-	}
-	
-	
-	
-	
 	
 	//[start]-------------------------------------------Session Specific
 	/* (non-Javadoc)
@@ -139,7 +120,6 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	 */
 	public Heartbeat heartbeat(){
 		Heartbeat heartbeat = new Heartbeat();
-		heartbeat.setFields(buildHeader());
 		heartbeat.setField(new TestReqID());
 		return heartbeat;
 	}
@@ -149,8 +129,7 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	 */
 	public Logon logon(String authData, boolean resetSeqNum, String newPassword){
 		Logon message = new Logon(new EncryptMethod(0), new HeartBtInt(30));
-		message.setFields(buildHeader());
-		
+				
 		if(authData != null){
 			message.setField(new RawDataLength(authData.length()));
 			message.setField(new RawData(authData));
@@ -274,25 +253,23 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageEncoder#executionReport(java.lang.String, java.lang.String, char, char, java.lang.String, char, double, double, double, double, double, double, double)
 	 */
-	public ExecutionReport executionReport(String orderID, String execID, 
-			char execType, char orderStatus, String symbol, char side, 
-			double lastQty, double orderQty , double leavesQty, double cumQty, 
-			double price, double stopPx, double lastPx){
+	public ExecutionReport executionReport(OrderExecution execution){
 		
 		ExecutionReport executionReport = new ExecutionReport();
-		
+				
 		executionReport = new ExecutionReport(
-				new OrderID(orderID), new ExecID(execID),
-				new ExecType(execType), new OrdStatus(orderStatus),
-				new Side(side), new LeavesQty(leavesQty), 
-				new CumQty(cumQty), new AvgPx(cumQty)
+				new OrderID(execution.getOrderID().getOrderSerial()), 
+				new ExecID(execution.getOrderExecutionID()+""),
+				new ExecType(execution.getExecutionType().getValue()), 
+				new OrdStatus(execution.getOrderID().getOrderStatus().getValue()),
+				new Side(execution.getOrderID().getSide().getValue()), 
+				new LeavesQty(execution.getLeavesVolume()), 
+				new CumQty(execution.getOrderID().getExecutedVolume()), 
+				new AvgPx(execution.getOrderID().getAvgPrice().doubleValue())
 				);
 		
-		executionReport.set(new OrderQty(orderQty));
-		executionReport.set(new Price(price));
-		executionReport.set(new StopPx(stopPx));
-		executionReport.set(new LastQty(lastQty));
-		executionReport.set(new LastPx(lastPx));
+		executionReport.set(new Symbol(execution.getOrderID().getSecurityID().getSymbol()));
+		executionReport.set(new OrderQty(execution.getOrderID().getVolume()));
 		
 		return executionReport;
 	}
@@ -311,7 +288,7 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	 */
 	public NewOrderSingle newOrderSingle(String symbol, com.cmm.jft.trading.enums.Side side, 
 			double ordrQty, OrderTypes type, double ordrPrice, double stopPx, 
-			com.cmm.jft.trading.enums.TimeInForce tif, Date expireDt, String memo){
+			com.cmm.jft.trading.enums.OrderValidityTypes tif, Date expireDt, String memo){
 		
 		NewOrderSingle orderSingle = new NewOrderSingle();
 		
@@ -330,7 +307,7 @@ public class Fix44MessageEncoder implements MessageEncoder {
 		orderSingle.set(new TimeInForce(tif.getValue()));
 		
 		orderSingle.set(new ExpireDate(((DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).format(expireDt)));
-		orderSingle.set(new Text(memo));
+		orderSingle.setString(5149, memo);
 		
 		return orderSingle;
 	}
@@ -372,7 +349,7 @@ public class Fix44MessageEncoder implements MessageEncoder {
 		cancelRequest.set(new Side(side.getValue()));
 		cancelRequest.set(new TransactTime(new Date()));
 		cancelRequest.set(new OrderQty(ordQty));
-		cancelRequest.set(new Text(memo));
+		cancelRequest.setString(5149, memo);
 		
 		return cancelRequest;
 	}

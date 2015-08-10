@@ -2,110 +2,78 @@ package com.cmm.jft.engine.message;
 
 import java.util.Date;
 
+import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.enums.OrderTypes;
 
-import quickfix.Message.Header;
-import quickfix.fix44.AllocationInstruction;
-import quickfix.fix44.AllocationReport;
-import quickfix.fix44.BusinessMessageReject;
-import quickfix.fix44.ExecutionReport;
-import quickfix.fix44.Heartbeat;
-import quickfix.fix44.Logon;
-import quickfix.fix44.Logout;
-import quickfix.fix44.NewOrderCross;
-import quickfix.fix44.NewOrderSingle;
-import quickfix.fix44.OrderCancelReject;
-import quickfix.fix44.OrderCancelReplaceRequest;
-import quickfix.fix44.OrderCancelRequest;
-import quickfix.fix44.PositionMaintenanceReport;
-import quickfix.fix44.PositionMaintenanceRequest;
-import quickfix.fix44.Quote;
-import quickfix.fix44.QuoteCancel;
-import quickfix.fix44.QuoteRequest;
-import quickfix.fix44.QuoteRequestReject;
-import quickfix.fix44.QuoteStatusReport;
-import quickfix.fix44.Reject;
-import quickfix.fix44.ResendRequest;
-import quickfix.fix44.SecurityDefinition;
-import quickfix.fix44.SecurityDefinitionRequest;
-import quickfix.fix44.SequenceReset;
-import quickfix.fix44.TestRequest;
-//import quickfix.fix50sp1.ApplicationMessageReport;
-//import quickfix.fix50sp1.ApplicationMessageRequest;
-//import quickfix.fix50sp1.ApplicationMessageRequestAck;
+import quickfix.Message;
 
 public interface MessageEncoder {
 
-	Header buildHeader();
-
 	//[start]-------------------------------------------Session Specific
-	Heartbeat heartbeat();
+	Message heartbeat();
 
-	Logon logon(String authData, boolean resetSeqNum,
+	Message logon(String authData, boolean resetSeqNum,
 			String newPassword);
 
 	
-	Logout logout(String text);
+	Message logout(String text);
 
-	Reject reject(int refMsgSeqNum);
+	Message reject(int refMsgSeqNum);
 
-	ResendRequest resendRequest(int beginSeqNum, int endSeqNum);
+	Message resendRequest(int beginSeqNum, int endSeqNum);
 
-	SequenceReset sequenceReset();
+	Message sequenceReset();
 
-	TestRequest testRequest();
+	Message testRequest();
 
 	//[end]
 
 	
 	//[start]-------------------------------------------Application Specific
-	AllocationInstruction allocationInstruction();
+	Message allocationInstruction();
 
-	AllocationReport allocationReport();
+	Message allocationReport();
 //
-//	ApplicationMessageReport applicationMessageReport();
+//	Message applicationMessageReport();
 //
-//	ApplicationMessageRequest applicationMessageRequest();
+//	Message applicationMessageRequest();
 //
-//	ApplicationMessageRequestAck applicationMessageRequestAck();
+//	Message applicationMessageRequestAck();
 
-	BusinessMessageReject businessMessageReject();
+	Message businessMessageReject();
 
-	ExecutionReport executionReport(String orderID,
-			String execID, char execType, char orderStatus, String symbol,
-			char side, double lastQty, double orderQty, double leavesQty,
-			double cumQty, double price, double stopPx, double lastPx);
+	Message executionReport(OrderExecution execution);
 
-	NewOrderCross newOrderCross();
+	Message newOrderCross();
 
-	NewOrderSingle newOrderSingle(String symbol, com.cmm.jft.trading.enums.Side side, 
+	Message newOrderSingle(String symbol, com.cmm.jft.trading.enums.Side side, 
 			double ordrQty, OrderTypes type, double ordrPrice, double stopPx, 
-			com.cmm.jft.trading.enums.TimeInForce tif, Date expireDt, String memo);
+			com.cmm.jft.trading.enums.OrderValidityTypes tif, Date expireDt, String memo);
 
-	OrderCancelReject orderCancelReject();
+	Message orderCancelReject();
 
-	OrderCancelReplaceRequest orderCancelReplaceRequest();
+	Message orderCancelReplaceRequest();
 
-	OrderCancelRequest orderCancelRequest(String origClordID, String clOrdID, String symbol, 
+	Message orderCancelRequest(String origClordID, String clOrdID, String symbol, 
 			com.cmm.jft.trading.enums.Side side, double ordQty, String memo);
 
-	PositionMaintenanceReport positionMaintenanceReport();
+	Message positionMaintenanceReport();
 
-	PositionMaintenanceRequest positionMaintenanceRequest();
+	Message positionMaintenanceRequest();
 
-	Quote quote();
+	Message quote();
 
-	QuoteCancel quoteCancel();
+	Message quoteCancel();
 
-	QuoteRequest quoteRequest();
+	Message quoteRequest();
 
-	QuoteRequestReject quoteRequestReject();
+	Message quoteRequestReject();
 
-	QuoteStatusReport quoteStatusReport();
+	Message quoteStatusReport();
 
-	SecurityDefinition securityDefinition();
+	Message securityDefinition();
 
-	SecurityDefinitionRequest securityDefinitionRequest();
+	Message securityDefinitionRequest();
 	//[end]
 
 }

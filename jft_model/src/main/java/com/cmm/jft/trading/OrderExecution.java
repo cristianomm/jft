@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.cmm.jft.db.DBObject;
+import com.cmm.jft.trading.enums.ExecutionTypes;
 
 /**
  * <p>
@@ -46,13 +49,26 @@ public class OrderExecution implements DBObject<OrderExecution> {
 
 	@Column(name = "Volume")
 	private int volume;
-
+	
+	@Column(name="LeavesVolume")
+	private int leavesVolume;
+	
 	@Column(name = "Price", precision = 19, scale = 6)
 	private double price;
+	
+	@Column(name = "LastPrice", precision = 19, scale = 6)
+	private double lastPrice;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="ExecutionType", length=25)
+	private ExecutionTypes executionType;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "ExecutionDateTime")
 	private Date executionDateTime;
+	
+	@Column(name = "Message", length = 255)
+	private String message;
 
 	@JoinColumn(name = "orderID", referencedColumnName = "orderID", nullable = false)
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
@@ -71,8 +87,9 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	 * @param price
 	 * @param orderID
 	 */
-	public OrderExecution(Date executionDateTime, int volume, double price, Orders orderID) {
+	public OrderExecution(ExecutionTypes execType, Date executionDateTime, int volume, double price, Orders orderID) {
 		super();
+		this.executionType = execType;
 		this.executionDateTime = executionDateTime;
 		this.volume = volume;
 		this.price = price;
@@ -144,6 +161,34 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	 */
 	public Long getOrderExecutionID() {
 		return this.orderExecutionID;
+	}
+	
+	public ExecutionTypes getExecutionType() {
+		return executionType;
+	}
+	
+	public double getLastPrice() {
+		return lastPrice;
+	}
+	
+	public void setLastPrice(double lastPrice) {
+		this.lastPrice = lastPrice;
+	}
+	
+	public String getMessage() {
+		return message;
+	}
+	
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	public int getLeavesVolume() {
+		return leavesVolume;
+	}
+	
+	public void setLeavesVolume(int leavesVolume) {
+		this.leavesVolume = leavesVolume;
 	}
 
 }

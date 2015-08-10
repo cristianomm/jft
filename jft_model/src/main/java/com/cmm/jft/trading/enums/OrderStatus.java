@@ -26,40 +26,40 @@ public enum OrderStatus {
 	 * valorizados com: Order status: 0 - New 1 - Partially Filled 2 - Filled 4
 	 * - Canceled 5 - Replaced 8 - Rejected C - Expired
 	 */
-	NEW("0"), PARTIALLY_FILLED("1"), FILLED("2"), CANCELED("4"), 
-	REPLACED("5"), REJECTED("8"), SUSPENDED("9"), EXPIRED("C"),
-	PREVIOUSFS("Z"),
+	NEW('0'), PARTIALLY_FILLED('1'), FILLED('2'), CANCELED('4'), 
+	REPLACED('5'), REJECTED('8'), SUSPENDED('9'), EXPIRED('C'),
+	PREVIOUSFS('Z'),
 	// JFT
-	CREATED("N"), SUBMITTED("S");
+	CREATED('N'), SUBMITTED('S');
 
-	String value;
+	char value;
 
-	OrderStatus(String value) {
+	OrderStatus(char value) {
 		this.value = value;
 	}
 
-	public String getValue() {
+	public char getValue() {
 		return this.value;
 	}
 
-	public static OrderStatus getByValue(String value) {
+	public static OrderStatus getByValue(char value) {
 		OrderStatus ret = null;
 
-		if (value.equalsIgnoreCase(" ") || value.equalsIgnoreCase("D")) {
-			value = "0";
-		} else if (value.equalsIgnoreCase("E") || value.equalsIgnoreCase("G")
-				|| value.equalsIgnoreCase("O") || value.equalsIgnoreCase("A")) {
-			value = "4";
-		} else if (value.equalsIgnoreCase("X")) {
-			value = "2";
-		} else if (value.equalsIgnoreCase("M")) {
-			value = "5";
-		} else if (value.equalsIgnoreCase("R")) {
-			value = "8";
+		if (value == ' ' || value == 'D') {
+			value = '0';
+		} else if (value == 'E' || value == 'G'
+				|| value == 'O' || value == 'A') {
+			value = '4';
+		} else if (value == 'X') {
+			value = '2';
+		} else if (value == 'M') {
+			value = '5';
+		} else if (value == 'R') {
+			value = '8';
 		}
 
 		for (OrderStatus os : OrderStatus.values()) {
-			if (os.value.equalsIgnoreCase(value)) {
+			if (os.value == value) {
 				ret = os;
 				break;
 			}
