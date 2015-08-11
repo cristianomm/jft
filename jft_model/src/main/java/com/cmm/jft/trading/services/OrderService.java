@@ -194,7 +194,7 @@ public class OrderService {
 	public Orders createAndPersistOrder(OrderTypes orderType, Side side, String symbol, int volume, double price, double stopPrice)
 			throws InvalidOrderException, DataBaseException {
 
-		Orders ordr = new Orders();
+		Orders ordr = null;
 
 		try {
 
@@ -208,10 +208,8 @@ public class OrderService {
 			}
 			
 			Security exItem = l.get(0);
-
-			ordr.setSecurityID(exItem);
-			ordr.setSide(side);
-			ordr.setOrderType(orderType);
+			ordr = new Orders(exItem , side, price, volume, orderType, TradeTypes.DAY_TRADE);
+			
 			ordr.changePrice(price);
 			ordr.changeVolume(volume);
 			ordr = (Orders) DBFacade.getInstance()._persist(ordr);

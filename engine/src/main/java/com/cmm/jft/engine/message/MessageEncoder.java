@@ -3,6 +3,7 @@ package com.cmm.jft.engine.message;
 import java.util.Date;
 
 import com.cmm.jft.trading.OrderExecution;
+import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;
 
 import quickfix.Message;
@@ -46,9 +47,7 @@ public interface MessageEncoder {
 
 	Message newOrderCross();
 
-	Message newOrderSingle(String symbol, com.cmm.jft.trading.enums.Side side, 
-			double ordrQty, OrderTypes type, double ordrPrice, double stopPx, 
-			com.cmm.jft.trading.enums.OrderValidityTypes tif, Date expireDt, String memo);
+	Message newOrderSingle(Orders order);
 
 	Message orderCancelReject();
 

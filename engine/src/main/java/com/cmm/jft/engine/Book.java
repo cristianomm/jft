@@ -77,6 +77,13 @@ public class Book implements MessageSender {
 			valid = true;
 		}
 		
+		//verifica se nao existe uma ordem com o mesmo id
+		
+		//verifica se a quantidade para o instrumento eh valida
+		
+		//verifica se o preco esta correto
+		
+		
 		return valid;
 	}
 	
@@ -129,12 +136,10 @@ public class Book implements MessageSender {
 		}
 		
 		if(added) {
-			
 			OrderExecution oe = new OrderExecution(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice(), order);
 			oe.setMessage("Order received");
 			
-			sendMessage(MessageBuilder.buildExecutionReport(oe, sessionID), sessionID); 
-			
+			added = sendMessage(MessageBuilder.buildExecutionReport(oe, sessionID), sessionID);
 		}
 		
 		return added;

@@ -114,7 +114,7 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	/**
 	 * @return the volume
 	 */
-	public long getVolume() {
+	public int getVolume() {
 		return this.volume;
 	}
 

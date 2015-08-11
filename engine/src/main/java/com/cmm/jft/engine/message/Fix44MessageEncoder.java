@@ -9,6 +9,7 @@ import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.trading.OrderExecution;
+import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;
 
 import quickfix.Message;
@@ -286,28 +287,30 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageEncoder#newOrderSingle()
 	 */
-	public NewOrderSingle newOrderSingle(String symbol, com.cmm.jft.trading.enums.Side side, 
-			double ordrQty, OrderTypes type, double ordrPrice, double stopPx, 
-			com.cmm.jft.trading.enums.OrderValidityTypes tif, Date expireDt, String memo){
+	public NewOrderSingle newOrderSingle(Orders order){
+		
+		/*String symbol, com.cmm.jft.trading.enums.Side side, 
+		double ordrQty, OrderTypes type, double ordrPrice, double stopPx, 
+		com.cmm.jft.trading.enums.OrderValidityTypes tif, Date expireDt, String memo
+		*/
 		
 		NewOrderSingle orderSingle = new NewOrderSingle();
 		
-		orderSingle.set(new ClOrdID("123456")); 
+		orderSingle.set(new ClOrdID(order.getClOrdID()));
 		orderSingle.set(new NoPartyIDs(0));
 		
-		orderSingle.set(new Symbol(symbol));
+		orderSingle.set(new Symbol(order.getSecurityID().getSymbol()));
 		orderSingle.set(new SecurityExchange("BVMF"));
-		orderSingle.set(new Side(side. name().charAt(0))); 
+		orderSingle.set(new Side(order.getSide().getValue())); 
 		orderSingle.set(new TransactTime());
 		
-		orderSingle.set(new OrderQty(ordrQty));
-		orderSingle.set(new OrdType(type.name().charAt(0)));
-		orderSingle.set(new Price(ordrPrice));
-		orderSingle.set(new StopPx(stopPx));
-		orderSingle.set(new TimeInForce(tif.getValue()));
+		orderSingle.set(new OrderQty(order.getVolume()));
+		orderSingle.set(new OrdType(order.getOrderType().getValue()));
+		orderSingle.set(new Price(order.getPrice()));
+		orderSingle.set(new TimeInForce(order.getValidityType().getValue()));
 		
-		orderSingle.set(new ExpireDate(((DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).format(expireDt)));
-		orderSingle.setString(5149, memo);
+		orderSingle.set(new ExpireDate(((DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).format(order.getDuration())));
+		orderSingle.setString(5149, order.getComment());
 		
 		return orderSingle;
 	}
