@@ -381,7 +381,8 @@ public class Orders implements DBObject<Orders> {
 	public String getOrigClOrdID() {
 		return origClOrdID;
 	}
-
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -414,7 +415,7 @@ public class Orders implements DBObject<Orders> {
 			//volume executado eh menor que o volume total e menor que o volume atual
 			if(execVolume<=volume && execVolume <= (volume-executedVolume)){
 				// cria a execucao
-				OrderExecution oex = new OrderExecution(ExecutionTypes.TRADE, executionDateTime, execVolume, execPrice, this);
+				OrderExecution oex = new OrderExecution(ExecutionTypes.TRADE, executionDateTime, execVolume, execPrice);
 				oex.setMessage("Execution of " + execVolume + " at price " + execPrice);
 				oex.setLeavesVolume(volume - oex.getVolume() );
 				executionsList.add(oex);

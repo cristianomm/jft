@@ -67,5 +67,18 @@ public enum ExecutionTypes {
 		return value;
 	}
 	
+	public static ExecutionTypes getByValue(char value) {
+		ExecutionTypes ret = null;
+		
+		for(ExecutionTypes et:ExecutionTypes.values()) {
+			if(et.value == value) {
+				ret = et;
+				break;
+			}
+		}
+		
+		return ret;
+	}
+	
 	
 }

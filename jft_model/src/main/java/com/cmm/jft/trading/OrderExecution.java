@@ -48,10 +48,10 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	private Long orderExecutionID;
 
 	@Column(name = "Volume")
-	private int volume;
+	private double volume;
 	
 	@Column(name="LeavesVolume")
-	private int leavesVolume;
+	private double leavesVolume;
 	
 	@Column(name = "Price", precision = 19, scale = 6)
 	private double price;
@@ -87,13 +87,12 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	 * @param price
 	 * @param orderID
 	 */
-	public OrderExecution(ExecutionTypes execType, Date executionDateTime, int volume, double price, Orders orderID) {
+	public OrderExecution(ExecutionTypes execType, Date executionDateTime, double volume, double price) {
 		super();
 		this.executionType = execType;
 		this.executionDateTime = executionDateTime;
 		this.volume = volume;
 		this.price = price;
-		this.orderID = orderID;
 	}
 
 	/**
@@ -114,7 +113,7 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	/**
 	 * @return the volume
 	 */
-	public int getVolume() {
+	public double getVolume() {
 		return this.volume;
 	}
 
@@ -183,11 +182,11 @@ public class OrderExecution implements DBObject<OrderExecution> {
 		this.message = message;
 	}
 	
-	public int getLeavesVolume() {
+	public double getLeavesVolume() {
 		return leavesVolume;
 	}
 	
-	public void setLeavesVolume(int leavesVolume) {
+	public void setLeavesVolume(double leavesVolume) {
 		this.leavesVolume = leavesVolume;
 	}
 

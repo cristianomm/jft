@@ -11,6 +11,7 @@ import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.RejectTypes;
 
 import quickfix.Message;
 import quickfix.Message.Header;
@@ -18,6 +19,7 @@ import quickfix.field.AvgPx;
 import quickfix.field.BeginSeqNo;
 import quickfix.field.ClOrdID;
 import quickfix.field.CumQty;
+import quickfix.field.CxlRejResponseTo;
 import quickfix.field.DeliverToCompID;
 import quickfix.field.EncryptMethod;
 import quickfix.field.EndSeqNo;
@@ -252,7 +254,7 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.cmm.jft.engine.message.MessageEncoder#executionReport(java.lang.String, java.lang.String, char, char, java.lang.String, char, double, double, double, double, double, double, double)
+	 * @see com.cmm.jft.engine.message.MessageEncoder#executionReport(OrderExecution execution)
 	 */
 	public ExecutionReport executionReport(OrderExecution execution){
 		
@@ -278,21 +280,16 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageEncoder#newOrderCross()
 	 */
-	public NewOrderCross newOrderCross(){
+	public NewOrderCross newOrderCross(Orders order){
 		NewOrderCross orderCross = new NewOrderCross();
 		
 		return orderCross;
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.cmm.jft.engine.message.MessageEncoder#newOrderSingle()
+	 * @see com.cmm.jft.engine.message.MessageEncoder#newOrderSingle(Orders order)
 	 */
 	public NewOrderSingle newOrderSingle(Orders order){
-		
-		/*String symbol, com.cmm.jft.trading.enums.Side side, 
-		double ordrQty, OrderTypes type, double ordrPrice, double stopPx, 
-		com.cmm.jft.trading.enums.OrderValidityTypes tif, Date expireDt, String memo
-		*/
 		
 		NewOrderSingle orderSingle = new NewOrderSingle();
 		
@@ -316,23 +313,41 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.cmm.jft.engine.message.MessageEncoder#orderCancelReject()
+	 * @see com.cmm.jft.engine.message.MessageEncoder#orderCancelReject(Orders order, RejectTypes reject)
 	 */
-	public OrderCancelReject orderCancelReject(){
-		OrderCancelReject cancelReject = new OrderCancelReject();
+	public OrderCancelReject orderCancelReject(Orders order, RejectTypes reject){
 		
+		OrderCancelReject cancelReject = new OrderCancelReject();
+		if(order!=null) {
+			cancelReject.set(new OrderID(order.getOrderID().toString()));
+			cancelReject.set(new ClOrdID(order.getClOrdID()));
+			cancelReject.set(new OrigClOrdID(order.getOrigClOrdID()));
+			cancelReject.set(new OrdStatus(order.getOrderStatus().getValue()));
+			cancelReject.set(new CxlRejResponseTo(reject.getValue()));
+			cancelReject.setInt(453, 0);
+			cancelReject.setString(5149, order.getComment());
+		}
 		return cancelReject;
 	}
 		
 	/* (non-Javadoc)
-	 * @see com.cmm.jft.engine.message.MessageEncoder#orderCancelReplaceRequest()
+	 * @see com.cmm.jft.engine.message.MessageEncoder#orderCancelReplaceRequest(Orders order)
 	 */
-	public OrderCancelReplaceRequest orderCancelReplaceRequest(){
+	public OrderCancelReplaceRequest orderCancelReplaceRequest(Orders order){
 		
 		OrderCancelReplaceRequest replaceRequest = new OrderCancelReplaceRequest();
 		
-		
-		
+		if(order != null) {
+			replaceRequest.set(new NoPartyIDs(0));
+			replaceRequest.set(new OrigClOrdID(order.getOrigClOrdID()));
+			replaceRequest.set(new ClOrdID(order.getClOrdID()));
+			replaceRequest.set(new Symbol(order.getSecurityID().getSymbol()));
+			replaceRequest.set(new Side(order.getSide().getValue()));
+			replaceRequest.set(new TransactTime(order.getOrderDateTime()));
+			replaceRequest.set(new OrderQty(order.getExecutedVolume()));
+			replaceRequest.set(new OrdType(order.getOrderType().getValue()));
+			replaceRequest.setString(5149, order.getComment());
+		}
 		
 		return replaceRequest;
 	}
@@ -340,19 +355,18 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageEncoder#orderCancelRequest()
 	 */
-	public OrderCancelRequest orderCancelRequest(String origClordID, String clOrdID, String symbol, 
-			com.cmm.jft.trading.enums.Side side, double ordQty, String memo){
+	public OrderCancelRequest orderCancelRequest(Orders order){
 		
 		OrderCancelRequest cancelRequest = new OrderCancelRequest();
 		
-		cancelRequest.set(new OrigClOrdID(origClordID));
-		cancelRequest.set(new ClOrdID(clOrdID));
+		cancelRequest.set(new OrigClOrdID(order.getOrigClOrdID()));
+		cancelRequest.set(new ClOrdID(order.getClOrdID()));
 		cancelRequest.set(new NoPartyIDs(0));
-		cancelRequest.set(new Symbol(symbol));
-		cancelRequest.set(new Side(side.getValue()));
+		cancelRequest.set(new Symbol(order.getSecurityID().getSymbol()));
+		cancelRequest.set(new Side(order.getSide().getValue()));
 		cancelRequest.set(new TransactTime(new Date()));
-		cancelRequest.set(new OrderQty(ordQty));
-		cancelRequest.setString(5149, memo);
+		cancelRequest.set(new OrderQty(order.getVolume()));
+		cancelRequest.setString(5149, order.getComment());
 		
 		return cancelRequest;
 	}

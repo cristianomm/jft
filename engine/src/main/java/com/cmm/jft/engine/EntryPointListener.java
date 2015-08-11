@@ -170,13 +170,14 @@ public class EntryPointListener implements Service {
 	
 	
 	public static void main(String[] args) {
-		
 		/*
+		System.out.println(false && false);
+		
 		System.out.println(StrictMath.multiplyExact(7, 4));
 		
 		float num = 0f;
 		
-		for(int i=0;i<10000;i++) {
+		for(int i=0;i<1000;i++) {
 			num+= .0000001;
 		}
 		System.out.println(String.format("%.25f", num));

@@ -5,11 +5,27 @@ import java.util.Date;
 import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.RejectTypes;
 
 import quickfix.Message;
+import quickfix.SessionID;
 
 public interface MessageEncoder {
 
+
+	static MessageEncoder getEncoder(SessionID sessionId) {
+		
+		MessageEncoder encoder = null;
+		switch(sessionId.getBeginString()) {
+		case "FIX.4.4":
+			encoder = Fix44MessageEncoder.getInstance();
+			break;
+		}
+		
+		return encoder;
+	}
+	
+	
 	//[start]-------------------------------------------Session Specific
 	Message heartbeat();
 
@@ -45,16 +61,15 @@ public interface MessageEncoder {
 
 	Message executionReport(OrderExecution execution);
 
-	Message newOrderCross();
+	Message newOrderCross(Orders order);
 
 	Message newOrderSingle(Orders order);
 
-	Message orderCancelReject();
+	Message orderCancelReject(Orders order, RejectTypes reject);
 
-	Message orderCancelReplaceRequest();
+	Message orderCancelReplaceRequest(Orders order);
 
-	Message orderCancelRequest(String origClordID, String clOrdID, String symbol, 
-			com.cmm.jft.trading.enums.Side side, double ordQty, String memo);
+	Message orderCancelRequest(Orders order);
 
 	Message positionMaintenanceReport();
 

@@ -7,23 +7,17 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.cmm.jft.engine.message.Fix44MessageEncoder;
-import com.cmm.jft.engine.message.MessageBuilder;
+import com.cmm.jft.engine.message.MessageEncoder;
 import com.cmm.jft.engine.message.MessageSender;
 import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
-import com.cmm.jft.trading.enums.OrderStatus;
-import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.marketdata.MarketOrder;
 import com.cmm.jft.trading.securities.Security;
 import com.cmm.jft.trading.services.SecurityService;
 
 import quickfix.Message;
 import quickfix.SessionID;
-import quickfix.fix44.ExecutionReport;
-import quickfix.fix44.NewOrderSingle;
 
 /**
  * <p><code>Book.java</code></p>
@@ -73,16 +67,13 @@ public class Book implements MessageSender {
 		
 		boolean valid = false;
 		
-		if(isValidType(order)) {
-			valid = true;
-		}
-		
-		//verifica se nao existe uma ordem com o mesmo id
-		
+		valid = isValidType(order);
+				
 		//verifica se a quantidade para o instrumento eh valida
+		valid = valid && (order.getVolume() % security.getSecurityInfoID().getMinimalVolume()) == 0;
 		
 		//verifica se o preco esta correto
-		
+		valid = valid && order.getPrice()>0;
 		
 		return valid;
 	}
@@ -136,10 +127,11 @@ public class Book implements MessageSender {
 		}
 		
 		if(added) {
-			OrderExecution oe = new OrderExecution(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice(), order);
+			OrderExecution oe = new OrderExecution(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice());
 			oe.setMessage("Order received");
+			oe.setOrderID(order);
 			
-			added = sendMessage(MessageBuilder.buildExecutionReport(oe, sessionID), sessionID);
+			added = sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
 		}
 		
 		return added;
