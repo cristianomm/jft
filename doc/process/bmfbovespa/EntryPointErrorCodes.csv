@@ -1,0 +1,1317 @@
+error_code;description
+000908;Unable to create FIX from VolatilityUpdate message 
+000908;Unable to send FIX from VolatilityUpdate message 
+001003;Orders may not be entered while the market is closed/paused 
+001007;FIX field missing or incorrect 
+001010;Required field missing 
+001011;FIX field incorrect 
+001012;Price must be greater than zero 
+001013;Invalid order qualifier 
+001014;User not authorized to trade 
+001016;Required field missing 'Stop orders cannot be IOC/FAK' 
+001017;Required field missing 'Display Quantity orders cannot be IOC/FOK' 
+001018;Required field missing 'Stop orders cannot be IOC/FOK' 
+002013;Market price orders not supported by opposite limit 
+002019;Order GTD Expire Date is before the current (or next, if not currently in a session) trading session end date 
+002045;Cannot modify order because order does not exist 
+002045;Order not in book 
+002046;Disclosed Quantity cannot be greater than total or remaining quantity 
+002047;Order contract is unknown  
+002048;The Order was submitted with a different SenderCompID than the requesting Cancel  
+002049;The Order was submitted with a different CLOrderID than the CorrelationClOrderID of the requesting Cancel  
+002050;The Order was submitted with a different CLOrderID than the OriginalClOrderID of the requesting Cancel  
+002051;The Order was submitted with a different side than the requesting Cancel  
+002052;The Order was submitted with a different group (tag 55) than the requesting Cancel  
+002053;The Order was submitted with a different security type than the requesting Cancel  
+002054;The Order was submitted with a different account than the requesting Cancel  
+002055;The Order was submitted with a different quantity than the requesting Cancel  
+002056;The Order was submitted with a different TraderID than the requesting Cancel  
+002057;Attempt to cancel an order with a different FirmID than the original order 
+002058;Attempt to cancel an order with a different SenderLocationID than the original order 
+002058;Stop price maxi-mini must be greater than or equal to trigger price  
+002059;Stop price maxi-mini must be smaller than or equal to trigger price 
+002060;Sell order stop price must be below last trade price 
+002061;Buy order stop price must be above last trade price 
+002100;The modify was submitted on a different product than the original order 
+002101;Attempt to modify an order with a different in-flight-fill mitigation status than first modification 
+002101;Attempt to modify an order currently taking part in an RFC process 
+002102;Attempt to modify an order with a different SenderCompID than the original order 
+002103;Attempt to modify an order with a different TraderID than the original order 
+002104;Attempt to modify an order with a different AccountID than the original order 
+002105;Attempt to modify an order with a different FirmID than the original order 
+002106;Attempt to modify an order with a different SenderLocationID than the original order 
+002107;Disclosed Quantity is not allowed 
+002108;Account or Give Up firm required for DMA customers 
+002109;Disclosed Qty cannot be less than Disclosed Qty Min 
+002110;Acct Type(38) not valid for Tag 581 for DMA customers 
+002111;Give Up not valid for FX Spot contract 
+002112;Visibility Permission Not granted for Executing Trader/Entering Trader  
+002113;Executing Trader doesn't have access to Product Group  
+002114;Attempt to modify market order to some other type  
+002115;Order quantity is outside of the allowable range 
+002116;Account is mandatory for FX SPOT 
+002117;Order On Behalf by DMA customer is not allowed 
+002118;Attempt to modify an order with a different AccountType than the original order 
+002123;Account or Give Up firm required for equities 
+002130;Order type not permitted while the market is in pre open 
+002130;Order type not permitted while the market is in PCP 
+002137;Order price is outside limits 
+002138;Qty is not multiple of Round Lot 
+002139;Qty is greater or equal than Maximum Trade Volume 
+002179;Order price is outside bands 
+002180;Order price is outside auction bands 
+002181;Trade outside of short term volatility bands 
+002182;All Legs must have same Lot Types 
+002183;All Legs must have same Tick Increment 
+002184;All Legs must have same Step of Quotation 
+002185;Trade price is outside of static limits 
+002186;COD Not Supported for GTC/ GTD Orders 
+002187;Order not bookable at this time 
+002188;Minimum Quantity was not Filled 
+002189;Order Attributes Not Allowed to Trip an Auction 
+002311;Order type not permitted for group 
+002500;Instrument has an request for cross in progress 
+002501;Order Quantity too low 
+002502;CrossType ineligible for instrument 
+002503;RFQ for Cross is not allowed since contract is not RFQ for Cross eligible 
+002504;DMA CrossOrder Not allowed 
+002505;Cross Order Rejected due to Auction Trigger Validation 
+002506;Trade on Behalf Rejected. 
+002600;Market Maker Protection in effect for user <XXXXXXXX> and group <XXXXXX> 
+003000;RFQ rejected, instrument/exchange not tradable 
+003001;RFQ rejected, instrument/exchange not known 
+003002;Error creating contract 
+003010;Business reject: Other 
+003011;Business reject: Unknown ID 
+003012;Business reject: Unknown security 
+003013;Business reject: Unsupported message type 
+003014;Business reject: Application Not Available 
+003015;Business reject: Required field missing 
+003016;Contract claims to be a spread but is missing one or more legs 
+003017;Fix Field Length Exceeds Max Length 
+003020;Special Auction Permissions: 'Order entry not allowed.' 
+004000;Engine did not respond to FAS request 
+006001;Termo message rejected : Unknown instrument 
+006002;Termo message rejected : Exchange (security) closed 
+006003;Termo rejected, instrument/exchange not tradable 
+006004;Termo message rejected: Limits exceeded 
+006005;Termo message rejected: Too late to enter 
+006006;Termo message rejected: Unknown Termo Quote 
+006007;Termo message rejected: Duplicate Termo Quote 
+006008;Termo message rejected: Invalid bid/ask spread 
+006009;Termo message rejected: Invalid price 
+006010;Termo message rejected: Not authorized to termo quote this instrument 
+006011;Termo message rejected: Pass 
+006012;Fix field incorrect 
+006013;Not a valid termo instrument 
+006014;Values don`t match with the original request 
+006015;Current termo request status does not allow rejection 
+006016;Current termo request status does not allow acceptance 
+006017;Wrong type of order book for Termo. 
+006018;Wrong type of request for Termo. 
+006019;Days to Settlement must be between 16 and 999. 
+006020;Days to Settlement must be between 16 and 90 
+006021;Instrument not allowed to this market. 
+006022;Instrument not allowed to this market. 
+006023;Termo Price should be greater than zero. 
+006024;Termo messages should not be entered when market is paused 
+006025;Termo messages should not be entered when market is pre open 
+006026;Termo messages should not be entered when market is PCP 
+006027;Termo messages should not be entered when market is no cancel 
+006028;Termo messages should not be entered when market is reserved 
+006029;Termo messages should not be entered when market is forbidden 
+006030;Termo messages should not be entered when market is pre close 
+006031;Termo messages should not be entered when market is pre open 
+006032;Not a valid Termo Underlying Instrument. 
+006033;Received a null AdminOperation 
+006034;First trade of day for underlying termo instrument 
+006035;Termo messages should not be entered when market is in final closing call 
+006036;Invalid Cash Trade in TVR 
+006037;Only Buy Entry Request for TVR is accepted 
+006038;There is no bid and ask for underlying contract 
+006039;Invalid price 
+006040;Invalid Cash Trade in TVR 
+006041;Invalid Cash Trade in TVR 
+006042;Invalid Cash Trade in TVR 
+006043;Invalid Cash Trade in TVR 
+006044;Invalid Cash Trade in TVR 
+007000;Order rejected 
+007001;FOK order unmatchable in market 
+007002;Orders may not be entered while the market is closed 
+007005;Order contract is unknown 
+007006;No partial match found for this FAK order 
+007008;Maximum quantity depth for any one price group max may not exceed + Integer.MAX_VALUE 
+007009;Contract for this order contract is past expiration date and may no longer be traded 
+007009;Contract for this order has a future activation date and cannot yet be traded 
+007010;Invalid spread price 
+007011;Maximum number of working orders for this contract has been exceeded 
+007012;Order would overwrite existing order on book 
+007013;Order group does not match group of contract 
+007014;Order security type does not match security type of contract 
+007015;Order modify has different side than existing order 
+007017;Contract is not eligible for electronic matching 
+007018;Order contract is not GTC or GTD eligible 
+007020;No Trading Calendar found on or after order GTD Expire Date 
+007021;Tag ExpireDate (432) beyond instrument expiration. 
+007022;Tag ExpireDate (432) beyond UDS COMBO earliest leg expiration. 
+007024;Order cannot be modified or cancelled while the market is in no cancel 
+007027;Order type not permitted while the market is reserved 
+007028;Order session date is in the past 
+007029;Orders may not be entered while the market is forbidden 
+007030;Quote rejected: Exchange (security) is forbidden  
+007031;Orders may not be entered while the market is preclosed  
+007032;Quote rejected: Exchange (security) is preclosed  
+007033;Orders may not be entered while the market is open  
+007034;Quote rejected: Exchange (security) is forbidden  
+007035;RFQ rejected: Instrument / exchange is open 
+007036;Time in Force (59) not valid for Order Type (40). 
+007037;Good for auction order not allowed. 
+007038;On close order not allowed. 
+007039;Duplicate Client Order Id for this Session/Contract. 
+007040;Good for auction order cancel not allowed. 
+007041;On close order cancel not allowed. 
+007042;Good for auction order modify not allowed. 
+007043;On close order modify not allowed. 
+007044;Modify of Order Participating in TOP not allowed. 
+007045;Cancel of Order Participating in TOP not allowed. 
+007046;Order Type/ Duration combination invalid for auction 
+007047;Order Type / Duration combination invalid 
+007048;Quantity Attribute Not Allowed On Order During Auction. 
+007049;Order Entry was unsuccessful. Error Message: Is not possible to send orders with Validity Type 'Market on Auction' with Minimum quantity. 
+007050;Max Floor (111) not valid for Time in Force (59). 
+007055;Spread orders may not be entered while the underlying leg market is in non trading state 
+007056;Orders may not be entered while the market is in final closing call 
+007101;Quote rejected: Unknown instrument  
+007102;Quote rejected: Exchange (security) closed 
+007103;Quote rejected: Quote exceeds limit  
+007104;Quote rejected: Too late to enter  
+007105;Quote rejected: Unknown Quote 
+007106;Quote rejected: Duplicate Quote in same message  
+007107;Quote rejected: Invalid bid/ask spread 
+007108;Quote rejected: Invalid price  
+007109;Quote rejected: Not authorized to quote this instrument  
+007110;Quote rejected, resting cancelled: Too many rejects  
+007111;Quote rejected: Duplicate Quote, different ID ); 
+007112;Quote rejected, resting cancelled: Quote exceeds limit 
+007113;Quote rejected, resting cancelled: Duplicate Quote 
+007114;Quote rejected, resting cancelled: Invalid bid/ask spread  
+007115;Quote rejected, resting cancelled: Invalid price  
+007116;Quote rejected, resting cancelled: Not authorized to quote this instrument  
+007117;Quote rejected: Unspecified reason  
+007118;Quote rejected: Exchange (security) is in pre open  
+007118;Group state does not allow this function 
+007119;Quote rejected: Exchange (security) is in no cancel  
+007120;Quote rejected: Exchange (security) is reserved  
+007121;Contract not eligible for negotiated quote 
+008005;Requested exercise quantity is more than the available quantity 
+008006;Exercise price not allowed 
+008007;No positions blocked 
+008011;Exercise must be on maturity date. 
+008014;Function not available this time 
+008015;Blocking quantity more than 999999999 
+008020;Trade does not belong to the specified firm ‘Firm Id: <XXX>’ 
+008021;Blocking qty more than available quantity 
+008022;There aren't positions available to exercise 
+008023;Total qty must be the sum of all AllocQty 
+008024;Trade already cancelled or does not exist ‘Trade Id: <XXX>’ 
+008027;Available quantity to block is zero 
+008028;Invalid Operation for contract type. 
+008036;Function closed or suspended. 
+008039;Exercise price outside required moneyness 
+008059;Invalid blocking Id to unblock 
+008062;Invalid quantity to unblock 
+008063;On Behalf Operation not allowed during CCR recovery 
+008065;Problem parsing incoming message 
+009999;Technical Error: Function not performed 
+010001;System recovering or starting up 
+010002;Unknown Market Participant Accepted (k1,k2)[<k1>,<k2>] 
+010003;Unknown Market Participant (k1,k2)[<k1>,<k2>] 
+010004;Unknown Instrument (symbol, sec_id, sec_exchange, sec_id_source) [symbol, sec_id, sec_exchange, sec_id_source] 
+010005;Invalid Quantity [<k1>] <= 0 
+010006;Market Participant is blocked (k1,k2)[<k1>,<k2>] 
+010007;Instrument is blocked (symbol, sec_id, sec_exchange, sec_id_source) [symbol, sec_id, sec_exchange, sec_id_source] 
+010008;Limit is blocked (k1,k2,instrID)[<k1>,<k2>, instrID] 
+010009;Contract [<k1>] is blocked for market participant [<k2>] 
+010010;Duplicate Order (clOrdID)[clOrdID] 
+010011;No limits configured for instrument (symbol,sec_id,sec_exchange,sec_id_source)[<k1>,<k2>,<k3>,<k4>] 
+010012;Instrument [<k1>] is blocked for market participant [<k2>] 
+010013;Equivalent instrument [<k1>] is blocked for market participant [<k2>/<k3>] 
+010014;Order quantity [<k1>] > TCI (Max Bid Quantity) [<k2>] for Instrument [<k2>] 
+010015;Order quantity [<k1>] > TVI (Max Offer Quantity) [<k2>] for Instrument [<k3>] 
+010016;Exposed short quantity [<k1>] exceeds limit [<k2>] for Instrument [<k3>] 
+010017;Exposed long quantity [<k1>] exceeds limit [<k2>] for Instrument [<k3>] 
+010018;Short position [<k1>] exceeds limit [<k2>] for Instrument [<k3>] 
+010019;Long position [<k1>] exceeds limit [<k2>] for Instrument [<k3>] 
+010020;Short position [<k1>] exceeds limit [<k2>] for Equivalent Instrument [<k1>] / [<k2>] 
+010021;Long position [<k1>] exceeds limit [<k2>] for Equivalent Instrument [<k1>] / [<k2>] 
+010022;OMS: Pending modification not found (OrderID)[<k1>] 
+010023;OMS: Order not found (OrderID)[<k1>] 
+010024;OMS: Duplicate Modification (OrderID)[<k1>] 
+010025;No limits configured for instrument (instrumentID)[<k1>] 
+010026;No limits configured for equivalent instrument [<k1>] 
+010027;MegaLiNe: IFM Not Allowed 
+010028;Financial short quantity [<k1>] . k [<k2>] exceeds limit [<k3>] for Instrument [<k4>] 
+010029;Financial long quantity [<k1>] . k [<k2>] exceeds limit [<k3>] for Instrument [<k4>] 
+010030;Financial short position [<k1>] . k [<k2>] exceeds limit [<k3>] for Instrument [<k4>] 
+010031;Financial long position [<k1>] . k [<k2>] exceeds limit [<k3>] for Instrument [<k4>] 
+010032;Financial Order quantity [<k1>] . k [<k2>] > TCI (Max Bid Quantity) [<k3>] for Instrument [<k4>] 
+010033;Financial Order quantity [<k1>] . k [<k2>] > TVI (Max Offer Quantity) [<k3>] for Instrument [<k4>] 
+020001;Missing PartyRole 26 - Correspondent Broker 
+020002;Missing PartyRole 36 - Entering Trader 
+020003;Missing Account Field 
+020004;Unknown Account 
+970100;TCS INDISPONIVEL (TCS unavailable) 
+970101;FUNCAO INTERDITADA (Function forbidden) 
+970102;REFERENCIA PERDIDA TCS (Lost TCS reference) 
+970103;DECLARACAO INEXISTENTE (Unknown declaration) 
+970104;FUNCAO INCORRETA (Incorrect function) 
+970105;DECLARACAO INTERDITADA (Declaration forbidden) 
+970106;DECLARACAO INEXISTENTE NO DIA (Unknown declaration) 
+970107;DECLARACAO JA ANULADA (Declaration already canceled) 
+970108;DECLARACAO JA REJEITADA (Declaration already rejected) 
+970109;DECLARACAO JA ANULADA (Declaration already canceled) 
+970110;DECLARACAO JA REJEITADA (Declaration already rejected) 
+970112;MARKET IN SURVEILLANCE INTERVENTION : REQUEST REJECTED 
+970120;CODIGO INVALIDO (Invalid code) 
+970121;CODIGO INTERDITADO (Code forbidden) 
+970122;MODO DE COTACAO INVALIDO (Invalid quotation mode) 
+970123;VALOR INDEFINIDO (Undefined value) 
+970124;CODIGO INVALIDO (Invalid code) 
+970125;CODIGO RESERVADO OU SUSPENSO (Code is reserved or suspense) 
+970126;CODIGO INVALIDO (Invalid code) 
+970127;CODIGO  VWAP PROIBIDO (Forbidden VWAP code) 
+970129;CODIGO NÃO É UM FUNDO (Code is not a fund) 
+970130;SENTIDO INVALIDO (Invalid direction) 
+970131;SENTIDO NAO AUTORIZADO (Direction not allowed) 
+970132;OPERACAO DEVE SER DIRETA  
+970140;DECLARANTE COMPRADOR INVALIDO (Invalid buyer initiator) 
+970141;DECLARANTE COMPRADOR INTERDITADO (Forbidden buyer initiator) 
+970142;DECLARANTE INVALIDO (Invalid initiator) 
+970143;DECLARANTE VENDEDOR INVALIDO (Invalid seller initiator) 
+970144;DECLARANTE VENDEDOR INTERDITADO (Forbidden seller initiator) 
+970145;DECLARANTE DESCONHECIDO (Unknown initiator) 
+970146;DECLARANTE AUSENTE (Missing initiator) 
+970147;DECLARANTE INVALIDO (Invalid initiator) 
+970148;DECLARANTE NAO VALIDO (Invalid initiator) 
+970149;VENDEDOR  AUSENTE (Seller is missing) 
+970150;COMPRADOR AUSENTE (Buyer is missing) 
+970151;SEM CONEXAO DECLARANTE/GRUPO 
+970152;DECLARANTE PROIBIDO NESTE GRUPO 
+970160;CONTRAPARTE INVALIDA (Invalid counterparty) 
+970161;CONTRAPARTE PROIBIDA (Forbidden counterparty) 
+970162;CONTRAPARTE DESCONHECIDA (Unknown counterparty) 
+970163;CONTRAPARTE COMPRADORA DIFERENTE (Illegal buying counterparty) 
+970164;CONTRAPARTE VENDEDORA DIFERENTE (Illegal selling counterparty) 
+970165;COMPRADOR E VENDEDOR DEVEM SER IGUAIS (Buyer and Seller must be equal) 
+970166;COMPRADOR E VENDEDOR DEVEM SER DIFERENTES (Buyer and Seller must be different) 
+970167;CONTRAPARTE PROIBIDA NESTE GRUPO (Counterparty forbidden for this group) 
+970170;COMPRADOR INVALIDO (Invalid buyer) 
+970171;SEM CONEXAO DECLARANTE COMPRADOR  
+970172;COMPRADOR PROIBIDO (Forbidden buyer) 
+970173;VENDEDOR INVALIDO (Invalid seller) 
+970174;SEM CONEXAO DECLARANTE VENDEDOR 
+970175;VENDEDOR PROIBIDO (Forbidden seller) 
+970180;CLIENTE INVALIDO (Invalid customer) 
+970190;CLEARING MODO INVALIDO (invalid Clearing mode) 
+970200;LIQUIDACAO INVALIDA (Invalid settlement) 
+970201;TIPO DE OPERACAO SEM LIQUIDACAO (Operation type without settlement) 
+970202;LIQUIDACAO INVALIDA (Invalid settlement) 
+970203;LIQUIDACAO NAO E NUMERICA (Settlement must be numeric) 
+970210;TIPO DE OPERACAO INVALIDA PARA TIPO DE MERCADO (Operation type invalid for the market) 
+970211;VALOR INCORRETO PARA TIPO DE OPERACAO 
+970212;TIPO DE OPERACAO PROIBIDA (Forbidden operation type) 
+970213;TIPO DE OPERACAO INVALIDA (Invalid operation type) 
+970214;TIPO DE OPERACAO PROIBIDA (Forbidden operation type) 
+970215;CODIGO INVALIDO PARA TIPO DE MERCADO VWAP 
+970216;TIPO DE OPERAÇÃO INVALIDO PARA CODIGO VWAP 
+970217;PRECO VWAP IGUAL A ZERO 
+970218;OPERAÇÃO INVALIDA PARA ESTADO DO INSTRUMENTO 
+970220;VOLUME < MINIMO 
+970221;VOLUME < PERCENTUAL DO CAPITAL 
+970222;VOLUME < QUANTIDADE MINIMA 
+970223;VOLUME < PERCENTUAL DO CAPITAL E QUANTIDADE 
+970224;VOLUME < LIMITE DE CAPITAL 
+970225;QUANTIDADE INVALIDA 
+970227;INVALID QUANTITY FOR THE LOT SIZE                
+970228;THE LOT SIZE EQUAL ZERO                
+970230;PRECO NAO NUMERICO 
+970231;PRECO DIFERENTE DE ZERO 
+970232;SEM VENDEDOR NO VISTA 
+970233;SEM COMPRADOR NO VISTA 
+970234;PRECO FORA DO SPREAD 
+970235;PRECO INVALIDO 
+970236;PRECO > MAXIMO AUTORIZADO 
+970237;IGUAL A ZERO 
+970238;PRECO VWAP INVALIDO  - PREÇO DE REFERÊNCIA PARA ESTE PERÍODO É 
+970239;PRECO INVALIDO 
+970240;GRUPO PROIBIDO 
+970241;MERCADO FINANCEIRO AUSENTE 
+970242;MODO DE COTACAO AUSENTE 
+970243;NENHUM NEGÓCIO NO VISTA 
+970250;MERCADO FINANCEIRO INVALIDO 
+970251;MERCADO FINANCEIRO PROIBIDO 
+970252;MERCADO FINANCEIRO ENCERRADO 
+970260;TAXA NAO NUMERICA 
+970261;TIPO DE CONTRATO INVALIDO 
+970262;TAXA INVALIDA 
+970263;TAXA INVALIDA 
+970264;TAXA PROIBIDA PARA DIRETO 
+970270;TIPO DE CONTRATO INCORRETO 
+970280;FORMATO INVALIDO 
+970281;FUNCAO INVALIDA PARA STATUS DA DECLARACAO 
+970282;FUNCAO INVALIDA PARA STATUS DO NEGOCIO 
+970283;FORMATO DE DECLARACAO INVALIDO 
+970284;TECLA INVALIDA 
+970285;COMENTARIO INCOMPLETO 
+970290;TIPO DE CONTA INCORRETO 
+970291;TIPO DE CONTA INCORRETO 
+970292;NUMERO DE CLIENTE INVALIDO 
+970300;OPERADOR NÃO PREENCHIDO 
+970310;PERIODO INICIAL VWAP INVALIDO 
+970311;PERIODO FINAL VWAP INVALIDO 
+970312;PERIODO INVALIDO PARA VWAP (INICIAL>FINAL) 
+970313;PERIODO VWAP INFERIOR AO MINIMO PERMITIDO 
+970314;ATRASO DA GRAVAÇÃO INCORRETA 
+970315;FORMATO DE TEMPO INVALIDO 
+970316;PERIODO PROIBIDO PARA ESTE TIPO DE OPERACAO 
+970400;NO LTP ON THE CENTRAL MARKET 
+970403;NO ROW IN TABLE TPRICE_CHECK_PERCENT FOR PRICE CHECKING 
+970410;CONTRAPARTE DESCONHECIDA 
+970411;CONTRAPARTE PROIBIDA 
+970412;CONTRAPARTE PROIBIDA NESTE GRUPO 
+970465;SENTIDO INICIAL INVALIDO 
+970801;HORA SUPERIOR AO FIXING 
+970802;SEM CONEXAO ENTRE O DECLARANTE E O FUNDO 
+970803;CONTRAPARTE NÃO E UM FUNDO 
+970804;DECLARANTE INVALIDO 
+970805;QUANTIDADE INVALIDA 
+970806;QUANTIDADE INVALIDA 
+970807;FUNCAO INVALIDA 
+970808;CONTRAPARTE INVALIDA 
+970809;PASSAGEM INVALIDA 
+970999;ERRO DESCONHECIDO 
+972000;ERRO DE SQL NA TABELA DE DECLARANTES - TINTER 
+972001;ERRO DE SQL NA TABELA DE INSTRUMENTOS - TVAL 
+972002;ERRO DE SQL NA TABELA DE GRUPOS - TGRC 
+972003;ERRO DE SQL NOS PARTICIPANTES POR GRUPOS - TINGR 
+972004;ERRO DE SQL NA CONEXAO DOS PARTICIPANTES - TINCL 
+972005;ERRO DE SQL NA CONEXAO DOS PARTICIPANTES - TINGI 
+972006;ERRO DE SQL FETCH CURSOR 
+972007;ERRO DE SQL FECHAMENTO CURSOR 
+972008;ERRO DE ABERTURA DE SQL 
+972009;ERRO DE SQL NA TABELA - TSEANCE 
+972017;ERRO DE SQL NA TABELA - TPUB 
+972018;ERRO DE SQL NA TABELA DOMAIN: TDOMAIN 
+972020;ERRO DE SQL NA TABELA CALCULO: TCALCULO 
+972021;ERRO DE SQL NA TABELA DE CONTROLE: TCONTROLE 
+972022;ERRO DE SQL NA TABELA DE HORA: THORAIRE 
+972023;ERRO DE SQL NA TABELA NATURE: TNATURE 
+972024;ERRO DE SQL NA TABELA DE MENSAGENS: TMSGEXT 
+972025;ERRO DE SQL NA TABELA DE ERRO: TREJET 
+972026;ERRO DE SQL NA TABELA DE MENSAGENS: TALERT 
+972027;ERRO DE SQL NA TABELA DE ERRO: TCOURSHIST 
+972029;ERRO DE SQL NA TABELA DE MENSAGENS: TPROFIL 
+972050;PARTICIPANTE AUSENTE NA TABELA - TINTER 
+972051;PARTICIPANTE INVALIDO NA TABELA - TINTER 
+972052;INSTRUMENTO AUSENTE NA TABELA - TVAL 
+972053;GRUPO AUSENTE NA TABELA - TGRC 
+972054;CODIGO PARTICIPANTE AUSENTE NA TABELA - TINTER 
+972055;PARTICIPANTE AUSENTE NA TABELA - TINGR 
+972056;SEM CONEXAO NA TABELA - TINCL 
+972057;SEM CONEXAO NA TABELA - TINGI 
+972058;COLUNA DESCONHECIDA NA TABELA - TSEANCE 
+972065;COLUNA DESCONHECIDA NA TABELA - TPUB 
+972067;COLUNA DESCONHECIDA NA TABELA - TDOMAINE 
+972068;COLUNA DESCONHECIDA NA TABELA - TDEVISE 
+972069;COLUNA DESCONHECIDA NA TABELA - TCALCUL 
+972070;COLUNA DESCONHECIDA NA TABELA - TCONTROLE 
+972071;COLUNA DESCONHECIDA NA TABELA - THORAIRE 
+972072;COLUNA DESCONHECIDA NA TABELA - TNATURE 
+972073;COLUNA DESCONHECIDA NA TABELA - TREJET 
+972074;COLUNA DESCONHECIDA NA TABELA - TMSGEXT 
+972075;COLUNA DESCONHECIDA NA TABELA - TALERT 
+972076;COLUNA DESCONHECIDA NA TABELA - TCOURSHIST 
+972078;COLUNA DESCONHECIDA NA TABELA - TPROFIL 
+972100;FUNCAO PROIBIDA PELO STATUS DO INSTRUMENTO 
+972101;FUNCAO PROIBIDA PELO STATUS DO GRUPO 
+972102;PARTICIPANTE JA EXISTE 
+972103;BOC CODE JA EXISTE 
+972104;PARTICIPANTE JA DEFINIDO 
+972105;CONEXAO JA EXISTENTE 
+972106;CONEXAO JA EXISTENTE 
+972107;FUNCAO PROIBIDA PELO STATUS DO PARTICIPANTE 
+972108;CONEXAO JA EXISTENTE 
+972150;CONEXAO JA EXISTENTE 
+972151;CONEXAO JA EXISTENTE 
+972152;CONEXAO JA EXISTENTE 
+972153;NEGOCIO(S) EXISTENTE(S) PARA ESTE MEMBRO 
+972200;INDICADOR INVALIDO 
+972201;TIPO DE PARTICIPANTE DESCONHECIDO 
+972202;PARTICIPANTE INTERDITADO PARA ESTA FUNCAO 
+972203;CODIGO DE SLE AUSENTE NA MENSAGEM 
+972204;CODIGO DE SLE AUSENTE NA MENSAGEM 
+972205;INDICADOR DE PARTICIPANTE ZERADO 
+972206;CODIGO DE SLE AUSENTE 
+972207;CODIGO DE INSTRUMENTO AUSENTE NA MENSAGEM 
+972208;CODIGO DE GRUPO AUSENTE NA MENSAGEM 
+972209;ACESSO DEFAULT DIFERENTE   
+973018;ERRO DE SQL NA TABELA TINTERFUND 
+973028;ERRO DE SQL NA TABELA DE ERRO: T_RFVAL5J 
+973029;ERRO DE SQL NA TABELA DE ERRO: T_MARK_SEG 
+973030;ERRO DE SQL NA TABELA TPRICE_CHECK_PERCENT 
+973041;SQL ERROR ON EXT. MESSAGE TABLE : T_MESSAGE_NSC 
+973067;COLUNA DESCONHECIDA NA TABELA - TINTERFUND   
+973081;COLUNA DESCONHECIDA NA TABELA - T_RFVAL5J 
+973082;COLUNA DESCONHECIDA NA TABELA - T_MARK_SEG 
+973083;COLUNA DESCONHECIDA NA TABELA - TPRICE_CHECK_PERCENT 
+973095;NO ROW IN TABLE : T_MESSAGE_NSC                 
+989000;Duplicated order identification  
+989001;Unknown order  
+989002;Account cannot be modified  
+989003;OrderQty must be greater than CumQty  
+989004;Quantity cannot be zero  
+989005;Account is missing  
+989006;Operation in progress: cannot modify/cancel  
+989007;Account not found  
+989008;Broker not found  
+989009;Unknown Account and/or Broker  
+989010;Invalid Account   
+989011;Invalid Account   
+989012;Invalid Broker code  
+989013;HUB connection failure  
+989014;At The Opening validity is forbidden in trading port 300  
+989015;Entering Trader not found  
+989016;GTD orders must contain ExpireDate  
+989304;Entering Firm not found  
+989305;SessionID (Trading Port) not found  
+989306;Buy and Sell Traders must be the same  
+989307;Buy and Sell Brokers must be the same  
+989308;Buy and Sell Trading Ports must be the same  
+989309;Buy and Sell Quantities must be the same  
+989310;Cross orders are allowed only on Sender Location as BMVF or AUTO  
+989311;At The Opening validity available only for Market With Leftover As Limit orders 
+989312;No route found for incoming message  
+989313;Sender Location not found 
+989314;Entering Trader value must be between 70 and 299 (EntryPoint) 
+989315;ClOrdID from sell and buy sides can't be equal 
+989316;Buy and Sell Sender Location must be the same 
+989317;Invalid SecurityExchange - accepted only BVMF 
+989318;Invalid SecurityRequestType 
+989319;Invalid Sender Location 
+989320;Unknown Quote 
+989321;QuoteID/QuoteReqID not found 
+989322;Invalid PositionQty 
+989323;Contra Firm not found 
+989324;This session is not allowed to perform the requested operation 
+989325;This Order Validity can only be associated with Market Orders 
+989326;Order Validity At the Close not allowed 
+989327;Trying to set the field: <NAME> with value: <VALUE> which is narrower in length than the field declaration: <LENGTH>. The data type: <DATA_TYPE> cannot be padded 
+989328;Trying to set the field: <NAME> with value: <VALUE> which is wider in length than the field declaration: <LENGTH> 
+989329;Message <MESSAGE_NAME> was not found in the data dictionary 
+989330;Incorrect MMTP timestamp format 
+989331;Decimal locator is wider than 1 char: <DECIMAL_LOCATOR> 
+989332;Invalid decimal locator: <DECIMAL_LOCATOR> 
+989333;Price Vs. Decimal Locator count mismatch 
+989334;The function code position has an invalid value: <VALUE>. It should be greater or equal to 1, and smaller than the message length 
+989335;Cannot create unknown message: <MESSAGE_NAME> 
+989336;Mapping not found for value: <VALUE> 
+989337;Mapping not found for value: <VALUE> 
+989338;Unsupported target <NAME> 
+989339;Error in alternate-source-format: <EXCEPTION> 
+989340;Error in source-format: <EXCEPTION> 
+989341;Index <POSITION> is larger than the current field width 
+989342;Length <LENGTH> is larger than the current field width 
+989343;Input price invalid: <VALUE> 
+989344;The price overflows the maximum MMTP price width (9) <VALUE> 
+989345;Invalid Session name, it should end with valid numeric content (EntryPoint) 
+989346;This FIX session is not a valid Desk session (EntryPoint) 
+989347;Fixed Rate value must be between 0 and 1 
+990292;Número de Cliente Inválido (Invalid account number) 
+991000;This instrument doesn’t exist 
+991001;Unknown function  
+991002;Forbidden function for broker type  
+991003;Group state doesn’t allow this function   
+991004;Instrument state doesn’t allow this function    
+991005;Quantities must be numeric    
+991006;Price format is not valid 
+991007;A mandatory area is not or bad filled 
+991008;Invalid Hour area format 
+991009;Group not authorized for this broker 
+991010;Mandatory field is not filled 
+991011;Field is bad filled 
+991012;Unknown group of instrument   
+991013;Tick expression format is invalid   
+991014;This instrument doesn’t allow this function 
+991015;Instrument must belong to BOO group 
+991016;Only one broker authorized on buy side for BOO group  
+991017;Broker not authorized to enter an order on this side of BOO Group 
+991018;The Group is already a BOO Group    
+991019;The Group is already a non-BOO Group 
+991020;Min Price is Mandatory  
+991021;Tick Limit Modification is invalid  
+991022;BOO group action code is bad filled 
+991023;The Group must not contain instruments    
+991024;Valuation indicator group must be 0 or 1  
+991025;Valuation indicator unchanged 
+991026;SLE code already exists in Database 
+991027;Field ORDER DISCLOSED QUANTITY is bad filled    
+991028;Field MEMBER ID is bad filled 
+991029;Field TECHNICAL ORIGIN is bad filled 
+991030;Field ORDER CONFIRMATION FLAG is bad filled 
+991031;Field PREOPENING ORDER FLAG is bad filled 
+991032;Field ORIGINAL TRIGGER PRICE is bad filled 
+991033;Field ORDER VALIDITY DURATION is bad filled 
+991034;Field TYPE OF CLEARING ACCOUNT is bad filled    
+991035;Field CLIENT ACCOUNT NUMBER is bad filled 
+991036;Field CLIENT ACCOUNT NUMBER must be filled for CLIENT orders 
+991037;Field TRADE ORDER NUMBER is bad filled    
+991038;Field ORIGINAL ORDER DATE is bad filled   
+991039;Field BRANCH CODE is bad filled 
+991040;Field BANK CODE is different from MEMBER ID 
+991041;Field TYPE OF CLEARING ACCOUNT (2nd ag) is bad filled 
+991042;Field CLIENT ACCOUNT NUMBER (2nd ag) is bad filled    
+991043;Field CLIENT ACCOUNT NUMBER (2nd ag) must be filled for CLIENT orders   
+991044;Field TRADE ORDER NUMBER (2nd ag) is bad filled 
+991045;Field ORIGINAL ORDER DATE (2nd ag) is bad filled 
+991046;Field BRANCH CODE (2nd ag) is bad filled  
+991047;Field BANK CODE (2nd ag) is different from MEMBER ID  
+991048;ACCOUNT is not active   
+991049;ACCOUNT (2nd ag) is not active 
+991050;Field CLIENT ACCOUNT NUMBER is bad filled 
+991051;Either BANK CODE or BRANCH CODE is filled with blank  
+991052;Price is invalid according to quotation range   
+991053;Reference Price is invalid according to quotation range 
+991054;One threshold is invalid according to quotation range 
+991055;Field <ID of clearing system member> (1st ag) is bad filled 
+991056;Filler (1st ag) contains binary data 
+991057;Field <Free Text> (1st ag) contains binary data 
+991058;Field <Posting action for an order> (1st ag) is bad filled  
+991059;Field <Clearing of operation mode> (1st ag) is bad filled   
+991060;Field <ID of clearing system member> (2nd ag) is bad filled 
+991061;Filler (2nd ag) contains binary data 
+991062;Field <Free Text> (2nd ag) contains binary data 
+991063;Field <Posting action for an order> (2nd ag) is bad filled  
+991064;Field <Clearing of operation mode> (2nd ag) is bad filled   
+991065;Field <short sell indicator> is bad filled 
+991500;Insufficient balance for designated instrument  
+991501;Nationality group cannot own more than n% 
+991502;Investor category cannot own more than n% 
+991503;Trader cannot trade more than a certain amount  
+991504;Investor suspended 
+991505;Investor status invalid it must be filled with - 00 01 02 03 
+991506;Investor/Broker does not hold enough qty to sell order 
+991507;Investor suspended in bid side 
+991508;Investor suspended in ask side 
+991509;Order origin does not match the account origin  
+991510;Investor not found in link investor / account   
+991511;Unknown Investor in credit check data base 
+991512;Unknown broker indicators in credit check data base   
+991513;No broker/account found in credit check data base (tccpositions)  
+991518;Short sell qty to decrement is greater than total qty owned 
+991519;Ownership qty to decrement is greater than total qty owned  
+991520;No %Ownership for this instrument   
+991521;This instrument does not exist in stock check control 
+991522;No Short-selling positions for this instrument  
+991523;Credit Limit Cap exceeded 
+991524;Credit Limit information does not exist  
+991525;Held quantity of shares is insufficient   
+991526;Held qty of shares is insufficient - broker not authorized for SS 
+991527;Investor suspended but cancel of all its orders not completely performed 
+991528;The order cannot be modified nor cancelled until its exposure time has elapsed 
+991529;The order account number can t be modified 
+991530;Credit Limit position to decrement is negative  
+991531;Type of position update is invalid - it must be equal 1 or 2 
+991532;Account not authorized on Buy side  
+991533;Account not authorized on Sell side 
+991534;Account is Margin - the instrument must be Margin for this side   
+991535;Buy order cannot be Short Sell 
+991536;Sell order cannot be Buy Back 
+991537;Buy or Sell order cannot be CROSS Short Sell and Buy Back   
+991538;The Ishortsell indicator is invalid according of the side   
+992002;Technical Error 
+992003;Order price must be filled for limited orders   
+992004;Order price must not be filled in for Opening, Market to limit and Market orders 
+992005;Quantities must be multiple of traded lot 
+992006;Type of price invalid or not authorized according to instr or GR state  
+992007;Order quantity is equal to percentage of the Free Float Shares    
+992008;Price must be valid against percent-tick parameter    
+992009;CROSS orders forbidden in pre-opening stage 
+992010;CROSS order price type must be limited    
+992011;Total quantity must be greater than traded lot for a cross order  
+992012;Order quantity exceeds percentage of the Free Float Shares  
+992013;MARKET TO LIMIT order not supported by opposite limit 
+992014;Price must be valid against tick table    
+992015;Technical Error 
+992016;FAK orders forbidden for MARKET and STOP-LOSS orders  
+992017;Order quantity can not be increased 
+992018;Invalid Date format 
+992019;Validity date must be higher than current session date 
+992020;Validity date must be lower than default date   
+992021;Validity date must be equal to current session date   
+992022;Amount exceeds capital amount authorized according to param CapMaxOmNg  
+992023;Buy-Out Orders must have limit price and multiply quantity  
+992025;Validity date of FAK, DAY or DEFAULT orders must not be filled    
+992026;Validity date must be filled  
+992027;One quantity is lower than Min Quantity for instrument 
+992028;Disclosed or minimum quantity greater than total quantity   
+992029;Min quantity forbidden for this order type 
+992030;Technical Error 
+992031;Disclosed quantity too small  
+992032;Disclosed quantity forbidden for FAK,MOO,CROSS,MARKET and STOP-LOSS orders    
+992033;This broker doesn’t t exist 
+992034;Order cannot be entered for surveillance  
+992035;Only surveillance can capture for another broker 
+992036;Technical Error 
+992037;Order sequential number must be numeric   
+992038;Technical Error 
+992040;Minimum quantity cannot be modified 
+992041;This order is routed    
+992042;No modification for the order 
+992044;Validity date for this type of order must be FAK 
+992045;This order is not in the book 
+992046;Disclosed quantity cannot be greater than total or remaining qty  
+992047;Technical Error 
+992048;Unfreeze with acceptance impossible, Best orders not given  
+992049;Cross order forbidden for STOP orders 
+992050;Technical Error 
+992051;Technical Error 
+992052;Technical Error 
+992053;MINIMUM QUANTITY forbidden for FAK order  
+992054;Technical Error 
+992055;TRIGGER PRICE format is invalid 
+992056;TRIGGER PRICE must be valid against tick table  
+992057;TRIGGER PRICE invalid for order type 
+992058;STOP PRICE maxi-mini must be  >= TRIGGER PRICE  
+992059;STOP PRICE maxi-mini must be <= TRIGGER PRICE   
+992060;TRIGGER PRICE must be < last price or last day price  
+992061;TRIGGER PRICE must be > last price or last day price  
+992062;Remaining qty in book <> from expected remaining qty in order 
+992063;Technical Error 
+992064;This Trader does not belong to this Member 
+992065;Trader Id cannot be updated   
+992066;Origin date (in clearing aggregate) greater than current 
+992069;Leg price is outside the thresholds 
+992070;Technical Error 
+992071;Price must be > 0 
+992072;Foreign firm broker must be different from original broker  
+992073;Technical Error 
+992074;Technical Error 
+992075;Order outside the thresholds because of related instrument  
+992076;Short Sell indicator cannot be modified   
+992099;Client account number must be numeric 
+992100;Client account number is invalid    
+992102;Order Create, Modify, Cancel forbidden at Supervisory Intervention stage    
+992103;Hidden quantity forbidden in pre-opening stage  
+992105;Buy order price must be < than the upper price threshold during AHM 
+992106;Sell order price must be > than the lower price threshold during AHM    
+992107;Cancelling an order better or equal than the TOP is forbidden 
+992108;Cant decrease the price of buy orders participating in TOP calc   
+992109;Cant decrease fin amount of buy orders participating in TOP calc 
+992110;Cant increase the price of sell orders participating in TOP calculation 
+992111;This Instrument is not allowed to trade in After Hour Market Session    
+992112;Function forbidden on expired instrument  
+992113;Function forbidden on not activated instrument  
+992115;Total quantity must be inside the limits  
+992116;Quantity exceeded the limit for AHM 
+992117;Cant decrease the quantity of sell orders participating in TOP calc 
+992118;Cant modify Stop order in preopening stage 
+992129;Minimum quantity forbidden for STOP orders 
+992130;Minimum quantity forbidden in pre-opening stage 
+992137;Order price is outside the thresholds 
+992138;Invalid order price 
+992140;This instrument is not eligible for short selling 
+992141;Only RSS orders are allowed for this instrument 
+992142;Only PDT orders are allowed for this instrument 
+992143;Technical Origin is suspended for this instrument 
+992144;Short sell order not authorized on Buy Side 
+992145;Short Sell order must be a Limit order    
+992146;Short Sell order price does not comply with the Up_Tick rule 
+992147;Invalid Order Technical Origin It must be filled with -R J V E P K W F 
+992148;The Technical Origin is already suspended for this instrument 
+992149;The Technical Origin is already activated for this instrument 
+992200;Account not authorized to trade on this instrument 
+992201;Account (2nd ag) not authorized to trade on this instrument 
+992500;Confirmation mandatory for this order 
+992501;Order handled in Pre Opening - rejected in Continuous Trading 
+992502;Error, Instrument already in Fast-Market  
+992503;Error, Instrument already in Slow-Market  
+992504;Error, Instrument already in Very-Fast-Market   
+992505;Credit Limit Cap exceeded 
+992506;Percentage ownership exceeded 
+992507;Held quantity of shares is insufficient   
+992508;Credit Limit Cap and percentage ownership exceeded    
+992509;Credit Limit Cap exceeded and held quantity of shares is insufficient   
+992510;Percentage ownership exceeded and held qty of shares is insufficient    
+992511;Credit Limit Cap, %ownership exceeded and held qty of shares insufficient 
+992525;Error, Instrument already in Internal broadcast mode for Surveillance   
+992600;The Member is NOT Liquidity provider for this Instrument    
+992601;Buy price must be less or equal to sell price   
+992602;Invalid price publicity type  
+992603;Invalid broker type 
+992604;Trader Id is invalid    
+992605;Broker not allowed to enter a reference price   
+992606;No Liquidity provider for this Instrument 
+992900;Technical Error 
+992901;Technical Error 
+992903;Technical Error 
+992904;Technical Error 
+992908;Technical Error 
+992910;Technical Error 
+992911;Technical Error 
+992917;Validity type of block must be Day  
+992921;Technical Error 
+992933;Technical Error 
+992934;Technical Error 
+992935;Technical Error 
+992937;Technical Error 
+992940;Technical Error 
+992941;Technical Error 
+992942;Technical Error 
+992943;Technical Error 
+992944;Technical Error 
+992947;Technical Error 
+992948;Technical Error 
+992949;Technical Error 
+992950;Technical Error 
+992951;Technical Error 
+992952;Technical Error 
+993000;Instrument already suspended  
+993001;Instrument already reserved   
+993002;Instrument must be reserved or suspended  
+993003;Instrument must be frozen 
+993004;Instrument must be authorized 
+993005;Instrument must be forbidden  
+993006;No specialist broker for this instrument  
+993007;Fixing time must be less than End Consultation time   
+993008;No order to delete in the book 
+993009;High limit must be greater to Low limit   
+993010;Frozen price must be inside high and low limit  
+993011;Reservation indicator must be different   
+993012;Old Last day price invalid    
+993013;Technical Error 
+993014;Technical Error 
+993015;Technical Error 
+993016;A group or an instrument must be filled   
+993017;Invalid datas for Low and high limits 
+993018;The group has no instrument   
+993019;The Group opening Time commands the Instrument s one  
+993020;No opening time or fixing recorded for the Instrument 
+993021;The opening-Fixing time must be greater than system Time    
+993022;Opening Time must be < PostSession Time or PS Time must exists    
+993023;TRADING-DATE must be > ORDER-ENTRY-DATE   
+993024;Previous Lot size different from the current one 
+993025;Previous H-L Limits different from current ones 
+993026;Previous RefP-TLimit-ValiD different from the current ones    
+993027;Previous maximum quantity (B/S) different from the current one    
+993028;Technical Error 
+993029;The Lot size or maximum quantity cannot be changed if there are orders in the Book 
+993030;FIRST-LINE-REQUESTED must be filled 
+993031;NBRE-LINES-REQUESTED must be filled 
+993032;Selection is empty 
+993033;Opening or Fixing already scheduled for this Time 
+993034;Opening or Fixing already scheduled, Time entry rejected    
+993035;Opening or Fixing already scheduled, Reset rejected   
+993036;The Min and Max values entered are incorrect    
+993037;The Max value must be greater than the Min value 
+993038;The Posted Request to suppress is not in the REQUESTS table 
+993039;There is no Request corresponding to selection in the REQUESTS table    
+993040;High limit must be different than zero    
+993041;The Tick limit must be equal or > 0 and < or equal to 100%  
+993042;HOST ORDER NUMBER cannot be null    
+993043;ORDER SIDE must be  A  or  V  
+993045;The Times entered must be greater than the System Time 
+993046;Opening or Fixing already scheduled, Cancel before    
+993048;Time POST-SESSION is mandatory, unique and equal to last Time 
+993049;All the Group event must have different scheduled Times 
+993050;The After-Opening scheduled state must be at least 10 minutes after 
+993051;Minimum delay between 2 scheduled Group events not respected 
+993052;At Least 10 minutes between Opening and Surv-Interv   
+993053;A State Change Time cannot be scheduled if State is the current one 
+993060;This group does not exist 
+993061;This group already exists 
+993062;The OLD TEMP TICK LIMIT is invalid  
+993063;The OLD DEFAULT TICK LIMIT is invalid 
+993064;An indic value must be 0 or 1 
+993065;The old value of an indicator is incorrect 
+993066;Relative day 0 cannot have events with triggered time = 00:00:00  
+993067;Data unchanged    
+993068;PRICE VALIDITY DATE is wrong  
+993069;Undefined currency for the instrument still forbidden 
+993070;No Tick or Ref Price for the instrument, Instrument still forbidden 
+993071;The concerned broker does not have the type MEMBER    
+993072;The reservation indic must be  +  or  -  
+993073;The entered date does not exist in the system calendar 
+993074;There is no Variable Tick row for the specified criteria    
+993075;The warrant is under automatic processing 
+993094;Post-session timer must be > Instrument differed opening timer    
+993095;Forbidden break after Interruption during end-consult stage 
+993096;Restarting in Continuous impossible after a Market Interrupt 
+993097;Impossible Upd, an Instrument has odd lots in the book 
+993099;Previous Instr different from the current one  
+993100;The Instrument Reference Price must be non null 
+993101;If thresholds are null, Instr or Group Tick Limit must be non null 
+993102;The temporary tick limit must be non null 
+993103;The default Tick Limit must be non null   
+993104;No valid tick for limit computed    
+993105;Forbidden cancellation according to instrument state  
+993106;The Last Adjusted Closing Price must be non null 
+993107;The Request Time must be smaller or equal to System Time    
+993108;Request already exists for the Instrument or the Group 
+993109;Indic order cancellation can only take values 0,1,3  
+993110;There are STOP orders for this Instr, Reset is rejected 
+993111;Change displayed Qty is forbidden on STOP-AON orders  
+993112;Incorrect value for Ref-Settl Price 
+993113;Incorrect value for the Last Adjusted Closing Price   
+993114;Trading Day indicator = 0 or 1 
+993115;Session Template must be empty for day type  F  or  O 
+993116;Day type incompatible with next day 
+993117;Day type incompatible with previous day   
+993118;First Default schedule time must have relative day value 0  
+993119;Forbidden delete, instrument $$ state forbidden or frozen   
+993120;Invalid Group Event code 
+993121;Group state after opening empty or badly filled 
+993122;Group state after opening must be filled only if Opening    
+993123;Session template incompatible with market type associated to Group 
+993124;Forbidden if one threshold or the reference price is null   
+993125;Price type of CROSS phase must be filled only if pre-opening 
+993132;State change invalid :  
+993133;Scheduled time for the group are expired  
+993134;Update canceled, the day does not exist in calendar   
+993135;Invalid day type  
+993136;Invalid matching algorithm type (A-F-2)   
+993137;Matching algorithm type is already Allocation   
+993138;Matching algorithm type is already FIFO   
+993139;The reference price must be inside high and low limits 
+993140;Invalid demand regarding current algorithm 
+993150;Technical Error 
+993151;Technical Error 
+993152;Technical Error 
+993153;Technical Error 
+993154;The state of a leg doesn’t t allow this function  
+993155;Technical Error 
+993156;Technical Error 
+993200;The Strategy type already exists    
+993201;The Strategy type doesn’t exist 
+993202;This strategy does not exist  
+993203;This couple group-strategy type is already forbidden  
+993204;This couple group-strategy type is not forbidden 
+993205;The delay is not higher than the minimum delay  
+993206;Max-Min leg must be between including 2-40 and Min = or < Max 
+993207;A leg cannot be a Strategy    
+993208;Number of legs must be between including Min and Max  
+993209;The quantity type must be filled with Blank or AON    
+993210;Number of legs is bad filled  
+993211;The legs must have the same contract 
+993212;All instrument codes in the reserved bracket are used 
+993213;A similar strategy $$ already exists 
+993214;The ratios must respect conditions on strategy type   
+993215;Strategy not authorized for group   
+993216;Authorization forbidden - transaction unauthorized for strategy    
+993217;This function can not be captured for another broker  
+993218;This strategy is forbidden for this quantity type 
+993219;Invalid instrument code 
+993220;Two legs of this strategy are similar 
+993221;The leg $$ does not exist 
+993222;The legs must respect conditions on strategy type 
+993223;Command rejected, the couple group-strategy type is forbidden 
+993224;This strategy cannot be a delta neutral   
+993225;Invalid instrument type 
+993226;Ratios must be less than 99   
+993227;Stock thawn is rejected because the order is no more valid  
+993228;Date was expired for the instrument 
+993229;Command rejected, duration goes through the next stage 
+993230;Strategy type must be filled  
+993231;Indicator ratio authorized must be Y or N 
+993232;Authorization to trade on strategy type must be Y or N 
+993233;Inconsistent leg price algorithm ID 
+993234;Same underlying indicator for a strategy must be Y or N
+993235;Invalid number of legs  
+993236;Ratio must be numeric   
+993237;Ratio sign must be + or - 
+993238;Inconsistent leg type   
+993239;Too many legs for the number defined 
+993240;Same leg defined several times 
+993241;Leg number inconsistent regarding max legs 
+993242;Strategy Type does not authorize to Trade 
+993243;Function forbidden for this IXM 
+993244;Implied orders forbidden for this strategy 
+993245;Algorithm forbidden for this strategy 
+993246;Algorithm value is forbidden for this strategy  
+993247;The Lot size cannot be changed for implied strategy   
+993248;Strategies cannot be thawed   
+993249;Ratio or ratio sign inconsistent with leg price algorithm ID 
+993250;At least one leg can t belong to the strategy   
+993300;Technical Error 
+993301;Technical Error 
+993302;Technical Error 
+993303;Technical Error 
+993304;Technical Error 
+993305;Technical Error 
+993306;Technical Error 
+993307;Technical Error 
+993308;Trigger price outside allowed limits 
+993309;Technical Error 
+993400;Reservation with acceptation forbidden for cross/market to limit/Qty min 
+993401;AON orders forbidden when Market Order are allowed   
+993402;CROSS order price must be inside the limits 
+993403;The cross quantity must be greater than total quantity to limit   
+993404;Change the order side is forbidden  
+993405;Bad ratio between disclosed and total quantity    
+993410;Market Maker not authorized for Instrument 
+993411;LP Order already in the book  
+993412;Quote or order entry mode not allowed 
+993413;Cross quote forbidden   
+993414;Incoherent number of quote    
+993415;Side must be A or V 
+993416;Quantity side must be - or +  
+993417;The mandatory field Posting Action is bad filled 
+993418;The mandatory field Order user origin  is bad filled  
+993419;The mandatory field Origin account is bad filled 
+993420;Can t modify expiration date when IXM already expired 
+993421;Inconsistent ratio regarding strategy type 
+993422;Unknown quote in book   
+993423;Couple Group-Associated group does not exist    
+993424;An associated group already exists for this Group 
+993425;This Group is already associated to another one 
+993426;Action code must be D or C    
+993427;No associated group for underlying IXM(s) 
+993428;Associated groups must be different 
+993429;Couple Group-Associated group already exists    
+993430;Couple Group-broker does not exist  
+993431;Associated groups must have the same op-val-grc 
+993432;Association impossible : groups now definitively in <> Trading Units    
+993433;Function forbidden - Quotes still in the order book   
+993450;Automaton Level is bad filled 
+993451;Variation Side is bad filled  
+993452;Beginning Time or-and Ending Time is bad filled 
+993453;Percentage of Variation is bad filled 
+993454;Group Opening Delay is bad filled   
+993455;Action Code must be C or D    
+993456;Index Code is bad filled 
+993457;The Index Code doesn't t exit   
+993458;One or more Groups is bad filled    
+993459;Technical error on Action Code 
+993460;ICB : Error when programming schedule on group  
+993461;ICB : Error on group interruption   
+993462;ICB : Error on group interdiction   
+993463;Automate Level cannot be modified, try later    
+993464;No corresponding data in table 
+993465;ICB : The robot ICB is just deactivate    
+993466;ICB : Level 1 has been triggered    
+993467;ICB : Level 2 has been triggered    
+993468;ICB : Level 3 has been triggered    
+993500;Unknown Dealer 
+993501;Order price outside the limits NBBO 
+993502;Quantity must be greater than minimum improvement quantity  
+993503;Invalid phase number    
+993504;Improvement period already started  
+993505;Only price must be updated    
+993506;Price must be better than last initial price    
+993507;Invalid improvement quantity  
+993508;Only price and quantity must be updated   
+993509;Unknown management type 
+993510;Unknown improvement type 
+993511;Maximum price must be better than price   
+993512;Mandatory field client account is not filled    
+993513;Mandatory field trader order number is not field 
+993514;Improvement order forbidden for dealer    
+993515;Forbidden improvement phase for IXM 
+993516;Invalid improvement side 
+993517;Forbidden update for automatic phase 
+993518;One IXM hasn t got an improvement tick    
+993519;Inconsistent improvement tick 
+993520;Improvement phase to be in progress, Minimum quantity forbidden   
+993521;Deferred opening on IXM  
+993522;Maximum improvement price must be filled  
+993523;Quantity must be greater than last improvement quantity 
+993524;Order Account type is Incoherent with Combined Order Type   
+993525;Forbidden exposition for group 
+993526;NBBO crossed 
+993532;Lot size greater than Maximum Quantity of Instrument  
+993550;implied orders forbidden for strategy 
+993551;Number of legs forbidden for implied 
+993552;Ratio inconsistent for implied 
+993553;Lot size or tick inconsistent for implied 
+993901;Unknown order in book   
+993902;Old priority invalid for database   
+993903;New and Old priority are equal 
+993904;Priority already exists 
+993905;Priority hour greater than current time   
+993906;Old shown qty is not equal to database    
+993907;Displayed quantity is not multiple from trade unit    
+993908;New and Old quantity are equal 
+993909;New Displayed qty greater than disclosed quantity 
+993910;New Displayed quantity greater than left quantity 
+993911;Trade hour greater than current 
+993912;Traded quantity less than trade unit 
+993913;Traded quantity not multiple of trade unit 
+993914;Invalid trade price 
+993915;The brokers are not member firms    
+993916;Cancel trade date not equal to current    
+993917;Trade does not exist    
+993918;Invalid trade price against tick table    
+993919;trade hour must be greater than last trade hour 
+993920;Invalid hour format 
+993921;Trade hour must be less than last trade hour    
+993922;Order MUST have a hidden Qty in order to change its displayed Qty 
+993923;Trade rejected: its price crosses STOP orders in the book   
+993924;Delay till first asked time is too short or first time is obsolete 
+993925;Next to Last price and Last adj closing price are invalid   
+993926;Cancel is impossible: Ask Stop with trigg price > next to last traded  
+993927;Cancel is impossible: Bid Stop with trigg price < next to last traded  
+993928;Trade must be inside the price thresholds 
+993929;Cancel impossible : this trade is linked to Strategy Trade  
+993930;Cancel trade impossible : No order found  
+993931;This trade number is already used   
+993932;Cancel trade impossible : No order found  
+993933;Number of transaction and date can t be filled for a Strategy 
+993934;Trade number must be < last trade number of the instrument concerned    
+993999;The OBBP and the CP are allowed only in auction trading 
+994001;Parameter Threshold 
+994002;Parameter Quantity  
+994004;Parameter Quantity  
+994006;Parameter Price     
+994008;Only one field should be informed   
+994009;One or more group(s) must be selected 
+995500;SQL Error, Advise Computer staff    
+995501;SQL tables mismatch, Advise computer staff 
+995502;No anomalies itemized   
+995503;Invalid Group-user, Access denied   
+995504;Invalid password, Access denied 
+995505;Password expired, please update it  
+995506;Captured data unknown in database   
+995507;You re not authorized to break this screen 
+995508;Direct screen break for this screen 
+995509;Your logon was changed Please logon again 
+995510;Data were created 
+995511;Data were updated 
+995512;Date were deleted 
+995513;Logon authorization doesn’t allow to execute this function    
+995514;Data already exist 
+995515;Invalid new password    
+995516;Invalid id code, advise production staff  
+995517;0000 screen access must be authorized 
+995518;Invalid screen (check nb-authorization)   
+995519;SLE Id unknown in SDF Frontend file 
+995520;NSC unknown in SDF Frontend file    
+995521;Technical Error 
+995522;Technical Error 
+995523;Technical Error 
+995524;Technical Error 
+995525;Technical Error 
+995526;Technical Error 
+995527;Technical Error 
+995528;Technical Error 
+995529;No member authorization for the Group 
+995530;No Group authorization for the member 
+995531;No group defined in NSC database    
+995532;No member defined in NSC database   
+995533;Surveillance broker, no update allowed    
+995534;broker is not Market maker for the instr  
+995535;Delete canceled, trader is connected 
+995536;Delete canceled, associated instruments still exist   
+995537;Server name invalid 
+995538;Data were read    
+995539;Delete canceled, associated groups still exist  
+995540;Min price too low 
+995541;Min price too high 
+995542;Last page raised  
+995543;Invalid key Too many field captured 
+995544;Invalid key Tick not captured 
+995545;Invalid key for Tick and  min price compute    
+995546;Cotation Step to low compare to nb decimal ext  
+995547;Cotation Step price must be filled  
+995548;Delete canceled, Variable tick table index still use  
+995549;Class code doesn’t exist 
+995550;Server launched   
+995551;Launch canceled   
+995552;Batch mode doesn’t allow this function    
+995553;File in use try later   
+995554;Update canceled, profile does not exist   
+995555;Surveillance broker does not exist  
+995556;Profile does not exist  
+995599;Error message doesn’t exist   
+995998;Cancel orders in progress 
+995999;Error on open file /File doesn’t exist or error of securities/    
+996000;Empty file  
+996001;Invalid record type 
+996002;Invalid File name 
+996003;Invalid date 
+996004;Invalid record number   
+996005;Existing record after footer record 
+996006;IXM code not numeric    
+996007;Footer record not found 
+996008;Header record not found 
+996009;Mandatory Data    
+996010;IXM type must be F, C, P  or S 
+996011;Validity date type must be E, D, J, F ou S 
+996012;NOt numeric data  
+996013;Not numeric under IXM code   
+996014;Under IXM filled and indicator not present 
+996015;Invalid price format    
+996016;Strike fill strike currency code missing 
+996017;strike currency filled, strike missing    
+996018;H-L variation type expression is <> 1 or 2 
+996019;records chaining impossible for the Instrument  
+996020;Date-hour expired for record type I or C  
+996021;Underlying Instr not filled while indic fill    
+996022;Settle Indicator must be  blanK, N or C   
+996023;Settle Indicator inconsistent 
+996024;Settle Indicator must be 0 or 1 
+996025;Price definition must be 1, 2 or blank    
+996026;Exp date must be >= Activ date    
+996027;Matching code must be A or F  
+996028;Exp and activ date must be > system date 
+996029;Unknown Instrument in NSC-C Database 
+996030;Instrument already exists in NSC-C Database 
+996031;IXM code conversion Error Ask technical support 
+996032;Max Quantity must be greater than Min Quantity  
+996033;Low limit must be lower than High limit   
+996034;Invalid Margin Rate 
+996035;Credit class must be blank    
+996036;Stop orders to cancel, command must be confirmed 
+996037;Technical Error 
+996038;Technical Error 
+996039;Technical Error 
+996040;Technical Error 
+996041;Variable tick table index does not exist  
+996042;Technical Error 
+996043;Invalid tick 
+996044;Minimum price already existes 
+996045;Invalid APF price 
+996046;A zero minimum price is mandatory   
+996047;File size limited to 50 instruments for this request  
+996048;There are dupplicate instruments in the list    
+996100;Trader authorization doesn’t exist  
+996101;Trader authorization already created 
+996230;No Group authorization for the Trader 
+996231;Group not authorized for this Trader 
+996232;Group not authorized on Buy Side for this Trader 
+996233;Group not authorized on Sell Side for this Trader 
+996234;Couple Group/Trader does not exist  
+996235;This Trader does not exist    
+996236;If Member/group author is checked, Bid or Ask auth must also be checked 
+996237;If Trader/Group author is checked, Bid or Ask auth must also be checked 
+996238;Member / Trader does not exist in traders table   
+997000;Invalid market type (cash or futures)    
+997001;KUR not to be fill in (cash) 
+997002;NDS account clearer not to be fill in (cash)   
+997003;NIK not to be fill in (cash) 
+997004;Nik sub account not to be fill in (cash) 
+997005;Client inst id not to be fill in (futures) 
+997006;Broker not found in TFINT    
+997007;Clearer not found in TFINT   
+997008;Broker not found in TFABI    
+997009;Clearer not found in TFABI   
+997010;Client-Clearer not found in TFKKL  
+997011;Inactive link between Client -Clearer   
+997012;Broker-Clearer not found in TFUUR  
+997013;Inactive link between Broker -Clearer   
+997014;Date of settlement invalid or not found  
+997015;Date of settlement < Session Date  
+997016;Value limit overload during pre opening  
+997017;Value limit overload during session 
+997018;Trade quantity invalid during pre opening 
+997019;Trade quantity invalid during session    
+997020;Declaration cancelled by surveillance    
+997021;Declaration cancelled by broker    
+997022;The quantity between the two counterpart are different 
+997023;The price between the two counterpart are different  
+997024;Declaration has been eliminated    
+997025;Accrued interest not found in TFCOUPON   
+997026;Invalid type of value  
+997027;Type of settlement not found in TFDELAI  
+997028;Client not found in TFINT    
+997029;Client not found in TFABI    
+997030;IBO and IAO group states allowed only for fixing group 
+997031;It is not a specialist of the instrument 
+997032;To modify it must be assigned to same broker which created it    
+997033;The order side can t be modified   
+997034;The instrument id can t be modified 
+997035;The new quantity order must be >= than the old quantity    
+997036;The new price must be >= than the old for a buy (less for a sell) 
+997037;The orders at opening price cannot be modified 
+997038;The Market orders cannot be modified in pre-opening mode   
+997039;Modification is limited to 3% 
+997040;There is no modification 
+997041;Only limited order on crossing phase 
+997042;Only limited orders at the last quoted price on crossing phase   
+997043;No cross available 
+997044;Client-Negotiator not found in TNG 
+997045;Negotiator already exists in TNG   
+998001;Identificar Titular (Define owner) 
+998002;Titular nao existe (Owner not found) 
+998003;Titular/Digito invalid (Invalid Owner) 
+998004;Titular sem posicao (Owner without position) 
+998005;Qtde p/Exercicio > posicoes (Exercise Qty > position) 
+998006;Oscilacao incondicional (Unconditional oscillation) 
+998007;Nao ha posicoes (Position not found) 
+998008;Corretora nao preenchida (Firm not provided) 
+998009;Corretora invalida (Invalid Firm) 
+998010;Bloqueio suspenso (Blocking suspended) 
+998011;Nao e vencimento Opcoes (Invalid Option expiration date) 
+998012;Identificar Lancador (Define Issuer) 
+998013;Codigo Papel invalid (Invalid Symbol) 
+998014;Funcao fora do horario (Function outside scheduled time) 
+998015;Qtde p/Bloqueio > 999999999 (Blocking Qty > 999999999) 
+998016;Erro de falta de E (Missing E) 
+998017;Qtde p/Bloqueio > posicoes (Blocking Qty > position) 
+998018;Numero do Negocio Invalido (Invalid trade number) 
+998019;N/A 
+998020;Negocio inexistente p/Bloqueio (Trade not found for blocking) 
+998021;Qtde p/Blq > Qtde Negocio (Blocking Qty > Trade Qty) 
+998022;Nao ha mais lancadores p/exercer (No issuers available to Exercise) 
+998023;Erro Tecnico (Technical Error) 
+998024;Negocio de Opcoes Anulado (Options trade canceled) 
+998025;Codigo do ITF invalid (Invalid ITF code) 
+998026;N/A 
+998027;Saldo p/Bloquear zerado (Blocking balance is zero) 
+998028;Operacao inval p/tipo Papel (Operation not supported for this Instrument) 
+998029;Erro Tecnico (Technical Error) 
+998030;Corr Comp inval p/AnulExe (Invalid Firm on buy side for Exercise cancelation) 
+998031;N/A 
+998032;Corr Vend inval p/AnulExe (Invalid Firm on sell side for Exercise cancelation) 
+998033;Cliente invalido p/Anul Exe (Invalid Client for Exercise cancelation) 
+998034;Qtde invalida p/Anul Exerc (Invalid Qty for Exercise cancelation) 
+998035;Lancador n/existe (Issuer not found) 
+998036;Erro Tecnico (Technical Error) 
+998037;N/A 
+998038;N/A 
+998039;Erro Tecnico (Technical Error) 
+998040;Corr Comp inval p/Bloqueio (Invalid Firm on buy side for Blocking) 
+998041;Erro Tecnico (Technical Error) 
+998042;Erro Tecnico (Technical Error) 
+998043;Bloqueio ja Anulado (Blocking already canceled) 
+998044;Neg s/vinculo p/AnlBloqueio (No related trade for Blocking cancelation) 
+998045;Negocio Opcoes ja Anulado (Optiond trade already canceled) 
+998046;Exercicio ja Anulado (Exercise already canceled) 
+998047;Grupo n/localizado no TOPCTRL (Group not found in TOPCTRL) 
+998048;Erro Tecnico (Technical Error) 
+998049;N/A 
+998050;Erro Tecnico (Technical Error) 
+998051;Erro Tecnico (Technical Error) 
+998052;N/A 
+998053;Erro Tecnico (Technical Error) 
+998054;Erro Tecnico (Technical Error) 
+998055;Dados divergentes p/Bloqueio (Divergent data for Blocking) 
+998056;Negocio inexistente AnlBlq (Invalid trade number for individual Blocking cancelation) 
+998057;Erro Tecnico (Technical Error) 
+998058;Bloq ja Anulado Individual (Individual Blocking already canceled) 
+998059;Codneg p/Anl-Blo indiv errado (Invalid trade number for individual Blocking cancelation) 
+998060;Corret p/Anl-Blo indiv errado (Invalid Firm for individual Blocking cancelation) 
+998061;Cliente p/Anl-Blo indiv errado (Invalid Client for individual Blocking cancelation) 
+998062;Qtde p/Anl-Blo indiv errado (Invalid Qty for individual Blocking cancelation) 
+998063;Erro Tecnico (Technical Error) 
+998064;Erro Tecnico (Technical Error) 
+998065;Erro Tecnico (Technical Error) 
+998066;N/A 
+998067;Lancador/Digito invalid (Invalid Issuer) 
+998068;Bloqueio Efetuado (Blocking processed) 
+998069;Bloqueio Anulado (Blocking Canceled) 
+998070;Bloqueio Parcial (Partial Blocking) 
+998071;Exercicio Efetuado (Exercise processed) 
+998072;Exercicio Anulado (Exercise Canceled) 
+998500;O PAPEL JA PERTENCE A UM PROMOTOR (Stock already has a Promoter owner) 
+998501;CORRETORA INVALIDA (Invalid Firm) 
+998502;CORRETORA NAO CADASTRADA (Firm not found) 
+998503;INDICADOR INVALIDO (Invalid indicator) 
