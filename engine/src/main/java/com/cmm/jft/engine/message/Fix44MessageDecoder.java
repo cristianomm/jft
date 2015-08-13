@@ -121,7 +121,7 @@ public class Fix44MessageDecoder implements MessageDecoder {
 			ExecutionReport er = (ExecutionReport) message;
 			
 			try {
-			execution = new OrderExecution(
+				execution = new OrderExecution(
 					ExecutionTypes.getByValue(er.getExecType().getValue()), 
 					er.getTransactTime().getValue(), 
 					er.getOrderQty().getValue(), er.getPrice().getValue()

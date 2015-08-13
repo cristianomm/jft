@@ -40,11 +40,10 @@ public class Fix44MessageHandler implements MessageHandler {
 		//System.out.println("MH: " + message);
 		
 		Book book = null;
-		boolean add = false; 
+		boolean add = false;
 		
 		if((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null){
 			Orders order = new Orders();
-			
 			
 			//try to add the order in the book
 			add = book.addOrder(order, sessionID);

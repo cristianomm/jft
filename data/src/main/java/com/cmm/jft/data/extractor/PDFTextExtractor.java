@@ -95,8 +95,8 @@ public class PDFTextExtractor implements Extractor {
 		
 		PDFTextExtractor pdext = new PDFTextExtractor();
 		
-		String path = "C:/Disco/Users/Cristiano M Martins/Google Drive/Documentos/Notas de Corretagem/";
-		String nm = (path + "12560 - Bovespa.pdf");
+		String path = "D:\\Development\\git\\jft\\doc\\process\\bmfbovespa\\";;//"C:/Disco/Users/Cristiano M Martins/Google Drive/Documentos/Notas de Corretagem/";
+		String nm = (path + "EntryPointErrorCodes.pdf"/*"12560 - Bovespa.pdf"*/);
 		
 		Properties p = new Properties();
 		p.put("filename", nm);

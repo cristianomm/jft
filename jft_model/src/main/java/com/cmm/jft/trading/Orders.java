@@ -166,19 +166,22 @@ public class Orders implements DBObject<Orders> {
 	private void refreshOrder() throws OrderException {
 
 		try {
-			// calcula o preco medio
+			// calculate the order avg price
 			calculateAveragePrice();
-
-			// ajusta o status
-			int cv = volume - executedVolume;
-
-			// ordem ainda nao foi totalmente executada
-			if (cv > 0 && cv != volume) {
-				setOrderStatus(OrderStatus.PARTIALLY_FILLED);
-			} else if (cv == 0) {
-				setOrderStatus(OrderStatus.FILLED);
-			} else if (cv < 0) {// erro!!!!!
-				throw new OrderException("ExecutedVolume is greater than order volume: " + executedVolume);
+			
+			//adjust the state in according to actual order state
+			if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED || orderStatus == OrderStatus.REPLACED){
+				
+				int cv = volume - executedVolume;
+	
+				// order have not yet been executed
+				if (cv > 0 && cv != volume) {
+					setOrderStatus(OrderStatus.PARTIALLY_FILLED);
+				} else if (cv == 0) {//order was totally executed
+					setOrderStatus(OrderStatus.FILLED);
+				} else if (cv < 0) {// error!!!!!
+					throw new OrderException("ExecutedVolume is greater than order volume: " + executedVolume);
+				}
 			}
 
 		} catch (Exception e) {
@@ -192,31 +195,39 @@ public class Orders implements DBObject<Orders> {
 		int sumVolume = 0;
 		double sumTotal = 0d;
 		for (OrderExecution oe : executionsList) {
-			sumVolume += oe.getVolume();
-			sumTotal += oe.getPrice() * oe.getVolume();
+			if(oe.getExecutionType() == ExecutionTypes.TRADE) {			
+				sumVolume += oe.getVolume();
+				sumTotal += oe.getPrice() * oe.getVolume();
+			}
 		}
 
 		// adjusts the execution control values
 		executedVolume = sumVolume;
-		int sv = executionsList.size() > 0 ? executionsList.size() : 1;
-		avgPrice = new BigDecimal(sumTotal/sv);
+		
+		//only TRADE events are relevant
+		long execs = executionsList.stream().filter(e -> e.getExecutionType() == ExecutionTypes.TRADE).count();
+		execs = execs > 0 ? execs : 1;
+		avgPrice = new BigDecimal(sumTotal/execs);
 
 		return avgPrice;
 	}	
 
 	public void setOrderStatus(OrderStatus status) throws OrderException {
-
+		
+		boolean invalidState = true;
 		switch(this.orderStatus) {
 		case CREATED:
 			if(status == OrderStatus.SUSPENDED || 
 			status == OrderStatus.REJECTED) {
 				this.orderStatus = status;
+				invalidState = false;
 			}
 			break;
 
 		case SUSPENDED:
 			if(status == OrderStatus.NEW || status == OrderStatus.REJECTED) {
 				this.orderStatus = status;
+				invalidState = false;
 			}			
 
 		case NEW:
@@ -225,6 +236,7 @@ public class Orders implements DBObject<Orders> {
 			status == OrderStatus.FILLED || 
 			status == OrderStatus.CANCELED) {
 				this.orderStatus = status;
+				invalidState = false;
 			}
 			break;
 
@@ -234,19 +246,23 @@ public class Orders implements DBObject<Orders> {
 			status == OrderStatus.PARTIALLY_FILLED ||
 			status == OrderStatus.CANCELED) {
 				this.orderStatus = status;
+				invalidState = false;
 			}
 			break;
 
 		case EXPIRED:
 			this.orderStatus = OrderStatus.EXPIRED;
+			invalidState = false;
 			break;
 
 		case CANCELED:
 			this.orderStatus = OrderStatus.CANCELED;
+			invalidState = false;
 			break;
 
 		case FILLED:
 			this.orderStatus = OrderStatus.FILLED;
+			invalidState = false;
 			break;
 
 		case PARTIALLY_FILLED:
@@ -255,12 +271,17 @@ public class Orders implements DBObject<Orders> {
 			status == OrderStatus.PARTIALLY_FILLED ||
 			status == OrderStatus.CANCELED) {
 				this.orderStatus = status;
+				invalidState = false;
 			}
 			break;
 
 		default:
 			throw new OrderException("Invalid OrderStatus: " + status);
 
+		}
+		
+		if(invalidState) {
+			throw new OrderException("Can't set status from: " + orderStatus + " to: " + status);
 		}
 
 	}
@@ -404,11 +425,117 @@ public class Orders implements DBObject<Orders> {
 		+ (this.orderType != null ? "orderType=" + this.orderType + ", " : "")
 		+ (this.orderSerial != null ? "orderSerial=" + this.orderSerial + ", " : "")
 		+ (this.securityID != null ? "securityID=" + this.securityID + ", " : "")
-		+ (this.executionsList != null ? "executionsList="+ this.executionsList.subList(0,Math.min(this.executionsList.size(), maxLen))
-				: "") + "]";
+		+ (this.executionsList != null ? "executionsList="+ this.executionsList.subList(0,Math.min(this.executionsList.size(), maxLen))	: "") + "]";
 	}
-
-	public boolean addExecution(Date executionDateTime, int execVolume, double execPrice) throws OrderException{
+	
+	/**
+	 * 
+	 * @param execution
+	 * @return
+	 * @throws OrderException
+	 */
+	public boolean addExecution(OrderExecution execution) throws OrderException {
+		
+		boolean added = false;
+		
+		switch(execution.getExecutionType()) {
+		case CANCELED:
+			cancelOrder(execution);
+			break;
+		case EXPIRED:
+			expireOrder(execution);
+			break;
+		case NEW:
+			newOrder(execution);
+			break;
+		case REJECTED:
+			rejectOrder(execution);
+			break;
+		case REPLACE:
+			replaceOrder(execution);
+			break;
+		case RESTATED:
+			break;
+		case SUSPENDED:
+			break;
+		case TRADE:
+			tradeOrder(execution);
+			break;
+		case TRADE_CANCEL:
+			cancelTrade(execution);
+			break;
+		}		
+		
+		return added;
+	}
+	
+	private void cancelOrder(OrderExecution execution) throws OrderException {
+		
+		setOrderStatus(OrderStatus.CANCELED);
+		refreshOrder();
+		
+	}
+	
+	private void expireOrder(OrderExecution execution) throws OrderException {
+		
+		setOrderStatus(OrderStatus.EXPIRED);
+		refreshOrder();
+		
+	}
+	
+	private void newOrder(OrderExecution execution) throws OrderException {
+		
+		setOrderStatus(OrderStatus.NEW);
+		refreshOrder();
+		
+	}
+	
+	private void rejectOrder(OrderExecution execution) throws OrderException {
+		
+		setOrderStatus(OrderStatus.REJECTED);
+		refreshOrder();
+		
+	}
+	
+	private void replaceOrder(OrderExecution execution) throws OrderException {
+		
+		
+		setOrderStatus(OrderStatus.SUSPENDED);
+		
+		
+		
+		setOrderStatus(OrderStatus.REPLACED);
+		refreshOrder();
+		
+	}
+	
+	private void tradeOrder(OrderExecution execution) throws OrderException {
+		
+		if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED || orderStatus == OrderStatus.REPLACED){
+			//volume executado eh menor que o volume total e menor que o volume atual
+			if(execution.getVolume() <= volume && execution.getVolume() <= (volume-executedVolume)){
+				executionsList.add(execution);
+				//ajusta o estado da ordem
+				refreshOrder();
+			} else {
+				throw new OrderException("Invalid volume: " + execution.getVolume());
+			}			
+		} else {
+			throw new OrderException("");
+		}
+		
+		
+	}
+	
+	private void cancelTrade(OrderExecution execution) throws OrderException {
+		setOrderStatus(OrderStatus.NEW);
+		refreshOrder();
+	}
+	
+	
+	
+	
+	private boolean addExecution(Date executionDateTime, int execVolume, double execPrice) throws OrderException{
 		boolean ret = false;
 
 		if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED){
