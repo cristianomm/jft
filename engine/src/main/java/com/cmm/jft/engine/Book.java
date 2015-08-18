@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.log4j.Level;
 
+import com.cmm.jft.engine.enums.MatchTypes;
 import com.cmm.jft.engine.message.MessageEncoder;
 import com.cmm.jft.engine.message.MessageSender;
 import com.cmm.jft.trading.OrderExecution;
@@ -34,17 +35,21 @@ public class Book implements MessageSender {
 
 	private int orderCount;
 	private Security security;
+	private OrderMatcher orderMatcher;
 	private HashSet<String> validOrderTypes;
 	private ConcurrentLinkedQueue<Orders> buyQueue;
 	private ConcurrentLinkedQueue<Orders> sellQueue;
 
 
-	public Book(String symbol, HashSet<String> orderTypes){
+	public Book(String symbol, HashSet<String> orderTypes, MatchTypes matchType){
 		this.orderCount = 0;
 		this.security = SecurityService.getInstance().provideSecurity(symbol);
 		this.validOrderTypes = orderTypes;
 		this.buyQueue = new ConcurrentLinkedQueue<>();
 		this.sellQueue = new ConcurrentLinkedQueue<>();
+		this.orderMatcher = new OrderMatcher(buyQueue, sellQueue);
+		
+		
 	}
 
 	public Security getSecurity() {
@@ -130,18 +135,14 @@ public class Book implements MessageSender {
 
 		try {
 			if(added = validateOrder(order)) {
-				
 				order.setOrderStatus(OrderStatus.SUSPENDED);
-				if(order.getSide() == Side.BUY) {
-					added = added && buyQueue.add(order);
-				}
-				else {
-					added = added && sellQueue.add(order);
-				}
-
 			}
 
+			//ainda nao adicionou no book, deve primeiro verificar se pode executar 
+			//antes de inserir no book
 			if(added) {
+				
+				//envia mensagem informando que a ordem foi aceita
 				OrderExecution oe = new OrderExecution(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice());
 				oe.setMessage("Order received");
 				oe.setOrderID(order);
@@ -150,6 +151,15 @@ public class Book implements MessageSender {
 
 				sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
 				orderCount++;
+				
+				if(order.getSide() == Side.BUY) {
+					added = added && orderMatcher.addBuyOrder(order);
+				}
+				else {
+					added = added && orderMatcher.addSellOrder(order);
+				}
+				
+				
 				
 			}
 

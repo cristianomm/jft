@@ -266,7 +266,7 @@ public class Fix44MessageEncoder implements MessageEncoder {
 				new ExecType(execution.getExecutionType().getValue()), 
 				new OrdStatus(execution.getOrderID().getOrderStatus().getValue()),
 				new Side(execution.getOrderID().getSide().getValue()), 
-				new LeavesQty(execution.getLeavesVolume()), 
+				new LeavesQty(execution.getOrderID().getLeavesVolume()), 
 				new CumQty(execution.getOrderID().getExecutedVolume()), 
 				new AvgPx(execution.getOrderID().getAvgPrice().doubleValue())
 				);

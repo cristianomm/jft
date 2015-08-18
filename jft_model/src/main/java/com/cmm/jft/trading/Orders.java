@@ -62,8 +62,15 @@ public class Orders implements DBObject<Orders> {
 
 	@Basic(optional = false)
 	@Column(name = "Volume", nullable = false)
-	private Integer volume;
+	private Double volume;
+	
 
+	@Column(name="LeavesVolume")
+	private double leavesVolume;
+	
+	@Column(name = "LastPrice", precision = 19, scale = 6)
+	private double lastPrice;
+	
 	// @Max(value=?) @Min(value=?)//if you know range of your decimal fields
 	// consider using these annotations to enforce field validation
 	@Column(name = "AvgPrice", precision = 19, scale = 6)
@@ -141,7 +148,7 @@ public class Orders implements DBObject<Orders> {
 	 * @param side
 	 * @throws OrderException 
 	 */
-	public Orders(Security security,  Side side, double price, Integer volume, 
+	public Orders(Security security,  Side side, double price, double volume, 
 			OrderTypes orderType, TradeTypes tradeType) throws OrderException {
 		super();
 		this.price = price;
@@ -166,24 +173,21 @@ public class Orders implements DBObject<Orders> {
 	private void refreshOrder() throws OrderException {
 
 		try {
-			// calculate the order avg price
-			calculateAveragePrice();
+			// calculate the order avg price and adjusts the last executed price
+			calculateOrderValues();
 			
 			//adjust the state in according to actual order state
 			if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED || orderStatus == OrderStatus.REPLACED){
-				
-				int cv = volume - executedVolume;
-	
 				// order have not yet been executed
-				if (cv > 0 && cv != volume) {
+				if (leavesVolume > 0 && leavesVolume < volume) {
 					setOrderStatus(OrderStatus.PARTIALLY_FILLED);
-				} else if (cv == 0) {//order was totally executed
+				} else if (leavesVolume == 0) {//order was totally executed
 					setOrderStatus(OrderStatus.FILLED);
-				} else if (cv < 0) {// error!!!!!
+				} else if (leavesVolume < 0) {// error!!!!!
 					throw new OrderException("ExecutedVolume is greater than order volume: " + executedVolume);
 				}
 			}
-
+			
 		} catch (Exception e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 			throw new OrderException(e);
@@ -191,11 +195,12 @@ public class Orders implements DBObject<Orders> {
 
 	}
 
-	public BigDecimal calculateAveragePrice() {
+	public BigDecimal calculateOrderValues() {
 		int sumVolume = 0;
 		double sumTotal = 0d;
 		for (OrderExecution oe : executionsList) {
 			if(oe.getExecutionType() == ExecutionTypes.TRADE) {			
+				lastPrice = oe.getPrice();
 				sumVolume += oe.getVolume();
 				sumTotal += oe.getPrice() * oe.getVolume();
 			}
@@ -203,6 +208,7 @@ public class Orders implements DBObject<Orders> {
 
 		// adjusts the execution control values
 		executedVolume = sumVolume;
+		leavesVolume = volume - executedVolume;
 		
 		//only TRADE events are relevant
 		long execs = executionsList.stream().filter(e -> e.getExecutionType() == ExecutionTypes.TRADE).count();
@@ -309,19 +315,27 @@ public class Orders implements DBObject<Orders> {
 		return this.price;
 	}
 
-	/**
-	 * @return the orderType
-	 */
-	public OrderTypes getOrderType() {
-		return this.orderType;
+	public double getLastPrice() {
+		return lastPrice;
 	}
-
-	public Integer getVolume() {
+	
+	public double getLeavesVolume() {
+		return leavesVolume;
+	}
+	
+	public double getVolume() {
 		return volume;
 	}
 
 	public BigDecimal getAvgPrice() {
 		return avgPrice;
+	}
+	
+	/**
+	 * @return the orderType
+	 */
+	public OrderTypes getOrderType() {
+		return this.orderType;
 	}
 
 	public Integer getExecutedVolume() {
@@ -472,6 +486,7 @@ public class Orders implements DBObject<Orders> {
 	private void cancelOrder(OrderExecution execution) throws OrderException {
 		
 		setOrderStatus(OrderStatus.CANCELED);
+		executionsList.add(execution);
 		refreshOrder();
 		
 	}
@@ -502,9 +517,14 @@ public class Orders implements DBObject<Orders> {
 		
 		setOrderStatus(OrderStatus.SUSPENDED);
 		
+		if(execution.getPrice() > 0 && execution.getPrice() != price) {
+			changePrice(execution.getPrice());
+		}
+				
+		if(execution.getVolume() >0 && execution.getVolume() != volume) {
+			changeVolume(execution.getVolume());
+		}
 		
-		
-		setOrderStatus(OrderStatus.REPLACED);
 		refreshOrder();
 		
 	}
@@ -532,43 +552,17 @@ public class Orders implements DBObject<Orders> {
 		refreshOrder();
 	}
 	
-	
-	
-	
-	private boolean addExecution(Date executionDateTime, int execVolume, double execPrice) throws OrderException{
-		boolean ret = false;
-
-		if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED){
-			//volume executado eh menor que o volume total e menor que o volume atual
-			if(execVolume<=volume && execVolume <= (volume-executedVolume)){
-				// cria a execucao
-				OrderExecution oex = new OrderExecution(ExecutionTypes.TRADE, executionDateTime, execVolume, execPrice);
-				oex.setMessage("Execution of " + execVolume + " at price " + execPrice);
-				oex.setLeavesVolume(volume - oex.getVolume() );
-				executionsList.add(oex);
-
-				//ajusta o estado da ordem
-				refreshOrder();
-			}
-		}else{
-			throw new OrderException("Order status is invalid to add execution: " + orderStatus);
-		}
-
-		return ret;
-	}
-
-	public void cancel() {
-		if (orderStatus != OrderStatus.CANCELED) {
-			orderStatus = OrderStatus.CANCELED;
-		}
-	}
-
-
-	public boolean changePrice(double price) throws OrderException {
+	private boolean changePrice(double price) throws OrderException {
 		boolean ret = false;
 		try {
+			
+			OrderExecution oe = new OrderExecution(ExecutionTypes.REPLACE, new Date(), 0d, price);
+			oe.setMessage(String.format("Price replaced from %.4f to %.4f", this.price, price));
+			
 			setOrderStatus(OrderStatus.REPLACED);
 			this.price = price;
+						
+			executionsList.add(oe);
 			ret = true;
 		}catch(OrderException e) {
 			throw e;
@@ -577,7 +571,7 @@ public class Orders implements DBObject<Orders> {
 		return ret;
 	}
 
-	public boolean changeVolume(int volume) throws OrderException {
+	private boolean changeVolume(double volume) throws OrderException {
 		boolean ret = false;
 		try {
 			// verifica se o volume esta de acordo com o lote padrao do simbolo,
@@ -585,7 +579,12 @@ public class Orders implements DBObject<Orders> {
 			if ((volume % securityID.getSecurityInfoID().getMinimalVolume()) != 0) {
 				throw new OrderException("Invalid Volume:" + volume);
 			}
-
+			
+			OrderExecution oe = new OrderExecution(ExecutionTypes.REPLACE, new Date(), 0d, volume);
+			oe.setMessage(String.format("Volume replaced from %.3f to %.3f", this.volume, volume));
+			executionsList.add(oe);
+			
+			setOrderStatus(OrderStatus.REPLACED);
 			this.volume = volume;
 			ret = true;
 		}catch(OrderException e) {

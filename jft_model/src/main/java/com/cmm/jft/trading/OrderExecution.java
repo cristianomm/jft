@@ -50,14 +50,8 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	@Column(name = "Volume")
 	private double volume;
 	
-	@Column(name="LeavesVolume")
-	private double leavesVolume;
-	
 	@Column(name = "Price", precision = 19, scale = 6)
 	private double price;
-	
-	@Column(name = "LastPrice", precision = 19, scale = 6)
-	private double lastPrice;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="ExecutionType", length=25)
@@ -165,15 +159,7 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	public ExecutionTypes getExecutionType() {
 		return executionType;
 	}
-	
-	public double getLastPrice() {
-		return lastPrice;
-	}
-	
-	public void setLastPrice(double lastPrice) {
-		this.lastPrice = lastPrice;
-	}
-	
+		
 	public String getMessage() {
 		return message;
 	}
@@ -182,12 +168,5 @@ public class OrderExecution implements DBObject<OrderExecution> {
 		this.message = message;
 	}
 	
-	public double getLeavesVolume() {
-		return leavesVolume;
-	}
-	
-	public void setLeavesVolume(double leavesVolume) {
-		this.leavesVolume = leavesVolume;
-	}
 
 }

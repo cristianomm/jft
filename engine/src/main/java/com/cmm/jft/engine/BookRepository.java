@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import org.apache.log4j.Level;
 
+import com.cmm.jft.engine.enums.MatchTypes;
 import com.cmm.logging.Logging;
 
 
@@ -94,7 +95,7 @@ public class BookRepository {
 	private void createBook(String symbol, HashSet<String> orderTypes) {
 
 		if(symbol != null & !symbol.isEmpty()) {
-			books.put(symbol, new Book(symbol, orderTypes));
+			books.put(symbol, new Book(symbol, orderTypes, MatchTypes.FIFO));
 		}
 
 	}
