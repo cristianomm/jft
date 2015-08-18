@@ -7,6 +7,8 @@ import static quickfix.Acceptor.SETTING_ACCEPTOR_TEMPLATE;
 import static quickfix.Acceptor.SETTING_SOCKET_ACCEPT_ADDRESS;
 import static quickfix.Acceptor.SETTING_SOCKET_ACCEPT_PORT;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -168,6 +170,13 @@ public class EntryPointListener implements Service {
 		return running;
 	}
 	
+	/*
+	public static BigDecimal fact(Integer n){
+		
+		if(n < 1) return new BigDecimal("1");
+		
+		return fact(n - 1).multiply(new BigDecimal(n.toString()));
+	}*/
 	
 	public static void main(String[] args) {
 		/*
@@ -182,7 +191,21 @@ public class EntryPointListener implements Service {
 		}
 		System.out.println(String.format("%.25f", num));
 		System.exit(0);
+		
+		
+		System.out.println(fact(22));
+	
+		BigDecimal val = new BigDecimal(0);
+		BigDecimal one = new BigDecimal(1); 
+		System.out.println(one.divide(new BigDecimal(6), BigDecimal.ROUND_HALF_UP));
+		for(int i=0;i<1000;i++){
+			val = val.add(one.divide(fact(i), 1000000, BigDecimal.ROUND_DOWN));
+		}
+		System.out.println(val);
+
+		System.exit(0);
 		*/
+		
 		
 		EntryPointListener listener = new EntryPointListener();
 		listener.start();		

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<eclipse-userlibraries version="2">
+    <library name="ftp4j" systemlibrary="false">
+        <archive path="/jft_modules/lib/ftp4j/ftp4j-1.7.2.jar"/>
+    </library>
+    <library name="jdde" systemlibrary="false">
+        <archive path="/jft_modules/lib/jdde/pretty-tools-JDDE-2.0.1.jar"/>
+    </library>
+    <library name="jsoup" systemlibrary="false">
+        <archive javadoc="jar:file:/C:/Disco/Workspaces/JFT/jft_modules/lib/jsoup/jsoup-1.8.1-javadoc.jar!/" path="/jft_modules/lib/jsoup/jsoup-1.8.1.jar" source="/jft_modules/lib/jsoup/jsoup-1.8.1-sources.jar"/>
+    </library>
+    <library name="jxl" systemlibrary="false">
+        <archive path="/jft_modules/lib/jxl/jxl.jar"/>
+    </library>
+    <library name="quickfix" systemlibrary="false">
+        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.5.3/mina-core-1.1.7.jar" source="/jft_modules/lib/quickfixj/quickfixj-1.5.3/mina-core-1.1.7-sources.jar"/>
+        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.5.3/quickfixj-all-1.5.3.jar"/>
+        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.5.3/quickfixj-core-1.5.3.jar" source="/jft_modules/lib/quickfixj/quickfixj-1.5.3/quickfixj-1.5.3-src.zip"/>
+        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.5.3/quickfixj-examples-1.5.3.jar" source="/jft_modules/lib/quickfixj/quickfixj-1.5.3/quickfixj-1.5.3-src.zip"/>
+    </library>
+</eclipse-userlibraries>
