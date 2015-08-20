@@ -75,7 +75,10 @@ public class Orders implements DBObject<Orders> {
 	// consider using these annotations to enforce field validation
 	@Column(name = "AvgPrice", precision = 19, scale = 6)
 	private BigDecimal avgPrice;
-
+	
+	@Column(name = "ProtectionPrice", precision = 19, scale = 6)
+	private double protectionPrice;
+	
 	@Column(name = "ExecutedVolume")
 	private Integer executedVolume;
 
@@ -119,10 +122,18 @@ public class Orders implements DBObject<Orders> {
 
 	@Column(name="ClOrdID", length=25, updatable=false, nullable=false)
 	private String clOrdID;
-
+	
 	@Column(name="OrigClOrdID", length=25, updatable=false, nullable=false)
 	private String origClOrdID;
 
+	@Column(name="PartyID", length=50, updatable=false)
+	private String partyID;
+	
+	@Column(name="PartyIdSource", updatable=false)
+	private char partyIdSource;
+	
+	@Column(name="PartyRole", length=5, updatable=false)
+	private String partyRole;	
 
 	@JoinColumn(name = "securityID", referencedColumnName = "securityID", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -331,6 +342,14 @@ public class Orders implements DBObject<Orders> {
 		return avgPrice;
 	}
 	
+	public double getProtectionPrice() {
+		return protectionPrice;
+	}
+	
+	public void setProtectionPrice(double protectionPrice) {
+		this.protectionPrice = protectionPrice;
+	}
+	
 	/**
 	 * @return the orderType
 	 */
@@ -415,6 +434,30 @@ public class Orders implements DBObject<Orders> {
 
 	public String getOrigClOrdID() {
 		return origClOrdID;
+	}
+	
+	public String getPartyID() {
+		return partyID;
+	}
+	
+	public void setPartyID(String partyID) {
+		this.partyID = partyID;
+	}
+	
+	public char getPartyIdSource() {
+		return partyIdSource;
+	}
+	
+	public void setPartyIdSource(char partyIdSource) {
+		this.partyIdSource = partyIdSource;
+	}
+	
+	public String getPartyRole() {
+		return partyRole;
+	}
+	
+	public void setPartyRole(String partyRole) {
+		this.partyRole = partyRole;
 	}
 	
 	

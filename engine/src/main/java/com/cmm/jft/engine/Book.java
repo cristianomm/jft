@@ -18,6 +18,7 @@ import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
+import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.jft.trading.securities.Security;
@@ -34,7 +35,9 @@ import quickfix.SessionID;
  *
  */
 public class Book implements MessageSender {
-
+	
+	
+	private double protectionLevel;
 	private int orderCount;
 	private Security security;
 	private OrderMatcher orderMatcher;
@@ -43,11 +46,12 @@ public class Book implements MessageSender {
 	private PriorityBlockingQueue<Orders> sellQueue;
 
 
-	public Book(String symbol, HashSet<String> orderTypes, MatchTypes matchType){
+	public Book(String symbol, HashSet<String> orderTypes, MatchTypes matchType, double protectionLevel){
 		this.orderCount = 0;
+		this.protectionLevel = protectionLevel;
 		this.security = SecurityService.getInstance().provideSecurity(symbol);
 		this.validOrderTypes = orderTypes;
-		this.orderMatcher = new OrderMatcher();
+		this.orderMatcher = new OrderMatcher(matchType, this.protectionLevel);
 		this.buyQueue = orderMatcher.getBuyQueue();
 		this.sellQueue = orderMatcher.getSellQueue();
 	}
@@ -78,8 +82,15 @@ public class Book implements MessageSender {
 		valid = valid && (order.getVolume() % security.getSecurityInfoID().getMinimalVolume()) == 0;
 
 		//verifica se o preco esta correto
-		valid = valid && order.getPrice()>0;
-
+		if(order.getPrice() == 0) {
+			valid = valid 
+					&& order.getOrderType() != OrderTypes.Market 
+					&& order.getOrderType() != OrderTypes.MarketWithLeftOverAsLimit;
+			
+		}else if(order.getPrice() > 0) {
+			valid = valid;
+		}
+		
 		return valid;
 	}
 
@@ -138,21 +149,14 @@ public class Book implements MessageSender {
 				sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
 				orderCount++;
 				
-				if(order.getSide() == Side.BUY) {
-					added = added && orderMatcher.addBuyOrder(order);
-				}
-				else {
-					added = added && orderMatcher.addSellOrder(order);
-				}
-				
-				
+				added = added && orderMatcher.addOrder(order);
 				
 			}
 
 		}catch(OrderException e) {
 			added = false;
-			OrderExecution oe = new OrderExecution(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice());
-			oe.setMessage("Order received");
+			OrderExecution oe = new OrderExecution(ExecutionTypes.REJECTED, new Date(), order.getVolume(), order.getPrice());
+			oe.setMessage("Order rejected: " + e.getMessage());
 			oe.setOrderID(order);
 			sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
 			Logging.getInstance().log(getClass(), e, Level.ERROR);

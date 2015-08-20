@@ -14,6 +14,6 @@ package com.cmm.jft.core.enums;
  */
 public enum DataSources {
 
-	DDE, FIX_41, FIX_42, CSV
+	DDE, FIX_41, FIX_42, FIX_43, FIX_44, CSV
 
 }

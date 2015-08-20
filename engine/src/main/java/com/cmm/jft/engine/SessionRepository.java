@@ -28,13 +28,16 @@ public class SessionRepository {
 	
 	public void addSession(SessionID sessionID){
 		if(sessionID != null){
-			//session.addStateListener(new SessionListener());
 			sessions.put(sessionID.getSenderCompID(), sessionID);
 		}
 	}
 	
 	public void removeSession(SessionID sessionID){
 		sessions.remove(sessionID.getSenderCompID());
+	}
+	
+	public SessionID getSession(String partyID) {
+		return sessions.get(partyID);
 	}
 	
 }

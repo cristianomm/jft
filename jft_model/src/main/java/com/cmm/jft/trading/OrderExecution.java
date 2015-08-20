@@ -75,6 +75,16 @@ public class OrderExecution implements DBObject<OrderExecution> {
 		super();
 	}
 
+	public OrderExecution(ExecutionTypes execType, double volume, double price) {
+		super();
+		this.executionType = execType;
+		this.executionDateTime = new Date();
+		this.volume = volume;
+		this.price = price;
+	}
+
+	
+	
 	/**
 	 * @param executionDateTime
 	 * @param volume
