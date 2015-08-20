@@ -6,10 +6,12 @@ package com.cmm.jft.engine;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import org.apache.log4j.Level;
 
 import com.cmm.jft.engine.enums.MatchTypes;
+import com.cmm.jft.engine.match.OrderMatcher;
 import com.cmm.jft.engine.message.MessageEncoder;
 import com.cmm.jft.engine.message.MessageSender;
 import com.cmm.jft.trading.OrderExecution;
@@ -37,19 +39,17 @@ public class Book implements MessageSender {
 	private Security security;
 	private OrderMatcher orderMatcher;
 	private HashSet<String> validOrderTypes;
-	private ConcurrentLinkedQueue<Orders> buyQueue;
-	private ConcurrentLinkedQueue<Orders> sellQueue;
+	private PriorityBlockingQueue<Orders> buyQueue;
+	private PriorityBlockingQueue<Orders> sellQueue;
 
 
 	public Book(String symbol, HashSet<String> orderTypes, MatchTypes matchType){
 		this.orderCount = 0;
 		this.security = SecurityService.getInstance().provideSecurity(symbol);
 		this.validOrderTypes = orderTypes;
-		this.buyQueue = new ConcurrentLinkedQueue<>();
-		this.sellQueue = new ConcurrentLinkedQueue<>();
-		this.orderMatcher = new OrderMatcher(buyQueue, sellQueue);
-		
-		
+		this.orderMatcher = new OrderMatcher();
+		this.buyQueue = orderMatcher.getBuyQueue();
+		this.sellQueue = orderMatcher.getSellQueue();
 	}
 
 	public Security getSecurity() {
@@ -58,20 +58,6 @@ public class Book implements MessageSender {
 
 	public int getOrderCount() {
 		return orderCount;
-	}
-
-	/**
-	 * @return the buyOrders
-	 */
-	public ConcurrentLinkedQueue<Orders> getBuyOrders() {
-		return this.buyQueue;
-	}
-
-	/**
-	 * @return the sellOrders
-	 */
-	public ConcurrentLinkedQueue<Orders> getSellOrders() {
-		return this.sellQueue;
 	}
 
 	public Security getSymbol() {

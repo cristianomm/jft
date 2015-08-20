@@ -173,7 +173,7 @@ public class EntryPointListener implements Service {
 	/*
 	public static BigDecimal fact(Integer n){
 		
-		if(n < 1) return new BigDecimal("1");
+		if(n < 1) return BigDecimal.ONE;
 		
 		return fact(n - 1).multiply(new BigDecimal(n.toString()));
 	}*/
@@ -204,8 +204,7 @@ public class EntryPointListener implements Service {
 		System.out.println(val);
 
 		System.exit(0);
-		*/
-		
+		*/		
 		
 		EntryPointListener listener = new EntryPointListener();
 		listener.start();		

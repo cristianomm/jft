@@ -1,17 +1,16 @@
 /**
  * 
  */
-package com.cmm.jft.engine;
+package com.cmm.jft.engine.match;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import quickfix.Message;
 import quickfix.SessionID;
 
 import com.cmm.jft.engine.message.MessageSender;
-import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.exceptions.OrderException;
 
@@ -22,15 +21,28 @@ import com.cmm.jft.trading.exceptions.OrderException;
  */
 public class OrderMatcher  implements MessageSender {
 
-	private ConcurrentLinkedQueue<Orders> buyQueue;
-	private ConcurrentLinkedQueue<Orders> sellQueue;
+	private PriorityBlockingQueue<Orders> buyQueue;
+	private PriorityBlockingQueue<Orders> sellQueue;
 
 	
-	public OrderMatcher(ConcurrentLinkedQueue<Orders> buyQueue, ConcurrentLinkedQueue<Orders> sellQueue) {
-		this.buyQueue = buyQueue;
-		this.sellQueue = sellQueue;
+	public OrderMatcher() {
+		this.buyQueue = new PriorityBlockingQueue<>(1000, new PriceTimeComparator());
+		this.sellQueue = new PriorityBlockingQueue<>(1000, new PriceTimeComparator());
 	}
 	
+	/**
+	 * @return the buyQueue
+	 */
+	public PriorityBlockingQueue<Orders> getBuyQueue() {
+		return this.buyQueue;
+	}
+	
+	/**
+	 * @return the sellQueue
+	 */
+	public PriorityBlockingQueue<Orders> getSellQueue() {
+		return this.sellQueue;
+	}
 	
 	private void match() {
 		
@@ -43,9 +55,14 @@ public class OrderMatcher  implements MessageSender {
 	public boolean addBuyOrder(Orders buyOrder) throws OrderException {
 		boolean add = false;
 		Orders sell = sellQueue.peek(); //dont remove this order now!
-		if(sell.getPrice() == buyOrder.getPrice() && sell.getVolume() <= buyOrder.getVolume()) {
+		if(sell.getPrice() == buyOrder.getPrice()) {
 			sell.setOrderStatus(OrderStatus.SUSPENDED); //block's this order
 			
+			//fill buy and sell
+			
+			//register trade on trade book
+			
+			//send trade messages to participants
 			
 			
 			if(sell.getOrderStatus() == OrderStatus.FILLED) {
