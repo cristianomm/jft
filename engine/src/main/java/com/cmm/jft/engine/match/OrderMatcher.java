@@ -128,6 +128,11 @@ public class OrderMatcher  implements MessageSender {
 		OrderExecution bookFill = new OrderExecution(ExecutionTypes.TRADE, qtyToFill, priceToFill);
 		try {
 			if(newOrder.addExecution(orderFill) && bookOrder.addExecution(bookFill)) {
+				
+				//ajusta os valores para ultima execucao
+				this.lastPrice = priceToFill;
+				this.lastVolume = qtyToFill;
+				
 				//recupera a sessao da ordem recebida
 				SessionID orderSession = SessionRepository.getInstance().getSession(newOrder.getPartyID());
 				send = sendMessage(MessageEncoder.getEncoder(orderSession).executionReport(orderFill), orderSession);
