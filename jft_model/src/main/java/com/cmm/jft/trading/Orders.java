@@ -79,6 +79,9 @@ public class Orders implements DBObject<Orders> {
 	@Column(name = "ProtectionPrice", precision = 19, scale = 6)
 	private double protectionPrice;
 	
+	@Column(name = "MaxFloor")
+	private double maxFloor;
+	
 	@Column(name = "ExecutedVolume")
 	private Integer executedVolume;
 
@@ -348,6 +351,14 @@ public class Orders implements DBObject<Orders> {
 	
 	public void setProtectionPrice(double protectionPrice) {
 		this.protectionPrice = protectionPrice;
+	}
+	
+	public double getMaxFloor(){
+		return this.maxFloor;
+	}
+	
+	public void setMaxFloor(double maxFloor){
+		this.maxFloor = maxFloor;
 	}
 	
 	/**
