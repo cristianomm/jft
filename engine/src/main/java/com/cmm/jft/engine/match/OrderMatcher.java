@@ -3,6 +3,8 @@
  */
 package com.cmm.jft.engine.match;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -18,6 +20,7 @@ import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
+import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.exceptions.OrderException;
 
@@ -33,6 +36,7 @@ public class OrderMatcher  implements MessageSender {
 	private double protectionLevel;
 	private PriorityBlockingQueue<Orders> buyQueue;
 	private PriorityBlockingQueue<Orders> sellQueue;
+	private PriorityBlockingQueue<Orders> stopQueue;
 
 	
 	public OrderMatcher(MatchTypes matchTypes, double protectionLevel) {
@@ -41,6 +45,7 @@ public class OrderMatcher  implements MessageSender {
 		if(matchTypes == MatchTypes.FIFO) {
 			this.buyQueue = new PriorityBlockingQueue<>(1000, new PriceTimeComparator());
 			this.sellQueue = new PriorityBlockingQueue<>(1000, new PriceTimeComparator());
+			this.stopQueue = new PriorityBlockingQueue<>(1000, new PriceTimeComparator());
 		}
 		
 	}
@@ -108,10 +113,10 @@ public class OrderMatcher  implements MessageSender {
 			executed = executeLimit(ordr);
 			break;
 		case Stop:
-			executed = executeStopWithProtection(ordr);
+			executed = addToStopBook(ordr);//nao executa stop mas sim adiciona no "stop book" e aguarda para ser ativada
 			break;
 		case StopLimit:
-			executed = executeStopLimit(ordr);
+			executed = addToStopBook(ordr);//nao executa stoplimit, deve inserir no stop book e aguardar o gatilho
 			break;
 		case MarketWithLeftOverAsLimit:
 			executed = executeMarketToLimit(ordr);
@@ -121,7 +126,7 @@ public class OrderMatcher  implements MessageSender {
 		return executed;
 	}
 	
-	private boolean sendExecutions(Orders newOrder, Orders bookOrder, double qtyToFill, double priceToFill){
+	private boolean fillOrders(Orders newOrder, Orders bookOrder, double qtyToFill, double priceToFill){
 		boolean send = false;
 		
 		OrderExecution orderFill = new OrderExecution(ExecutionTypes.TRADE, qtyToFill, priceToFill);
@@ -152,98 +157,6 @@ public class OrderMatcher  implements MessageSender {
 		return send;
 	}
 	
-	
-	/**
-	 * Execute Market type orders received;
-	 * @param ordr order to execute;
-	 */
-	private boolean executeMarketWithProtection(Orders ordr) {
-		boolean exec = false;
-		PriorityBlockingQueue<Orders> orders = getCounterpartyBookOrders(ordr.getSide());
-		
-		
-		boolean inExec = true; 
-		while(inExec) {
-			
-			Orders bookOrder = orders.peek();
-			try {
-				if(bookOrder != null) {
-					double qtyToFill = 0;
-					double priceToFill = bookOrder.getPrice();
-					
-					if(ordr.getLeavesVolume() <= bookOrder.getLeavesVolume()) {
-						qtyToFill = ordr.getLeavesVolume();
-					}
-					else {// if(ordr.getLeavesVolume() > bookOrder.getLeavesVolume()) {
-						qtyToFill = bookOrder.getLeavesVolume();
-					}
-						
-					/*
-					 * For bids, the protection price calculated is by adding an offset to the last trade price. 
-					 * For offers, the offset is subtracted from the last trade. The protection price cannot be 
-					 * specified in the incoming order.
-					 */
-					double offset = (lastPrice * protectionLevel) * (ordr.getSide()==Side.BUY? 1:-1);
-					ordr.setProtectionPrice(lastPrice + offset);
-					
-					if(ordr.getSide() == Side.BUY && ordr.getProtectionPrice() <= bookOrder.getPrice()) {
-						exec = sendExecutions(ordr, bookOrder, qtyToFill, priceToFill);
-						inExec = ordr.getOrderStatus() == OrderStatus.PARTIALLY_FILLED;
-					}
-					else if(ordr.getSide() == Side.SELL && ordr.getProtectionPrice() >= bookOrder.getPrice()) {
-						exec = sendExecutions(ordr, bookOrder, qtyToFill, priceToFill);
-						inExec = ordr.getOrderStatus() == OrderStatus.PARTIALLY_FILLED;
-					}
-					//caso o preco esteja fora dos limites, 
-					//adiciona no book correspondente como se fosse uma ordem limite
-					else {
-						ordr.addExecution(new OrderExecution(ExecutionTypes.REPLACE, ordr.getVolume(), ordr.getProtectionPrice()));
-						exec = addOnBook(ordr);
-						inExec = false;
-					}
-					
-					//remove the filled order from book
-					if(bookOrder.getOrderStatus() != OrderStatus.PARTIALLY_FILLED) {
-						bookOrder = orders.poll();
-					}			
-					
-				}
-				else {
-					ordr.addExecution(new OrderExecution(ExecutionTypes.REPLACE, ordr.getVolume(), ordr.getProtectionPrice()));
-					exec = addOnBook(ordr);
-					inExec = false;
-				}
-			}catch(OrderException e) {
-				inExec = false;
-			}catch(NullPointerException e) {
-				inExec = false;
-			}catch(Exception e){
-				inExec = false;
-			}
-			
-		}
-		
-		return exec;
-		
-	}
-	
-	private boolean executeLimit(Orders ordr) {
-		
-	}
-	
-	private boolean executeStopWithProtection(Orders ordr) {
-		
-	}
-	
-	private boolean executeStopLimit(Orders ordr) {
-		
-	}
-	
-	private boolean executeMarketToLimit(Orders ordr) {
-		
-	}
-	
-	
 	private PriorityBlockingQueue<Orders> getCounterpartyBookOrders(Side side) {
 		
 		if(side == Side.BUY) {
@@ -251,6 +164,169 @@ public class OrderMatcher  implements MessageSender {
 		}
 		
 		return buyQueue;
+	}
+	
+	private void adjustProtectionPrice(Orders ordr) {
+		
+		/*
+		 * For bids, the protection price calculated is by adding an offset to the last trade price. 
+		 * For offers, the offset is subtracted from the last trade. The protection price cannot be 
+		 * specified in the incoming order.
+		 */
+		double offset = (lastPrice * protectionLevel) * (ordr.getSide()==Side.BUY? 1:-1);
+		ordr.setProtectionPrice(lastPrice + offset);
+		
+	}
+	
+	/**
+	 * Execute Market type orders received;
+	 * @param ordr order to execute;
+	 */
+	private boolean executeMarketWithProtection(Orders ordr) {
+		boolean exec = false;
+				
+		adjustProtectionPrice(ordr);
+		exec = generalExecute(ordr, ordr.getProtectionPrice(), ordr.getVolume());
+		
+		return exec;
+	}
+	
+	private boolean executeLimit(Orders ordr) {
+		boolean exec = false;
+		
+		exec = generalExecute(ordr, ordr.getPrice(), ordr.getVolume());
+		
+		return exec;
+	}
+	
+	private boolean addToStopBook(Orders ordr) {
+		boolean exec = false;
+		
+		
+		
+		return exec;
+	}
+	
+	private boolean executeMarketToLimit(Orders ordr) {
+		boolean exec = false;
+		
+		exec = generalExecute(ordr, ordr.getPrice(), ordr.getVolume());
+		
+		return exec;
+	}
+	
+	
+	private boolean generalExecute(Orders ordr, double orderPrice, double orderVolume) {
+		boolean exec = false;
+		
+		PriorityBlockingQueue<Orders> orders = getCounterpartyBookOrders(ordr.getSide());
+		List<OrderExecution> execs = createExecutions(ordr.getSide(), orderPrice, orderVolume);
+		try {
+			//verifica se pode executar a ordem 
+			if(validateExecution(ordr, execs)) {
+				
+				for(OrderExecution ex:execs) {
+					//adiciona as execucoes e as informa para os participantes
+					exec = fillOrders(ordr, ex.getOrderID(), ex.getVolume(), ex.getPrice());
+					
+					//remove the filled order from book
+					if(ex.getOrderID().getOrderStatus() != OrderStatus.PARTIALLY_FILLED) {
+						orders.remove(ex.getOrderID());
+					}
+					
+				}
+				
+				//adiciona o restante da ordem recebida no book
+				if(ordr.getOrderStatus() == OrderStatus.PARTIALLY_FILLED || ordr.getOrderStatus() == OrderStatus.NEW) {
+					
+					//ajusta o tipo da ordem para Limit
+					ordr.changeToLimit(orderPrice);
+					exec = addOnBook(ordr);
+				}
+				
+			}else {
+				//cancela a ordem e informa que a ordem nao podera ser executada
+				exec = false;
+				
+				OrderExecution oe = new OrderExecution(ExecutionTypes.CANCELED, ordr.getVolume(), ordr.getPrice());
+				oe.setMessage("Order Canceled due to invalid execution.");
+				ordr.addExecution(oe);
+				
+				SessionID bookOrderSession = SessionRepository.getInstance().getSession(ordr.getPartyID());
+				sendMessage(MessageEncoder.getEncoder(bookOrderSession).executionReport(oe), bookOrderSession);
+			}
+			
+		}catch(OrderException e) {
+			
+		}
+		
+		
+		return exec;
+	}
+	
+	/**
+	 * Cria as execucoes para os valores passados por parametro, referenciando
+	 * na execucao a ordem que esta presente no book e fara a contra-parte na transacao.
+	 * @param side
+	 * @param price 
+	 * @param volume
+	 * @return
+	 */
+	private ArrayList<OrderExecution> createExecutions(Side side, double price, double volume) {
+		
+		ArrayList<OrderExecution> lst = new ArrayList<OrderExecution>();
+		PriorityBlockingQueue<Orders> ordrs = getCounterpartyBookOrders(side);
+				
+		double cumVolume = 0;
+		while(ordrs.iterator().hasNext() && cumVolume < volume) {
+			
+			Orders bookOrder = ordrs.iterator().next(); 
+			
+			double qtyToFill = 0;
+			double priceToFill = bookOrder.getPrice();
+			
+			if(volume >= bookOrder.getLeavesVolume()) {
+				qtyToFill = bookOrder.getLeavesVolume();
+			}
+			else {
+				qtyToFill = volume;
+			}
+			
+			if(cumVolume < volume && priceToFill <= price) {
+				cumVolume += qtyToFill;
+				OrderExecution fill = new OrderExecution(ExecutionTypes.TRADE, qtyToFill, priceToFill);
+				fill.setOrderID(bookOrder);
+				lst.add(fill);
+			}
+		}
+		
+		return lst;
+	}
+	
+	private boolean validateExecution(Orders ordr, List<OrderExecution> executions) {
+		boolean validExecution = false;
+		
+		switch(ordr.getValidityType()) {
+		case GFA:
+			break;
+		case DAY:
+			break;
+		case GTC:
+			break;
+		case IMMEDIATE_OR_CANCEL:
+			break;
+		case FILL_OR_KILL:
+			break;
+		case GTD:
+			break;
+		case ATC:
+			break;
+		
+		}
+		
+		
+		
+		return validExecution;
 	}
 	
 	

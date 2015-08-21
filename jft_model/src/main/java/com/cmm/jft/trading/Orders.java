@@ -58,8 +58,11 @@ public class Orders implements DBObject<Orders> {
 	private Long orderID;
 
 	@Column(name = "Price", precision = 19, scale = 6)
-	private Double price;
+	private double price;
 
+	@Column(name = "StopPrice", precision = 19, scale = 6)
+	private double stopPrice;
+	
 	@Basic(optional = false)
 	@Column(name = "Volume", nullable = false)
 	private Double volume;
@@ -306,10 +309,13 @@ public class Orders implements DBObject<Orders> {
 
 	}
 
-
-
-
-
+	public void setToLimitOrder(double price) {
+		this.orderType = OrderTypes.Limit;
+		
+		
+	}
+	
+	
 	public double getOrderValue() {
 		return price * volume;
 	}
@@ -343,6 +349,14 @@ public class Orders implements DBObject<Orders> {
 
 	public BigDecimal getAvgPrice() {
 		return avgPrice;
+	}
+	
+	public double getStopPrice() {
+		return stopPrice;
+	}
+	
+	public void setStopPrice(double stopPrice) {
+		this.stopPrice = stopPrice;
 	}
 	
 	public double getProtectionPrice() {
@@ -471,29 +485,64 @@ public class Orders implements DBObject<Orders> {
 		this.partyRole = partyRole;
 	}
 	
+	@Override
+	public boolean equals(Object otherOrder) {
+		boolean eq = false;
+		if(otherOrder instanceof Orders) {
+			eq = this.orderID == ((Orders)otherOrder).orderID;
+		}
+		
+		return eq;
+	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
+	
 	@Override
 	public String toString() {
-		final int maxLen = 10;
 		return "Orders ["
-		+ (this.orderID != null ? "orderID=" + this.orderID + ", " : "")
-		+ (this.price != null ? "price=" + this.price + ", " : "")
-		+ (this.volume != null ? "volume=" + this.volume + ", " : "")
-		+ (this.avgPrice != null ? "averagePrice=" + this.avgPrice + ", " : "")
-		+ (this.executedVolume != null ? "executedVolume=" + this.executedVolume + ", " : "")
-		+ (this.duration != null ? "duration=" + this.duration + ", " : "")
-		+ (this.orderDateTime != null ? "orderDateTime=" + this.orderDateTime + ", " : "")
-		+ (this.orderStatus != null ? "orderStatus=" + this.orderStatus + ", " : "")
-		+ (this.side != null ? "side=" + this.side + ", " : "")
-		+ (this.orderType != null ? "orderType=" + this.orderType + ", " : "")
-		+ (this.orderSerial != null ? "orderSerial=" + this.orderSerial + ", " : "")
-		+ (this.securityID != null ? "securityID=" + this.securityID + ", " : "")
-		+ (this.executionsList != null ? "executionsList="+ this.executionsList.subList(0,Math.min(this.executionsList.size(), maxLen))	: "") + "]";
+				+ (orderID != null ? "orderID=" + orderID + ", " : "")
+				+ "price="
+				+ price
+				+ ", stopPrice="
+				+ stopPrice
+				+ ", "
+				+ (volume != null ? "volume=" + volume + ", " : "")
+				+ "leavesVolume="
+				+ leavesVolume
+				+ ", lastPrice="
+				+ lastPrice
+				+ ", "
+				+ (avgPrice != null ? "avgPrice=" + avgPrice + ", " : "")
+				+ "protectionPrice="
+				+ protectionPrice
+				+ ", maxFloor="
+				+ maxFloor
+				+ ", "
+				+ (executedVolume != null ? "executedVolume=" + executedVolume
+						+ ", " : "")
+				+ (duration != null ? "duration=" + duration + ", " : "")
+				+ (orderDateTime != null ? "orderDateTime=" + orderDateTime
+						+ ", " : "")
+				+ (orderStatus != null ? "orderStatus=" + orderStatus + ", "
+						: "")
+				+ (validityType != null ? "validityType=" + validityType + ", "
+						: "")
+				+ (orderType != null ? "orderType=" + orderType + ", " : "")
+				+ (tradeType != null ? "tradeType=" + tradeType + ", " : "")
+				+ (side != null ? "side=" + side + ", " : "")
+				+ (comment != null ? "comment=" + comment + ", " : "")
+				+ (orderSerial != null ? "orderSerial=" + orderSerial + ", "
+						: "")
+				+ (clOrdID != null ? "clOrdID=" + clOrdID + ", " : "")
+				+ (origClOrdID != null ? "origClOrdID=" + origClOrdID + ", "
+						: "")
+				+ (partyID != null ? "partyID=" + partyID + ", " : "")
+				+ "partyIdSource="
+				+ partyIdSource
+				+ ", "
+				+ (partyRole != null ? "partyRole=" + partyRole + ", " : "")
+				+ (securityID != null ? "securityID=" + securityID + ", " : "")
+				+ (executionsList != null ? "executionsList=" + executionsList
+						: "") + "]";
 	}
 	
 	/**
@@ -571,6 +620,10 @@ public class Orders implements DBObject<Orders> {
 		
 		setOrderStatus(OrderStatus.SUSPENDED);
 		
+		if(execution.getOrderType() != null) {
+			this.orderType = execution.getOrderType();
+		}
+		
 		if(execution.getPrice() > 0 && execution.getPrice() != price) {
 			changePrice(execution.getPrice());
 		}
@@ -646,6 +699,12 @@ public class Orders implements DBObject<Orders> {
 		}
 
 		return ret;
+	}
+	
+	public void changeToLimit(double price) throws OrderException {
+		OrderExecution oe = new OrderExecution(ExecutionTypes.REPLACE, getVolume(), price);
+		oe.setOrderType(OrderTypes.Limit);
+		addExecution(oe);
 	}
 
 }

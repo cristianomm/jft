@@ -25,6 +25,7 @@ import javax.persistence.TemporalType;
 
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.trading.enums.ExecutionTypes;
+import com.cmm.jft.trading.enums.OrderTypes;
 
 /**
  * <p>
@@ -56,6 +57,11 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	@Enumerated(EnumType.STRING)
 	@Column(name="ExecutionType", length=25)
 	private ExecutionTypes executionType;
+	
+	@Enumerated(EnumType.STRING)
+	@Basic(optional = false)
+	@Column(name = "OrderType", nullable = false, updatable = false)
+	private OrderTypes orderType;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "ExecutionDateTime")
@@ -178,5 +184,12 @@ public class OrderExecution implements DBObject<OrderExecution> {
 		this.message = message;
 	}
 	
+	public OrderTypes getOrderType() {
+		return orderType;
+	}
+	
+	public void setOrderType(OrderTypes orderType) {
+		this.orderType = orderType;
+	}	
 
 }

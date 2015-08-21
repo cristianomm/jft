@@ -44,6 +44,12 @@ public class Book implements MessageSender {
 	private HashSet<String> validOrderTypes;
 	private PriorityBlockingQueue<Orders> buyQueue;
 	private PriorityBlockingQueue<Orders> sellQueue;
+	
+	/**
+	 * Stop orders will remain in this queue while stop price
+	 * has not triggered. 
+	 */
+	private PriorityBlockingQueue<Orders> stopQueue;
 
 
 	public Book(String symbol, HashSet<String> orderTypes, MatchTypes matchType, double protectionLevel){
@@ -148,7 +154,7 @@ public class Book implements MessageSender {
 
 				sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
 				orderCount++;
-				
+				  
 				added = added && orderMatcher.addOrder(order);
 				
 			}
