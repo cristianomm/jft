@@ -204,7 +204,8 @@ public class EntryPointListener implements Service {
 		System.out.println(val);
 
 		System.exit(0);
-		*/		
+		*/
+		
 		
 		EntryPointListener listener = new EntryPointListener();
 		listener.start();		
