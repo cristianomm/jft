@@ -7,6 +7,8 @@ import static quickfix.Acceptor.SETTING_ACCEPTOR_TEMPLATE;
 import static quickfix.Acceptor.SETTING_SOCKET_ACCEPT_ADDRESS;
 import static quickfix.Acceptor.SETTING_SOCKET_ACCEPT_PORT;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.InetSocketAddress;
@@ -15,6 +17,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.management.InstanceNotFoundException;
 import javax.management.JMException;
@@ -205,6 +208,17 @@ public class EntryPointListener implements Service {
 
 		System.exit(0);
 		*/
+		try{
+			Scanner sc = new Scanner(new File("c:\\Disco\\Bancos\\dmps\\member_login.dump"));
+			sc.useDelimiter("[\n|\r]+");
+			int c=0;
+			while(c++ <10000){
+				System.out.println(sc.nextLine());
+			}
+		}
+		catch(FileNotFoundException e){
+			
+		}
 		
 		
 		EntryPointListener listener = new EntryPointListener();

@@ -5,12 +5,10 @@ package com.cmm.jft.engine.match;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import quickfix.Message;
 import quickfix.SessionID;
-import quickfix.fix44.ExecutionReport;
 
 import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.engine.enums.MatchTypes;
@@ -20,7 +18,6 @@ import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
-import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.exceptions.OrderException;
 
@@ -31,6 +28,7 @@ import com.cmm.jft.trading.exceptions.OrderException;
  */
 public class OrderMatcher  implements MessageSender {
 
+	private int phase;
 	private double lastPrice;
 	private double lastVolume;
 	private double protectionLevel;
@@ -310,12 +308,17 @@ public class OrderMatcher  implements MessageSender {
 		case GFA:
 			break;
 		case DAY:
+			validExecution = true;
 			break;
 		case GTC:
+			validExecution = true;
 			break;
-		case IMMEDIATE_OR_CANCEL:
+		case IOC:
+			validExecution = true;
 			break;
-		case FILL_OR_KILL:
+		case FOK:
+			double c=0;
+			//executions.stream().forEach(e -> e.getVolume() += c);
 			break;
 		case GTD:
 			break;

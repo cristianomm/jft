@@ -25,6 +25,8 @@ public interface MessageEncoder {
 		return encoder;
 	}
 	
+	void addIdFields(Message message);
+	
 	
 	//[start]-------------------------------------------Session Specific
 	Message heartbeat();

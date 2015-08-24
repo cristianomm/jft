@@ -5,7 +5,6 @@ package com.cmm.jft.engine;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import org.apache.log4j.Level;
@@ -19,7 +18,6 @@ import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
-import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.jft.trading.securities.Security;
 import com.cmm.jft.trading.services.SecurityService;
@@ -37,8 +35,8 @@ import quickfix.SessionID;
 public class Book implements MessageSender {
 	
 	
-	private double protectionLevel;
 	private int orderCount;
+	private double protectionLevel;
 	private Security security;
 	private OrderMatcher orderMatcher;
 	private HashSet<String> validOrderTypes;

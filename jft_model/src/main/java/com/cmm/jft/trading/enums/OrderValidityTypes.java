@@ -24,12 +24,12 @@ public enum OrderValidityTypes {
 	/**
 	 * 3 - IMMEDIATE OR CANCEL
 	 */
-	IMMEDIATE_OR_CANCEL('3'),
+	IOC('3'),
 	
 	/**
 	 * 4 - FILL OR KILL
 	 */
-	FILL_OR_KILL('4'),
+	FOK('4'),
 	
 	/**
 	 * 6 - GOOD TILL DATE

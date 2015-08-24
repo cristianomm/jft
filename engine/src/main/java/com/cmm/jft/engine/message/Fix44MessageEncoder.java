@@ -5,14 +5,18 @@ package com.cmm.jft.engine.message;
 
 import java.util.Date;
 
+import com.cmm.jft.core.Configuration;
 import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
+import com.cmm.jft.data.Config;
 import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.RejectTypes;
 
+import quickfix.FieldMap;
+import quickfix.Group;
 import quickfix.Message;
 import quickfix.Message.Header;
 import quickfix.field.AvgPx;
@@ -40,6 +44,9 @@ import quickfix.field.OrderID;
 import quickfix.field.OrderQty;
 import quickfix.field.OrigClOrdID;
 import quickfix.field.OrigSendingTime;
+import quickfix.field.PartyID;
+import quickfix.field.PartyIDSource;
+import quickfix.field.PartyRole;
 import quickfix.field.PossDupFlag;
 import quickfix.field.PossResend;
 import quickfix.field.Price;
@@ -112,10 +119,26 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	
 	public static void main(String[] args){
 		
+		
+		
 		System.out.println(new Fix44MessageEncoder().testRequest());
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.engine.message.MessageEncoder#addIdFields(quickfix.Message)
+	 */
+	@Override
+	public void addIdFields(Message message) {
 		
+		message.setField(new NoPartyIDs(1));
+		message.setField(new PartyID(Configuration.getInstance().getConfiguration("UserID").toString()));
+		message.setField(new PartyIDSource('D'));
+		message.setField(new PartyRole(0));
+		
+	}
+	
+	
 	
 	//[start]-------------------------------------------Session Specific
 	/* (non-Javadoc)
@@ -203,6 +226,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	public AllocationInstruction allocationInstruction(){
 		AllocationInstruction instruction = new AllocationInstruction();
 		
+		addIdFields(instruction);
+		
 		return instruction;
 	}
 	
@@ -211,6 +236,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	 */
 	public AllocationReport allocationReport(){
 		AllocationReport report = new AllocationReport();
+		
+		addIdFields(report);
 		
 		return report;
 	}
@@ -268,11 +295,13 @@ public class Fix44MessageEncoder implements MessageEncoder {
 				new Side(execution.getOrderID().getSide().getValue()), 
 				new LeavesQty(execution.getOrderID().getLeavesVolume()), 
 				new CumQty(execution.getOrderID().getExecutedVolume()), 
-				new AvgPx(execution.getOrderID().getAvgPrice().doubleValue())
+				new AvgPx(0)
 				);
 		
 		executionReport.set(new Symbol(execution.getOrderID().getSecurityID().getSymbol()));
 		executionReport.set(new OrderQty(execution.getOrderID().getVolume()));
+		
+		addIdFields(executionReport);
 		
 		return executionReport;
 	}
@@ -282,6 +311,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	 */
 	public NewOrderCross newOrderCross(Orders order){
 		NewOrderCross orderCross = new NewOrderCross();
+		
+		addIdFields(orderCross);
 		
 		return orderCross;
 	}
@@ -294,7 +325,6 @@ public class Fix44MessageEncoder implements MessageEncoder {
 		NewOrderSingle orderSingle = new NewOrderSingle();
 		
 		orderSingle.set(new ClOrdID(order.getClOrdID()));
-		orderSingle.set(new NoPartyIDs(0));
 		
 		orderSingle.set(new Symbol(order.getSecurityID().getSymbol()));
 		orderSingle.set(new SecurityExchange("BVMF"));
@@ -308,6 +338,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 		
 		orderSingle.set(new ExpireDate(((DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).format(order.getDuration())));
 		orderSingle.setString(5149, order.getComment());
+		
+		addIdFields(orderSingle);
 		
 		return orderSingle;
 	}
@@ -327,6 +359,9 @@ public class Fix44MessageEncoder implements MessageEncoder {
 			cancelReject.setInt(453, 0);
 			cancelReject.setString(5149, order.getComment());
 		}
+		
+		addIdFields(cancelReject);
+		
 		return cancelReject;
 	}
 		
@@ -349,6 +384,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 			replaceRequest.setString(5149, order.getComment());
 		}
 		
+		addIdFields(replaceRequest);
+		
 		return replaceRequest;
 	}
 	
@@ -368,6 +405,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 		cancelRequest.set(new OrderQty(order.getVolume()));
 		cancelRequest.setString(5149, order.getComment());
 		
+		addIdFields(cancelRequest);
+		
 		return cancelRequest;
 	}
 	
@@ -376,6 +415,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	 */
 	public PositionMaintenanceReport positionMaintenanceReport(){
 		PositionMaintenanceReport report = new PositionMaintenanceReport();
+		
+		addIdFields(report);
 		
 		return report;
 	}
@@ -386,6 +427,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	public PositionMaintenanceRequest positionMaintenanceRequest(){
 		PositionMaintenanceRequest maintenanceRequest = new PositionMaintenanceRequest();
 		
+		addIdFields(maintenanceRequest);
+		
 		return maintenanceRequest;
 	}
 	
@@ -395,6 +438,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	public Quote quote(){
 		Quote quote = new Quote();
 		
+		addIdFields(quote);
+		
 		return quote;
 	}
 	
@@ -403,7 +448,9 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	 */
 	public QuoteCancel quoteCancel(){
 		QuoteCancel quoteCancel = new QuoteCancel();
-
+		
+		addIdFields(quoteCancel);
+		
 		return quoteCancel;
 	}
 	
@@ -413,6 +460,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	public QuoteRequest quoteRequest(){
 		QuoteRequest quoteRequest = new QuoteRequest();
 
+		addIdFields(quoteRequest);
+		
 		return quoteRequest;
 	}
 	
@@ -422,6 +471,9 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	public QuoteRequestReject quoteRequestReject(){
 		QuoteRequestReject requestReject = new QuoteRequestReject();
 
+		
+		addIdFields(requestReject);
+		
 		return requestReject;
 	}
 	
@@ -431,6 +483,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	public QuoteStatusReport quoteStatusReport(){
 		QuoteStatusReport statusReport = new QuoteStatusReport();
 
+		addIdFields(statusReport);
+		
 		return statusReport;
 	}
 	
@@ -441,7 +495,7 @@ public class Fix44MessageEncoder implements MessageEncoder {
 		
 		SecurityDefinition securityDefinition = new SecurityDefinition();
 		
-		
+		addIdFields(securityDefinition);
 		
 		return securityDefinition;
 	}
@@ -451,6 +505,8 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	 */
 	public SecurityDefinitionRequest securityDefinitionRequest(){
 		SecurityDefinitionRequest request = new SecurityDefinitionRequest();
+		
+		addIdFields(request);
 		
 		return request;
 	}
