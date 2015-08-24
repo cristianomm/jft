@@ -69,6 +69,12 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	
 	@Column(name = "Message", length = 255)
 	private String message;
+	
+	@Column(name="OrdRejReason")
+	private int ordRejReason;
+	
+	@Column(name="ContraBroker", length=5)
+	private String contraBroker;
 
 	@JoinColumn(name = "orderID", referencedColumnName = "orderID", nullable = false)
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
@@ -191,5 +197,25 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	public void setOrderType(OrderTypes orderType) {
 		this.orderType = orderType;
 	}	
+	
+	public String getContraBroker() {
+		return contraBroker;
+	}
+	
+	public int getOrdRejReason() {
+		return ordRejReason;
+	}
+	
+	public void setOrdRejReason(int ordRejReason) {
+		this.ordRejReason = ordRejReason;
+	}
+	
+	public void setContraBroker(String contraBroker) {
+		this.contraBroker = contraBroker;
+	}
+	
+	public void setExecutionType(ExecutionTypes executionType) {
+		this.executionType = executionType;
+	}
 
 }

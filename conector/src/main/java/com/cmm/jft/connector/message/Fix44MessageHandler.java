@@ -1,8 +1,6 @@
-package com.cmm.jft.engine.message;
+package com.cmm.jft.connector.message;
 
 
-import com.cmm.jft.engine.Book;
-import com.cmm.jft.engine.BookRepository;
 import com.cmm.jft.messaging.MessageHandler;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.marketdata.MarketOrder;
@@ -41,15 +39,15 @@ public class Fix44MessageHandler implements MessageHandler {
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		//System.out.println("MH: " + message);
 		
-		Book book = null;
-		boolean add = false;
-		
-		if((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null){
-			Orders order = new Orders();
-			
-			//try to add the order in the book
-			add = book.addOrder(order, sessionID);
-		}
+//		Book book = null;
+//		boolean add = false;
+//		
+//		if((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null){
+//			Orders order = new Orders();
+//			
+//			//try to add the order in the book
+//			add = book.addOrder(order, sessionID);
+//		}
 		
 	}
 	

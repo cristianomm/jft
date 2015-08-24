@@ -5,10 +5,10 @@ package com.cmm.jft.engine;
 
 import java.util.HashMap;
 
-import com.cmm.jft.engine.message.Fix44MessageEncoder;
+import com.cmm.jft.messaging.Fix44MessageEncoder;
 import com.cmm.jft.engine.message.Fix44MessageHandler;
-import com.cmm.jft.engine.message.MessageEncoder;
-import com.cmm.jft.engine.message.MessageHandler;
+import com.cmm.jft.messaging.MessageEncoder;
+import com.cmm.jft.messaging.MessageHandler;
 
 import quickfix.Application;
 import quickfix.ConfigError;

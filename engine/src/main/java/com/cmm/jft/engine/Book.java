@@ -11,8 +11,8 @@ import org.apache.log4j.Level;
 
 import com.cmm.jft.engine.enums.MatchTypes;
 import com.cmm.jft.engine.match.OrderMatcher;
-import com.cmm.jft.engine.message.MessageEncoder;
-import com.cmm.jft.engine.message.MessageSender;
+import com.cmm.jft.messaging.MessageEncoder;
+import com.cmm.jft.messaging.MessageSender;
 import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
@@ -136,6 +136,7 @@ public class Book implements MessageSender {
 
 		try {
 			if(added = validateOrder(order)) {
+				order.setWorkingIndicator('N');
 				order.setOrderStatus(OrderStatus.SUSPENDED);
 			}
 
@@ -147,7 +148,6 @@ public class Book implements MessageSender {
 				OrderExecution oe = new OrderExecution(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice());
 				oe.setMessage("Order received");
 				oe.setOrderID(order);
-				
 				order.addExecution(oe);
 
 				sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
@@ -172,6 +172,12 @@ public class Book implements MessageSender {
 	public void calcelOrder(Orders order) {
 		
 	}
+	
+	
+	public void closeBook() {
+		
+	}	
+	
 
 
 	/* (non-Javadoc)

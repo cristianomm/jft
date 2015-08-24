@@ -93,8 +93,7 @@ public class TickDataLoader {
 			try {
 				for (String s : quotes.keySet()) {
 					List l = DBFacade.getInstance().queryNative(
-							"select securityid from stock where symbol = '" + s
-									+ "'");
+							"select securityid from stock where symbol = '" + s	+ "'");
 					if (l == null || l.isEmpty()) {
 						// new Stock(s, true).add();
 					}
@@ -103,8 +102,7 @@ public class TickDataLoader {
 				DBFacade.getInstance().beginTransaction();
 				for (String s : quotes.keySet()) {
 					List l = DBFacade.getInstance().queryNative(
-							"select securityid from stock where symbol = '" + s
-									+ "'");
+							"select securityid from stock where symbol = '" + s	+ "'");
 					if (l != null && !l.isEmpty()) {
 //						Stock stock = (Stock) l.get(0);
 //						ArrayList<QuoteData> qts = quotes.get(s);

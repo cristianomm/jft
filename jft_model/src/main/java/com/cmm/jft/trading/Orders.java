@@ -99,6 +99,9 @@ public class Orders implements DBObject<Orders> {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "OrderStatus", nullable = false)
 	private OrderStatus orderStatus;
+		
+	@Column(name = "WorkingIndicator", nullable = false)
+	private char workingIndicator;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "OrderValidityType", nullable = false)
@@ -179,6 +182,7 @@ public class Orders implements DBObject<Orders> {
 
 
 	private void init(){
+		this.workingIndicator = 'N';
 		this.orderDateTime = new Date();
 		this.orderStatus = OrderStatus.CREATED;
 		this.orderSerial = UUID.randomUUID().toString();
@@ -308,12 +312,6 @@ public class Orders implements DBObject<Orders> {
 		}
 
 	}
-
-	public void setToLimitOrder(double price) {
-		this.orderType = OrderTypes.Limit;
-		
-		
-	}
 	
 	
 	public double getOrderValue() {
@@ -407,6 +405,14 @@ public class Orders implements DBObject<Orders> {
 
 	public OrderStatus getOrderStatus() {
 		return orderStatus;
+	}
+	
+	public char getWorkingIndicator() {
+		return workingIndicator;
+	}
+	
+	public void setWorkingIndicator(char workingIndicator) {
+		this.workingIndicator = workingIndicator;
 	}
 
 	public Side getSide() {
@@ -662,7 +668,6 @@ public class Orders implements DBObject<Orders> {
 	private boolean changePrice(double price) throws OrderException {
 		boolean ret = false;
 		try {
-			
 			OrderExecution oe = new OrderExecution(ExecutionTypes.REPLACE, new Date(), 0d, price);
 			oe.setMessage(String.format("Price replaced from %.4f to %.4f", this.price, price));
 			

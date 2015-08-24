@@ -39,12 +39,12 @@ public enum OrderValidityTypes {
 	/**
 	 * 7 - AT THE CLOSE
 	 */
-	ATC('7'),
+	MOC('7'),
 	
 	/**
 	 * A - GOOD FOR AUCTION
 	 */
-	GFA('A');
+	MOA('A');
 	
 	
 	char value;

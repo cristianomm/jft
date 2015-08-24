@@ -129,7 +129,7 @@ public class EntryPointListener implements Service {
 			acceptorHost = settings.getString(sessionID, SETTING_SOCKET_ACCEPT_ADDRESS);
 		}
 		int acceptorPort = (int) settings.getLong(sessionID, SETTING_SOCKET_ACCEPT_PORT);
-
+		
 		return new InetSocketAddress(acceptorHost, acceptorPort);
 	}
 
@@ -144,13 +144,13 @@ public class EntryPointListener implements Service {
 	 * @see com.cmm.jft.core.services.Service#start()
 	 */
 	@Override
-	public boolean start() {		
+	public boolean start() {
 		boolean running = false;
 		try {
 			acceptor.start();
 			running = true;
 		} catch (RuntimeError | ConfigError e) {
-			e.printStackTrace();			
+			e.printStackTrace();
 		}
 
 		return running;
@@ -195,9 +195,8 @@ public class EntryPointListener implements Service {
 		System.out.println(String.format("%.25f", num));
 		System.exit(0);
 		
-		
 		System.out.println(fact(22));
-	
+		
 		BigDecimal val = new BigDecimal(0);
 		BigDecimal one = new BigDecimal(1); 
 		System.out.println(one.divide(new BigDecimal(6), BigDecimal.ROUND_HALF_UP));
@@ -208,6 +207,7 @@ public class EntryPointListener implements Service {
 
 		System.exit(0);
 		*/
+		/*
 		try{
 			Scanner sc = new Scanner(new File("c:\\Disco\\Bancos\\dmps\\member_login.dump"));
 			sc.useDelimiter("[\n|\r]+");
@@ -219,7 +219,7 @@ public class EntryPointListener implements Service {
 		catch(FileNotFoundException e){
 			
 		}
-		
+		*/
 		
 		EntryPointListener listener = new EntryPointListener();
 		listener.start();		

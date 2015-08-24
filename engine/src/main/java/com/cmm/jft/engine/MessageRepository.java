@@ -2,7 +2,7 @@ package com.cmm.jft.engine;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.cmm.jft.engine.message.Tuple;
+import com.cmm.jft.messaging.Tuple;
 
 import quickfix.Message;
 import quickfix.SessionID;

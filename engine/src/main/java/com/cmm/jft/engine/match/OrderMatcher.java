@@ -4,20 +4,23 @@
 package com.cmm.jft.engine.match;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import quickfix.Message;
 import quickfix.SessionID;
 
+import com.cmm.jft.engine.MessageRepository;
 import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.engine.enums.MatchTypes;
-import com.cmm.jft.engine.message.MessageEncoder;
-import com.cmm.jft.engine.message.MessageSender;
+import com.cmm.jft.messaging.MessageEncoder;
+import com.cmm.jft.messaging.MessageSender;
 import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
+import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.exceptions.OrderException;
 
@@ -28,23 +31,52 @@ import com.cmm.jft.trading.exceptions.OrderException;
  */
 public class OrderMatcher  implements MessageSender {
 
+	
+	private class StopOrderReleaser implements Runnable {
+		
+		private PriorityBlockingQueue<Orders> queue;
+
+		public StopOrderReleaser(PriorityBlockingQueue<Orders> queue) {
+			this.queue = queue;
+		}
+		
+		@Override
+		public void run() {
+			
+			while(verifyStopOrders) {
+				queue.stream().filter(
+						o -> o.getWorkingIndicator() == 'N' && 
+						o.getStopPrice() == lastPrice)
+						.forEach(o -> o.setWorkingIndicator('Y')
+				);
+				
+			}
+		}
+		
+	}
+	
+	
+	
 	private int phase;
+	private boolean verifyStopOrders;
 	private double lastPrice;
 	private double lastVolume;
 	private double protectionLevel;
 	private PriorityBlockingQueue<Orders> buyQueue;
 	private PriorityBlockingQueue<Orders> sellQueue;
-	private PriorityBlockingQueue<Orders> stopQueue;
 
 	
 	public OrderMatcher(MatchTypes matchTypes, double protectionLevel) {
-		
+		this.verifyStopOrders = true;
 		this.protectionLevel = protectionLevel;
 		if(matchTypes == MatchTypes.FIFO) {
 			this.buyQueue = new PriorityBlockingQueue<>(1000, new PriceTimeComparator());
 			this.sellQueue = new PriorityBlockingQueue<>(1000, new PriceTimeComparator());
-			this.stopQueue = new PriorityBlockingQueue<>(1000, new PriceTimeComparator());
 		}
+		
+		//inicializa os verificadores de ordens stop
+		new Thread(new StopOrderReleaser(buyQueue)).start();
+		new Thread(new StopOrderReleaser(sellQueue)).start();
 		
 	}
 	
@@ -70,25 +102,20 @@ public class OrderMatcher  implements MessageSender {
 	public PriorityBlockingQueue<Orders> getSellQueue() {
 		return this.sellQueue;
 	}
-	
-	private void match() {
 		
-		Orders sell = sellQueue.poll();
-		Orders buy = buyQueue.poll();
-		
-	}
-	
-	
-	public boolean addOrder(Orders buyOrder) throws OrderException {
+	public boolean addOrder(Orders order) throws OrderException {
 		boolean add = false;
-		
-		add = execute(buyOrder);
+		order.setWorkingIndicator('Y');
+		add = execute(order);
 		
 		return add;
 	}
 	
 	private boolean addOnBook(Orders ordr) {
 		boolean add = false;
+		
+		
+		
 		if(ordr.getSide() == Side.BUY) {
 			add = buyQueue.offer(ordr);
 		}
@@ -111,10 +138,11 @@ public class OrderMatcher  implements MessageSender {
 			executed = executeLimit(ordr);
 			break;
 		case Stop:
-			executed = addToStopBook(ordr);//nao executa stop mas sim adiciona no "stop book" e aguarda para ser ativada
+			adjustProtectionPrice(ordr);
+			executed = addOnBook(ordr);//nao executa stop mas sim adiciona no "stop book" e aguarda para ser ativada
 			break;
 		case StopLimit:
-			executed = addToStopBook(ordr);//nao executa stoplimit, deve inserir no stop book e aguardar o gatilho
+			executed = addOnBook(ordr);//nao executa stoplimit, deve inserir no stop book e aguardar o gatilho
 			break;
 		case MarketWithLeftOverAsLimit:
 			executed = executeMarketToLimit(ordr);
@@ -197,14 +225,6 @@ public class OrderMatcher  implements MessageSender {
 		return exec;
 	}
 	
-	private boolean addToStopBook(Orders ordr) {
-		boolean exec = false;
-		
-		
-		
-		return exec;
-	}
-	
 	private boolean executeMarketToLimit(Orders ordr) {
 		boolean exec = false;
 		
@@ -231,27 +251,30 @@ public class OrderMatcher  implements MessageSender {
 					if(ex.getOrderID().getOrderStatus() != OrderStatus.PARTIALLY_FILLED) {
 						orders.remove(ex.getOrderID());
 					}
+					else {//
+						ex.getOrderID().setWorkingIndicator('Y');
+					}
 					
 				}
 				
 				//adiciona o restante da ordem recebida no book
 				if(ordr.getOrderStatus() == OrderStatus.PARTIALLY_FILLED || ordr.getOrderStatus() == OrderStatus.NEW) {
 					
-					//ajusta o tipo da ordem para Limit
-					ordr.changeToLimit(orderPrice);
-					exec = addOnBook(ordr);
+					if(ordr.getValidityType() == OrderValidityTypes.IOC) {
+						cancelOrder(ordr, true);
+					}else {
+						//ajusta o tipo da ordem para Limit
+						ordr.changeToLimit(orderPrice);
+						exec = addOnBook(ordr);
+					}
+					
 				}
 				
 			}else {
 				//cancela a ordem e informa que a ordem nao podera ser executada
 				exec = false;
+				cancelOrder(ordr, false);
 				
-				OrderExecution oe = new OrderExecution(ExecutionTypes.CANCELED, ordr.getVolume(), ordr.getPrice());
-				oe.setMessage("Order Canceled due to invalid execution.");
-				ordr.addExecution(oe);
-				
-				SessionID bookOrderSession = SessionRepository.getInstance().getSession(ordr.getPartyID());
-				sendMessage(MessageEncoder.getEncoder(bookOrderSession).executionReport(oe), bookOrderSession);
 			}
 			
 		}catch(OrderException e) {
@@ -279,22 +302,24 @@ public class OrderMatcher  implements MessageSender {
 		while(ordrs.iterator().hasNext() && cumVolume < volume) {
 			
 			Orders bookOrder = ordrs.iterator().next(); 
-			
-			double qtyToFill = 0;
-			double priceToFill = bookOrder.getPrice();
-			
-			if(volume >= bookOrder.getLeavesVolume()) {
-				qtyToFill = bookOrder.getLeavesVolume();
-			}
-			else {
-				qtyToFill = volume;
-			}
-			
-			if(cumVolume < volume && priceToFill <= price) {
-				cumVolume += qtyToFill;
-				OrderExecution fill = new OrderExecution(ExecutionTypes.TRADE, qtyToFill, priceToFill);
-				fill.setOrderID(bookOrder);
-				lst.add(fill);
+			if(bookOrder.getWorkingIndicator() == 'Y') {
+				bookOrder.setWorkingIndicator('N');
+				double qtyToFill = 0;
+				double priceToFill = bookOrder.getPrice();
+				
+				if(volume >= bookOrder.getLeavesVolume()) {
+					qtyToFill = bookOrder.getLeavesVolume();
+				}
+				else {
+					qtyToFill = volume;
+				}
+				
+				if(cumVolume < volume && priceToFill <= price) {
+					cumVolume += qtyToFill;
+					OrderExecution fill = new OrderExecution(ExecutionTypes.TRADE, qtyToFill, priceToFill);
+					fill.setOrderID(bookOrder);
+					lst.add(fill);
+				}
 			}
 		}
 		
@@ -305,7 +330,7 @@ public class OrderMatcher  implements MessageSender {
 		boolean validExecution = false;
 		
 		switch(ordr.getValidityType()) {
-		case GFA:
+		case MOA:
 			break;
 		case DAY:
 			validExecution = true;
@@ -318,32 +343,43 @@ public class OrderMatcher  implements MessageSender {
 			break;
 		case FOK:
 			double c=0;
-			//executions.stream().forEach(e -> e.getVolume() += c);
+			for(OrderExecution oe:executions) {
+				c+=oe.getVolume();
+			}
+			validExecution = c == ordr.getVolume();
 			break;
 		case GTD:
+			validExecution = new Date().compareTo(ordr.getDuration()) <=0;
 			break;
-		case ATC:
+		case MOC:
+			validExecution = true;
 			break;
 		
 		}
-		
-		
 		
 		return validExecution;
 	}
 	
 	
-	@Override
-	public boolean sendMessage(Message message, SessionID sessionID) {
+	private void cancelOrder(Orders ordr, boolean expire) throws OrderException {
 		
+		OrderExecution oe = new OrderExecution(ExecutionTypes.CANCELED, ordr.getVolume(), ordr.getPrice());
+		oe.setMessage("Order Canceled due to invalid execution.");
+		if(expire) {
+			oe.setOrdRejReason(-1);
+			oe.setMessage("Order expired.");
+		}
 		
-				
-		return false;
+		ordr.addExecution(oe);
+		
+		SessionID bookOrderSession = SessionRepository.getInstance().getSession(ordr.getPartyID());
+		sendMessage(MessageEncoder.getEncoder(bookOrderSession).executionReport(oe), bookOrderSession);
 	}
 	
-	// creates the order execution
-	//	OrderExecution oex = new OrderExecution(ExecutionTypes.TRADE, executionDateTime, execVolume, execPrice);
-	//	oex.setMessage("Execution of " + execution.getVolume() + " at price " + execution.getPrice());
-	//	oex.setLeavesVolume(volume - oex.getVolume());
+	
+	@Override
+	public boolean sendMessage(Message message, SessionID sessionID) {
+		return MessageRepository.getInstance().addMessage(message, sessionID);
+	}
 	
 }

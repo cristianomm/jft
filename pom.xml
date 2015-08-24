@@ -17,5 +17,6 @@
     <module>jft_model</module>
     <module>engine</module>
     <module>conector</module>
+    <module>messaging</module>
   </modules>
 </project>
