@@ -3,7 +3,7 @@ package com.cmm.jft.messaging;
 import java.util.Date;
 
 import com.cmm.jft.messaging.fix44.Fix44MessageEncoder;
-import com.cmm.jft.trading.OrderExecution;
+import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.RejectTypes;
@@ -62,7 +62,7 @@ public interface MessageEncoder {
 
 	Message businessMessageReject();
 
-	Message executionReport(OrderExecution execution);
+	Message executionReport(OrderEvent execution);
 
 	Message newOrderCross(Orders order);
 

@@ -25,12 +25,12 @@ public enum Side {
 		return value;
 	}
 	
-	public static Side getByValue(String value) {
+	public static Side getByValue(char value) {
 
 		Side s = null;
-		if (value.equalsIgnoreCase("b") || value.equalsIgnoreCase("c") || value.equals("1")) {
+		if (value == 'b' || value == 'c' || value == '1') {
 			s = BUY;
-		} else if (value.equalsIgnoreCase("s") || value.equalsIgnoreCase("v") || value.equals("2")) {
+		} else if (value == 's' || value == 'v' || value == '2') {
 			s = SELL;
 		}
 		return s;

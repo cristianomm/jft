@@ -115,11 +115,11 @@ public enum OrderTypes {
 		return value;
 	}
 	
-	public static OrderTypes getByValue(String value) {
+	public static OrderTypes getByValue(char value) {
 		OrderTypes ot = null;
 
 		for (OrderTypes ots : OrderTypes.values()) {
-			if (ots.name().equalsIgnoreCase(value)) {
+			if (ots.value == value) {
 				ot = ots;
 			}
 		}

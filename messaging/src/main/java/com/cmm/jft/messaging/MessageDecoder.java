@@ -6,7 +6,7 @@ package com.cmm.jft.messaging;
 import quickfix.Message;
 import quickfix.SessionID;
 
-import com.cmm.jft.trading.OrderExecution;
+import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.marketdata.MarketOrder;
 
@@ -63,17 +63,17 @@ public interface MessageDecoder {
 
 	Message businessMessageReject(Message message);
 
-	OrderExecution executionReport(Message message);
+	OrderEvent executionReport(Message message);
 
 	Orders newOrderCross(Message message);
 
 	Orders newOrderSingle(Message message);
 
-	OrderExecution orderCancelReject(Message message);
+	OrderEvent orderCancelReject(Message message);
 
-	OrderExecution orderCancelReplaceRequest(Message message);
+	Orders orderCancelReplaceRequest(Message message);
 
-	OrderExecution orderCancelRequest(Message message);
+	Orders orderCancelRequest(Message message);
 
 	Message positionMaintenanceReport(Message message);
 

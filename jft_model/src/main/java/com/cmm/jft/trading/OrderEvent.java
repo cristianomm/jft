@@ -29,7 +29,7 @@ import com.cmm.jft.trading.enums.OrderTypes;
 
 /**
  * <p>
- * <code>OrderExecution.java</code>
+ * <code>OrderEvent.java</code>
  * </p>
  * 
  * @author Cristiano Martins
@@ -38,15 +38,15 @@ import com.cmm.jft.trading.enums.OrderTypes;
  */
 
 @Entity
-@Table(name = "OrderExecution")
-public class OrderExecution implements DBObject<OrderExecution> {
+@Table(name = "OrderEvent")
+public class OrderEvent implements DBObject<OrderEvent> {
 
 	@Id
-	@SequenceGenerator(name = "ORDEREXECUTION_SEQ", sequenceName = "ORDEREXECUTION_SEQ", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(generator = "ORDEREXECUTION_SEQ", strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "ORDEREVENT_SEQ", sequenceName = "ORDEREVENT_SEQ", allocationSize = 1, initialValue = 1)
+	@GeneratedValue(generator = "ORDEREVENT_SEQ", strategy = GenerationType.AUTO)
 	@Basic(optional = false)
-	@Column(name = "orderExecutionID", nullable = false)
-	private Long orderExecutionID;
+	@Column(name = "orderEventID", nullable = false)
+	private Long orderEventID;
 
 	@Column(name = "Volume")
 	private double volume;
@@ -83,11 +83,11 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	/**
      * 
      */
-	public OrderExecution() {
+	public OrderEvent() {
 		super();
 	}
 
-	public OrderExecution(ExecutionTypes execType, double volume, double price) {
+	public OrderEvent(ExecutionTypes execType, double volume, double price) {
 		super();
 		this.executionType = execType;
 		this.executionDateTime = new Date();
@@ -103,7 +103,7 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	 * @param price
 	 * @param orderID
 	 */
-	public OrderExecution(ExecutionTypes execType, Date executionDateTime, double volume, double price) {
+	public OrderEvent(ExecutionTypes execType, Date executionDateTime, double volume, double price) {
 		super();
 		this.executionType = execType;
 		this.executionDateTime = executionDateTime;
@@ -172,10 +172,10 @@ public class OrderExecution implements DBObject<OrderExecution> {
 	}
 
 	/**
-	 * @return the orderExecutionID
+	 * @return the orderEventID
 	 */
-	public Long getOrderExecutionID() {
-		return this.orderExecutionID;
+	public Long getOrderEventID() {
+		return this.orderEventID;
 	}
 	
 	public ExecutionTypes getExecutionType() {

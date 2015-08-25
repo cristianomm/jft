@@ -3,7 +3,9 @@ package com.cmm.jft.engine.message;
 
 import com.cmm.jft.engine.Book;
 import com.cmm.jft.engine.BookRepository;
+import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.messaging.MessageHandler;
+import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.marketdata.MarketOrder;
 
@@ -25,12 +27,12 @@ import quickfix.fix44.QuoteRequestReject;
 import quickfix.fix44.SecurityDefinitionRequest;
 
 
-public class Fix44MessageHandler implements MessageHandler {
+public class Fix44EngineHandler implements MessageHandler {
 	
 	
 	//private static Fix44MessageHandler instance;
 		
-	public Fix44MessageHandler(){
+	public Fix44EngineHandler(){
 		//initialize(this);
 		System.out.println(getClass() + " initialized.");
 	}
@@ -42,13 +44,12 @@ public class Fix44MessageHandler implements MessageHandler {
 		//System.out.println("MH: " + message);
 		
 		Book book = null;
-		boolean add = false;
 		
 		if((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null){
 			Orders order = new Orders();
 			
 			//try to add the order in the book
-			add = book.addOrder(order, sessionID);
+			book.addOrder(order, sessionID);
 		}
 		
 	}
@@ -57,10 +58,22 @@ public class Fix44MessageHandler implements MessageHandler {
 	public void onMessage(OrderCancelReplaceRequest message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
+		Book book = null;
+		Orders ordr = MessageDecoder.getDecoder(sessionID).orderCancelReplaceRequest(message);
+		if((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null){
+			book.replaceOrder(ordr);
+		}
+		
 	}
 	
 	public void onMessage(OrderCancelRequest message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		
+		Book book = null;
+		Orders ordr = MessageDecoder.getDecoder(sessionID).orderCancelRequest(message);
+		if((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null){
+			book.replaceOrder(ordr);
+		}
 		
 	}
 	

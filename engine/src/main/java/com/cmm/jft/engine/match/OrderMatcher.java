@@ -16,7 +16,7 @@ import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.engine.enums.MatchTypes;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageSender;
-import com.cmm.jft.trading.OrderExecution;
+import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
@@ -155,8 +155,8 @@ public class OrderMatcher  implements MessageSender {
 	private boolean fillOrders(Orders newOrder, Orders bookOrder, double qtyToFill, double priceToFill){
 		boolean send = false;
 		
-		OrderExecution orderFill = new OrderExecution(ExecutionTypes.TRADE, qtyToFill, priceToFill);
-		OrderExecution bookFill = new OrderExecution(ExecutionTypes.TRADE, qtyToFill, priceToFill);
+		OrderEvent orderFill = new OrderEvent(ExecutionTypes.TRADE, qtyToFill, priceToFill);
+		OrderEvent bookFill = new OrderEvent(ExecutionTypes.TRADE, qtyToFill, priceToFill);
 		try {
 			if(newOrder.addExecution(orderFill) && bookOrder.addExecution(bookFill)) {
 				
@@ -238,12 +238,12 @@ public class OrderMatcher  implements MessageSender {
 		boolean exec = false;
 		
 		PriorityBlockingQueue<Orders> orders = getCounterpartyBookOrders(ordr.getSide());
-		List<OrderExecution> execs = createExecutions(ordr.getSide(), orderPrice, orderVolume);
+		List<OrderEvent> execs = createExecutions(ordr.getSide(), orderPrice, orderVolume);
 		try {
 			//verifica se pode executar a ordem 
 			if(validateExecution(ordr, execs)) {
 				
-				for(OrderExecution ex:execs) {
+				for(OrderEvent ex:execs) {
 					//adiciona as execucoes e as informa para os participantes
 					exec = fillOrders(ordr, ex.getOrderID(), ex.getVolume(), ex.getPrice());
 					
@@ -293,9 +293,9 @@ public class OrderMatcher  implements MessageSender {
 	 * @param volume
 	 * @return
 	 */
-	private ArrayList<OrderExecution> createExecutions(Side side, double price, double volume) {
+	private ArrayList<OrderEvent> createExecutions(Side side, double price, double volume) {
 		
-		ArrayList<OrderExecution> lst = new ArrayList<OrderExecution>();
+		ArrayList<OrderEvent> lst = new ArrayList<OrderEvent>();
 		PriorityBlockingQueue<Orders> ordrs = getCounterpartyBookOrders(side);
 				
 		double cumVolume = 0;
@@ -316,7 +316,7 @@ public class OrderMatcher  implements MessageSender {
 				
 				if(cumVolume < volume && priceToFill <= price) {
 					cumVolume += qtyToFill;
-					OrderExecution fill = new OrderExecution(ExecutionTypes.TRADE, qtyToFill, priceToFill);
+					OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, qtyToFill, priceToFill);
 					fill.setOrderID(bookOrder);
 					lst.add(fill);
 				}
@@ -326,7 +326,7 @@ public class OrderMatcher  implements MessageSender {
 		return lst;
 	}
 	
-	private boolean validateExecution(Orders ordr, List<OrderExecution> executions) {
+	private boolean validateExecution(Orders ordr, List<OrderEvent> executions) {
 		boolean validExecution = false;
 		
 		switch(ordr.getValidityType()) {
@@ -343,7 +343,7 @@ public class OrderMatcher  implements MessageSender {
 			break;
 		case FOK:
 			double c=0;
-			for(OrderExecution oe:executions) {
+			for(OrderEvent oe:executions) {
 				c+=oe.getVolume();
 			}
 			validExecution = c == ordr.getVolume();
@@ -363,7 +363,7 @@ public class OrderMatcher  implements MessageSender {
 	
 	private void cancelOrder(Orders ordr, boolean expire) throws OrderException {
 		
-		OrderExecution oe = new OrderExecution(ExecutionTypes.CANCELED, ordr.getVolume(), ordr.getPrice());
+		OrderEvent oe = new OrderEvent(ExecutionTypes.CANCELED, ordr.getVolume(), ordr.getPrice());
 		oe.setMessage("Order Canceled due to invalid execution.");
 		if(expire) {
 			oe.setOrdRejReason(-1);

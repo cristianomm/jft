@@ -4,7 +4,7 @@
 package com.cmm.jft.connector;
 
 
-import com.cmm.jft.connector.message.Fix44MessageHandler;
+import com.cmm.jft.connector.message.Fix44ClMessageHandler;
 
 import quickfix.Application;
 import quickfix.DoNotSend;
@@ -39,7 +39,7 @@ public class Connector extends MessageCracker implements Application{
 	private SessionID sessionID;
 	
 	public Connector() {
-		new Fix44MessageHandler();
+		new Fix44ClMessageHandler();
 	}
 	
 	

@@ -12,7 +12,7 @@ import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.data.Config;
 import com.cmm.jft.messaging.MessageCounter;
 import com.cmm.jft.messaging.MessageEncoder;
-import com.cmm.jft.trading.OrderExecution;
+import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.RejectTypes;
@@ -285,15 +285,15 @@ public class Fix44MessageEncoder implements MessageEncoder {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.cmm.jft.engine.message.MessageEncoder#executionReport(OrderExecution execution)
+	 * @see com.cmm.jft.engine.message.MessageEncoder#executionReport(OrderEvent execution)
 	 */
-	public ExecutionReport executionReport(OrderExecution execution){
+	public ExecutionReport executionReport(OrderEvent execution){
 		
 		ExecutionReport executionReport = new ExecutionReport();
 				
 		executionReport = new ExecutionReport(
 				new OrderID(execution.getOrderID().getOrderSerial()), 
-				new ExecID(execution.getOrderExecutionID()+""),
+				new ExecID(execution.getOrderEventID()+""),
 				new ExecType(execution.getExecutionType().getValue()), 
 				new OrdStatus(execution.getOrderID().getOrderStatus().getValue()),
 				new Side(execution.getOrderID().getSide().getValue()), 

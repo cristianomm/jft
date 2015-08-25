@@ -149,7 +149,7 @@ public class Orders implements DBObject<Orders> {
 	private Security securityID;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orderID")
-	private List<OrderExecution> executionsList;
+	private List<OrderEvent> executionsList;
 
 
 
@@ -186,7 +186,7 @@ public class Orders implements DBObject<Orders> {
 		this.orderDateTime = new Date();
 		this.orderStatus = OrderStatus.CREATED;
 		this.orderSerial = UUID.randomUUID().toString();
-		this.executionsList = new ArrayList<OrderExecution>();
+		this.executionsList = new ArrayList<OrderEvent>();
 	}
 
 
@@ -219,7 +219,7 @@ public class Orders implements DBObject<Orders> {
 	public BigDecimal calculateOrderValues() {
 		int sumVolume = 0;
 		double sumTotal = 0d;
-		for (OrderExecution oe : executionsList) {
+		for (OrderEvent oe : executionsList) {
 			if(oe.getExecutionType() == ExecutionTypes.TRADE) {			
 				lastPrice = oe.getPrice();
 				sumVolume += oe.getVolume();
@@ -432,7 +432,7 @@ public class Orders implements DBObject<Orders> {
 	/**
 	 * @return the executionsList
 	 */
-	public List<OrderExecution> getExecutionsList() {
+	public List<OrderEvent> getExecutionsList() {
 		return this.executionsList;
 	}
 
@@ -489,6 +489,41 @@ public class Orders implements DBObject<Orders> {
 	
 	public void setPartyRole(String partyRole) {
 		this.partyRole = partyRole;
+	}
+	
+	/**
+	 * @param orderType the orderType to set
+	 */
+	public void setOrderType(OrderTypes orderType) {
+		this.orderType = orderType;
+	}
+	
+	/**
+	 * @param price the price to set
+	 */
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
+	/**
+	 * @param securityID the securityID to set
+	 */
+	public void setSecurityID(Security securityID) {
+		this.securityID = securityID;
+	}
+	
+	/**
+	 * @param side the side to set
+	 */
+	public void setSide(Side side) {
+		this.side = side;
+	}
+	
+	/**
+	 * @param volume the volume to set
+	 */
+	public void setVolume(Double volume) {
+		this.volume = volume;
 	}
 	
 	@Override
@@ -557,7 +592,7 @@ public class Orders implements DBObject<Orders> {
 	 * @return
 	 * @throws OrderException
 	 */
-	public boolean addExecution(OrderExecution execution) throws OrderException {
+	public boolean addExecution(OrderEvent execution) throws OrderException {
 		
 		boolean added = false;
 		
@@ -592,7 +627,7 @@ public class Orders implements DBObject<Orders> {
 		return added;
 	}
 	
-	private void cancelOrder(OrderExecution execution) throws OrderException {
+	private void cancelOrder(OrderEvent execution) throws OrderException {
 		
 		setOrderStatus(OrderStatus.CANCELED);
 		executionsList.add(execution);
@@ -600,28 +635,28 @@ public class Orders implements DBObject<Orders> {
 		
 	}
 	
-	private void expireOrder(OrderExecution execution) throws OrderException {
+	private void expireOrder(OrderEvent execution) throws OrderException {
 		
 		setOrderStatus(OrderStatus.EXPIRED);
 		refreshOrder();
 		
 	}
 	
-	private void newOrder(OrderExecution execution) throws OrderException {
+	private void newOrder(OrderEvent execution) throws OrderException {
 		
 		setOrderStatus(OrderStatus.NEW);
 		refreshOrder();
 		
 	}
 	
-	private void rejectOrder(OrderExecution execution) throws OrderException {
+	private void rejectOrder(OrderEvent execution) throws OrderException {
 		
 		setOrderStatus(OrderStatus.REJECTED);
 		refreshOrder();
 		
 	}
 	
-	private void replaceOrder(OrderExecution execution) throws OrderException {
+	private void replaceOrder(OrderEvent execution) throws OrderException {
 		
 		
 		setOrderStatus(OrderStatus.SUSPENDED);
@@ -642,7 +677,7 @@ public class Orders implements DBObject<Orders> {
 		
 	}
 	
-	private void tradeOrder(OrderExecution execution) throws OrderException {
+	private void tradeOrder(OrderEvent execution) throws OrderException {
 		
 		if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED || orderStatus == OrderStatus.REPLACED){
 			//volume executado eh menor que o volume total e menor que o volume atual
@@ -660,7 +695,7 @@ public class Orders implements DBObject<Orders> {
 		
 	}
 	
-	private void cancelTrade(OrderExecution execution) throws OrderException {
+	private void cancelTrade(OrderEvent execution) throws OrderException {
 		setOrderStatus(OrderStatus.NEW);
 		refreshOrder();
 	}
@@ -668,7 +703,7 @@ public class Orders implements DBObject<Orders> {
 	private boolean changePrice(double price) throws OrderException {
 		boolean ret = false;
 		try {
-			OrderExecution oe = new OrderExecution(ExecutionTypes.REPLACE, new Date(), 0d, price);
+			OrderEvent oe = new OrderEvent(ExecutionTypes.REPLACE, new Date(), 0d, price);
 			oe.setMessage(String.format("Price replaced from %.4f to %.4f", this.price, price));
 			
 			setOrderStatus(OrderStatus.REPLACED);
@@ -692,7 +727,7 @@ public class Orders implements DBObject<Orders> {
 				throw new OrderException("Invalid Volume:" + volume);
 			}
 			
-			OrderExecution oe = new OrderExecution(ExecutionTypes.REPLACE, new Date(), 0d, volume);
+			OrderEvent oe = new OrderEvent(ExecutionTypes.REPLACE, new Date(), 0d, volume);
 			oe.setMessage(String.format("Volume replaced from %.3f to %.3f", this.volume, volume));
 			executionsList.add(oe);
 			
@@ -707,7 +742,7 @@ public class Orders implements DBObject<Orders> {
 	}
 	
 	public void changeToLimit(double price) throws OrderException {
-		OrderExecution oe = new OrderExecution(ExecutionTypes.REPLACE, getVolume(), price);
+		OrderEvent oe = new OrderEvent(ExecutionTypes.REPLACE, getVolume(), price);
 		oe.setOrderType(OrderTypes.Limit);
 		addExecution(oe);
 	}

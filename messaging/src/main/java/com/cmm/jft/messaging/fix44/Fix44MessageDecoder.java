@@ -7,11 +7,21 @@ import quickfix.FieldNotFound;
 import quickfix.Message;
 import quickfix.field.ExecType;
 import quickfix.fix44.ExecutionReport;
+import quickfix.fix44.OrderCancelReject;
+import quickfix.fix44.OrderCancelReplaceRequest;
+import quickfix.fix44.OrderCancelRequest;
+
+import org.apache.log4j.Level;
 
 import com.cmm.jft.messaging.MessageDecoder;
-import com.cmm.jft.trading.OrderExecution;
+import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
+import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.trading.securities.Security;
+import com.cmm.jft.trading.services.SecurityService;
+import com.cmm.logging.Logging;
 
 /**
  * <p><code>Fix44MessageDecoder.java</code> </p>
@@ -114,26 +124,26 @@ public class Fix44MessageDecoder implements MessageDecoder {
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageDecoder#executionReport(quickfix.Message)
 	 */
-	
-	public OrderExecution executionReport(Message message) {
-		OrderExecution execution = null;
-		
+
+	public OrderEvent executionReport(Message message) {
+		OrderEvent event = null;
+
 		if(message instanceof ExecutionReport) {
 			ExecutionReport er = (ExecutionReport) message;
-			
+
 			try {
-				execution = new OrderExecution(
-					ExecutionTypes.getByValue(er.getExecType().getValue()), 
-					er.getTransactTime().getValue(), 
-					er.getOrderQty().getValue(), er.getPrice().getValue()
-					);
+				event = new OrderEvent(
+						ExecutionTypes.getByValue(er.getExecType().getValue()), 
+						er.getTransactTime().getValue(), 
+						er.getOrderQty().getValue(), er.getPrice().getValue()
+						);
 			}catch(FieldNotFound e) {
-				
+
 			}
-			
+
 		}
-		
-		return execution;
+
+		return event;
 	}
 
 	/* (non-Javadoc)
@@ -158,27 +168,57 @@ public class Fix44MessageDecoder implements MessageDecoder {
 	 * @see com.cmm.jft.engine.message.MessageDecoder#orderCancelReject(quickfix.Message)
 	 */
 	@Override
-	public OrderExecution orderCancelReject(Message message) {
+	public OrderEvent orderCancelReject(Message message) {
+		OrderCancelReject cancelReject = (OrderCancelReject) message;
+		OrderEvent event = new OrderEvent(); 
+
 		// TODO Auto-generated method stub
-		return null;
+		return event;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageDecoder#orderCancelReplaceRequest(quickfix.Message)
 	 */
 	@Override
-	public OrderExecution orderCancelReplaceRequest(Message message) {
-		// TODO Auto-generated method stub
-		return null;
+	public Orders orderCancelReplaceRequest(Message message) {
+
+		OrderCancelReplaceRequest request = (OrderCancelReplaceRequest) message;
+		Orders ordr = new Orders();
+		try{
+			ordr.setClOrdID(request.getClOrdID().getValue());
+			ordr.setOrigClOrdID(request.getOrigClOrdID().getValue());
+			ordr.setMaxFloor(request.getMaxFloor().getValue());
+			ordr.setSecurityID(SecurityService.getInstance().provideSecurity(request.getSymbol().getValue()));
+			ordr.setSide(Side.getByValue(request.getSide().getValue()));
+			ordr.setVolume(request.getOrderQty().getValue());
+			ordr.setOrderType(OrderTypes.getByValue(request.getOrdType().getValue()));
+			ordr.setPrice(request.getPrice().getValue());
+			ordr.setStopPrice(request.getStopPx().getValue());
+		}catch(FieldNotFound e){
+			Logging.getInstance().log(getClass(), e, Level.ERROR);
+		}
+
+		return ordr;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageDecoder#orderCancelRequest(quickfix.Message)
 	 */
 	@Override
-	public OrderExecution orderCancelRequest(Message message) {
-		// TODO Auto-generated method stub
-		return null;
+	public Orders orderCancelRequest(Message message) {
+		OrderCancelRequest request = (OrderCancelRequest) message;
+		Orders ordr = new Orders();
+		try{
+			ordr.setClOrdID(request.getClOrdID().getValue());
+			ordr.setOrigClOrdID(request.getOrigClOrdID().getValue());
+			ordr.setSecurityID(SecurityService.getInstance().provideSecurity(request.getSymbol().getValue()));
+			ordr.setSide(Side.getByValue(request.getSide().getValue()));
+			ordr.setVolume(request.getOrderQty().getValue());
+		}catch(FieldNotFound e){
+			Logging.getInstance().log(getClass(), e, Level.ERROR);
+		}
+
+		return ordr;
 	}
 
 	/* (non-Javadoc)

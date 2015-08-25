@@ -13,7 +13,7 @@ import com.cmm.jft.engine.enums.MatchTypes;
 import com.cmm.jft.engine.match.OrderMatcher;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageSender;
-import com.cmm.jft.trading.OrderExecution;
+import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
@@ -81,7 +81,9 @@ public class Book implements MessageSender {
 		boolean valid = false;
 
 		valid = isValidType(order);
-
+		
+		valid = valid && !order.getClOrdID().isEmpty();
+		
 		//verifica se a quantidade para o instrumento eh valida
 		valid = valid && (order.getVolume() % security.getSecurityInfoID().getMinimalVolume()) == 0;
 
@@ -145,7 +147,7 @@ public class Book implements MessageSender {
 			if(added) {
 				
 				//envia mensagem informando que a ordem foi aceita
-				OrderExecution oe = new OrderExecution(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice());
+				OrderEvent oe = new OrderEvent(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice());
 				oe.setMessage("Order received");
 				oe.setOrderID(order);
 				order.addExecution(oe);
@@ -159,7 +161,7 @@ public class Book implements MessageSender {
 
 		}catch(OrderException e) {
 			added = false;
-			OrderExecution oe = new OrderExecution(ExecutionTypes.REJECTED, new Date(), order.getVolume(), order.getPrice());
+			OrderEvent oe = new OrderEvent(ExecutionTypes.REJECTED, new Date(), order.getVolume(), order.getPrice());
 			oe.setMessage("Order rejected: " + e.getMessage());
 			oe.setOrderID(order);
 			sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
@@ -169,9 +171,16 @@ public class Book implements MessageSender {
 		return added;
 	}
 
-	public void calcelOrder(Orders order) {
+	
+	
+	public void cancelOrder(Orders ordr) {
 		
 	}
+	
+	public void replaceOrder(Orders ordr){
+		
+	}
+	
 	
 	
 	public void closeBook() {

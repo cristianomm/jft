@@ -4,7 +4,7 @@ package com.cmm.jft.connector.message;
 import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.messaging.MessageHandler;
 import com.cmm.jft.messaging.fix44.Fix44ClientHandler;
-import com.cmm.jft.trading.OrderExecution;
+import com.cmm.jft.trading.OrderEvent;
 
 import quickfix.FieldNotFound;
 import quickfix.IncorrectTagValue;
@@ -23,10 +23,10 @@ import quickfix.fix44.QuoteStatusReport;
 import quickfix.fix44.SecurityDefinition;
 
 
-public class Fix44MessageHandler extends Fix44ClientHandler implements MessageHandler {
+public class Fix44ClMessageHandler extends Fix44ClientHandler implements MessageHandler {
 	
 	
-	public Fix44MessageHandler(){
+	public Fix44ClMessageHandler(){
 		System.out.println(getClass() + " initialized.");
 	}
 
@@ -46,7 +46,7 @@ public class Fix44MessageHandler extends Fix44ClientHandler implements MessageHa
 	@Override
 	public void onMessage(ExecutionReport message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		OrderExecution oe = MessageDecoder.getDecoder(sessionID).executionReport(message);
+		OrderEvent oe = MessageDecoder.getDecoder(sessionID).executionReport(message);
 		
 	}
 
@@ -56,7 +56,7 @@ public class Fix44MessageHandler extends Fix44ClientHandler implements MessageHa
 	@Override
 	public void onMessage(OrderCancelReject message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		OrderExecution oe = MessageDecoder.getDecoder(sessionID).orderCancelReject(message);
+		OrderEvent oe = MessageDecoder.getDecoder(sessionID).orderCancelReject(message);
 		
 	}
 
