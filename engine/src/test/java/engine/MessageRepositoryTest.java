@@ -10,7 +10,7 @@ import quickfix.field.HeartBtInt;
 import quickfix.fix44.Logon;
 
 import com.cmm.jft.engine.MessageRepository;
-import com.cmm.jft.messaging.Fix44MessageEncoder;
+import com.cmm.jft.messaging.fix44.Fix44MessageEncoder;
 
 public class MessageRepositoryTest {
 

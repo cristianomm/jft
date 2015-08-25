@@ -4,6 +4,8 @@
 package com.cmm.jft.connector;
 
 
+import com.cmm.jft.connector.message.Fix44MessageHandler;
+
 import quickfix.Application;
 import quickfix.DoNotSend;
 import quickfix.FieldNotFound;
@@ -24,6 +26,7 @@ import quickfix.field.Side;
 import quickfix.field.Symbol;
 import quickfix.field.TransactTime;
 import quickfix.fix44.NewOrderSingle;
+import sun.util.resources.cldr.kk.CalendarData_kk_Cyrl_KZ;
 
 /**
  * <p><code>Connector.java</code></p>
@@ -34,6 +37,12 @@ import quickfix.fix44.NewOrderSingle;
 public class Connector extends MessageCracker implements Application{
 	
 	private SessionID sessionID;
+	
+	public Connector() {
+		new Fix44MessageHandler();
+	}
+	
+	
 	
 	/* (non-Javadoc)
 	 * @see quickfix.Application#onCreate(quickfix.SessionID)
@@ -90,7 +99,7 @@ public class Connector extends MessageCracker implements Application{
 	@Override
 	public void fromApp(Message message, SessionID sessionId)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
-		
+		crack(message, sessionId);
 	}
 	
 	

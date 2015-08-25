@@ -69,11 +69,11 @@ public interface MessageDecoder {
 
 	Orders newOrderSingle(Message message);
 
-	Orders orderCancelReject(Message message);
+	OrderExecution orderCancelReject(Message message);
 
-	Orders orderCancelReplaceRequest(Message message);
+	OrderExecution orderCancelReplaceRequest(Message message);
 
-	Orders orderCancelRequest(Message message);
+	OrderExecution orderCancelRequest(Message message);
 
 	Message positionMaintenanceReport(Message message);
 

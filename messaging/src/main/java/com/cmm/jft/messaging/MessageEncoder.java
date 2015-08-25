@@ -2,6 +2,7 @@ package com.cmm.jft.messaging;
 
 import java.util.Date;
 
+import com.cmm.jft.messaging.fix44.Fix44MessageEncoder;
 import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;

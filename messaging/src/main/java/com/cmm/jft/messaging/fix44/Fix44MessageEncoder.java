@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.messaging;
+package com.cmm.jft.messaging.fix44;
 
 import java.util.Date;
 
@@ -10,6 +10,8 @@ import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.data.Config;
+import com.cmm.jft.messaging.MessageCounter;
+import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;

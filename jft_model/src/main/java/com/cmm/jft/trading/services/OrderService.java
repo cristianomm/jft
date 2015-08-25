@@ -210,8 +210,8 @@ public class OrderService {
 			Security exItem = l.get(0);
 			ordr = new Orders(exItem , side, price, volume, orderType, TradeTypes.DAY_TRADE);
 			
-			ordr.changePrice(price);
-			ordr.changeVolume(volume);
+			//ordr.changePrice(price);
+			//ordr.changeVolume(volume);
 			ordr = (Orders) DBFacade.getInstance()._persist(ordr);
 
 		} catch (Exception e) {

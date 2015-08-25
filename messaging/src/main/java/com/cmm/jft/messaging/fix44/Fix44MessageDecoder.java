@@ -1,13 +1,14 @@
 /**
  * 
  */
-package com.cmm.jft.messaging;
+package com.cmm.jft.messaging.fix44;
 
 import quickfix.FieldNotFound;
 import quickfix.Message;
 import quickfix.field.ExecType;
 import quickfix.fix44.ExecutionReport;
 
+import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.trading.OrderExecution;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
@@ -157,7 +158,7 @@ public class Fix44MessageDecoder implements MessageDecoder {
 	 * @see com.cmm.jft.engine.message.MessageDecoder#orderCancelReject(quickfix.Message)
 	 */
 	@Override
-	public Orders orderCancelReject(Message message) {
+	public OrderExecution orderCancelReject(Message message) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -166,7 +167,7 @@ public class Fix44MessageDecoder implements MessageDecoder {
 	 * @see com.cmm.jft.engine.message.MessageDecoder#orderCancelReplaceRequest(quickfix.Message)
 	 */
 	@Override
-	public Orders orderCancelReplaceRequest(Message message) {
+	public OrderExecution orderCancelReplaceRequest(Message message) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -175,7 +176,7 @@ public class Fix44MessageDecoder implements MessageDecoder {
 	 * @see com.cmm.jft.engine.message.MessageDecoder#orderCancelRequest(quickfix.Message)
 	 */
 	@Override
-	public Orders orderCancelRequest(Message message) {
+	public OrderExecution orderCancelRequest(Message message) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -241,7 +241,7 @@ public class TradingService {
 		Orders order = orders.get(orderSerial);
 		try {
 			sendCancelOrderEvent(order);
-			order.cancel();
+			//order.cancel();
 			orders.put(order.getOrderSerial(), order);
 		} catch (ConnectionException | OrderException e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
@@ -253,10 +253,10 @@ public class TradingService {
 		// verifica se a ordem pode ser alterada
 		Orders order = orders.get(orderSerial);
 		try{
-			if (order.changePrice(price)) {
+			//if (order.changePrice(price)) {
 				sendChangeOrderEvent(order);
 				orders.put(order.getOrderSerial(), order);
-			}
+			//}
 		} catch(OrderException e){
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		} catch (ConnectionException e) {
@@ -268,10 +268,10 @@ public class TradingService {
 		// verifica se a ordem pode ser alterada
 		Orders order = orders.get(orderSerial);
 		try{
-			if (order.changeVolume(volume)) {
+			//if (order.changeVolume(volume)) {
 				sendChangeOrderEvent(order);
 				orders.put(order.getOrderSerial(), order);
-			}
+			//}
 		} catch(OrderException e){
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		} catch (ConnectionException e) {
@@ -349,9 +349,9 @@ public class TradingService {
 		boolean ret = false;
 		try {
 			if(orders.contains(orderSerial)){
-				ret = orders.get(orderSerial).addExecution(executionDateTime, execVolume, execPrice);
+				//ret = orders.get(orderSerial).addExecution(executionDateTime, execVolume, execPrice);
 			}
-		} catch (OrderException e) {
+		} catch (Exception e) {
 			Logging.getInstance().log(getClass(),
 					"Erro ao criar execucao de ordem: " + e.getMessage(), e, Level.ERROR, false);
 		}
