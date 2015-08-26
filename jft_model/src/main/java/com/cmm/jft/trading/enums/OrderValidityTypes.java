@@ -56,5 +56,17 @@ public enum OrderValidityTypes {
 		return value;
 	}
 	
+	public static OrderValidityTypes getByValue(char value){
+		OrderValidityTypes type = DAY;
+		for(OrderValidityTypes validityType:OrderValidityTypes.values()){
+			if(validityType.value == value){
+				type = validityType;
+				break;
+			}
+		}
+		
+		return type;
+	}
+	
 	
 }

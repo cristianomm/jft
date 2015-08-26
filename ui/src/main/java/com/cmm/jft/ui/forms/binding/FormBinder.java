@@ -129,8 +129,8 @@ public class FormBinder implements Binder {
 	    ((JComboBox)component).setSelectedItem(value);
 	}
 	else if(component instanceof SearchBox) {
-	    ((SearchBox)component).setValue(value);
-	    ((SearchBox)component).setTextFieldValue((String) value);
+	    //((SearchBox)component).setf Value(value);
+	    ((SearchBox)component).setResultFieldValue((String) value);
 	}
 	else if(component instanceof JLabel) {
 	    ((JLabel)component).setText(value.toString());
@@ -151,7 +151,7 @@ public class FormBinder implements Binder {
 	    value = ((JComboBox)component).getSelectedItem();
 	}
 	else if(component instanceof SearchBox) {
-	    value = ((SearchBox)component).getValue();
+	    value = ((SearchBox)component).getResultFieldValue();
 	}
 	else if(component instanceof JLabel) {
 	    value = ((JLabel)component).getText();

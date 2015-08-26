@@ -6,12 +6,13 @@
 package com.cmm.jft.ui.trading;
 
 import com.cmm.jft.db.DBFacade;
-import com.cmm.jft.trading.enums.ExpirationTypes;
+import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.securities.Security;
 import com.cmm.jft.trading.securities.SecurityInfo;
+import com.cmm.jft.trading.services.SecurityService;
 import com.cmm.jft.trading.services.TradingService;
 import com.cmm.jft.ui.forms.AbstractForm;
 import com.cmm.jft.ui.forms.Events;
@@ -59,7 +60,6 @@ public class PlaceOrderForm extends AbstractForm {
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         btnSellOrder = new javax.swing.JButton();
-        sbSecurity = new com.cmm.searchbox.SearchBox();
         jLabel8 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         btnCancel = new javax.swing.JButton();
@@ -69,6 +69,7 @@ public class PlaceOrderForm extends AbstractForm {
         dtExpiration = new com.toedter.calendar.JDateChooser();
         btnBuyOrder = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
+        txtSecurity = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -99,10 +100,6 @@ public class PlaceOrderForm extends AbstractForm {
         jLabel7.setText("Limit Price");
 
         btnSellOrder.setText("Sell");
-
-        sbSecurity.setQuery("select symbol from security");
-        sbSecurity.setResultField("");
-        sbSecurity.setSearchField("security");
 
         jLabel8.setText("Security");
 
@@ -158,12 +155,14 @@ public class PlaceOrderForm extends AbstractForm {
                                 .addComponent(dtExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sbSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbOrderTypes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmbOrderTypes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(27, 27, 27)
+                                .addComponent(txtSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -176,10 +175,10 @@ public class PlaceOrderForm extends AbstractForm {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(sbSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -277,17 +276,17 @@ public class PlaceOrderForm extends AbstractForm {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private com.cmm.searchbox.SearchBox sbSecurity;
     private javax.swing.JSpinner spnLimitPrice;
     private javax.swing.JSpinner spnPrice;
     private javax.swing.JSpinner spnStopGain;
     private javax.swing.JSpinner spnStopLoss;
     private javax.swing.JSpinner spnVolume;
+    private javax.swing.JTextField txtSecurity;
     // End of variables declaration//GEN-END:variables
 
 	@Override
 	public void addListeners() {
-		sbSecurity.getResultField().getDocument().addDocumentListener(new GerEvents(this));
+		//sbSecurity.getResultField().getDocument().addDocumentListener(new GerEvents(this));
 		btnCancel.addActionListener(new GerEvents(this));
 		btnSellOrder.addActionListener(new GerEvents(this));
 		cmbOrderTypes.addItemListener(new GerEvents(this));
@@ -305,7 +304,7 @@ public class PlaceOrderForm extends AbstractForm {
 		ots[p++] = OrderTypes.StopLimit;
 		
 		FormUtils.getInstance().addItensToCombo(cmbOrderTypes, ots);
-		FormUtils.getInstance().addItensToCombo(cmbExpirationType, ExpirationTypes.values());
+		FormUtils.getInstance().addItensToCombo(cmbExpirationType, OrderValidityTypes.values());
 		cmbExpirationType.setSelectedIndex(0);
 		cmbOrderTypes.setSelectedIndex(0);
 	}
@@ -327,7 +326,7 @@ public class PlaceOrderForm extends AbstractForm {
 					
 					OrderTypes orderType = (OrderTypes)cmbOrderTypes.getSelectedItem();
 					Side side = Side.BUY;
-					String symbol = sbSecurity.getResultField();
+					String symbol = txtSecurity.getText().trim();
 					
 					double price = (double)spnPrice.getValue();
 					double limitPrice = (double)spnLimitPrice.getValue();
@@ -355,24 +354,40 @@ public class PlaceOrderForm extends AbstractForm {
 
 			if(e.getSource() == cmbExpirationType){
 				System.out.println(e.getItem().toString());
-				ExpirationTypes et = ExpirationTypes.getByValue(e.getItem().toString());
+				OrderValidityTypes et = OrderValidityTypes.getByValue(e.getItem().toString().charAt(0));
 				if(et != null){
 					switch(et){
-					case ExpirationDate:
+					case DAY:
 						dtExpiration.setEnabled(true);
 						dtExpiration.setDate(new Date());
 						break;
 
-					case Today:
+					case FOK:
 						dtExpiration.setEnabled(false);
 						dtExpiration.setDate(new Date());
 						break;
+						
+					case GTC:
+						break;
+						
+					case GTD:
+						break;
+						
+					case IOC:
+						break;
+						
+					case MOA:
+						break;
+						
+					case MOC:
+						break;
+						
 					}
 				}
 			}
 
 			else if(e.getSource() == cmbOrderTypes) {
-				OrderTypes ot = OrderTypes.getByValue(e.getItem().toString());
+				OrderTypes ot = OrderTypes.getByValue(e.getItem().toString().charAt(0));
 				if(ot==null) {
 					spnPrice.setEnabled(true);
 					spnLimitPrice.setEnabled(true);
@@ -417,8 +432,8 @@ public class PlaceOrderForm extends AbstractForm {
 		 */
 		@Override
 		public void changedUpdate(DocumentEvent e) {
-			String symbol = sbSecurity.getResultFieldValue();
-			Security s = (Security) DBFacade.getInstance().findObject("Security.findBySymbol", "symbol", symbol);
+			String symbol = txtSecurity.getText();
+			Security s = SecurityService.getInstance().provideSecurity(symbol);
 			SecurityInfo si = s.getSecurityInfoID();
 			si.getMinimalVolume();
 			si.getDigits();

@@ -608,7 +608,7 @@ public class OrderForm extends AbstractForm {
 	    if(e.getStateChange() == e.SELECTED) {
 
 		if(e.getSource() == cmbOrderType) {
-		    OrderTypes ot = OrderTypes.getByValue(e.getItem().toString());
+		    OrderTypes ot = OrderTypes.getByValue(e.getItem().toString().charAt(0));
 		    if(ot==null) {
 			ftxtGain.setEnabled(true);
 			ftxtPrice.setEnabled(true);
@@ -647,7 +647,7 @@ public class OrderForm extends AbstractForm {
 
 
 		if(e.getSource() == cmbOrderStatus) {
-		    OrderStatus os = OrderStatus.getByValue(e.getItem().toString());
+		    OrderStatus os = OrderStatus.getByValue(e.getItem().toString().charAt(0));
 		    if(os!=null) {
 			switch(os) {
 			case CANCELED:
@@ -656,56 +656,52 @@ public class OrderForm extends AbstractForm {
 			    ftxtPrice.setEnabled(false);
 			    ftxtStart.setEnabled(false);
 			    ftxtStop.setEnabled(false);
-
 			    break;
+			    
 			case CREATED:
 			    cmbOrderType.setEnabled(false);
-			    
 			    break;
+			    
 			case EXPIRED:
 			    cmbOrderType.setEnabled(false);
 			    ftxtGain.setEnabled(false);
 			    ftxtPrice.setEnabled(false);
 			    ftxtStart.setEnabled(false);
 			    ftxtStop.setEnabled(false);
-			    
 			    break;
+			    
 			case FILLED:
 			    cmbOrderType.setEnabled(false);
 			    ftxtGain.setEnabled(false);
 			    ftxtPrice.setEnabled(false);
 			    ftxtStart.setEnabled(false);
 			    ftxtStop.setEnabled(false);
-			    
 			    break;
-			case OPEN:
-			    cmbOrderType.setEnabled(false);
 			    
-			    break;
 			case PARTIALLY_FILLED:
 			    cmbOrderType.setEnabled(false);
 			    ftxtGain.setEnabled(false);
 			    ftxtPrice.setEnabled(false);
 			    ftxtStart.setEnabled(false);
 			    ftxtStop.setEnabled(false);
-			    
 			    break;
+			    
 			case REJECTED:
 			    cmbOrderType.setEnabled(false);
 			    ftxtGain.setEnabled(false);
 			    ftxtPrice.setEnabled(false);
 			    ftxtStart.setEnabled(false);
 			    ftxtStop.setEnabled(false);
-			    
 			    break;
+			
 			case REPLACED:
 			    cmbOrderType.setEnabled(false);
-			    
 			    break;
+			    
 			case SUBMITTED:
 			    cmbOrderType.setEnabled(false);
-			    
 			    break;
+			    
 			default:
 			    break;
 			}

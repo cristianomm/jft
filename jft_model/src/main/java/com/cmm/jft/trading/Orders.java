@@ -149,7 +149,7 @@ public class Orders implements DBObject<Orders> {
 	private Security securityID;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orderID")
-	private List<OrderEvent> executionsList;
+	private List<OrderEvent> eventsList;
 
 
 
@@ -186,7 +186,7 @@ public class Orders implements DBObject<Orders> {
 		this.orderDateTime = new Date();
 		this.orderStatus = OrderStatus.CREATED;
 		this.orderSerial = UUID.randomUUID().toString();
-		this.executionsList = new ArrayList<OrderEvent>();
+		this.eventsList = new ArrayList<OrderEvent>();
 	}
 
 
@@ -219,7 +219,7 @@ public class Orders implements DBObject<Orders> {
 	public BigDecimal calculateOrderValues() {
 		int sumVolume = 0;
 		double sumTotal = 0d;
-		for (OrderEvent oe : executionsList) {
+		for (OrderEvent oe : eventsList) {
 			if(oe.getExecutionType() == ExecutionTypes.TRADE) {			
 				lastPrice = oe.getPrice();
 				sumVolume += oe.getVolume();
@@ -232,7 +232,7 @@ public class Orders implements DBObject<Orders> {
 		leavesVolume = volume - executedVolume;
 		
 		//only TRADE events are relevant
-		long execs = executionsList.stream().filter(e -> e.getExecutionType() == ExecutionTypes.TRADE).count();
+		long execs = eventsList.stream().filter(e -> e.getExecutionType() == ExecutionTypes.TRADE).count();
 		execs = execs > 0 ? execs : 1;
 		avgPrice = new BigDecimal(sumTotal/execs);
 
@@ -430,10 +430,10 @@ public class Orders implements DBObject<Orders> {
 		return orderSerial;
 	}
 	/**
-	 * @return the executionsList
+	 * @return the eventsList
 	 */
-	public List<OrderEvent> getExecutionsList() {
-		return this.executionsList;
+	public List<OrderEvent> getEventsList() {
+		return this.eventsList;
 	}
 
 	/**
@@ -582,7 +582,7 @@ public class Orders implements DBObject<Orders> {
 				+ ", "
 				+ (partyRole != null ? "partyRole=" + partyRole + ", " : "")
 				+ (securityID != null ? "securityID=" + securityID + ", " : "")
-				+ (executionsList != null ? "executionsList=" + executionsList
+				+ (eventsList != null ? "eventsList=" + eventsList
 						: "") + "]";
 	}
 	
@@ -630,7 +630,7 @@ public class Orders implements DBObject<Orders> {
 	private void cancelOrder(OrderEvent execution) throws OrderException {
 		
 		setOrderStatus(OrderStatus.CANCELED);
-		executionsList.add(execution);
+		eventsList.add(execution);
 		refreshOrder();
 		
 	}
@@ -682,7 +682,7 @@ public class Orders implements DBObject<Orders> {
 		if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED || orderStatus == OrderStatus.REPLACED){
 			//volume executado eh menor que o volume total e menor que o volume atual
 			if(execution.getVolume() <= volume && execution.getVolume() <= (volume-executedVolume)){
-				executionsList.add(execution);
+				eventsList.add(execution);
 				//ajusta o estado da ordem
 				refreshOrder();
 			} else {
@@ -709,7 +709,7 @@ public class Orders implements DBObject<Orders> {
 			setOrderStatus(OrderStatus.REPLACED);
 			this.price = price;
 						
-			executionsList.add(oe);
+			eventsList.add(oe);
 			ret = true;
 		}catch(OrderException e) {
 			throw e;
@@ -729,7 +729,7 @@ public class Orders implements DBObject<Orders> {
 			
 			OrderEvent oe = new OrderEvent(ExecutionTypes.REPLACE, new Date(), 0d, volume);
 			oe.setMessage(String.format("Volume replaced from %.3f to %.3f", this.volume, volume));
-			executionsList.add(oe);
+			eventsList.add(oe);
 			
 			setOrderStatus(OrderStatus.REPLACED);
 			this.volume = volume;

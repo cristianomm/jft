@@ -133,7 +133,7 @@ public class TradeForm extends AbstractForm  {
         jLabel9.setText("Close Date");
 
         sbSecurity.setQuery("select securityid, symbol from stock \nunion \nselect securityid, symbol from stockoption");
-        sbSecurity.setResultField("Symbol");
+        sbSecurity.setResultFieldValue("Symbol");
         sbSecurity.setSearchField("Symbol");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -298,7 +298,7 @@ public class TradeForm extends AbstractForm  {
 	
 	sbSecurity.setConnection(DBFacade.getInstance().getConnection());
 	sbSecurity.setFields(new String[]{"SecurityID", "Symbol"});
-	sbSecurity.setResultField("Symbol");
+	sbSecurity.setResultFieldValue("Symbol");
 	sbSecurity.setSearchField("Symbol");
 	sbSecurity.setQuery("select securityid, symbol from stock \nunion \nselect securityid, symbol from stockoption order by securityid, symbol");
 
