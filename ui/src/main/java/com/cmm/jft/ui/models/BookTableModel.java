@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.ui.trading;
+package com.cmm.jft.ui.models;
 
 import java.util.HashMap;
 
@@ -47,7 +47,7 @@ public class BookTableModel extends AbstractTableModel {
 	@Override
 	public String getColumnName(int column) {
 		if(column >=0 && column < headers.length){
-			return headers[column];
+			return side == Side.BUY ? headers[(headers.length-1) - column] : headers[column];
 		}
 		return "";
 	}

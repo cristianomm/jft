@@ -5,7 +5,9 @@
  */
 package com.cmm.jft.ui.trading;
 
+import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.ui.forms.AbstractForm;
+import com.cmm.jft.ui.models.BookTableModel;
 
 /**
  *
@@ -18,9 +20,20 @@ public class BookForm extends AbstractForm {
      */
     public BookForm() {
         initComponents();
-                
+        initModels();
     }
 
+    private void initModels() {
+    	tblBuy.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        tblBuy.setModel(new BookTableModel(Side.BUY));
+        scrlBuy.setViewportView(tblBuy);
+
+        tblSell.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        tblSell.setModel(new BookTableModel(Side.SELL));
+        scrlSell.setViewportView(tblSell);
+	}
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
