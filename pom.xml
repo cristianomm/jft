@@ -18,5 +18,6 @@
     <module>engine</module>
     <module>conector</module>
     <module>messaging</module>
+    <module>searchbox</module>
   </modules>
 </project>

@@ -76,9 +76,8 @@ public class OrderEvent implements DBObject<OrderEvent> {
 	@Column(name="ContraBroker", length=5)
 	private String contraBroker;
 
-	@JoinColumn(name = "orderID", referencedColumnName = "orderID", nullable = false)
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-	private Orders orderID;
+	@Column(name = "ClOrderID", nullable = false)
+	private String clOrderID;
 
 	/**
      * 
@@ -157,18 +156,17 @@ public class OrderEvent implements DBObject<OrderEvent> {
 	}
 
 	/**
-	 * @return the orderID
+	 * @return the clOrderID
 	 */
-	public Orders getOrderID() {
-		return this.orderID;
+	public String getClOrderID() {
+		return this.clOrderID;
 	}
-
+	
 	/**
-	 * @param orderID
-	 *            the orderID to set
+	 * @param clOrderID the clOrderID to set
 	 */
-	public void setOrderID(Orders orderID) {
-		this.orderID = orderID;
+	public void setClOrderID(String clOrderID) {
+		this.clOrderID = clOrderID;
 	}
 
 	/**

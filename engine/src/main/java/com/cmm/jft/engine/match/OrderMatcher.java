@@ -6,6 +6,8 @@ package com.cmm.jft.engine.match;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import quickfix.Message;
@@ -22,6 +24,7 @@ import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.OrderException;
 
 /**
@@ -45,9 +48,9 @@ public class OrderMatcher  implements MessageSender {
 			
 			while(verifyStopOrders) {
 				queue.stream().filter(
-						o -> o.getWorkingIndicator() == 'N' && 
+						o -> o.getWorkingIndicator() == WorkingIndicator.No_Working && 
 						o.getStopPrice() == lastPrice)
-						.forEach(o -> o.setWorkingIndicator('Y')
+						.forEach(o -> o.setWorkingIndicator(WorkingIndicator.Working)
 				);
 				
 			}
@@ -64,14 +67,16 @@ public class OrderMatcher  implements MessageSender {
 	private double protectionLevel;
 	private PriorityBlockingQueue<Orders> buyQueue;
 	private PriorityBlockingQueue<Orders> sellQueue;
-
+	private ConcurrentHashMap<String, Orders> orders;
+	
 	
 	public OrderMatcher(MatchTypes matchTypes, double protectionLevel) {
 		this.verifyStopOrders = true;
 		this.protectionLevel = protectionLevel;
 		if(matchTypes == MatchTypes.FIFO) {
-			this.buyQueue = new PriorityBlockingQueue<>(1000, new PriceTimeComparator());
-			this.sellQueue = new PriorityBlockingQueue<>(1000, new PriceTimeComparator());
+			this.orders = new ConcurrentHashMap<>(1000000);
+			this.buyQueue = new PriorityBlockingQueue<>(1000000, new PriceTimeComparator());
+			this.sellQueue = new PriorityBlockingQueue<>(1000000, new PriceTimeComparator());
 		}
 		
 		//inicializa os verificadores de ordens stop
@@ -105,7 +110,7 @@ public class OrderMatcher  implements MessageSender {
 		
 	public boolean addOrder(Orders order) throws OrderException {
 		boolean add = false;
-		order.setWorkingIndicator('Y');
+		order.setWorkingIndicator(WorkingIndicator.Working);
 		add = execute(order);
 		
 		return add;
@@ -122,6 +127,8 @@ public class OrderMatcher  implements MessageSender {
 		else {
 			add = sellQueue.offer(ordr);
 		}
+		
+		orders.put(ordr.getClOrdID(), ordr);
 		
 		return add;
 	}
@@ -237,22 +244,26 @@ public class OrderMatcher  implements MessageSender {
 	private boolean generalExecute(Orders ordr, double orderPrice, double orderVolume) {
 		boolean exec = false;
 		
-		PriorityBlockingQueue<Orders> orders = getCounterpartyBookOrders(ordr.getSide());
+		PriorityBlockingQueue<Orders> bookOrders = getCounterpartyBookOrders(ordr.getSide());
 		List<OrderEvent> execs = createExecutions(ordr.getSide(), orderPrice, orderVolume);
 		try {
 			//verifica se pode executar a ordem 
 			if(validateExecution(ordr, execs)) {
 				
 				for(OrderEvent ex:execs) {
+					
+					//recupera a ordem
+					Orders bookOrdr = orders.get(ex.getClOrderID());
+					
 					//adiciona as execucoes e as informa para os participantes
-					exec = fillOrders(ordr, ex.getOrderID(), ex.getVolume(), ex.getPrice());
+					exec = fillOrders(ordr, bookOrdr, ex.getVolume(), ex.getPrice());
 					
 					//remove the filled order from book
-					if(ex.getOrderID().getOrderStatus() != OrderStatus.PARTIALLY_FILLED) {
-						orders.remove(ex.getOrderID());
+					if(bookOrdr.getOrderStatus() != OrderStatus.PARTIALLY_FILLED) {
+						orders.remove(ex.getClOrderID());
 					}
 					else {//
-						ex.getOrderID().setWorkingIndicator('Y');
+						bookOrdr.setWorkingIndicator(WorkingIndicator.Working);
 					}
 					
 				}
@@ -302,8 +313,8 @@ public class OrderMatcher  implements MessageSender {
 		while(ordrs.iterator().hasNext() && cumVolume < volume) {
 			
 			Orders bookOrder = ordrs.iterator().next(); 
-			if(bookOrder.getWorkingIndicator() == 'Y') {
-				bookOrder.setWorkingIndicator('N');
+			if(bookOrder.getWorkingIndicator() == WorkingIndicator.Working) {
+				bookOrder.setWorkingIndicator(WorkingIndicator.No_Working);
 				double qtyToFill = 0;
 				double priceToFill = bookOrder.getPrice();
 				
@@ -317,7 +328,7 @@ public class OrderMatcher  implements MessageSender {
 				if(cumVolume < volume && priceToFill <= price) {
 					cumVolume += qtyToFill;
 					OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, qtyToFill, priceToFill);
-					fill.setOrderID(bookOrder);
+					fill.setClOrderID(bookOrder.getClOrdID());
 					lst.add(fill);
 				}
 			}

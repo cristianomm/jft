@@ -24,6 +24,7 @@ import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
+import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.InvalidOrderException;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.jft.trading.securities.Security;
@@ -99,9 +100,10 @@ public class Orders implements DBObject<Orders> {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "OrderStatus", nullable = false)
 	private OrderStatus orderStatus;
-		
+	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "WorkingIndicator", nullable = false)
-	private char workingIndicator;
+	private WorkingIndicator workingIndicator;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "OrderValidityType", nullable = false)
@@ -182,7 +184,7 @@ public class Orders implements DBObject<Orders> {
 
 
 	private void init(){
-		this.workingIndicator = 'N';
+		this.workingIndicator = WorkingIndicator.No_Working;
 		this.orderDateTime = new Date();
 		this.orderStatus = OrderStatus.CREATED;
 		this.orderSerial = UUID.randomUUID().toString();
@@ -407,11 +409,11 @@ public class Orders implements DBObject<Orders> {
 		return orderStatus;
 	}
 	
-	public char getWorkingIndicator() {
+	public WorkingIndicator getWorkingIndicator() {
 		return workingIndicator;
 	}
 	
-	public void setWorkingIndicator(char workingIndicator) {
+	public void setWorkingIndicator(WorkingIndicator workingIndicator) {
 		this.workingIndicator = workingIndicator;
 	}
 
@@ -631,6 +633,7 @@ public class Orders implements DBObject<Orders> {
 		
 		setOrderStatus(OrderStatus.CANCELED);
 		eventsList.add(execution);
+		workingIndicator = WorkingIndicator.No_Working;
 		refreshOrder();
 		
 	}

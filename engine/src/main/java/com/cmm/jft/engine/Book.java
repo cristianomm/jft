@@ -18,6 +18,7 @@ import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.jft.trading.securities.Security;
 import com.cmm.jft.trading.services.SecurityService;
@@ -138,7 +139,7 @@ public class Book implements MessageSender {
 
 		try {
 			if(added = validateOrder(order)) {
-				order.setWorkingIndicator('N');
+				order.setWorkingIndicator(WorkingIndicator.No_Working);
 				order.setOrderStatus(OrderStatus.SUSPENDED);
 			}
 
@@ -149,7 +150,7 @@ public class Book implements MessageSender {
 				//envia mensagem informando que a ordem foi aceita
 				OrderEvent oe = new OrderEvent(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice());
 				oe.setMessage("Order received");
-				oe.setOrderID(order);
+				oe.setClOrderID(order.getClOrdID());
 				order.addExecution(oe);
 
 				sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
@@ -163,7 +164,7 @@ public class Book implements MessageSender {
 			added = false;
 			OrderEvent oe = new OrderEvent(ExecutionTypes.REJECTED, new Date(), order.getVolume(), order.getPrice());
 			oe.setMessage("Order rejected: " + e.getMessage());
-			oe.setOrderID(order);
+			oe.setClOrderID(order.getClOrdID());
 			sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
