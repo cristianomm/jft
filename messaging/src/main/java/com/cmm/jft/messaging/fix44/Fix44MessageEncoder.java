@@ -292,7 +292,7 @@ public class Fix44MessageEncoder implements MessageEncoder {
 		ExecutionReport executionReport = new ExecutionReport();
 				
 		executionReport = new ExecutionReport(
-				new OrderID(execution.getOrderID().getOrderSerial()), 
+				new OrderID(execution.getClOrderID()), 
 				new ExecID(execution.getOrderEventID()+""),
 				new ExecType(execution.getExecutionType().getValue()), 
 				new OrdStatus(execution.getOrderID().getOrderStatus().getValue()),
