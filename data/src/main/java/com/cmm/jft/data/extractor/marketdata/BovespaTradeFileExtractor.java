@@ -1,10 +1,12 @@
 /**
  * 
  */
-package com.cmm.jft.data.extractor;
+package com.cmm.jft.data.extractor.marketdata;
 
 import java.util.List;
 import java.util.Properties;
+
+import com.cmm.jft.data.extractor.Extractable;
 
 /**
  * <p><code>BovespaTradeFileExtractor.java</code></p>

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.data.extractor;
+package com.cmm.jft.data.extractor.marketdata;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +12,7 @@ import java.util.Scanner;
 import org.apache.log4j.Level;
 
 import com.cmm.jft.core.util.TimeCounter;
+import com.cmm.jft.data.extractor.Extractor;
 import com.cmm.logging.Logging;
 
 /**
