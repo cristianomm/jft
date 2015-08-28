@@ -253,14 +253,14 @@ public class OrderMatcher  implements MessageSender {
 				for(OrderEvent ex:execs) {
 					
 					//recupera a ordem
-					Orders bookOrdr = orders.get(ex.getClOrderID());
+					Orders bookOrdr = orders.get(ex.getOrderID().getClOrdID());
 					
 					//adiciona as execucoes e as informa para os participantes
 					exec = fillOrders(ordr, bookOrdr, ex.getVolume(), ex.getPrice());
 					
 					//remove the filled order from book
 					if(bookOrdr.getOrderStatus() != OrderStatus.PARTIALLY_FILLED) {
-						orders.remove(ex.getClOrderID());
+						orders.remove(ex.getOrderID());
 					}
 					else {//
 						bookOrdr.setWorkingIndicator(WorkingIndicator.Working);
@@ -328,7 +328,7 @@ public class OrderMatcher  implements MessageSender {
 				if(cumVolume < volume && priceToFill <= price) {
 					cumVolume += qtyToFill;
 					OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, qtyToFill, priceToFill);
-					fill.setClOrderID(bookOrder.getClOrdID());
+					fill.setOrderID(bookOrder);
 					lst.add(fill);
 				}
 			}

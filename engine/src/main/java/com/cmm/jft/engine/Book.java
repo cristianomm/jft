@@ -150,7 +150,7 @@ public class Book implements MessageSender {
 				//envia mensagem informando que a ordem foi aceita
 				OrderEvent oe = new OrderEvent(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice());
 				oe.setMessage("Order received");
-				oe.setClOrderID(order.getClOrdID());
+				oe.setOrderID(order);
 				order.addExecution(oe);
 
 				sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
@@ -164,7 +164,7 @@ public class Book implements MessageSender {
 			added = false;
 			OrderEvent oe = new OrderEvent(ExecutionTypes.REJECTED, new Date(), order.getVolume(), order.getPrice());
 			oe.setMessage("Order rejected: " + e.getMessage());
-			oe.setClOrderID(order.getClOrdID());
+			oe.setOrderID(order);
 			sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
