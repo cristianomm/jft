@@ -41,7 +41,7 @@ public class BovespaBuyFileExtractor extends BovespaFileExtractor {
 	 */
 	@Override
 	public List<Extractable> extract() {
-				
+		
 		try {
 			StringBuffer sBuffer = new StringBuffer(100000);
 			FileOutputStream fos = new FileOutputStream(new File(fileName + ".re"));
