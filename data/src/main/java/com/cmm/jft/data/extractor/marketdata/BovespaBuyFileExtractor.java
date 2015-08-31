@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Queue;
@@ -36,16 +37,25 @@ import com.cmm.logging.Logging;
  */
 public class BovespaBuyFileExtractor extends BovespaFileExtractor {
 
+	public static void main(String[] args) {
+		
+		BovespaBuyFileExtractor bfe = new BovespaBuyFileExtractor();
+		bfe.fileName = "D:\\MarketData\\BMF\\NEG_BMF_20150504.TXT";
+		System.out.println(bfe.extract().size());
+		
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.data.extractor.Extractor#extract()
 	 */
 	@Override
 	public List<Extractable> extract() {
 		
+		List<Extractable> bsEvents = new ArrayList<>(1000000);
 		try {
-			StringBuffer sBuffer = new StringBuffer(100000);
-			FileOutputStream fos = new FileOutputStream(new File(fileName + ".re"));
-			DateTimeFormatter dtf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.DATE_F8);
+			DateTimeFormatter dtf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.DATE_TIME_F8);
+			DateTimeFormatter tf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.TIME_F3);
 			DoubleFormatter df = (DoubleFormatter) FormatterFactory.getFormatter(FormatterTypes.DOUBLE);
 
 			CSV csv = new CSV(fileName, ";", "RT", "RH");
@@ -53,21 +63,10 @@ public class BovespaBuyFileExtractor extends BovespaFileExtractor {
 				String[] vs = csv.readLine();
 
 				if (vs != null && vs[0] != null) {
-					Date sessionDate = dtf.parse(vs[0]);
-					String price = "";
-					String externalID = "";
-					String securityID = "";
-					String volume = "";
-					String orderDate = "";
-					String orderTime = "";
-					String orderStatus = "";
-					String eventCode = "";
-					String tradedVolume = "";
-					String orderCondition = "";
-					String broker = "";
 					
 					OrderEventVO eventVO = new OrderEventVO();
-
+					eventVO.sessionDate = dtf.parse(vs[0]);
+					
 					// layout dos arquivos foi alterado devido a mudanca para o
 					// sistema de negociacao Puma
 					if (vs.length == 12) {// /....!fk
@@ -110,12 +109,12 @@ public class BovespaBuyFileExtractor extends BovespaFileExtractor {
 						eventVO.externalID = vs[2];
 						eventVO.price = df.parse(vs[3]);
 						eventVO.volume = df.parse(vs[4]);
-						eventVO.tradedVolume = vs[5];
-						eventVO.orderTime = vs[6];
-						eventVO.orderDate = vs[7].split(" ")[0];
+						eventVO.tradedVolume = df.parse(vs[5]);
+						eventVO.orderTime = tf.parse(vs[6]);
+						eventVO.orderDate = dtf.parse(vs[7]);
 						eventVO.orderStatus = vs[8];
 
-					} else if (vs.length >= 14) {
+					} else if (vs.length >= 14 && vs.length <16) {
 						// -----------------------------------------------------------
 						// Coluna Posi��o Inicial Tamanho Descri��o
 						// -----------------------------------------------------------
@@ -167,11 +166,11 @@ public class BovespaBuyFileExtractor extends BovespaFileExtractor {
 						eventVO.securityID = vs[1];
 						eventVO.externalID = vs[3];
 						eventVO.orderEvent = vs[5];
-						eventVO.orderTime = vs[6];
+						eventVO.orderTime = tf.parse(vs[6]);
 						eventVO.price = df.parse(vs[8]);
 						eventVO.volume = df.parse(vs[9]);
-						eventVO.tradedVolume = vs[10];
-						eventVO.orderDate = vs[11];
+						eventVO.tradedVolume = df.parse(vs[10]);
+						eventVO.orderDate =dtf.parse(vs[12]);
 						eventVO.orderStatus = vs[13];
 						
 					} else if (vs.length >= 16) {
@@ -198,65 +197,59 @@ public class BovespaBuyFileExtractor extends BovespaFileExtractor {
 						eventVO.securityID = vs[1];
 						eventVO.externalID = vs[3];
 						eventVO.orderEvent = vs[5];
-						eventVO.orderTime = vs[6];
+						eventVO.orderTime = tf.parse(vs[6]);
 						eventVO.price = df.parse(vs[8]);
 						eventVO.volume = df.parse(vs[9]);
-						eventVO.tradedVolume = vs[10];
-						eventVO.orderDate = vs[11];
+						eventVO.tradedVolume = df.parse(vs[10]);
+						eventVO.orderDate = dtf.parse(vs[12]);
 						eventVO.orderStatus = vs[13];
 						eventVO.orderCondition = vs[14];
 						eventVO.broker = vs[15];
 						
 					}
 
+					/*
 					if (sBuffer.capacity() <= 100000) {
-						
-						
-						
-						
 						sBuffer.append(dtf.format(sessionDate));
 						sBuffer.append(";");
-						sBuffer.append(securityID);
+						sBuffer.append(eventVO.securityID);
 						sBuffer.append(";");
-						sBuffer.append(externalID);
+						sBuffer.append(eventVO.externalID);
 						sBuffer.append(";");
-						sBuffer.append(eventCode);
+						sBuffer.append(eventVO.orderEvent);
 						sBuffer.append(";");
-						sBuffer.append(orderDate);
+						sBuffer.append(eventVO.orderDate);
 						sBuffer.append(";");
-						sBuffer.append(orderTime);
+						sBuffer.append(eventVO.orderTime);
 						sBuffer.append(";");
-						sBuffer.append(orderStatus);
+						sBuffer.append(eventVO.orderStatus);
 						sBuffer.append(";");
-						sBuffer.append(price);
+						sBuffer.append(eventVO.price);
 						sBuffer.append(";");
-						sBuffer.append(volume);
+						sBuffer.append(eventVO.volume);
 						sBuffer.append(";");
-						sBuffer.append(tradedVolume);
+						sBuffer.append(eventVO.tradedVolume);
 						sBuffer.append(";");
-						sBuffer.append(orderCondition);
+						sBuffer.append(eventVO.orderCondition);
 						sBuffer.append(";");
-						sBuffer.append(broker);
+						sBuffer.append(eventVO.broker);
 						sBuffer.append(";\n");
 						
 					} else {
 						fos.write(sBuffer.toString().getBytes());
 						sBuffer = new StringBuffer(100000);
-					}
+					}*/
+					
+					bsEvents.add(eventVO);
 				}
 			}
 
-			fos.close();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
 		
-		return null;
+		return bsEvents;
 	}
 
 }

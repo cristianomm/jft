@@ -2,7 +2,9 @@ package com.cmm.jft.data.vo;
 
 import java.util.Date;
 
-public class OrderEventVO {
+import com.cmm.jft.data.extractor.Extractable;
+
+public class OrderEventVO implements Extractable{
 		
 	public Date sessionDate;
 	public double price;
@@ -13,7 +15,7 @@ public class OrderEventVO {
 	public Date orderTime;
 	public String orderStatus = "";
 	public String orderEvent = "";
-	public String tradedVolume = "";
+	public double tradedVolume;
 	public String orderCondition = "";
 	public String broker = "";
 	

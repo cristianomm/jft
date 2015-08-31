@@ -86,6 +86,10 @@ public class FormatterFactory {
 		case DATE_TIME_F10:
 			return new DateTimeFormatter(
 					FormatterTypes.DATE_TIME_F10.getFormat());
+		case DATE_TIME_F11:
+			return new DateTimeFormatter(
+					FormatterTypes.DATE_TIME_F11.getFormat());
+			
 		default:
 			return null;
 		}
