@@ -204,9 +204,16 @@ public class EntryPointListener implements Service {
 			val = val.add(one.divide(fact(i), 1000000, BigDecimal.ROUND_DOWN));
 		}
 		System.out.println(val);
-
+		 */
+		
+		double eps = 1;
+		while(eps+1 > 1){
+			eps = .5 * eps;
+		}
+		System.out.println(eps);
+		
 		System.exit(0);
-		*/
+		
 		/*
 		try{
 			Scanner sc = new Scanner(new File("c:\\Disco\\Bancos\\dmps\\member_login.dump"));
