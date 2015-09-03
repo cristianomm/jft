@@ -1,0 +1,6 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SchemaObject class="oracle.dbtools.crest.model.design.relational.SchemaObject" name="MarketData" directorySegmentName="seg_0" id="D8952EB8-558E-2218-16F1-0690431FB06D">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-03 00:32:50 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+</SchemaObject>

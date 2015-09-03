@@ -4,6 +4,7 @@
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <generatorID>Gerado pelo usuário</generatorID>
 <ownerDesignName>JFT</ownerDesignName>
+<schemaObject>B563C57E-FB72-43A9-0A56-5A2A13D3C2DD</schemaObject>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">

@@ -1,4 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<oracle.dbtools.crest.model.design.relational.RelationalDesign>
-   <object objectType="main_view" objectID="079CED83-4F95-5DC2-3D10-B40F89247041" name="StockData" visible="false"/>
-</oracle.dbtools.crest.model.design.relational.RelationalDesign>
