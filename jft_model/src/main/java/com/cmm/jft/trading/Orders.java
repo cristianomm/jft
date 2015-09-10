@@ -40,7 +40,7 @@ import com.cmm.logging.Logging;
  * @version Aug 6, 2013 2:00:40 AM
  */
 @Entity
-@Table(name = "Orders", schema="Trading", uniqueConstraints = { @UniqueConstraint(columnNames = { "OrderSerial" }) })
+@Table(name = "Orders", schema="Trading"/*, uniqueConstraints = { @UniqueConstraint(columnNames = { "OrderSerial" }) }*/)
 @NamedQueries({
 	@NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
 	@NamedQuery(name = "Orders.findByOrderID", query = "SELECT o FROM Orders o WHERE o.orderID = :orderID"),

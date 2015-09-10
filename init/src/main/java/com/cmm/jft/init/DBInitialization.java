@@ -82,7 +82,7 @@ public class DBInitialization {
 
 
 		DBInitialization dbini = new DBInitialization();
-		dbini.initializeDB();
+		//dbini.initializeDB();
 		System.exit(0);
 
 	}
