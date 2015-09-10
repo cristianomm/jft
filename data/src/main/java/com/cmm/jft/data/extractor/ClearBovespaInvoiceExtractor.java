@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Level;
 
+import com.cmm.jft.core.vo.Extractable;
 import com.cmm.logging.Logging;
 
 /**
@@ -29,24 +30,24 @@ public class ClearBovespaInvoiceExtractor extends ClearInvoiceExtractor {
 	private static String invoice = "([\\d]{5}$)";
 	private static String value = "(" + valuePrefixPtrn + valuePtrn + ")";
 
-	private static String sellTotal = value + "(Vendas à vista)";
-	private static String buyTotal = value + "(Compras à vista)";
-	private static String netOp = value + "(Valor líquido das operações)";
-	private static String sumOp = value + "(Valor das operações)";
+	private static String sellTotal = value + "(Vendas ï¿½ vista)";
+	private static String buyTotal = value + "(Compras ï¿½ vista)";
+	private static String netOp = value + "(Valor lï¿½quido das operaï¿½ï¿½es)";
+	private static String sumOp = value + "(Valor das operaï¿½ï¿½es)";
 	private static String cblcTotal = value + "(Total[\\s]+CBLC)";
 	private static String exchangeTotal = value + "([\\s|D]*Total Bovespa / Soma)";
 
-	private static String liquidationTax = value + "(Taxa de liquidação)";
+	private static String liquidationTax = value + "(Taxa de liquidaï¿½ï¿½o)";
 	private static String registerTax = value + "(Taxa de Registro)";
 	private static String fee = value + "(Emolumentos)";
 	private static String brokerage = value + "(Corretagem)";
 	private static String iss = value + "(ISS)";
 	
-	private static String swingTradeBase = "(I.R.R.F. s/ operações,[\\s]+base[\\s]+)" + value;
+	private static String swingTradeBase = "(I.R.R.F. s/ operaï¿½ï¿½es,[\\s]+base[\\s]+)" + value;
 	private static String dayTradeBase = "(IRRF Day-Trade: Base[\\s]?)" + value;
 
 	private static String swingTradeIRRF = "^" + valuePtrn + "(I.R.R.F.)";
-	private static String dayTradeIRRF = "(Projeção[\\s]?)" + value;
+	private static String dayTradeIRRF = "(Projeï¿½ï¿½o[\\s]?)" + value;
 	private static String others = value + "(Outras)";
 	private static String sumExpense = value + "(Total corretagem / Despesas)";
 

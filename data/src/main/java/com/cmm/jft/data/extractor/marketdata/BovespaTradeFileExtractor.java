@@ -6,7 +6,7 @@ package com.cmm.jft.data.extractor.marketdata;
 import java.util.List;
 import java.util.Properties;
 
-import com.cmm.jft.data.extractor.Extractable;
+import com.cmm.jft.core.vo.Extractable;
 
 /**
  * <p><code>BovespaTradeFileExtractor.java</code></p>

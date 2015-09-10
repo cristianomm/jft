@@ -12,7 +12,7 @@ import org.apache.log4j.Level;
 
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
-import com.cmm.jft.trading.securities.Security;
+import com.cmm.jft.security.Security;
 import com.cmm.logging.Logging;
 
 /**

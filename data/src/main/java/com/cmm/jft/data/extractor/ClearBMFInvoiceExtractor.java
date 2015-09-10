@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
 
+import com.cmm.jft.core.vo.Extractable;
 import com.cmm.logging.Logging;
 
 /**
@@ -26,20 +27,20 @@ public class ClearBMFInvoiceExtractor extends ClearInvoiceExtractor {
 	
 	private static String value = "(" + valuePtrn + valueSufixPtrn + ")";
 		
-	//Venda disponível Compra disponível Venda opções Compra opções Valor dos negócios
+	//Venda disponï¿½vel Compra disponï¿½vel Venda opï¿½ï¿½es Compra opï¿½ï¿½es Valor dos negï¿½cios
 	//16,000,00 D0,000,000,00
-	//IRRF  IRRF Day Trade ( Projeção ) Taxa operacional Taxas BM&F ( emol+f.gar)Taxa registro BM&F
+	//IRRF  IRRF Day Trade ( Projeï¿½ï¿½o ) Taxa operacional Taxas BM&F ( emol+f.gar)Taxa registro BM&F
 	//0,00 0,00 D5,00 0,10 0,08
-	//+ Outros Custos I.S.S Ajuste day trade Total das despesasAjuste de posição
+	//+ Outros Custos I.S.S Ajuste day trade Total das despesasAjuste de posiï¿½ï¿½o
 	//0,250,00 16,00 DC D5,180,00
-	//Outros  IRRF  Corretagem Total Conta Investimento Total Conta Normal Total líquido (#) Total líquido da nota
+	//Outros  IRRF  Corretagem Total Conta Investimento Total Conta Normal Total lï¿½quido (#) Total lï¿½quido da nota
 	//0,00 0,00 C0,00 D21,18 D D21,18 21,43
 	//private static String vals = "([\\d|\\.]*,\\d{2,4}(\\s[CD]|\\s)?)"; //([\\d|.]*,[\\d]{2,4}[\\s|C|D]*){4,6}";
 	private static String vals = value + "{5,6}";
-	private static String vals_1 = "(Valor dos negócios[\\n|\\r]*)" + value + "{5}";
+	private static String vals_1 = "(Valor dos negï¿½cios[\\n|\\r]*)" + value + "{5}";
 	private static String vals_2 = "(Taxas BM\\&F \\( emol\\+f\\.gar\\)[\\n|\\r]*)" + value + "{5}";
 	private static String vals_3 = "(Total das despesas[\\n|\\r]*)" + value + "{5}";
-	private static String vals_4 = "(Total líquido da nota[\\n|\\r]*)" + value + "{6}";
+	private static String vals_4 = "(Total lï¿½quido da nota[\\n|\\r]*)" + value + "{6}";
 	
 	private Invoice extractValues(String text) {
 		Invoice inv = new Invoice();
@@ -125,7 +126,7 @@ public class ClearBMFInvoiceExtractor extends ClearInvoiceExtractor {
 
 	public static void main(String[] args) throws IOException{
 		/*
-		String s = "Venda disponível Compra disponível Venda opções Compra opções Valor dos negócios\r\n0,00 0,00 0,00 0,00 14,00 C\r\n";
+		String s = "Venda disponï¿½vel Compra disponï¿½vel Venda opï¿½ï¿½es Compra opï¿½ï¿½es Valor dos negï¿½cios\r\n0,00 0,00 0,00 0,00 14,00 C\r\n";
 		Pattern pd = Pattern.compile(vals_1);
 		
 		Matcher m = pd.matcher(s);

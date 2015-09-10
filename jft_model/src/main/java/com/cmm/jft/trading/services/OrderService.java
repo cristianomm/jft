@@ -12,13 +12,13 @@ import org.apache.log4j.Level;
 import com.cmm.jft.core.Configuration;
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
+import com.cmm.jft.security.Security;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.exceptions.InvalidOrderException;
 import com.cmm.jft.trading.exceptions.OrderException;
-import com.cmm.jft.trading.securities.Security;
 import com.cmm.logging.Logging;
 
 /**
@@ -139,7 +139,8 @@ public class OrderService {
 		Orders ordr = null;
 		try {
 			//calcula o valor maximo limite que a ordem podera ser executada
-			double discount = (stopPrice * (Double)Configuration.getInstance().getConfiguration("MarketDiscount"));
+			Object obj = Configuration.getInstance().getConfiguration("MarketDiscount");
+			double discount = (stopPrice * (obj == null?0: (Double)obj));
 			discount = side == Side.BUY?discount:-discount;
 			discount = stopPrice + discount;
 			ordr = new Orders(security, side, stopPrice, volume, OrderTypes.Stop, TradeTypes.DAY_TRADE);

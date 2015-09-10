@@ -14,12 +14,12 @@ import quickfix.fix44.OrderCancelRequest;
 import org.apache.log4j.Level;
 
 import com.cmm.jft.messaging.MessageDecoder;
+import com.cmm.jft.security.Security;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.securities.Security;
 import com.cmm.jft.trading.services.SecurityService;
 import com.cmm.logging.Logging;
 

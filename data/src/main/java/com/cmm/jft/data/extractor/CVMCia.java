@@ -6,6 +6,7 @@ package com.cmm.jft.data.extractor;
 import java.util.Date;
 
 import com.cmm.jft.core.enums.GeneralStatus;
+import com.cmm.jft.core.vo.Extractable;
 
 /**
  * <p><code>CVMCia.java</code></p>

@@ -7,7 +7,7 @@ package com.cmm.jft.financial;
 
 import com.cmm.jft.financial.Account;
 import com.cmm.jft.financial.EntryRegister;
-import com.cmm.jft.trading.securities.SecurityInfo;
+import com.cmm.jft.security.SecurityInfo;
 import com.cmm.jft.db.DBObject;
 
 import java.io.Serializable;

@@ -60,10 +60,6 @@
 <hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
 <bounds x="1237" y="507" width="154" height="121"/>
 </OView>
-<OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="BC5C63F0-C6E3-BA90-2280-DD1D3A1353A9" otype="Table" vid="42B2F71E-B1F8-199F-17B2-79E8A39080A7">
-<hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
-<bounds x="45" y="678" width="170" height="134"/>
-</OView>
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="C3570B9E-9AA5-0C9A-E909-69D9D1A0C39B" otype="Table" vid="43728F59-5CE5-FD4A-0375-831AA2714AF6">
 <hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
 <bounds x="350" y="25" width="170" height="276"/>
@@ -104,14 +100,6 @@
 <points>
 <point x="434" y="351"/>
 <point x="434" y="301"/>
-</points>
-</Connector>
-<Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="06D8CAEA-0FD4-9C4C-34C0-793EEA6F6F3A" otype="FKIndexAssociation" vid_source="97EC6F7E-E0FC-4A09-73D7-C5F3096A3B2F" vid_target="42B2F71E-B1F8-199F-17B2-79E8A39080A7">
-<hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
-<lineWidth>1</lineWidth>
-<points>
-<point x="287" y="740"/>
-<point x="215" y="740"/>
 </points>
 </Connector>
 <Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="0E344F7F-F12B-9D3C-A6C7-83B768CD970D" otype="FKIndexAssociation" vid_source="C23AFEAC-AA50-69D1-DC6D-DEF82AC39299" vid_target="466A6990-6BB9-14F3-EC87-8EAFD8922A6F">
@@ -160,6 +148,14 @@
 <points>
 <point x="1271" y="291"/>
 <point x="1419" y="291"/>
+</points>
+</Connector>
+<Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="6863F71F-3D5A-E4FB-0484-1AA6E009D0E3" otype="FKIndexAssociation" vid_source="B528BD73-5777-4BC5-1443-4B0B3A2A7612" vid_target="8A25A1C9-E7AA-AA1A-9A75-53C5DB2F21DF">
+<hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
+<lineWidth>1</lineWidth>
+<points>
+<point x="206" y="832"/>
+<point x="423" y="448"/>
 </points>
 </Connector>
 <Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="6E0D7401-BCF9-E7C7-F050-76C776A9DBBA" otype="FKIndexAssociation" vid_source="C23AFEAC-AA50-69D1-DC6D-DEF82AC39299" vid_target="466A6990-6BB9-14F3-EC87-8EAFD8922A6F">

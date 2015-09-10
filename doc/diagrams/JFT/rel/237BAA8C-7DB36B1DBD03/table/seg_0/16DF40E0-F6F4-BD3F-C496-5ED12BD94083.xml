@@ -3,6 +3,7 @@
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
+<schemaObject>1A48C32D-DFAE-0EE0-B56E-1F544E09C671</schemaObject>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
@@ -15,32 +16,7 @@
 <logicalDatatype>LOGDT027</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="securityID" id="0FA0BF55-FA3F-9FE5-A9D3-01C1EE8C5E98">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT027</logicalDatatype>
-<delegate>37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14</delegate>
-<autoIncrementCycle>false</autoIncrementCycle>
-<associations>
-<colAssociation fkAssociation="E1713B22-174F-5A0C-5A93-3665BF208890" referredColumn="37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14"/>
-</associations>
-</Column>
 <Column name="Price" id="D960BC23-050C-8090-50A8-EAF0A4616E6F">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT043</logicalDatatype>
-<dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>6</dataTypeScale>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="LimitPrice" id="958F5391-3DC0-3310-36CB-BE799A3C4618">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -64,7 +40,38 @@
 <dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="StopGain" id="4D1076B8-C8C6-5964-A517-339136FE3BE6">
+<Column name="Volume" id="7C8C3019-74FF-3CF8-40B3-DE218E6578F0">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT020</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LeavesVolume" id="C92E25AF-244C-3977-04FE-EC2BA404843A">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:13:33 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT020</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="AvgPrice" id="F30E48D2-15AD-2F6B-51BB-1D7D5D54C5AC">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:53:03 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ProtectionPrice" id="958F5391-3DC0-3310-36CB-BE799A3C4618">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -76,19 +83,9 @@
 <dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="Volume" id="7C8C3019-74FF-3CF8-40B3-DE218E6578F0">
+<Column name="MaxFloor" id="364BBE99-796F-CE70-9595-FD840BD85FC7">
 <createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="AveragePrice" id="F30E48D2-15AD-2F6B-51BB-1D7D5D54C5AC">
-<createdBy>COC-DELL-02</createdBy>
-<createdTime>2015-06-05 17:53:03 UTC</createdTime>
-<generatorID>Gerado pelo usuário</generatorID>
+<createdTime>2015-09-10 03:15:21 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -105,7 +102,7 @@
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT027</logicalDatatype>
+<logicalDatatype>LOGDT020</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Duration" id="4B110296-8400-F35C-188F-FD1F514949D2">
@@ -116,7 +113,6 @@
 <use>1</use>
 <logicalDatatype>LOGDT015</logicalDatatype>
 <dataTypePrecision>6</dataTypePrecision>
-<dataTypeScale>0</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="OrderDateTime" id="72C6963D-06DC-B4DA-BAC4-E5386A9C0E6B">
@@ -142,10 +138,43 @@
 <dataTypeSize>50</dataTypeSize>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column name="WorkingIndicator" id="4D1076B8-C8C6-5964-A517-339136FE3BE6">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="OrderValidityType" id="C762ED97-7F6D-1B51-D49D-8406A93AB427">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:17:44 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 <Column name="OrderType" id="8A24C482-63D0-B39D-A47F-B2199AEB6B6B">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TradeType" id="B0C012BF-11B0-B565-5A30-74C1AA0F33AB">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:18:50 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
@@ -175,7 +204,7 @@
 <dataTypeSize>250</dataTypeSize>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="OrderSerial" id="F39DA452-6E76-5B0E-DE82-1B3B9941FDCE">
+<Column name="ClOrdID" id="F39DA452-6E76-5B0E-DE82-1B3B9941FDCE">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -184,6 +213,60 @@
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>25</dataTypeSize>
 <autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="OrigClOrdID" id="0BF595ED-9E37-7D0F-9434-87760CEDFF6D">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:19:45 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PartyID" id="6E050516-2C8D-6C45-F40B-07E157F77CF0">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:20:13 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PartyIDSource" id="04D3AF75-F02E-D4D1-F14A-40ED5741214F">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:21:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Role" id="91F34050-5FBD-8740-1BC2-5753DD318DD9">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:21:25 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>5</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="securityID" id="0FA0BF55-FA3F-9FE5-A9D3-01C1EE8C5E98">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<delegate>37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="E1713B22-174F-5A0C-5A93-3665BF208890" referredColumn="37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14"/>
+</associations>
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">

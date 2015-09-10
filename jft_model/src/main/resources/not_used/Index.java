@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.cmm.jft.trading.securities;
+package com.cmm.jft.security;
 
 import java.io.Serializable;
 import java.util.HashSet;

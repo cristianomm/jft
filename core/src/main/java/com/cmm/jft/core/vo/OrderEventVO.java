@@ -1,10 +1,15 @@
-package com.cmm.jft.data.vo;
+package com.cmm.jft.core.vo;
 
 import java.util.Date;
 
-import com.cmm.jft.data.extractor.Extractable;
-
-public class OrderEventVO implements Extractable{
+/**
+ * 
+ * <p><code>OrderEventVO.java</code></p>
+ * @author Cristiano
+ * @version 4 de set de 2015 21:24:43
+ * 
+ */
+public class OrderEventVO implements Extractable {
 		
 	public Date sessionDate;
 	public double price;
@@ -18,9 +23,6 @@ public class OrderEventVO implements Extractable{
 	public double tradedVolume;
 	public String orderCondition = "";
 	public String broker = "";
-	
-	
-	
 	
 	
 }

@@ -3,7 +3,6 @@
  */
 package com.cmm.jft.trading;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -16,7 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -38,7 +36,7 @@ import com.cmm.jft.trading.enums.OrderTypes;
  */
 
 @Entity
-@Table(name = "OrderEvent")
+@Table(name = "OrderEvent", schema="Trading")
 public class OrderEvent implements DBObject<OrderEvent> {
 
 	@Id
@@ -55,17 +53,17 @@ public class OrderEvent implements DBObject<OrderEvent> {
 	private double price;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name="ExecutionType", length=25)
+	@Column(name="ExecutionType", length=30)
 	private ExecutionTypes executionType;
 	
 	@Enumerated(EnumType.STRING)
 	@Basic(optional = false)
-	@Column(name = "OrderType", nullable = false, updatable = false)
+	@Column(name = "OrderType", length=30)
 	private OrderTypes orderType;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "ExecutionDateTime")
-	private Date executionDateTime;
+	@Column(name = "EventDateTime")
+	private Date eventDateTime;
 	
 	@Column(name = "Message", length = 255)
 	private String message;
@@ -90,7 +88,7 @@ public class OrderEvent implements DBObject<OrderEvent> {
 	public OrderEvent(ExecutionTypes execType, double volume, double price) {
 		super();
 		this.executionType = execType;
-		this.executionDateTime = new Date();
+		this.eventDateTime = new Date();
 		this.volume = volume;
 		this.price = price;
 	}
@@ -103,10 +101,10 @@ public class OrderEvent implements DBObject<OrderEvent> {
 	 * @param price
 	 * @param orderID
 	 */
-	public OrderEvent(ExecutionTypes execType, Date executionDateTime, double volume, double price) {
+	public OrderEvent(ExecutionTypes execType, Date eventDateTime, double volume, double price) {
 		super();
 		this.executionType = execType;
-		this.executionDateTime = executionDateTime;
+		this.eventDateTime = eventDateTime;
 		this.volume = volume;
 		this.price = price;
 	}
@@ -115,15 +113,15 @@ public class OrderEvent implements DBObject<OrderEvent> {
 	 * @return the executionDateTime
 	 */
 	public Date getExecutionDateTime() {
-		return this.executionDateTime;
+		return this.eventDateTime;
 	}
 
 	/**
 	 * @param executionDateTime
 	 *            the executionDateTime to set
 	 */
-	public void setExecutionDateTime(Date executionDateTime) {
-		this.executionDateTime = executionDateTime;
+	public void setEventDateTime(Date eventDateTime) {
+		this.eventDateTime = eventDateTime;
 	}
 
 	/**

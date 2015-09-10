@@ -3,6 +3,7 @@
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
+<schemaObject>B563C57E-FB72-43A9-0A56-5A2A13D3C2DD</schemaObject>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
 <Column name="stockExchangeID" id="E7991A1F-AEAE-5FEE-7EF1-F8DFFD2C8BCA">
 <createdBy>Cristiano</createdBy>
@@ -11,7 +12,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>20</dataTypeSize>
+<dataTypeSize>15</dataTypeSize>
 </Column>
 <Column name="ExchangeName" id="F4BC0917-D6A1-30A5-CB7A-5174E8FE443B">
 <createdBy>Cristiano</createdBy>

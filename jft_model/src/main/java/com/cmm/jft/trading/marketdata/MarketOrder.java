@@ -13,10 +13,10 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.cmm.jft.db.DBObject;
+import com.cmm.jft.security.Security;
 import com.cmm.jft.trading.account.Broker;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.securities.Security;
 
 /**
  *

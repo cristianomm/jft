@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import com.cmm.jft.core.vo.Extractable;
+
 /**
  * Os objetos que implementam esa interface devem realizar a extracao de informacoes
  * contida em uma fonte, como por exemplo um arquivo csv, um FTP, uma pagina web...

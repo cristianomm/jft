@@ -3,30 +3,19 @@
  */
 package com.cmm.jft.data.extractor.marketdata;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.log4j.Level;
 
-import com.cmm.jft.core.format.BigDecimalFormatter;
 import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.DoubleFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
-import com.cmm.jft.core.format.IntFormatter;
-import com.cmm.jft.data.extractor.Extractable;
+import com.cmm.jft.core.vo.Extractable;
+import com.cmm.jft.core.vo.OrderEventVO;
 import com.cmm.jft.data.files.CSV;
-import com.cmm.jft.data.vo.OrderEventVO;
-import com.cmm.jft.db.DBFacade;
-import com.cmm.jft.db.DBObject;
 import com.cmm.logging.Logging;
 
 /**

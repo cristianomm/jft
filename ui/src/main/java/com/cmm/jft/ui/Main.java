@@ -16,29 +16,29 @@ import com.cmm.logging.Logging;
  */
 public class Main {
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
 
-	try {
-	    
-	    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            
-	    //inicializa a conexao
-            DBFacade.getInstance();
-            
-            //ajusta o log para mostrar erros tambem na saida padrao 
-            Logging.getInstance().printStackTrace(true);
-            
-            //chama a tela inicial do programa
-	    FormsFactory.openForm(ObjectForms.PROGRAM);
+		try {
 
-	} catch (ClassNotFoundException | InstantiationException
-		| IllegalAccessException | UnsupportedLookAndFeelException e) {
-	    e.printStackTrace();
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+			//inicializa a conexao
+			DBFacade.getInstance();
+
+			//ajusta o log para mostrar erros tambem na saida padrao 
+			Logging.getInstance().printStackTrace(true);
+
+			//chama a tela inicial do programa
+			FormsFactory.openForm(ObjectForms.PROGRAM);
+
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+
 	}
-
-    }
 
 }

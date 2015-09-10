@@ -186,7 +186,7 @@ public class Position implements DBObject<Position> {
 
 	public Orders getOrder(String orderSerial) {
 		for (Orders o : ordersList) {
-			if (o.getOrderSerial().equalsIgnoreCase(orderSerial)) {
+			if (o.getClOrdID().equalsIgnoreCase(orderSerial)) {
 				return o;
 			}
 		}

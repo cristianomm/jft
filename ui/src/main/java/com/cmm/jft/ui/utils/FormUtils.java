@@ -6,6 +6,7 @@ package com.cmm.jft.ui.utils;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
@@ -17,63 +18,59 @@ import javax.swing.JOptionPane;
  */
 public class FormUtils {
 
-    private static FormUtils instance;
-    private HashMap<String, Object> parameters;
-    
-    
-    /**
-     * 
-     */
-    private FormUtils() {
-	this.parameters = new HashMap<String, Object>();
-    }
+	private static FormUtils instance;
+	private HashMap<String, Object> parameters;
 
-    public static FormUtils getInstance() {
-	if (instance==null) {
-	    instance = new FormUtils();
+
+	/**
+	 * 
+	 */
+	private FormUtils() {
+		this.parameters = new HashMap<String, Object>();
 	}
-	return instance;
-    }
-    
-    /**
-     * Adiciona Itens ao <code>JComboBox</code> passado por parametro.
-     * @param cmb <code>JComboBox</code>.
-     * @param itens Valores a serem adicionados ao <code>JComboBox</code>.
-     */
-    public void addItensToCombo(JComboBox cmb, Object[] itens) {
-	
-	cmb.removeAllItems();
-	cmb.addItem("");
-	for(Object obj:itens) {
-	    cmb.addItem(obj);
+
+	public static FormUtils getInstance() {
+		if (instance==null) {
+			instance = new FormUtils();
+		}
+		return instance;
 	}
-	
-    }
-    
-    public boolean indexInRange(List list, int index) {
-	
-	boolean ret = false;
-	if(index>=0 && index <list.size()) {
-	    ret = true;
+
+	/**
+	 * Adiciona Itens ao <code>JComboBox</code> passado por parametro.
+	 * @param cmb <code>JComboBox</code>.
+	 * @param itens Valores a serem adicionados ao <code>JComboBox</code>.
+	 */
+	public void addItensToCombo(JComboBox cmb, Object[] items) {
+		DefaultComboBoxModel boxModel = new DefaultComboBoxModel<>(items);
+		cmb.setModel(boxModel);
+
 	}
-	else {
-	    JOptionPane.showMessageDialog(null, "Index out of bounds", "Index out of bounds", JOptionPane.ERROR_MESSAGE);
+
+	public boolean indexInRange(List list, int index) {
+
+		boolean ret = false;
+		if(index>=0 && index <list.size()) {
+			ret = true;
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Index out of bounds", "Index out of bounds", JOptionPane.ERROR_MESSAGE);
+		}
+		return ret;
 	}
-	return ret;
-    }
-    
-    public void clearParameters() {
-	parameters.clear();
-    }
-    
-    public void addParameter(String key, Object value) {
-	parameters.put(key, value);
-    }
-    
-    public Object getParameter(String key) {
-	return parameters.get(key);
-    }
-    
-    
-    
+
+	public void clearParameters() {
+		parameters.clear();
+	}
+
+	public void addParameter(String key, Object value) {
+		parameters.put(key, value);
+	}
+
+	public Object getParameter(String key) {
+		return parameters.get(key);
+	}
+
+
+
 }

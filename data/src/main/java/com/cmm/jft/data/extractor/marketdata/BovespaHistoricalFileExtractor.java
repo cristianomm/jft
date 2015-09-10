@@ -15,10 +15,10 @@ import java.util.Scanner;
 import org.apache.log4j.Level;
 
 import com.cmm.jft.core.util.TimeCounter;
+import com.cmm.jft.core.vo.Extractable;
 import com.cmm.jft.data.dde.QuoteData;
 import com.cmm.jft.data.enums.DataFields;
 import com.cmm.jft.data.extractor.Data;
-import com.cmm.jft.data.extractor.Extractable;
 import com.cmm.logging.Logging;
 import com.sun.glass.ui.SystemClipboard;
 import com.sun.glass.ui.Timer;

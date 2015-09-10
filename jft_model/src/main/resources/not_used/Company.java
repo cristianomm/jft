@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.cmm.jft.trading.securities;
+package com.cmm.jft.security;
 
 import com.cmm.jft.core.enums.GeneralStatus;
 import com.cmm.jft.db.DBObject;

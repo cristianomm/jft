@@ -49,7 +49,7 @@ public class Configuration implements DBObject<Configuration> {
 	@Column(name = "configurationID", nullable = false)
 	private Long configurationID;
 
-	private static final String propertyFileName = "./jftcfg.properties";
+	private String propertyFileName;
 	private Properties properties;
 	private static Configuration instance;
 	
@@ -59,6 +59,7 @@ public class Configuration implements DBObject<Configuration> {
 	private Configuration() {
 		this.properties = new Properties();
 		try {
+			propertyFileName = this.getClass().getResource("jftcfg.properties").getFile();
 			this.properties.load(new FileInputStream(propertyFileName));
 		} catch (FileNotFoundException e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
@@ -78,6 +79,8 @@ public class Configuration implements DBObject<Configuration> {
 		Object config = null;
 		if(properties.contains(configName)){
 			config = properties.get(configName);
+		}else{
+			Logging.getInstance().log(getClass(), "Configuration: " + configName + " not found.", Level.WARN);
 		}
 		return config;
 	}

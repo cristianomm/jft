@@ -28,6 +28,7 @@ import com.cmm.jft.financial.JournalEntry;
 import com.cmm.jft.financial.Rule;
 import com.cmm.jft.financial.exceptions.RegistrationException;
 import com.cmm.jft.financial.services.JournalService;
+import com.cmm.jft.security.Security;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.Position;
 import com.cmm.jft.trading.account.Broker;
@@ -38,7 +39,6 @@ import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.exceptions.OrderException;
-import com.cmm.jft.trading.securities.Security;
 import com.cmm.logging.Logging;
 
 /**
@@ -188,7 +188,7 @@ public class TradingService {
 				ordr.setTradeType(tradeType);
 				
 				position.addOrder(ordr);
-				orders.put(ordr.getOrderSerial(), ordr);
+				orders.put(ordr.getClOrdID(), ordr);
 				
 				//Cria o evento e adiciona no mercado
 				sendNewOrderEvent(ordr);
@@ -213,7 +213,7 @@ public class TradingService {
 
 			// cancela as ordens abertas
 			for (Orders order : position.getOrdersList()) {
-				cancelOrder(order.getOrderSerial()); 
+				cancelOrder(order.getClOrdID()); 
 			}
 
 			// cria ordem de acordo com posicao aberta
@@ -242,7 +242,7 @@ public class TradingService {
 		try {
 			sendCancelOrderEvent(order);
 			//order.cancel();
-			orders.put(order.getOrderSerial(), order);
+			orders.put(order.getClOrdID(), order);
 		} catch (ConnectionException | OrderException e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
@@ -255,7 +255,7 @@ public class TradingService {
 		try{
 			//if (order.changePrice(price)) {
 				sendChangeOrderEvent(order);
-				orders.put(order.getOrderSerial(), order);
+				orders.put(order.getClOrdID(), order);
 			//}
 		} catch(OrderException e){
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
@@ -270,7 +270,7 @@ public class TradingService {
 		try{
 			//if (order.changeVolume(volume)) {
 				sendChangeOrderEvent(order);
-				orders.put(order.getOrderSerial(), order);
+				orders.put(order.getClOrdID(), order);
 			//}
 		} catch(OrderException e){
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
@@ -298,9 +298,9 @@ public class TradingService {
 
 		//verifica o retorno
 		if(retev.getValue(EventFields.EventType) == Events.ORDER_SEND){
-			Logging.getInstance().log(getClass(), "Order " + ordr.getOrderSerial() + " has sent to market.", Level.INFO);
+			Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() + " has sent to market.", Level.INFO);
 		}else{
-			throw new OrderException("Error sending order " + ordr.getOrderSerial() + retev.getValue(EventFields.Message));
+			throw new OrderException("Error sending order " + ordr.getClOrdID() + retev.getValue(EventFields.Message));
 		}
 
 	}
@@ -309,13 +309,13 @@ public class TradingService {
 		Event event = new Event();
 
 		event.addValue(EventFields.EventType, Events.ORDER_CANCEL);
-		event.addValue(EventFields.OrderID, ordr.getOrderSerial());
+		event.addValue(EventFields.OrderID, ordr.getClOrdID());
 
 		Event ret = null;//connection.sendEvent(event);
 		if(ret.getValue(EventFields.EventType) == Events.ORDER_CANCEL){
-			Logging.getInstance().log(getClass(), "Order " + ordr.getOrderSerial() + " has cancelled.", Level.INFO);
+			Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() + " has cancelled.", Level.INFO);
 		}else{
-			throw new OrderException("Error sending order " + ordr.getOrderSerial() + ret.getValue(EventFields.Message));
+			throw new OrderException("Error sending order " + ordr.getClOrdID() + ret.getValue(EventFields.Message));
 		}
 
 	}
@@ -324,14 +324,14 @@ public class TradingService {
 		Event event = new Event();
 
 		event.addValue(EventFields.EventType, Events.ORDER_UPDATE);
-		event.addValue(EventFields.OrderID, ordr.getOrderSerial());
+		event.addValue(EventFields.OrderID, ordr.getClOrdID());
 		event.addValue(EventFields.OrderVolume, ordr.getVolume());
 
 		Event ret = null;//connection.sendEvent(event);
 		if(ret.getValue(EventFields.EventType) == Events.ORDER_UPDATE){
-			Logging.getInstance().log(getClass(), "Order " + ordr.getOrderSerial() + " has changed.", Level.INFO);
+			Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() + " has changed.", Level.INFO);
 		}else{
-			throw new OrderException("Error sending order " + ordr.getOrderSerial() + ret.getValue(EventFields.Message));
+			throw new OrderException("Error sending order " + ordr.getClOrdID() + ret.getValue(EventFields.Message));
 		}
 	}
 

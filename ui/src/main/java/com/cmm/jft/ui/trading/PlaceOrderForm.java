@@ -6,12 +6,12 @@
 package com.cmm.jft.ui.trading;
 
 import com.cmm.jft.db.DBFacade;
+import com.cmm.jft.security.Security;
+import com.cmm.jft.security.SecurityInfo;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
-import com.cmm.jft.trading.securities.Security;
-import com.cmm.jft.trading.securities.SecurityInfo;
 import com.cmm.jft.trading.services.SecurityService;
 import com.cmm.jft.trading.services.TradingService;
 import com.cmm.jft.ui.forms.AbstractForm;
@@ -70,6 +70,8 @@ public class PlaceOrderForm extends AbstractForm {
         btnBuyOrder = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         txtSecurity = new javax.swing.JTextField();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -115,6 +117,8 @@ public class PlaceOrderForm extends AbstractForm {
 
         btnBuyOrder.setText("Buy");
 
+        jLabel6.setText("Comment");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -122,37 +126,16 @@ public class PlaceOrderForm extends AbstractForm {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator2)
                     .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnCancel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel9))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cmbExpirationType, 0, 100, Short.MAX_VALUE)
-                            .addComponent(spnStopLoss, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                            .addComponent(spnVolume, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                            .addComponent(spnPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel7))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(13, 13, 13)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(spnStopGain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(spnLimitPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dtExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jSeparator2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnBuyOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSellOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(103, 103, 103))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -163,14 +146,38 @@ public class PlaceOrderForm extends AbstractForm {
                                 .addComponent(jLabel8)
                                 .addGap(27, 27, 27)
                                 .addComponent(txtSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel6))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cmbExpirationType, 0, 100, Short.MAX_VALUE)
+                                    .addComponent(spnStopLoss, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                    .addComponent(spnVolume, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                    .addComponent(spnPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel7))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(13, 13, 13)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(spnStopGain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(spnLimitPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(dtExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnBuyOrder)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSellOrder)
-                .addGap(134, 134, 134))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,13 +216,17 @@ public class PlaceOrderForm extends AbstractForm {
                             .addComponent(jLabel9)
                             .addComponent(jLabel10)))
                     .addComponent(dtExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(10, 10, 10)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSellOrder)
                     .addComponent(btnBuyOrder))
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancel)
                 .addContainerGap())
         );
@@ -271,11 +282,13 @@ public class PlaceOrderForm extends AbstractForm {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JSpinner spnLimitPrice;
     private javax.swing.JSpinner spnPrice;
     private javax.swing.JSpinner spnStopGain;
@@ -288,6 +301,7 @@ public class PlaceOrderForm extends AbstractForm {
 	public void addListeners() {
 		//sbSecurity.getResultField().getDocument().addDocumentListener(new GerEvents(this));
 		btnCancel.addActionListener(new GerEvents(this));
+		btnBuyOrder.addActionListener(new GerEvents(this));
 		btnSellOrder.addActionListener(new GerEvents(this));
 		cmbOrderTypes.addItemListener(new GerEvents(this));
 		cmbExpirationType.addItemListener(new GerEvents(this));
@@ -302,7 +316,7 @@ public class PlaceOrderForm extends AbstractForm {
 		ots[p++] = OrderTypes.Market;
 		ots[p++] = OrderTypes.Stop;
 		ots[p++] = OrderTypes.StopLimit;
-		
+
 		FormUtils.getInstance().addItensToCombo(cmbOrderTypes, ots);
 		FormUtils.getInstance().addItensToCombo(cmbExpirationType, OrderValidityTypes.values());
 		cmbExpirationType.setSelectedIndex(0);
@@ -321,40 +335,20 @@ public class PlaceOrderForm extends AbstractForm {
 				frame.dispose();
 			}
 			else if(e.getSource() == btnSellOrder){
-				
-				try{
-					
-					OrderTypes orderType = (OrderTypes)cmbOrderTypes.getSelectedItem();
-					Side side = Side.BUY;
-					String symbol = txtSecurity.getText().trim();
-					
-					double price = (double)spnPrice.getValue();
-					double limitPrice = (double)spnLimitPrice.getValue();
-					double stopPrice = (double)spnStopLoss.getValue();
-					double stopGain = (double)spnStopGain.getValue();
-					int volume = (int)spnVolume.getValue();
-					
-					Date duration = dtExpiration.getDate();
-					boolean day = duration.toInstant().isAfter(new Date().toInstant());
-					TradeTypes tradeType = day?TradeTypes.DAY_TRADE:TradeTypes.NORMAL;
-					
-					TradingService.getInstance().newOrder(
-							orderType, side, symbol, volume, 
-							price, limitPrice, stopPrice, stopGain, 
-							duration, tradeType);
-					
-				}catch(Exception ex){
-					
-				}
+				sendOrder(Side.SELL);
 			}
+			else if(e.getSource() == btnBuyOrder){
+				sendOrder(Side.BUY);
+			}
+
 		}
+
 
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 
 			if(e.getSource() == cmbExpirationType){
-				System.out.println(e.getItem().toString());
-				OrderValidityTypes et = OrderValidityTypes.getByValue(e.getItem().toString().charAt(0));
+				OrderValidityTypes et = (OrderValidityTypes) cmbExpirationType.getModel().getSelectedItem();
 				if(et != null){
 					switch(et){
 					case DAY:
@@ -366,28 +360,28 @@ public class PlaceOrderForm extends AbstractForm {
 						dtExpiration.setEnabled(false);
 						dtExpiration.setDate(new Date());
 						break;
-						
+
 					case GTC:
 						break;
-						
+
 					case GTD:
 						break;
-						
+
 					case IOC:
 						break;
-						
+
 					case MOA:
 						break;
-						
+
 					case MOC:
 						break;
-						
+
 					}
 				}
 			}
 
 			else if(e.getSource() == cmbOrderTypes) {
-				OrderTypes ot = OrderTypes.getByValue(e.getItem().toString().charAt(0));
+				OrderTypes ot = (OrderTypes) cmbOrderTypes.getSelectedItem();
 				if(ot==null) {
 					spnPrice.setEnabled(true);
 					spnLimitPrice.setEnabled(true);
@@ -425,8 +419,8 @@ public class PlaceOrderForm extends AbstractForm {
 			}
 
 		}
-		
-		
+
+
 		/* (non-Javadoc)
 		 * @see com.cmm.jft.ui.forms.Events#changedUpdate(javax.swing.event.DocumentEvent)
 		 */
@@ -439,18 +433,47 @@ public class PlaceOrderForm extends AbstractForm {
 			si.getDigits();
 			si.getTickSize();
 			si.getTickValue();
-			
+
 			double actualPrice = 0;
-			
+
 			spnVolume.setModel(new SpinnerNumberModel(Integer.valueOf(0), si.getMinimalVolume(), null, si.getMinimalVolume()));
-	        spnPrice.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
-	        spnLimitPrice.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
-	        
-	        spnStopLoss.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
-	        spnStopGain.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
-			
+			spnPrice.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
+			spnLimitPrice.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
+
+			spnStopLoss.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
+			spnStopGain.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
+
 		}
-		
+
+
+		private void sendOrder(Side side){
+
+			try{
+				OrderTypes orderType = (OrderTypes)cmbOrderTypes.getSelectedItem();
+				String symbol = txtSecurity.getText().trim();
+
+				double price = (double)spnPrice.getValue();
+				double limitPrice = (double)spnLimitPrice.getValue();
+				double stopPrice = (double)spnStopLoss.getValue();
+				double stopGain = (double)spnStopGain.getValue();
+				int volume = (int)spnVolume.getValue();
+
+				Date duration = dtExpiration.getDate();
+				boolean day = duration.toInstant().isAfter(new Date().toInstant());
+				TradeTypes tradeType = day?TradeTypes.DAY_TRADE:TradeTypes.NORMAL;
+
+				TradingService.getInstance().newOrder(
+						orderType, side, symbol, volume, 
+						price, limitPrice, stopPrice, stopGain, 
+						duration, tradeType);
+
+			}catch(Exception ex){
+
+			}
+
+		}
+
+
 	}
 
 

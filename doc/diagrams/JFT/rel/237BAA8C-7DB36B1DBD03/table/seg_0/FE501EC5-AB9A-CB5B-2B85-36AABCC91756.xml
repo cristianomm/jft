@@ -3,6 +3,7 @@
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-09 21:26:07 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
+<schemaObject>B563C57E-FB72-43A9-0A56-5A2A13D3C2DD</schemaObject>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">

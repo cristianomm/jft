@@ -21,7 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.cmm.jft.db.DBObject;
-import com.cmm.jft.trading.securities.Security;
+import com.cmm.jft.security.Security;
 
 /**
  * <p>

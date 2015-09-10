@@ -18,7 +18,7 @@
 <logicalDatatype>LOGDT027</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="ISIN" id="95818216-B66F-52AD-7F91-126F07ADF724">
+<Column name="stockExchangeID" id="95818216-B66F-52AD-7F91-126F07ADF724">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <generatorID>Gerado pelo usuário</generatorID>
@@ -26,8 +26,12 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>50</dataTypeSize>
+<dataTypeSize>15</dataTypeSize>
+<delegate>E7991A1F-AEAE-5FEE-7EF1-F8DFFD2C8BCA</delegate>
 <autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="6863F71F-3D5A-E4FB-0484-1AA6E009D0E3" referredColumn="E7991A1F-AEAE-5FEE-7EF1-F8DFFD2C8BCA"/>
+</associations>
 </Column>
 <Column name="Symbol" id="24415DEB-F60B-852F-E68D-F0758B7CDD36">
 <createdBy>Cristiano</createdBy>
@@ -63,6 +67,16 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="7F0CA2C9-3B4D-4FEE-7E5B-F307927050C8" name="Security_StockExchange_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:55:58 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="95818216-B66F-52AD-7F91-126F07ADF724"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

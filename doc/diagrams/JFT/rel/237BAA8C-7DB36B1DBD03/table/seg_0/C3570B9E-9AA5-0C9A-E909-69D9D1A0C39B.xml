@@ -43,6 +43,102 @@
 <colAssociation fkAssociation="BCB5B403-8F38-0EBC-6103-0DE328BF8D14" referredColumn="97E7232E-411E-0848-46E1-75AE8FE7FD6E"/>
 </associations>
 </Column>
+<Column name="ISIN" id="A7BCB5F5-834C-811C-9BF8-76DF06E08BB0">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:30:20 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ContractSize" id="167F45A5-3EAB-5C02-3E4A-21F3F6A9F0A4">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:31:25 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TickSize" id="F0A9D8D2-1C61-57F0-5D37-DF060AB04F72">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:32:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TickValue" id="8724B384-A3F7-B8B9-1FB9-919898DDDB29">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:32:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Digits" id="110E1573-6A50-6E57-C0D8-251EA37B45B1">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:32:54 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MinimalVolume" id="E6A87AE3-FCB2-0C78-45B7-A1AECAB6A4BE">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT020</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="StepVolume" id="56065479-2204-EC17-6ABC-5B8BAC5714E2">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:34:59 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT020</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ObjectAsset" id="46B444C8-4FF1-A1BB-0A00-A997C5B00C68">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>25</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Category" id="509749B1-83E1-5893-8E85-6BB27EE7BE18">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 <Column name="EmissionDate" id="A320D77A-937C-32ED-FFB4-0B1244140A11">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
@@ -63,83 +159,7 @@
 <logicalDatatype>LOGDT007</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="ExercicePrice" id="20B1DBF6-DAAF-DFBA-9F41-47B1084955A3">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT043</logicalDatatype>
-<dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>6</dataTypeScale>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
 <Column name="OptionStyle" id="161EE2F2-6E72-C30D-5238-5D00A688A371">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>25</dataTypeSize>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="ObjectAsset" id="46B444C8-4FF1-A1BB-0A00-A997C5B00C68">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>25</dataTypeSize>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="OptionSerie" id="AC73D8FA-64E5-A881-CA60-1B1645CC718D">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT025</logicalDatatype>
-<dataTypeSize>1</dataTypeSize>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="FutureSerie" id="EFFFB57A-04C6-AFEE-AE55-26880D1AE225">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT025</logicalDatatype>
-<dataTypeSize>1</dataTypeSize>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="MinimalVolume" id="E6A87AE3-FCB2-0C78-45B7-A1AECAB6A4BE">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="SymbolDate" id="851B1445-A59B-6A45-6A28-F41E49D1B8FE">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT007</logicalDatatype>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="SecurityCategory" id="509749B1-83E1-5893-8E85-6BB27EE7BE18">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -150,15 +170,27 @@
 <dataTypeSize>30</dataTypeSize>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="QuoteFactor" id="3777A073-44BB-E2CC-AB9D-20BE8865D230">
-<createdBy>COC-DELL-02</createdBy>
-<createdTime>2015-06-05 18:04:00 UTC</createdTime>
-<generatorID>Gerado pelo usuário</generatorID>
+<Column name="OptionRight" id="AC73D8FA-64E5-A881-CA60-1B1645CC718D">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="StrikePrice" id="20B1DBF6-DAAF-DFBA-9F41-47B1084955A3">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>
@@ -194,6 +226,13 @@
 <indexColumnUsage>
 <colUsage columnID="CDD44F26-ACCE-4687-DE59-9325E77A2968"/>
 </indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B3C103F4-C1BC-60F1-B8EB-68279ECD14B3" name="SecurityInfo_StockExchange_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 02:56:43 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
 </ind_PK_UK>
 </indexes>
 </Table>

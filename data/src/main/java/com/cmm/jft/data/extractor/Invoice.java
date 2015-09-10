@@ -3,6 +3,8 @@
  */
 package com.cmm.jft.data.extractor;
 
+import com.cmm.jft.core.vo.Extractable;
+
 /**
  * <p><code>Invoice.java</code></p>
  * @author Cristiano M Martins

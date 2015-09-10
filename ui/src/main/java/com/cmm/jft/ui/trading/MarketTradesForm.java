@@ -50,7 +50,7 @@ public class MarketTradesForm extends AbstractForm {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Time", "Volume", "Price", "BB", "SB", "Aggr"
+                "Time", "Volume", "Price", "Buy Broker", "Sell Broker", "Aggressor"
             }
         ));
         jScrollPane1.setViewportView(tblMarketTrades);
@@ -59,7 +59,9 @@ public class MarketTradesForm extends AbstractForm {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

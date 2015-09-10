@@ -12,7 +12,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 import com.cmm.jft.db.DBObject;
-import com.cmm.jft.trading.securities.Security;
+import com.cmm.jft.security.Security;
 
 /**
  *

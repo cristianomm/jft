@@ -4,6 +4,7 @@
 <createdTime>2015-06-05 17:44:58 UTC</createdTime>
 <generatorID>Gerado pelo usuário</generatorID>
 <ownerDesignName>JFT</ownerDesignName>
+<schemaObject>1A48C32D-DFAE-0EE0-B56E-1F544E09C671</schemaObject>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
@@ -31,7 +32,29 @@
 <colAssociation fkAssociation="EF30FA89-EF8B-F2AB-BDE5-A28309C2AE24" referredColumn="1E1C15FF-7FEE-18F8-F743-439CA9DC95B9"/>
 </associations>
 </Column>
-<Column name="EventType" id="03380AD9-A7B0-31FE-5828-E897269DFE9C">
+<Column name="Volume" id="4AC6DFD7-B687-F6EA-AA30-5DBFE19769AC">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:05:36 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT020</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Price" id="3795DA95-2323-31B7-F6E8-795522E27E63">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:05:51 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ExecutionType" id="03380AD9-A7B0-31FE-5828-E897269DFE9C">
 <createdBy>COC-DELL-02</createdBy>
 <createdTime>2015-06-05 17:45:54 UTC</createdTime>
 <generatorID>Gerado pelo usuário</generatorID>
@@ -40,7 +63,29 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>50</dataTypeSize>
+<dataTypeSize>30</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="OrderType" id="4FD07A0E-A0CE-D3EC-3569-EF2909F7977B">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:07:34 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="EventDateTime" id="C638D8B5-530C-6E79-D218-B9A569F3FF87">
+<createdBy>COC-DELL-02</createdBy>
+<createdTime>2015-06-05 17:46:56 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Message" id="01D8458B-EB50-66DC-37DC-1073F8A7337C">
@@ -55,15 +100,25 @@
 <dataTypeSize>255</dataTypeSize>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="EventDateTime" id="C638D8B5-530C-6E79-D218-B9A569F3FF87">
-<createdBy>COC-DELL-02</createdBy>
-<createdTime>2015-06-05 17:46:56 UTC</createdTime>
-<generatorID>Gerado pelo usuário</generatorID>
+<Column name="OrdRejReason" id="EC59552C-52D6-A4DE-B3F0-36CD8FECCB65">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:09:55 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT015</logicalDatatype>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ContraBroker" id="BB874EC7-B928-FB21-523D-DD269404B2E1">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 03:10:30 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>5</dataTypeSize>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>

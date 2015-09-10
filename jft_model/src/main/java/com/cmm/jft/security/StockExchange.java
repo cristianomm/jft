@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.cmm.jft.trading.securities;
+package com.cmm.jft.security;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,13 +22,13 @@ import com.cmm.jft.db.DBObject;
  * @version Aug 6, 2013 2:00:40 AM
  */
 @Entity
-@Table(name = "StockExchange")
+@Table(name = "StockExchange", schema="Security")
 @NamedQueries({
-		@NamedQuery(name = "StockExchange.findAll", query = "SELECT e FROM StockExchange e"),
-		@NamedQuery(name = "StockExchange.findByStockExchangeID", query = "SELECT e FROM StockExchange e WHERE e.stockExchangeID = :stockExchangeID"),
-		@NamedQuery(name = "StockExchange.findByExchangeName", query = "SELECT e FROM StockExchange e WHERE e.exchangeName = :exchangeName"),
-// @NamedQuery(name = "StockExchange.findByCountry", query =
-// "SELECT e FROM StockExchange e WHERE e.country = :country")
+	@NamedQuery(name = "StockExchange.findAll", query = "SELECT e FROM StockExchange e"),
+	@NamedQuery(name = "StockExchange.findByStockExchangeID", query = "SELECT e FROM StockExchange e WHERE e.stockExchangeID = :stockExchangeID"),
+	@NamedQuery(name = "StockExchange.findByExchangeName", query = "SELECT e FROM StockExchange e WHERE e.exchangeName = :exchangeName"),
+	// @NamedQuery(name = "StockExchange.findByCountry", query =
+	// "SELECT e FROM StockExchange e WHERE e.country = :country")
 })
 public class StockExchange implements DBObject<StockExchange> {
 	private static final long serialVersionUID = 1L;
@@ -39,7 +39,7 @@ public class StockExchange implements DBObject<StockExchange> {
 	// @GeneratedValue(generator = "STOCKEXCHANGE_SEQ", strategy =
 	// GenerationType.AUTO)
 	@Basic(optional = false)
-	@Column(name = "stockExchangeID", nullable = false, length = 12)
+	@Column(name = "stockExchangeID", nullable = false, length = 15)
 	private String stockExchangeID;
 
 	@Column(name = "ExchangeName", length = 100)
@@ -49,24 +49,23 @@ public class StockExchange implements DBObject<StockExchange> {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Country countryID;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "stockExchangeID", fetch = FetchType.LAZY)
-	private Set<Company> companySet;
+	//@OneToMany(cascade = CascadeType.ALL, mappedBy = "stockExchangeID", fetch = FetchType.LAZY)
+	//private Set<Company> companySet;
 
-	// @OneToMany(cascade = CascadeType.ALL, mappedBy = "stockExchangeID", fetch
-	// = FetchType.LAZY)
-	// private Set<Security> securitySet;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "stockExchangeID", fetch = FetchType.LAZY)
+	private Set<Security> securitySet;
 
 	public StockExchange() {
-		this.companySet = new HashSet<Company>();
-		// this.securitySet = new HashSet<Security>();
+		//this.companySet = new HashSet<Company>();
+		this.securitySet = new HashSet<Security>();
 	}
 
 	public StockExchange(String exchangeID, String exchangeName, Country country) {
 		this.stockExchangeID = exchangeID;
 		this.exchangeName = exchangeName;
 		this.countryID = country;
-		this.companySet = new HashSet<Company>();
-		// this.securitySet = new HashSet<Security>();
+		//this.companySet = new HashSet<Company>();
+		this.securitySet = new HashSet<Security>();
 	}
 
 	/**
@@ -106,18 +105,18 @@ public class StockExchange implements DBObject<StockExchange> {
 		return this.stockExchangeID;
 	}
 
-	/**
-	 * @return the companySet
-	 */
-	public Set<Company> getCompanySet() {
-		return this.companySet;
-	}
+	//	/**
+	//	 * @return the companySet
+	//	 */
+	//	public Set<Company> getCompanySet() {
+	//		return this.companySet;
+	//	}
 
-	// /**
-	// * @return the securitySet
-	// */
-	// public Set<Security> getSecuritySet() {
-	// return this.securitySet;
-	// }
+	/**
+	 * @return the securitySet
+	 */
+	public Set<Security> getSecuritySet() {
+		return this.securitySet;
+	}
 
 }

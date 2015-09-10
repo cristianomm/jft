@@ -17,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder.Case;
 import org.apache.log4j.Level;
 
 import com.cmm.jft.db.DBObject;
+import com.cmm.jft.security.Security;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.MarketEvents;
 import com.cmm.jft.trading.enums.OrderStatus;
@@ -27,7 +28,6 @@ import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.InvalidOrderException;
 import com.cmm.jft.trading.exceptions.OrderException;
-import com.cmm.jft.trading.securities.Security;
 import com.cmm.logging.Logging;
 
 /**
@@ -40,13 +40,11 @@ import com.cmm.logging.Logging;
  * @version Aug 6, 2013 2:00:40 AM
  */
 @Entity
-@Table(name = "Orders", uniqueConstraints = { @UniqueConstraint(columnNames = { "OrderSerial" }) })
+@Table(name = "Orders", schema="Trading", uniqueConstraints = { @UniqueConstraint(columnNames = { "OrderSerial" }) })
 @NamedQueries({
 	@NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
 	@NamedQuery(name = "Orders.findByOrderID", query = "SELECT o FROM Orders o WHERE o.orderID = :orderID"),
 	@NamedQuery(name = "Orders.findByVolume", query = "SELECT o FROM Orders o WHERE o.volume = :volume"),
-	@NamedQuery(name = "Orders.findByAveragePrice", query = "SELECT o FROM Orders o WHERE o.averagePrice = :averagePrice"),
-	@NamedQuery(name = "Orders.findByExecutedVolume", query = "SELECT o FROM Orders o WHERE o.executedVolume = :executedVolume"),
 	@NamedQuery(name = "Orders.findByOrderStatus", query = "SELECT o FROM Orders o WHERE o.orderStatus = :orderStatus"),
 	@NamedQuery(name = "Orders.findBySide", query = "SELECT o FROM Orders o WHERE o.side = :side") })
 public class Orders implements DBObject<Orders> {
@@ -72,9 +70,6 @@ public class Orders implements DBObject<Orders> {
 	@Column(name="LeavesVolume")
 	private double leavesVolume;
 	
-	@Column(name = "LastPrice", precision = 19, scale = 6)
-	private double lastPrice;
-	
 	// @Max(value=?) @Min(value=?)//if you know range of your decimal fields
 	// consider using these annotations to enforce field validation
 	@Column(name = "AvgPrice", precision = 19, scale = 6)
@@ -98,20 +93,20 @@ public class Orders implements DBObject<Orders> {
 	private Date orderDateTime;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "OrderStatus", nullable = false)
+	@Column(name = "OrderStatus", nullable = false, length=50)
 	private OrderStatus orderStatus;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "WorkingIndicator", nullable = false)
+	@Column(name = "WorkingIndicator", nullable = false,length=50)
 	private WorkingIndicator workingIndicator;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "OrderValidityType", nullable = false)
+	@Column(name = "OrderValidityType", nullable = false, length=50)
 	private OrderValidityTypes validityType;
 
 	@Enumerated(EnumType.STRING)
 	@Basic(optional = false)
-	@Column(name = "OrderType", nullable = false, updatable = false)
+	@Column(name = "OrderType", nullable = false, length=50)
 	private OrderTypes orderType;
 
 	@Enumerated(EnumType.STRING)
@@ -121,26 +116,22 @@ public class Orders implements DBObject<Orders> {
 
 	@Enumerated(EnumType.STRING)
 	@Basic(optional = false)
-	@Column(name = "Side", nullable = false, updatable = false)
+	@Column(name = "Side", nullable = false, updatable = false, length=10)
 	private Side side;
 
 	@Column(name="Comment", length=250)
 	private String comment;
 
-	@Basic(optional = false)
-	@Column(name = "OrderSerial", length = 25, updatable = false, nullable = false)
-	private String orderSerial;
-
-	@Column(name="ClOrdID", length=25, updatable=false, nullable=false)
+	@Column(name="ClOrdID", length=50, updatable=false, nullable=false)
 	private String clOrdID;
 	
-	@Column(name="OrigClOrdID", length=25, updatable=false, nullable=false)
+	@Column(name="OrigClOrdID", length=50, updatable=false, nullable=false)
 	private String origClOrdID;
 
 	@Column(name="PartyID", length=50, updatable=false)
 	private String partyID;
 	
-	@Column(name="PartyIdSource", updatable=false)
+	@Column(name="PartyIdSource", updatable=false, length=50)
 	private char partyIdSource;
 	
 	@Column(name="PartyRole", length=5, updatable=false)
@@ -187,7 +178,6 @@ public class Orders implements DBObject<Orders> {
 		this.workingIndicator = WorkingIndicator.No_Working;
 		this.orderDateTime = new Date();
 		this.orderStatus = OrderStatus.CREATED;
-		this.orderSerial = UUID.randomUUID().toString();
 		this.eventsList = new ArrayList<OrderEvent>();
 	}
 
@@ -222,8 +212,7 @@ public class Orders implements DBObject<Orders> {
 		int sumVolume = 0;
 		double sumTotal = 0d;
 		for (OrderEvent oe : eventsList) {
-			if(oe.getExecutionType() == ExecutionTypes.TRADE) {			
-				lastPrice = oe.getPrice();
+			if(oe.getExecutionType() == ExecutionTypes.TRADE) {
 				sumVolume += oe.getVolume();
 				sumTotal += oe.getPrice() * oe.getVolume();
 			}
@@ -334,10 +323,6 @@ public class Orders implements DBObject<Orders> {
 	public Double getPrice() {
 		return this.price;
 	}
-
-	public double getLastPrice() {
-		return lastPrice;
-	}
 	
 	public double getLeavesVolume() {
 		return leavesVolume;
@@ -424,13 +409,7 @@ public class Orders implements DBObject<Orders> {
 	public Security getSecurityID() {
 		return securityID;
 	}
-
-	/**
-	 * @return the orderSerial
-	 */
-	public String getOrderSerial() {
-		return orderSerial;
-	}
+	
 	/**
 	 * @return the eventsList
 	 */
@@ -551,8 +530,6 @@ public class Orders implements DBObject<Orders> {
 				+ (volume != null ? "volume=" + volume + ", " : "")
 				+ "leavesVolume="
 				+ leavesVolume
-				+ ", lastPrice="
-				+ lastPrice
 				+ ", "
 				+ (avgPrice != null ? "avgPrice=" + avgPrice + ", " : "")
 				+ "protectionPrice="
@@ -573,8 +550,6 @@ public class Orders implements DBObject<Orders> {
 				+ (tradeType != null ? "tradeType=" + tradeType + ", " : "")
 				+ (side != null ? "side=" + side + ", " : "")
 				+ (comment != null ? "comment=" + comment + ", " : "")
-				+ (orderSerial != null ? "orderSerial=" + orderSerial + ", "
-						: "")
 				+ (clOrdID != null ? "clOrdID=" + clOrdID + ", " : "")
 				+ (origClOrdID != null ? "origClOrdID=" + origClOrdID + ", "
 						: "")

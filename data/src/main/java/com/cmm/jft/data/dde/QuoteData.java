@@ -13,9 +13,9 @@ import org.apache.log4j.Level;
 
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
+import com.cmm.jft.core.vo.Extractable;
 import com.cmm.jft.data.enums.DataFields;
 import com.cmm.jft.data.exceptions.StreamException;
-import com.cmm.jft.data.extractor.Extractable;
 import com.cmm.logging.Logging;
 
 /**
@@ -50,7 +50,7 @@ public class QuoteData implements Extractable {
 
 	// info
 	/**
-	 * Quantidade de negócios no dia
+	 * Quantidade de negï¿½cios no dia
 	 */
 	private long trades;
 	/**
@@ -58,28 +58,28 @@ public class QuoteData implements Extractable {
 	 */
 	private long tradedQt;
 	/**
-	 * Quantidade do Último Negócio
+	 * Quantidade do ï¿½ltimo Negï¿½cio
 	 */
 	private long lstTradeQt;
 	/**
-	 * Último Preço negociado
+	 * ï¿½ltimo Preï¿½o negociado
 	 */
 	private double lstPrice;
 	/**
-	 * Quantidade da Oferta de Compra para este determinado preço
+	 * Quantidade da Oferta de Compra para este determinado preï¿½o
 	 */
 	private int buyOfferQt;
 	/**
-	 * Quantidade da Oferta de Venda para este determinado preço
+	 * Quantidade da Oferta de Venda para este determinado preï¿½o
 	 */
 	private int sellOfferQt;
 
 	/**
-	 * Número de Ofertas de Compra para este determinado preço
+	 * Nï¿½mero de Ofertas de Compra para este determinado preï¿½o
 	 */
 	private int buyOfferCount;
 	/**
-	 * Número de Ofertas de Venda para este determinado preço
+	 * Nï¿½mero de Ofertas de Venda para este determinado preï¿½o
 	 */
 	private int sellOfferCount;
 
@@ -90,7 +90,7 @@ public class QuoteData implements Extractable {
 	 */
 	private BigDecimal finVolume;
 	/**
-	 * Volume financeiro do último negócio
+	 * Volume financeiro do ï¿½ltimo negï¿½cio
 	 */
 	private BigDecimal lstFinVolume;
 
