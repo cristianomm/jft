@@ -10,11 +10,12 @@ import java.util.Date;
  * 
  */
 public class OrderEventVO implements Extractable {
-		
+	
+	public String orderID = "";
+	public String eventID = "";
+	public String securityID = "";
 	public Date sessionDate;
 	public double price;
-	public String externalID = "";
-	public String securityID = "";
 	public double volume;
 	public Date orderDate;
 	public Date orderTime;
@@ -22,7 +23,7 @@ public class OrderEventVO implements Extractable {
 	public String orderEvent = "";
 	public double tradedVolume;
 	public String orderCondition = "";
-	public String broker = "";
+	public int broker;
 	
 	
 }

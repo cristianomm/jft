@@ -6,9 +6,9 @@ package com.cmm.jft.messaging;
 import quickfix.Message;
 import quickfix.SessionID;
 
+import com.cmm.jft.marketdata.MarketOrder;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.marketdata.MarketOrder;
 
 /**
  * <p><code>MessageDecoder.java</code></p>

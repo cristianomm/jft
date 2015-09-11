@@ -3,11 +3,11 @@ package com.cmm.jft.engine.message;
 
 import com.cmm.jft.engine.Book;
 import com.cmm.jft.engine.BookRepository;
+import com.cmm.jft.marketdata.MarketOrder;
 import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.messaging.MessageHandler;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.marketdata.MarketOrder;
 
 import quickfix.FieldNotFound;
 import quickfix.IncorrectTagValue;

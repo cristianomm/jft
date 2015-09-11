@@ -25,7 +25,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.cmm.jft.db.DBObject;
-import com.cmm.jft.trading.marketdata.MarketOrder;
+import com.cmm.jft.marketdata.MarketOrder;
 
 /**
  * <p>

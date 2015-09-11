@@ -30,13 +30,13 @@ import com.cmm.jft.db.DBObject;
  */
 public class OrdersVO implements DBObject<OrdersVO> {
 	
-	public Long orderID;
+	public long orderID;
 	
 	public double price;
 	
 	public double stopPrice;
 	
-	public Double volume;
+	public double volume;
 	
 	public double leavesVolume;
 	
@@ -48,7 +48,7 @@ public class OrdersVO implements DBObject<OrdersVO> {
 	
 	public double maxFloor;
 	
-	public Integer executedVolume;
+	public double executedVolume;
 	
 	public Date duration;
 	
@@ -68,8 +68,6 @@ public class OrdersVO implements DBObject<OrdersVO> {
 	
 	public String comment;
 	
-	public String orderSerial;
-	
 	public String clOrdID;
 	
 	public String origClOrdID;
@@ -80,8 +78,14 @@ public class OrdersVO implements DBObject<OrdersVO> {
 	
 	public String partyRole;
 	
-	//public Security securityID;
+	public String securityID;
 	
 	public List<OrderEventVO> eventsList;
+	
+	
+	public OrdersVO() {
+		this.eventsList = new ArrayList<OrderEventVO>();
+	}
+	
 
 }

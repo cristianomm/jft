@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.cmm.jft.trading.marketdata;
+package com.cmm.jft.marketdata;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

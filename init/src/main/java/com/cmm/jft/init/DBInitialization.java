@@ -28,6 +28,7 @@ import com.cmm.jft.financial.Currency;
 import com.cmm.jft.financial.ExchangeTax;
 import com.cmm.jft.financial.enums.AccountCategories;
 import com.cmm.jft.financial.enums.AccountTypes;
+import com.cmm.jft.marketdata.HistoricalQuote;
 import com.cmm.jft.security.Country;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.security.SecurityInfo;
@@ -40,7 +41,6 @@ import com.cmm.jft.trading.enums.SecurityCategory;
 import com.cmm.jft.trading.enums.StockSpecifications;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.enums.ValueTypes;
-import com.cmm.jft.trading.marketdata.HistoricalQuote;
 import com.cmm.logging.Logging;
 
 
@@ -114,7 +114,6 @@ public class DBInitialization {
 		addSecurities("../file/SecuritiesMT.csv");
 
 		//addHistoricalQuotes("../jft_core/file/HistoricalQuotes.csv");
-
 		//inuteis
 		//		addCompanies("../jft_core/file/Companies.csv");
 		//		addMarketCodes("../jft_core/file/MarketCodes.csv");

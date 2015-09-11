@@ -14,9 +14,9 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.cmm.jft.db.DBObject;
+import com.cmm.jft.marketdata.HistoricalQuote;
+import com.cmm.jft.marketdata.MarketOrder;
 import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.marketdata.HistoricalQuote;
-import com.cmm.jft.trading.marketdata.MarketOrder;
 
 /**
  *
