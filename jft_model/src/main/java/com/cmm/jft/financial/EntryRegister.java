@@ -27,7 +27,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @version Aug 6, 2013 2:00:40 AM
  */
 @Entity
-@Table(name = "EntryRegister")
+@Table(name = "EntryRegister", schema="Financial")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQueries({
 		@NamedQuery(name = "EntryRegister.findAll", query = "SELECT e FROM EntryRegister e"),

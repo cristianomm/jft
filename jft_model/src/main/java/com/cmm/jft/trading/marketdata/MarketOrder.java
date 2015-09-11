@@ -13,8 +13,8 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.cmm.jft.db.DBObject;
+import com.cmm.jft.financial.Broker;
 import com.cmm.jft.security.Security;
-import com.cmm.jft.trading.account.Broker;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.Side;
 
@@ -28,7 +28,7 @@ import com.cmm.jft.trading.enums.Side;
  * @version Aug 6, 2013 2:00:41 AM
  */
 @Entity
-@Table(name = "MarketOrder")
+@Table(name = "MarketOrder", schema="MarketData")
 /*
  * @NamedQueries({
  * 
@@ -69,7 +69,7 @@ public class MarketOrder implements DBObject<MarketOrder> {
 	private BigDecimal price;
 
 	@Column(name = "Volume")
-	private Integer volume;
+	private double volume;
 
 	@Column(name = "ExpirationDate")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -176,7 +176,7 @@ public class MarketOrder implements DBObject<MarketOrder> {
 	/**
 	 * @return the volume
 	 */
-	public Integer getVolume() {
+	public double getVolume() {
 		return this.volume;
 	}
 

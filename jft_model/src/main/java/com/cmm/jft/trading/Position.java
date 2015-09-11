@@ -3,10 +3,10 @@ package com.cmm.jft.trading;
 
 import com.cmm.jft.core.enums.GeneralStatus;
 import com.cmm.jft.db.DBObject;
+import com.cmm.jft.financial.Broker;
+import com.cmm.jft.financial.Brokerage;
 import com.cmm.jft.financial.JournalEntry;
 import com.cmm.jft.financial.services.JournalService;
-import com.cmm.jft.trading.account.Broker;
-import com.cmm.jft.trading.account.Brokerage;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;

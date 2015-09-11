@@ -49,7 +49,7 @@
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<logicalDatatype>LOGDT020</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Price" id="B9537EB8-0F81-469F-2E67-EA68CB2A281E">
@@ -60,6 +60,8 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="TradeDateTime" id="101BB876-8E90-30CD-B008-28CF0C827CEB">

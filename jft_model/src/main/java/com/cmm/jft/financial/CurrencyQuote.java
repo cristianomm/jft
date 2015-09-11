@@ -23,7 +23,7 @@ import com.cmm.jft.db.DBObject;
  * @version Aug 6, 2013 2:00:40 AM
  */
 @Entity
-@Table(name = "CurrencyQuote")
+@Table(name = "CurrencyQuote", schema="Financial")
 @NamedQueries({
 		@NamedQuery(name = "CurrencyQuote.findAll", query = "SELECT c FROM CurrencyQuote c"),
 		@NamedQuery(name = "CurrencyQuote.findByCurrencyQuoteID", query = "SELECT c FROM CurrencyQuote c WHERE c.currencyQuoteID = :currencyQuoteID"),

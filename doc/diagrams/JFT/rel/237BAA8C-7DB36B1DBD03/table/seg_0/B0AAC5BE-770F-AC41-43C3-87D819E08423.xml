@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="B0AAC5BE-770F-AC41-43C3-87D819E08423" name="MarketOrderEvent">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="B0AAC5BE-770F-AC41-43C3-87D819E08423" name="MarketEvent">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -63,7 +63,7 @@
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
-<ind_PK_UK id="F399BBA7-6B88-DA21-F3F6-129E0E556062" name="MarketOrderEvent_PK">
+<ind_PK_UK id="F399BBA7-6B88-DA21-F3F6-129E0E556062" name="MarketEvent_PK">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:34:21 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -74,7 +74,7 @@
 <colUsage columnID="666E1DA1-47FD-949E-6A51-F492322BE415"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="23A2ED2F-BCC9-3DAF-E408-B8BD4D42E371" name="MarketOrderEvent_MarketOrder_FK">
+<ind_PK_UK id="23A2ED2F-BCC9-3DAF-E408-B8BD4D42E371" name="MarketEvent_MarketOrder_FK">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:58 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>

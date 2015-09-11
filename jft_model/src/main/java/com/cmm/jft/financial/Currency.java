@@ -28,7 +28,7 @@ import javax.persistence.*;
  * @version Aug 6, 2013 2:00:41 AM
  */
 @Entity
-@Table(name = "Currency")
+@Table(name = "Currency", schema="Financial")
 @NamedQueries({
 		@NamedQuery(name = "Currency.findAll", query = "SELECT c FROM Currency c"),
 		@NamedQuery(name = "Currency.findByCurrencyID", query = "SELECT c FROM Currency c WHERE c.currencyID = :currencyID"),

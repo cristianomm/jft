@@ -34,7 +34,7 @@ import com.cmm.logging.Logging;
  *
  */
 @Entity
-@Table(name = "RuleFormula")
+@Table(name = "RuleFormula", schema="Financial")
 public class RuleFormula implements DBObject<RuleFormula> {
 
 	@Id

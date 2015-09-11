@@ -26,7 +26,7 @@ import com.cmm.jft.db.DBObject;
  * @version Aug 6, 2013 2:00:40 AM
  */
 @Entity
-@Table(name = "Deposit")
+@Table(name = "Deposit", schema="Financial")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQueries({
 		@NamedQuery(name = "Deposit.findAll", query = "SELECT d FROM Deposit d"),

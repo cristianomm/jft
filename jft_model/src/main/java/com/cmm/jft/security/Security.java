@@ -150,6 +150,26 @@ public class Security implements DBObject<Security> {
 		return this.securityInfoID;
 	}
 	
+	/**
+	 * @return the stockExchangeID
+	 */
+	public StockExchange getStockExchangeID() {
+		return this.stockExchangeID;
+	}
+	/**
+	 * @param stockExchangeID the stockExchangeID to set
+	 */
+	public void setStockExchangeID(StockExchange stockExchangeID) {
+		this.stockExchangeID = stockExchangeID;
+	}
+	
+	/**
+	 * @param securityInfoID the securityInfoID to set
+	 */
+	public void setSecurityInfoID(SecurityInfo securityInfoID) {
+		this.securityInfoID = securityInfoID;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 

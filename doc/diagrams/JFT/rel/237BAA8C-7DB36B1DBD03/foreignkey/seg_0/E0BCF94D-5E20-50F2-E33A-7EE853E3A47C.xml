@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="E0BCF94D-5E20-50F2-E33A-7EE853E3A47C" name="MarketOrderEvent_MarketOrder_FK">
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="E0BCF94D-5E20-50F2-E33A-7EE853E3A47C" name="MarketEvent_MarketOrder_FK">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:58 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>

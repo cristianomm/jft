@@ -49,7 +49,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>8</dataTypeScale>
+<dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Volume" id="7A8646E4-8E7B-35F9-3EEF-CB8BA310A9CC">
@@ -59,7 +59,7 @@
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<logicalDatatype>LOGDT020</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="ExpirationDate" id="31567B49-1E6A-8FD3-DAD0-7D17E44719C4">
@@ -72,7 +72,7 @@
 <logicalDatatype>LOGDT015</logicalDatatype>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="OrderDate" id="ED805D9D-BE76-F213-B33E-D8711C45FEE8">
+<Column name="OrderDateTime" id="ED805D9D-BE76-F213-B33E-D8711C45FEE8">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -90,7 +90,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>10</dataTypeSize>
+<dataTypeSize>20</dataTypeSize>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="brokerID" id="DCCECF71-65B9-AAEB-E0B7-6E5F40846B6A">

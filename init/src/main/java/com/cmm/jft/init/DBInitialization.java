@@ -2,10 +2,13 @@ package com.cmm.jft.init;
 
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.log4j.Level;
 
@@ -15,26 +18,29 @@ import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.core.util.InputRowReport;
 import com.cmm.jft.data.files.CSV;
 import com.cmm.jft.db.DBFacade;
+import com.cmm.jft.db.DBObject;
 import com.cmm.jft.db.exceptions.DataBaseException;
 import com.cmm.jft.financial.Account;
+import com.cmm.jft.financial.Broker;
+import com.cmm.jft.financial.Brokerage;
+import com.cmm.jft.financial.Commission;
 import com.cmm.jft.financial.Currency;
+import com.cmm.jft.financial.ExchangeTax;
 import com.cmm.jft.financial.enums.AccountCategories;
 import com.cmm.jft.financial.enums.AccountTypes;
 import com.cmm.jft.security.Country;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.security.SecurityInfo;
 import com.cmm.jft.security.StockExchange;
-import com.cmm.jft.trading.account.Broker;
-import com.cmm.jft.trading.account.Brokerage;
-import com.cmm.jft.trading.account.Commission;
-import com.cmm.jft.trading.account.ExchangeTax;
 import com.cmm.jft.trading.enums.AssetTypes;
+import com.cmm.jft.trading.enums.MarketTypes;
 import com.cmm.jft.trading.enums.OptionRights;
 import com.cmm.jft.trading.enums.OptionStyles;
 import com.cmm.jft.trading.enums.SecurityCategory;
 import com.cmm.jft.trading.enums.StockSpecifications;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.enums.ValueTypes;
+import com.cmm.jft.trading.marketdata.HistoricalQuote;
 import com.cmm.logging.Logging;
 
 
@@ -48,7 +54,7 @@ public class DBInitialization {
 
 
 	public static void main(String[] args) {
-		
+
 		//
 		//	//	String[] s = {"1\r"};
 		//	//	System.out.println(Long.parseLong(s[0].toString()));
@@ -82,7 +88,7 @@ public class DBInitialization {
 
 
 		DBInitialization dbini = new DBInitialization();
-		//dbini.initializeDB();
+		dbini.initializeDB();
 		System.exit(0);
 
 	}
@@ -100,29 +106,30 @@ public class DBInitialization {
 		addCountries("../file/Country.csv");
 		addCurrencies("../file/Currencies.csv");
 		addAccounts("../file/Accounts.csv");
-				
+		addExchanges("../file/Exchanges.csv");
+
 		addBrokers("../file/Brokers.csv");
 		addBrokerage("../file/Brokerage.csv");
 		//		addIsin("../jft_core/file/Isin.csv");
 		addSecurities("../file/SecuritiesMT.csv");
-		addExchanges("../file/Exchanges.csv");				
-		
-		
-		//inuteis
-//		addCompanies("../jft_core/file/Companies.csv");
-//		addMarketCodes("../jft_core/file/MarketCodes.csv");
-//		addSecurityTypes("../jft_core/file/SecurityTypes.csv");
-//		addDatesInCodes("../jft_core/file/CodesAndDates.csv");
-//		addHistoricalQuotes("../jft_core/file/HistoricalQuotes.csv");
-//		addEarnings("../jft_core/file/Earnings.csv");
-//		addUsers("../jft_core/file/");
 
-		
+		//addHistoricalQuotes("../jft_core/file/HistoricalQuotes.csv");
+
+		//inuteis
+		//		addCompanies("../jft_core/file/Companies.csv");
+		//		addMarketCodes("../jft_core/file/MarketCodes.csv");
+		//		addSecurityTypes("../jft_core/file/SecurityTypes.csv");
+		//		addDatesInCodes("../jft_core/file/CodesAndDates.csv");
+
+		//		addEarnings("../jft_core/file/Earnings.csv");
+		//		addUsers("../jft_core/file/");
+
+
 		System.out.println(report.reportAll());
 
 	}
-	
-	
+
+
 
 	private void addCountries(String fileName) {
 		String repName = "Countries";
@@ -168,7 +175,7 @@ public class DBInitialization {
 			while(csv.hasNext()) {
 				String[] vs = csv.readLine();
 				if(vs.length<4)continue;
-				
+
 				Currency c = new Currency(vs[2]);
 				c.setDescription(vs[1]);
 				c.setCurrSymbol(vs[3]);
@@ -209,7 +216,7 @@ public class DBInitialization {
 		String repName = "Accounts";
 		try {
 			report.startReport(repName);
-//			DBFacade.getInstance().beginTransaction();
+			//			DBFacade.getInstance().beginTransaction();
 
 			HashMap<String, Currency> currencies = new HashMap<String, Currency>();
 			DBFacade.getInstance().queryAsMap("Currency.findAll", currencies, Currency.class, "getCurrencyID");
@@ -223,12 +230,12 @@ public class DBInitialization {
 				String currency = vs[3];
 				String type = vs[4];
 				String category = vs[5];
-				
+
 				AccountTypes types = AccountTypes.valueOf(type);
 				AccountCategories cats = AccountCategories.valueOf(category);
-				
+
 				Account acc = new Account(account, accountName, credit, currencies.get(currency), types, cats);
-				
+
 				DBFacade.getInstance().addToBatch(acc);
 				report.count(repName);
 			}
@@ -241,7 +248,7 @@ public class DBInitialization {
 		}
 
 	}
-	
+
 
 	private void addBrokers(String fileName) {
 		String repName = "Brokers";
@@ -301,7 +308,7 @@ public class DBInitialization {
 							ValueTypes calcType = ValueTypes.valueOf(vs[4]);
 							//Account crdAccount = (Account) DBFacade.getInstance().findObject("Account.findByAccountID", "accountID", vs[5]);
 							//Account dbtAccount = (Account) DBFacade.getInstance().findObject("Account.findByAccountID", "accountID", vs[6]);
-							
+
 							Commission com = new Commission(valueMin, valueMax, commValue, calcType, brk);
 							com = (Commission) DBFacade.getInstance()._persist(com);
 						}
@@ -317,32 +324,32 @@ public class DBInitialization {
 		}
 
 	}
-	
+
 	private void addSecurities(String fileName) {
 
 		String repName = "Securities";
 		try {
 			report.startReport(repName);
 
-		    HashMap<String, Currency> currencies = new HashMap<String, Currency>();
+			HashMap<String, Currency> currencies = new HashMap<String, Currency>();
 			DBFacade.getInstance().queryAsMap("Currency.findAll", currencies, Currency.class, "getCurrencyID");
-			
-			
-//			HashMap<String, Isin> isins = new HashMap<String, Isin>();
-//			DBFacade.getInstance().queryAsMap("Isin.findAll", isins, Isin.class, "getIsin");
+
+
+			//			HashMap<String, Isin> isins = new HashMap<String, Isin>();
+			//			DBFacade.getInstance().queryAsMap("Isin.findAll", isins, Isin.class, "getIsin");
 
 			//HashMap<String, SecurityType> specis = new HashMap<String, SecurityType>();
 			//DBFacade.getInstance().queryAsMap("SecurityType.findAll", specis, SecurityType.class, "getCode");
 			//Symbol;ISIN;StockCode;Descricao;TipoAtivoObjeto;EstiloOpcao;Situacao;DataEmissao;DataExpiracao;PrecoExercicio;TipoAtivo;Categoria;secType;secSpeci 
-			
+
 			//SYMBOL;DESCRIPTION;ISIN;CURRENCY_BASE;CONTRACT_SIZE;TICK_SIZE;TICK_VALUE;DIGITS;MINIMAL_VOLUME;STEP_VOLUME;START_TIME;EXPIRATION_TIME;OPTION_MODE;OPTION_RIGHT;OPTION_STRIKE
 			CSV csv = new CSV(fileName, ";","#");
 			String[] vs = csv.readLine();
 			while(csv.hasNext()) {
-				
+
 				vs = csv.readLine();
 				if(vs.length<16)continue;
-				
+
 				String symbol=vs[0];
 				String description = vs[1];
 				String ISIN=vs[2].trim();
@@ -360,13 +367,15 @@ public class DBInitialization {
 				OptionStyles style = OptionStyles.getByValue(vs[14]);
 				OptionRights optionRight = OptionRights.getByValue(vs[15]);
 				double strikePrice = (Double)FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[16]);
-				
+
 				SecurityCategory secCat = SecurityCategory.getByISIN(ISIN);
 				//AssetTypes objAsset = AssetTypes.getByValue(tipoAtivoObjeto);
 				Security security = new Security(symbol);
 				security.setDescription(description);
-				security = (Security) DBFacade.getInstance()._persist(security);
-								
+				security.setStockExchangeID((StockExchange) 
+						DBFacade.getInstance().
+						findObject("StockExchange.findByStockExchangeID", "stockExchangeID", "BVMF"));
+
 				SecurityInfo info = new SecurityInfo(security, secCat);
 				info.setIsin(ISIN);
 				info.setCurrencyID(currencies.get(currency));
@@ -383,8 +392,11 @@ public class DBInitialization {
 				info.setOptionStyle(style);
 				info.setOptionRight(optionRight);
 				info.setStrikePrice(strikePrice);
-				
+
 				info = (SecurityInfo) DBFacade.getInstance()._persist(info);
+
+				security.setSecurityInfoID(info);
+				DBFacade.getInstance()._persist(security);
 
 				report.count(repName);
 			}
@@ -398,8 +410,8 @@ public class DBInitialization {
 			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
 		}
 	}
-	
-	
+
+
 	private void addExchanges(String fileName) {
 		String repName = "Exchanges";
 		try {
@@ -426,8 +438,70 @@ public class DBInitialization {
 			report.reportError(repName, e.getMessage());
 		}
 	}
-	
-	
+
+
+	private void addHistoricalQuotes(String fileName){
+		String repName = "HistoricalQuotes";
+		try {
+			report.startReport(repName);
+
+			HashMap<String, Security> securities = new HashMap<String, Security>();
+			DBFacade.getInstance().queryAsMap("Security.findAll", securities, Security.class, "getSymbol");
+			System.out.println("Carregando");
+			List<DBObject> quotes = new ArrayList<DBObject>(100000);
+			CSV csv = new CSV(fileName, ";", "#");
+			while(csv.hasNext()) {
+				//System.out.println("Carregado!");
+				/*
+				 * Symbol;stockcode;Isin;companyName;CurrencyID;MarketTypeID;QDatetime;Fatquote;
+				 * QHigh;QLow;QOpen;QClose;QAsk;QBid;PreMed;Volume;TradedUnits;TradedQuantity;
+				 * TradableUnits;QuoteFactor;ExPrice;ExPoint;ExDate;Prazot;StockExchange\n
+				 */
+				String[] vs = csv.readLine();
+				MarketTypes mType = MarketTypes.getByValue(Integer.parseInt(vs[5]));
+				if(securities.containsKey(vs[0]) && mType.equals(MarketTypes.EQUITIES)) {
+
+					Date QDatetime = (Date)FormatterFactory.getFormatter(FormatterTypes.DATE_F8).parse(vs[6]);
+					BigDecimal QHigh = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[8]);
+					BigDecimal QLow = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[9]);
+					BigDecimal QOpen = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[10]);
+					BigDecimal QClose = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[11]);
+					BigDecimal QAsk = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[12]);
+					BigDecimal QBid = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[13]);
+					BigDecimal QAvg = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[14]);
+					BigDecimal Volume = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[15]);
+					Long TradedUnits = (Long)FormatterFactory.getFormatter(FormatterTypes.LONG).parse(vs[16]);
+					Long TradedQuantity = (Long)FormatterFactory.getFormatter(FormatterTypes.LONG).parse(vs[17]);
+
+					HistoricalQuote hqte = new HistoricalQuote();
+					hqte.setSecurityID(securities.get(vs[0]));
+					hqte.setqDateTime(QDatetime);
+					hqte.setAsk(QAsk);
+					hqte.setBid(QBid);
+					hqte.setClose(QClose);
+					hqte.setHigh(QHigh);
+					hqte.setLow(QLow);
+					hqte.setOpen(QOpen);
+					hqte.setAvgPrice(QAvg);
+					hqte.setVolume(Volume);
+					hqte.setTradedUnits(TradedUnits);
+					hqte.setTradedQuantity(TradedQuantity);
+
+					DBFacade.getInstance().addToBatch(hqte);
+					report.count(repName);
+				}
+
+			}
+			DBFacade.getInstance().finalizeBatch();
+
+		} catch (DataBaseException e) {
+			e.printStackTrace();
+			report.reportError(repName, e.getMessage());
+			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
+		}
+	}
+
+
 	//    private void addCompanies(String fileName) {
 	//	String repName = "Companies";
 	//	try {
@@ -655,68 +729,8 @@ public class DBInitialization {
 	//	}
 	//
 	//    }
-		
-	//
-	//    private void addHistoricalQuotes(String fileName){
-	//	String repName = "HistoricalQuotes";
-	//	try {
-	//	    report.startReport(repName);
-	//
-	//	    HashMap<String, Security> securities = new HashMap<String, Security>();
-	//	    DBFacade.getInstance().queryAsMap("Security.findAll", securities, Security.class, "getSymbol");
-	//	    System.out.println("Carregando");
-	//	    List<DBObject> quotes = new ArrayList<DBObject>(100000);
-	//	    CSV csv = new CSV(fileName, ";", "#");
-	//	    while(csv.hasNext()) {
-	//		//System.out.println("Carregado!");
-	//		/*
-	//		 * Symbol;stockcode;Isin;companyName;CurrencyID;MarketTypeID;QDatetime;Fatquote;
-	//		 * QHigh;QLow;QOpen;QClose;QAsk;QBid;PreMed;Volume;TradedUnits;TradedQuantity;
-	//		 * TradableUnits;QuoteFactor;ExPrice;ExPoint;ExDate;Prazot;StockExchange\n
-	//		 */
-	//		String[] vs = csv.readLine();
-	//		MarketTypes mType = MarketTypes.getByValue(Integer.parseInt(vs[5]));
-	//		if(securities.containsKey(vs[0]) && mType.equals(MarketTypes.EQUITIES)) {
-	//
-	//		    Date QDatetime = (Date)FormatterFactory.getFormatter(FormatterTypes.DATE_F8).parse(vs[6]);
-	//		    BigDecimal QHigh = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[8]);
-	//		    BigDecimal QLow = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[9]);
-	//		    BigDecimal QOpen = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[10]);
-	//		    BigDecimal QClose = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[11]);
-	//		    BigDecimal QAsk = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[12]);
-	//		    BigDecimal QBid = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[13]);
-	//		    BigDecimal QAvg = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[14]);
-	//		    BigDecimal Volume = (BigDecimal)FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(vs[15]);
-	//		    Long TradedUnits = (Long)FormatterFactory.getFormatter(FormatterTypes.LONG).parse(vs[16]);
-	//		    Long TradedQuantity = (Long)FormatterFactory.getFormatter(FormatterTypes.LONG).parse(vs[17]);
-	//
-	//		    HistoricalQuote hqte = new HistoricalQuote();
-	//		    hqte.setSecurityID(securities.get(vs[0]));
-	//		    hqte.setqDateTime(QDatetime);
-	//		    hqte.setAsk(QAsk);
-	//		    hqte.setBid(QBid);
-	//		    hqte.setClose(QClose);
-	//		    hqte.setHigh(QHigh);
-	//		    hqte.setLow(QLow);
-	//		    hqte.setOpen(QOpen);
-	//		    hqte.setAvgPrice(QAvg);
-	//		    hqte.setVolume(Volume);
-	//		    hqte.setTradedUnits(TradedUnits);
-	//		    hqte.setTradedQuantity(TradedQuantity);
-	//
-	//		    DBFacade.getInstance().addToBatch(hqte);
-	//		    report.count(repName);
-	//		}
-	//
-	//	    }
-	//	    DBFacade.getInstance().finalizeBatch();
-	//
-	//	} catch (DataBaseException e) {
-	//	    e.printStackTrace();
-	//	    report.reportError(repName, e.getMessage());
-	//	    Logging.getInstance().log(this.getClass(), e, Level.ERROR);
-	//	}
-	//    }
+
+
 	//
 	//    private void addEarnings(String fileName) {
 	//	String repName = "Earnings";

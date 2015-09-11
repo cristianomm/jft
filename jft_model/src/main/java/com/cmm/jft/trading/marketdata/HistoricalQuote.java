@@ -33,7 +33,7 @@ import com.cmm.jft.security.Security;
  *
  */
 @Entity
-@Table(name = "HistoricalQuote")
+@Table(name = "HistoricalQuote", schema="MarketData")
 public class HistoricalQuote implements DBObject<HistoricalQuote> {
 
 	@Id

@@ -24,8 +24,8 @@ import com.cmm.jft.security.Security;
  * @version Aug 6, 2013 2:00:41 AM
  */
 @Entity
-@Table(name = "MarketTrade", uniqueConstraints = { @UniqueConstraint(columnNames = {
-		"TradeDateTime", "Price", "Volume" }) })
+@Table(name = "MarketTrade", schema="MarketData", 
+uniqueConstraints = { @UniqueConstraint(columnNames = {"TradeDateTime", "Price", "Volume" }) })
 @NamedQueries({
 		@NamedQuery(name = "MarketTrade.findAll", query = "SELECT m FROM MarketTrade m"),
 		@NamedQuery(name = "MarketTrade.findByMarketTradeID", query = "SELECT m FROM MarketTrade m WHERE m.marketTradeID = :marketTradeID"),
@@ -51,7 +51,7 @@ public class MarketTrade implements DBObject<MarketTrade> {
 	private BigDecimal price;
 
 	@Column(name = "Volume")
-	private Integer volume;
+	private double volume;
 	
 	@JoinColumn(name="buyOrderID", referencedColumnName="marketOrderID", nullable=false)
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
@@ -98,7 +98,7 @@ public class MarketTrade implements DBObject<MarketTrade> {
 	/**
 	 * @return the volume
 	 */
-	public Integer getVolume() {
+	public double getVolume() {
 		return this.volume;
 	}
 

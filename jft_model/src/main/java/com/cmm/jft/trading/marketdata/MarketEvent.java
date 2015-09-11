@@ -35,7 +35,7 @@ import com.cmm.jft.trading.enums.MarketEvents;
  *
  */
 @Entity
-@Table(name = "MarketEvent")
+@Table(name = "MarketEvent", schema="MarketData")
 public class MarketEvent implements DBObject<MarketEvent> {
 
 	@Id

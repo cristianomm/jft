@@ -46,7 +46,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>8</dataTypeScale>
+<dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Close" id="6C158F7B-83FA-20A3-1AF9-292664427F9B">
@@ -58,7 +58,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>8</dataTypeScale>
+<dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="High" id="92C04709-7D06-3C0F-B1BD-4AC1CDA75021">
@@ -70,7 +70,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>8</dataTypeScale>
+<dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Low" id="81E7C34E-3BF4-D73F-9595-D850C71D5EBD">
@@ -82,7 +82,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>8</dataTypeScale>
+<dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Bid" id="CA74D683-B3EB-0689-64B3-56668AFE45B9">
@@ -94,7 +94,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>8</dataTypeScale>
+<dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Ask" id="A2EBE803-03BF-DE31-6413-40971B354A9C">
@@ -106,7 +106,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>8</dataTypeScale>
+<dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="AvgPrice" id="B5BC3439-2118-A170-8FE6-61F8FCC13DC8">
@@ -140,7 +140,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT043</logicalDatatype>
-<dataTypePrecision>22</dataTypePrecision>
+<dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>

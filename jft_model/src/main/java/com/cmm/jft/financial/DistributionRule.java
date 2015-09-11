@@ -27,7 +27,7 @@ import com.cmm.jft.db.DBObject;
  * @version Aug 6, 2013 2:00:40 AM
  */
 @Entity
-@Table(name = "DistributionRule")
+@Table(name = "DistributionRule", schema="Financial")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQueries({
 		@NamedQuery(name = "DistributionRule.findAll", query = "SELECT d FROM DistributionRule d"),

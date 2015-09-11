@@ -1,6 +1,6 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <oracle.dbtools.crest.model.design.relational.RelationalDesign>
-   <object objectType="SchemaObject" objectID="C3DD7DCD-2777-B839-3D01-7A52DFB4FD1E" name="Accounting" seqName="seg_0"/>
+   <object objectType="SchemaObject" objectID="C3DD7DCD-2777-B839-3D01-7A52DFB4FD1E" name="Financial" seqName="seg_0"/>
    <object objectType="SchemaObject" objectID="D8952EB8-558E-2218-16F1-0690431FB06D" name="MarketData" seqName="seg_0"/>
    <object objectType="SchemaObject" objectID="B563C57E-FB72-43A9-0A56-5A2A13D3C2DD" name="Security" seqName="seg_0"/>
    <object objectType="SchemaObject" objectID="1A48C32D-DFAE-0EE0-B56E-1F544E09C671" name="Trading" seqName="seg_0"/>
@@ -16,8 +16,8 @@
    <object objectType="Table" objectID="A1D277EE-DFC1-D740-E099-94AB5E767562" name="ExchangeTax" seqName="seg_0"/>
    <object objectType="Table" objectID="09EF0E67-6147-B90E-B908-F40D405B0B92" name="HistoricalQuote" seqName="seg_0"/>
    <object objectType="Table" objectID="CB848E12-793C-9BB8-50AC-D5D80E66C5B8" name="JournalEntry" seqName="seg_0"/>
+   <object objectType="Table" objectID="B0AAC5BE-770F-AC41-43C3-87D819E08423" name="MarketEvent" seqName="seg_0"/>
    <object objectType="Table" objectID="E4FBAF34-94BD-CA3C-1DDF-3D416174BC34" name="MarketOrder" seqName="seg_0"/>
-   <object objectType="Table" objectID="B0AAC5BE-770F-AC41-43C3-87D819E08423" name="MarketOrderEvent" seqName="seg_0"/>
    <object objectType="Table" objectID="F6DA1B68-20E0-5971-0DDA-ECE19A13695B" name="MarketTrade" seqName="seg_0"/>
    <object objectType="Table" objectID="94C36974-55DF-2582-12E8-3550813024E1" name="OrderEvent" seqName="seg_0"/>
    <object objectType="Table" objectID="16DF40E0-F6F4-BD3F-C496-5ED12BD94083" name="Orders" seqName="seg_0"/>
@@ -33,8 +33,7 @@
    <object objectType="FKIndexAssociation" objectID="AD71E921-E50E-B345-EC42-1DF445C6565C" name="EntryRegister_Account_FKv1" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="B1D855E7-714D-F5D1-A811-28340F30B32E" name="EntryRegister_JournalEntry_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="B876063A-F716-7FEC-1C78-988BC1AEE519" name="ExchangeTax_Brokerage_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="6863F71F-3D5A-E4FB-0484-1AA6E009D0E3" name="Security_StockExchange_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="E0BCF94D-5E20-50F2-E33A-7EE853E3A47C" name="MarketOrderEvent_MarketOrder_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="E0BCF94D-5E20-50F2-E33A-7EE853E3A47C" name="MarketEvent_MarketOrder_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="588909CD-8C34-39CB-D6AD-3C152E4A0537" name="MarketTrades_ExchangeItem_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="EF30FA89-EF8B-F2AB-BDE5-A28309C2AE24" name="OrderEvent_Orders_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="6E0D7401-BCF9-E7C7-F050-76C776A9DBBA" name="OrderExecutions_MarketOrder_FK" seqName="seg_0"/>
@@ -43,5 +42,6 @@
    <object objectType="FKIndexAssociation" objectID="E207CE51-E32B-5EB8-FF96-EF7A7DEEE809" name="Quote_ExchangeItem_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="BCB5B403-8F38-0EBC-6103-0DE328BF8D14" name="SecurityInfo_Currency_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="027CACD8-FFD6-3D16-195D-1C2F3B87EA5C" name="SecurityInfo_Security_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="6863F71F-3D5A-E4FB-0484-1AA6E009D0E3" name="Security_StockExchange_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="36B7E672-FCCF-0D27-72DE-67FADE2DA656" name="StockExchange_Country_FK" seqName="seg_0"/>
 </oracle.dbtools.crest.model.design.relational.RelationalDesign>

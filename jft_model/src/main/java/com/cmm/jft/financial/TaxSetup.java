@@ -26,7 +26,7 @@ import com.cmm.jft.db.DBObject;
  * @version Aug 6, 2013 2:00:41 AM
  */
 @Entity
-@Table(name = "TaxSetup")
+@Table(name = "TaxSetup", schema="Financial")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQueries({
 		@NamedQuery(name = "TaxSetup.findAll", query = "SELECT t FROM TaxSetup t"),
