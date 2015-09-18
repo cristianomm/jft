@@ -38,11 +38,6 @@
 			<version>0.0.1-SNAPSHOT</version>
 		 <type>jar</type>
 		</dependency>
-		<dependency>
-			<groupId>jft</groupId>
-			<artifactId>searchbox</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
