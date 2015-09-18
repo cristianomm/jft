@@ -7,14 +7,14 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView prefHeight="476.0" prefWidth="200.0">
+      <TableView prefHeight="526.0" prefWidth="200.0">
         <columns>
           <TableColumn prefWidth="57.0" text="Broker" />
           <TableColumn prefWidth="64.0" text="Volume" />
             <TableColumn prefWidth="78.0" text="Price" />
         </columns>
       </TableView>
-      <TableView layoutX="200.0" prefHeight="476.0" prefWidth="200.0">
+      <TableView layoutX="200.0" prefHeight="526.0" prefWidth="200.0">
         <columns>
           <TableColumn prefWidth="75.0" text="Price" />
           <TableColumn prefWidth="75.0" text="Volume" />
