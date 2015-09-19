@@ -7,25 +7,32 @@
 
 <Pane maxHeight="-Infinity" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cmm.jft.ui.controller.DOMController">
    <children>
-      <Button fx:id="btnBuy" layoutX="39.0" layoutY="494.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="50.0" text="Buy" />
-      <Button fx:id="btnSell" layoutX="211.0" layoutY="494.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="50.0" text="Sell" />
-      <Button fx:id="btnClose" layoutX="126.0" layoutY="537.0" minHeight="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Close" textAlignment="CENTER" />
-      <ChoiceBox fx:id="cmbValidity" layoutX="126.0" layoutY="569.0" minHeight="-Infinity" prefHeight="20.0" prefWidth="50.0" />
-      <DatePicker fx:id="dtDate" layoutX="190.0" layoutY="569.0" minHeight="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <Spinner fx:id="spnVolume" layoutX="10.0" layoutY="569.0" minHeight="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <TableView fx:id="tbDOM" layoutY="44.0" prefHeight="440.0" prefWidth="300.0">
+      <TableView fx:id="tblDOM" layoutY="44.0" prefHeight="433.0" prefWidth="300.0">
         <columns>
           <TableColumn fx:id="colBuyBtn" prefWidth="45.0" />
-          <TableColumn fx:id="colBuy" prefWidth="70.0" text="Buy" />
-            <TableColumn fx:id="colPrice" prefWidth="70.0" text="Price" />
-            <TableColumn fx:id="colSell" prefWidth="70.0" text="Sell" />
+          <TableColumn fx:id="colBuy" editable="false" prefWidth="70.0" sortable="false" style="-fx-background-color: #6495ed;" text="Buy" />
+            <TableColumn fx:id="colPrice" editable="false" prefWidth="70.0" sortType="DESCENDING" sortable="false" style="-fx-background-color: #a9a9a9;" text="Price" />
+            <TableColumn fx:id="colSell" editable="false" prefWidth="70.0" sortable="false" style="-fx-background-color: #e9967a; -fx-alignment: CENTER;" text="Sell" />
             <TableColumn fx:id="colSellBtn" prefWidth="45.0" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
-      <TextField fx:id="txtProfit" editable="false" layoutX="104.0" layoutY="494.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="90.0" />
-      <TextField fx:id="txtPosition" editable="false" layoutX="104.0" layoutY="514.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="90.0" />
       <TextField fx:id="txtSecurity" layoutX="76.0" layoutY="14.0" minHeight="-Infinity" prefHeight="20.0" prefWidth="150.0" />
-      <Spinner fx:id="spnStopLoss" layoutX="10.0" layoutY="539.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <Spinner fx:id="spnProfit" layoutX="190.0" layoutY="539.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
+      <AnchorPane layoutY="479.0" prefHeight="121.0" prefWidth="300.0">
+         <children>
+            <Button fx:id="btnBuy" layoutX="39.0" layoutY="13.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="50.0" text="Buy" />
+            <Button fx:id="btnSell" layoutX="211.0" layoutY="13.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="50.0" text="Sell" />
+            <Button fx:id="btnClose" layoutX="126.0" layoutY="56.0" minHeight="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Close" textAlignment="CENTER" />
+            <ChoiceBox fx:id="cmbValidity" layoutX="126.0" layoutY="88.0" minHeight="-Infinity" prefHeight="20.0" prefWidth="50.0" />
+            <DatePicker fx:id="dtDate" layoutX="190.0" layoutY="88.0" minHeight="-Infinity" prefHeight="20.0" prefWidth="100.0" />
+            <Spinner fx:id="spnVolume" layoutX="10.0" layoutY="88.0" minHeight="-Infinity" prefHeight="20.0" prefWidth="100.0" />
+            <TextField fx:id="txtProfit" editable="false" layoutX="104.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="90.0" />
+            <TextField fx:id="txtPosition" editable="false" layoutX="104.0" layoutY="33.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="90.0" />
+            <Spinner fx:id="spnStopLoss" layoutX="10.0" layoutY="58.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
+            <Spinner fx:id="spnProfit" layoutX="190.0" layoutY="58.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
+         </children>
+      </AnchorPane>
    </children>
 </Pane>
