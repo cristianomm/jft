@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TreeTableView fx:id="tblOrders" layoutY="54.0" prefHeight="190.0" prefWidth="800.0">
+        <columns>
+            <TreeTableColumn fx:id="colSymbol" prefWidth="69.0" text="Symbol" />
+          	<TreeTableColumn fx:id="colStatus" prefWidth="75.0" text="Status" />
+          	<TreeTableColumn fx:id="colSide" prefWidth="75.0" text="Side" />
+            <TreeTableColumn fx:id="colDate" prefWidth="75.0" text="Date" />
+            <TreeTableColumn fx:id="colVolume" prefWidth="75.0" text="Volume" />
+            <TreeTableColumn fx:id="colExecVolume" prefWidth="81.0" text="Exec. Volume" />
+            <TreeTableColumn fx:id="colPrice" prefWidth="75.0" text="Price" />
+            <TreeTableColumn fx:id="colAvgPrice" prefWidth="75.0" text="Avg Price" />
+            <TreeTableColumn fx:id="colStopLoss" prefWidth="75.0" text="Stop Loss" />
+            <TreeTableColumn fx:id="colStopGain" prefWidth="75.0" text="Stop Gain" />
+            <TreeTableColumn prefWidth="75.0" text="Column X" />
+        </columns>
+      </TreeTableView>
+      <Pane layoutY="244.0" prefHeight="25.0" prefWidth="800.0">
+         <children>
+            <Label layoutX="9.0" layoutY="4.0" text="Orders:" />
+            <Label layoutX="349.0" layoutY="4.0" text="Profit:" />
+            <Label layoutX="728.0" layoutY="4.0" text="Status:" />
+            <Label layoutX="159.0" layoutY="4.0" text="Position:" />
+            <Label layoutX="554.0" layoutY="4.0" text="Open Value:" />
+            <Label fx:id="lblOpenValue" alignment="CENTER_RIGHT" layoutX="630.0" layoutY="4.0" prefHeight="17.0" prefWidth="70.0" text="0.00" />
+            <ImageView fx:id="imgStatus" fitHeight="17.0" fitWidth="17.0" layoutX="770.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="lblOrdrCount" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="4.0" prefHeight="17.0" prefWidth="50.0" text="0" />
+            <Label fx:id="lblProfit" alignment="CENTER_RIGHT" layoutX="391.0" layoutY="4.0" prefHeight="17.0" prefWidth="50.0" text="0.00" textAlignment="RIGHT" />
+            <Label fx:id="lblPosition" alignment="CENTER_RIGHT" layoutX="215.0" layoutY="4.0" prefHeight="17.0" prefWidth="50.0" text="0.00" />
+            <Separator layoutX="710.0" layoutY="4.0" orientation="VERTICAL" prefHeight="17.0" prefWidth="4.0" />
+         </children>
+      </Pane>
+      <Button fx:id="btnCancelAll" layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Cancel All" />
+      <Button fx:id="btnModifyOrdr" layoutX="176.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Modify" />
+      <Button fx:id="btnCancelOrdr" layoutX="95.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Cancel" />
+   </children>
+</Pane>

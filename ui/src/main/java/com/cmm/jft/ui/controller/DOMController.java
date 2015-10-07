@@ -84,8 +84,8 @@ public class DOMController implements Initializable{
 	 * 
 	 */
 	public DOMController() {
-		//this.tblDOM = new TableView<>();
 		this.data = FXCollections.observableArrayList();
+		
 	}
 	
 	
