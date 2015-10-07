@@ -9,8 +9,8 @@
    <children>
       <TableView fx:id="tblDOM" layoutY="44.0" prefHeight="433.0" prefWidth="300.0">
         <columns>
-          <TableColumn fx:id="colBuyBtn" prefWidth="45.0" />
-          <TableColumn fx:id="colBuy" editable="false" prefWidth="70.0" sortable="false" style="-fx-background-color: #6495ed;" text="Buy" />
+          	<TableColumn fx:id="colBuyBtn" prefWidth="45.0" />
+          	<TableColumn fx:id="colBuy" editable="false" prefWidth="70.0" sortable="false" style="-fx-background-color: #6495ed;" text="Buy" />
             <TableColumn fx:id="colPrice" editable="false" prefWidth="70.0" sortType="DESCENDING" sortable="false" style="-fx-background-color: #a9a9a9;" text="Price" />
             <TableColumn fx:id="colSell" editable="false" prefWidth="70.0" sortable="false" style="-fx-background-color: #e9967a; -fx-alignment: CENTER;" text="Sell" />
             <TableColumn fx:id="colSellBtn" prefWidth="45.0" />

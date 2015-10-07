@@ -24,8 +24,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableColumn.CellDataFeatures;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -68,36 +69,36 @@ public class OrderManagerController implements Initializable {
 	
 	
 	@FXML
-	private TreeTableColumn<OrdersVO, String> colSymbol;
+	private TableColumn<OrdersVO, String> colSymbol;
 	
 	@FXML
-	private TreeTableColumn<OrdersVO, OrderStatus> colStatus;
+	private TableColumn<OrdersVO, OrderStatus> colStatus;
 	
 	@FXML
-	private TreeTableColumn<OrdersVO, Side> colSide;
+	private TableColumn<OrdersVO, Side> colSide;
 	
 	@FXML
-	private TreeTableColumn<OrdersVO, Date> colDate;
+	private TableColumn<OrdersVO, Date> colDate;
 	
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colVolume;
+	private TableColumn<OrdersVO, Double> colVolume;
 	
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colExecVolume;
+	private TableColumn<OrdersVO, Double> colExecVolume;
 	
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colPrice;
+	private TableColumn<OrdersVO, Double> colPrice;
 	
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colAvgPrice;
+	private TableColumn<OrdersVO, Double> colAvgPrice;
 	
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colStopLoss;
+	private TableColumn<OrdersVO, Double> colStopLoss;
 	
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colStopGain;
+	private TableColumn<OrdersVO, Double> colStopGain;
 	
-	private TreeTableView<OrdersVO> tblOrders;
+	private TableView<OrdersVO> tblOrders;
 	private List<OrdersVO> data;
 	
 	/* (non-Javadoc)
@@ -117,15 +118,15 @@ public class OrderManagerController implements Initializable {
 		TreeItem<OrdersVO> orders = new TreeItem<>();
 		data.forEach(ordr -> orders.getChildren().add(new TreeItem<OrdersVO>(ordr)));
 				
-		
+		/*
 		colPrice.setCellValueFactory(
-				(TreeTableColumn. CellDataFeatures<OrdersVO, Double> param) ->
+				(TableColumn. CellDataFeatures<OrdersVO, Double> param) ->
 				new ReadOnlyDoubleWrapper(param.getValue().getValue().getPrice()).asObject()
 				);
 		
 		tblOrders.setRoot(orders);
-		tblOrders.getColumns().setAll(colPrice);
-		
+		tblOrders.getColumns().add(colPrice);
+		*/
 		
 	}
 
