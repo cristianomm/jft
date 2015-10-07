@@ -3,34 +3,25 @@
  */
 package com.cmm.jft.ui.controller;
 
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import com.cmm.jft.core.vo.OrdersVO;
-import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.Side;
 
-import javafx.beans.property.ReadOnlyDoubleWrapper;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.util.Callback;
+import javafx.scene.image.ImageView;
 
 /**
  * <p><code>OrderManagerController.java</code></p>
@@ -63,7 +54,7 @@ public class OrderManagerController implements Initializable {
 	private Label lblOpenValue;
 	
 	@FXML
-	private Image imgStatus;
+	private ImageView imgStatus;
 	
 	
 	
@@ -72,10 +63,10 @@ public class OrderManagerController implements Initializable {
 	private TableColumn<OrdersVO, String> colSymbol;
 	
 	@FXML
-	private TableColumn<OrdersVO, OrderStatus> colStatus;
+	private TableColumn<OrdersVO, Character> colStatus;
 	
 	@FXML
-	private TableColumn<OrdersVO, Side> colSide;
+	private TableColumn<OrdersVO, Character> colSide;
 	
 	@FXML
 	private TableColumn<OrdersVO, Date> colDate;
@@ -98,36 +89,54 @@ public class OrderManagerController implements Initializable {
 	@FXML
 	private TableColumn<OrdersVO, Double> colStopGain;
 	
+	@FXML
 	private TableView<OrdersVO> tblOrders;
-	private List<OrdersVO> data;
+	
+	
+	private ObservableList<OrdersVO> data;
+	
+	
+	public OrderManagerController() {
+		data = FXCollections.observableArrayList();
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		
+				
 		OrdersVO vo = new OrdersVO();
+		vo.setSecurityID("WDOV15");
+		vo.setOrderDateTime(new Date());
+		vo.setSide(Side.BUY.getValue());
+		vo.setOrderStatus(OrderStatus.NEW.getValue());
+		vo.setVolume(1);
+		vo.setExecutedVolume(0);
 		vo.setPrice(12.4);
-		vo.side = Side.BUY.getValue();
-				
-		data = FXCollections.observableArrayList();
+		vo.setStopPrice(0);
+		vo.setAvgPrice(0);
+		
+		
 		data.add(vo);
-		
-		TreeItem<OrdersVO> orders = new TreeItem<>();
-		data.forEach(ordr -> orders.getChildren().add(new TreeItem<OrdersVO>(ordr)));
 				
-		/*
-		colPrice.setCellValueFactory(
-				(TableColumn. CellDataFeatures<OrdersVO, Double> param) ->
-				new ReadOnlyDoubleWrapper(param.getValue().getValue().getPrice()).asObject()
-				);
+		colSymbol.setCellValueFactory(new PropertyValueFactory<>("securityID"));
+		colDate.setCellValueFactory(new PropertyValueFactory<>("orderDateTime"));
 		
-		tblOrders.setRoot(orders);
-		tblOrders.getColumns().add(colPrice);
-		*/
+		colSide.setCellValueFactory(new PropertyValueFactory<>("side"));
+		colStatus.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
+				
+		colVolume.setCellValueFactory(new PropertyValueFactory<>("volume"));
+		colExecVolume.setCellValueFactory(new PropertyValueFactory<>("executedVolume"));
 		
+		colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+		colStopGain.setCellValueFactory(new PropertyValueFactory<>("stopPrice"));
+		colStopLoss.setCellValueFactory(new PropertyValueFactory<>("stopPrice"));
+		colAvgPrice.setCellValueFactory(new PropertyValueFactory<>("avgPrice"));
+				
+		tblOrders.setItems(data);
+		System.out.println(tblOrders.getItems().size());
 	}
 
 }

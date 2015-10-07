@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cmm.jft.ui.controller.OrderManagerController">
    <children>
       <TableView fx:id="tblOrders" layoutY="54.0" prefHeight="190.0" prefWidth="800.0">
         <columns>
@@ -19,7 +19,6 @@
             <TableColumn fx:id="colAvgPrice" prefWidth="75.0" text="Avg Price" />
             <TableColumn fx:id="colStopLoss" prefWidth="75.0" text="Stop Loss" />
             <TableColumn fx:id="colStopGain" prefWidth="75.0" text="Stop Gain" />
-            <TableColumn prefWidth="75.0" text="Column X" />
         </columns>
       </TableView>
       <Pane layoutY="244.0" prefHeight="25.0" prefWidth="800.0">

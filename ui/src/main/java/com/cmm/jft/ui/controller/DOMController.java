@@ -5,10 +5,6 @@ import java.util.ResourceBundle;
 
 import com.cmm.jft.trading.enums.Side;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +18,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Color;
 
 public class DOMController implements Initializable{
 
@@ -129,6 +124,7 @@ public class DOMController implements Initializable{
 		data.add(new DOMElement(Side.BUY, 12.43, 400));
 		data.add(new DOMElement(Side.BUY, 12.42, 1000));
 		tblDOM.setItems(data);
+		System.out.println(tblDOM.getItems().size());
 		
 	}
 	
