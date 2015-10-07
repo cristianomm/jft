@@ -18,6 +18,8 @@ import org.apache.log4j.Level;
 
 import com.cmm.jft.db.DBObject;
 
+import javafx.beans.property.SimpleDoubleProperty;
+
 
 /**
  *
@@ -32,7 +34,7 @@ public class OrdersVO implements DBObject<OrdersVO> {
 	
 	public long orderID;
 	
-	public double price;
+	public SimpleDoubleProperty price;
 	
 	public double stopPrice;
 	
@@ -87,5 +89,22 @@ public class OrdersVO implements DBObject<OrdersVO> {
 		this.eventsList = new ArrayList<OrderEventVO>();
 	}
 	
+	public SimpleDoubleProperty priceProperty(){
+		return price;
+	}
+	
+	/**
+	 * @return the price
+	 */
+	public double getPrice() {
+		return this.price.get();
+	}
+	
+	/**
+	 * @param price the price to set
+	 */
+	public void setPrice(double price) {
+		this.price.set(price);
+	}
 
 }
