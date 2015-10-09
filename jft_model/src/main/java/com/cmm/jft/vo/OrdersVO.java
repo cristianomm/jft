@@ -3,14 +3,22 @@
  * and open the template in the editor.
  */
 
-package com.cmm.jft.core.vo;
+package com.cmm.jft.vo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.cmm.jft.vo.OrderEventVO;
+import com.cmm.jft.vo.OrdersVO;
 import com.cmm.jft.db.DBObject;
+import com.cmm.jft.trading.enums.OrderStatus;
+import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.OrderValidityTypes;
+import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.trading.enums.TradeTypes;
+import com.cmm.jft.trading.enums.WorkingIndicator;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -52,17 +60,17 @@ public class OrdersVO implements DBObject<OrdersVO> {
 	
 	public Date orderDateTime;
 	
-	public char orderStatus;
+	public OrderStatus orderStatus;
 	
-	public char workingIndicator;
+	public WorkingIndicator workingIndicator;
 	
-	public char validityType;
+	public OrderValidityTypes validityType;
 	
-	public char orderType;	
+	public OrderTypes orderType;	
 	
-	public char tradeType;
+	public TradeTypes tradeType;
 	
-	public char side;
+	public Side side;
 	
 	public SimpleStringProperty comment;
 	
@@ -95,9 +103,11 @@ public class OrdersVO implements DBObject<OrdersVO> {
 		this.volume = new SimpleDoubleProperty(0);
 				
 		this.clOrdID = new SimpleStringProperty("");
+		this.origClOrdID = new SimpleStringProperty("");
 		this.comment = new SimpleStringProperty("");
-		
-		
+		this.partyID = new SimpleStringProperty("");
+		this.partyRole = new SimpleStringProperty("");
+		this.securityID = new SimpleStringProperty("");
 		
 	}
 	
@@ -249,51 +259,51 @@ public class OrdersVO implements DBObject<OrdersVO> {
 		this.orderDateTime = (orderDateTime);
 	}
 
-	public char getOrderStatus() {
+	public OrderStatus getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(char orderStatus) {
+	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = (orderStatus);
 	}
 
-	public char getWorkingIndicator() {
+	public WorkingIndicator getWorkingIndicator() {
 		return workingIndicator;
 	}
 
-	public void setWorkingIndicator(char workingIndicator) {
+	public void setWorkingIndicator(WorkingIndicator workingIndicator) {
 		this.workingIndicator = (workingIndicator);
 	}
 
-	public char getValidityType() {
+	public OrderValidityTypes getValidityType() {
 		return validityType;
 	}
 
-	public void setValidityType(char validityType) {
+	public void setValidityType(OrderValidityTypes validityType) {
 		this.validityType = (validityType);
 	}
 
-	public char getOrderType() {
+	public OrderTypes getOrderType() {
 		return orderType;
 	}
 
-	public void setOrderType(char orderType) {
+	public void setOrderType(OrderTypes orderType) {
 		this.orderType = (orderType);
 	}
 
-	public char getTradeType() {
+	public TradeTypes getTradeType() {
 		return tradeType;
 	}
 
-	public void setTradeType(char tradeType) {
+	public void setTradeType(TradeTypes tradeType) {
 		this.tradeType = (tradeType);
 	}
 
-	public char getSide() {
+	public Side getSide() {
 		return side;
 	}
 
-	public void setSide(char side) {
+	public void setSide(Side side) {
 		this.side = (side);
 	}
 

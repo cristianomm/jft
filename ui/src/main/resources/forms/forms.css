@@ -1,0 +1,34 @@
+.order_new { 
+  -fx-control-inner-background: #77bbff;
+  -fx-accent: derive(-fx-control-inner-background, -40%);
+  -fx-cell-hover-color: derive(-fx-control-inner-background, -20%);
+}
+
+.order_rejected { 
+  -fx-control-inner-background: #f7c144;
+  -fx-accent: derive(-fx-control-inner-background, -40%);
+  -fx-cell-hover-color: derive(-fx-control-inner-background, -20%);
+}
+
+.order_canceled { 
+  -fx-control-inner-background: #fd7c79;
+  -fx-accent: derive(-fx-control-inner-background, -40%);
+  -fx-cell-hover-color: derive(-fx-control-inner-background, -20%);
+}
+
+.order_filled { 
+  -fx-control-inner-background: #8afc7a;
+  -fx-accent: derive(-fx-control-inner-background, -40%);
+  -fx-cell-hover-color: derive(-fx-control-inner-background, -20%);
+}
+
+.order_partially_filled { 
+  -fx-control-inner-background: #ecfc7a;
+  -fx-accent: derive(-fx-control-inner-background, -40%);
+  -fx-cell-hover-color: derive(-fx-control-inner-background, -20%);
+}
+
+.order_volume_exec {
+	-fx-control-inner-background: #ff8080;
+}
+

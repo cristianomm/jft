@@ -21,6 +21,7 @@ public class App extends Application {
 			Pane g = FXMLLoader.load(App.class.getResource("../../../../forms/OrderManagerForm.fxml"));
 			
 			Scene scene = new Scene(g);
+			scene.getStylesheets().add("file://" + App.class.getResource("../../../../forms/forms.css").getFile());
 			stage.setMaxWidth(g.getPrefWidth()+15);
 			stage.setScene(scene);
 			stage.show();

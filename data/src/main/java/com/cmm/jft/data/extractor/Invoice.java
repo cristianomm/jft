@@ -3,7 +3,7 @@
  */
 package com.cmm.jft.data.extractor;
 
-import com.cmm.jft.core.vo.Extractable;
+import com.cmm.jft.vo.Extractable;
 
 /**
  * <p><code>Invoice.java</code></p>

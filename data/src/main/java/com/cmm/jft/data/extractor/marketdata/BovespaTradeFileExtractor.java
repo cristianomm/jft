@@ -19,9 +19,9 @@ import com.cmm.jft.core.format.DoubleFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.core.format.IntFormatter;
-import com.cmm.jft.core.vo.Extractable;
-import com.cmm.jft.core.vo.OrderEventVO;
-import com.cmm.jft.core.vo.TradeVO;
+import com.cmm.jft.vo.Extractable;
+import com.cmm.jft.vo.OrderEventVO;
+import com.cmm.jft.vo.TradeVO;
 import com.cmm.jft.data.files.CSV;
 import com.cmm.logging.Logging;
 

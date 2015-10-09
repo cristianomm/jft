@@ -13,7 +13,7 @@ import org.apache.log4j.Level;
 
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
-import com.cmm.jft.core.vo.Extractable;
+import com.cmm.jft.vo.Extractable;
 import com.cmm.jft.data.enums.DataFields;
 import com.cmm.jft.data.exceptions.StreamException;
 import com.cmm.logging.Logging;

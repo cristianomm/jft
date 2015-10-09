@@ -9,8 +9,8 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>jft</groupId>
-	<artifactId>data</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>data</artifactId>
 	<name>data</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -38,19 +38,14 @@
 			<artifactId>javax.mail</artifactId>
 			<version>1.5.3</version>
 		</dependency>
+
+		<!-- QuickFIX/J dependencies -->
+
 		<dependency>
 			<groupId>jft</groupId>
 			<artifactId>db</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>jft</groupId>
-			<artifactId>core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<!-- QuickFIX/J dependencies -->
-		
 	</dependencies>
 
 	<repositories>
@@ -75,4 +70,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>

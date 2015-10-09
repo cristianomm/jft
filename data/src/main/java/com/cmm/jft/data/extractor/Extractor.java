@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import com.cmm.jft.core.vo.Extractable;
+import com.cmm.jft.vo.Extractable;
 
 /**
  * Os objetos que implementam esa interface devem realizar a extracao de informacoes

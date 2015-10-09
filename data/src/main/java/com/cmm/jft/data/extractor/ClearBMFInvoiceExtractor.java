@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
 
-import com.cmm.jft.core.vo.Extractable;
+import com.cmm.jft.vo.Extractable;
 import com.cmm.logging.Logging;
 
 /**

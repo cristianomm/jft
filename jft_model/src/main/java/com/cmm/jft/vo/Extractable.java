@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.core.vo;
+package com.cmm.jft.vo;
 
 /**
  * Representa um elemento que pode ser extraido de uma fonte.

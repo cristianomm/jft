@@ -1,6 +1,8 @@
-package com.cmm.jft.core.vo;
+package com.cmm.jft.vo;
 
 import java.util.Date;
+
+import com.cmm.jft.vo.Extractable;
 
 /**
  * 
