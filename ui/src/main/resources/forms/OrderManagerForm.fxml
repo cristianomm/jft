@@ -7,20 +7,20 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cmm.jft.ui.controller.OrderManagerController">
    <children>
-      <TableView fx:id="tblOrders" layoutY="54.0" prefHeight="190.0" prefWidth="800.0">
+      <TreeTableView fx:id="tblOrders" layoutY="54.0" prefHeight="190.0" prefWidth="800.0">
         <columns>
-            <TableColumn fx:id="colSymbol" prefWidth="69.0" text="Symbol" />
-          	<TableColumn fx:id="colStatus" prefWidth="75.0" text="Status" />
-          	<TableColumn fx:id="colSide" prefWidth="75.0" text="Side" />
-            <TableColumn fx:id="colDate" prefWidth="75.0" text="Date" />
-            <TableColumn fx:id="colVolume" prefWidth="75.0" text="Volume" />
-            <TableColumn fx:id="colExecVolume" prefWidth="81.0" text="Exec. Volume" />
-            <TableColumn fx:id="colPrice" prefWidth="75.0" text="Price" />
-            <TableColumn fx:id="colAvgPrice" prefWidth="75.0" text="Avg Price" />
-            <TableColumn fx:id="colStopLoss" prefWidth="75.0" text="Stop Loss" />
-            <TableColumn fx:id="colStopGain" prefWidth="75.0" text="Stop Gain" />
+            <TreeTableColumn fx:id="colSymbol" prefWidth="69.0" text="Symbol" />
+          	<TreeTableColumn fx:id="colStatus" prefWidth="75.0" text="Status" />
+          	<TreeTableColumn fx:id="colSide" prefWidth="75.0" text="Side" />
+            <TreeTableColumn fx:id="colDate" prefWidth="75.0" text="Date" />
+            <TreeTableColumn fx:id="colVolume" prefWidth="75.0" text="Volume" />
+            <TreeTableColumn fx:id="colExecVolume" prefWidth="81.0" text="Exec. Volume" />
+            <TreeTableColumn fx:id="colPrice" prefWidth="75.0" text="Price" />
+            <TreeTableColumn fx:id="colAvgPrice" prefWidth="75.0" text="Avg Price" />
+            <TreeTableColumn fx:id="colStopLoss" prefWidth="75.0" text="Stop Loss" />
+            <TreeTableColumn fx:id="colStopGain" prefWidth="75.0" text="Stop Gain" />
         </columns>
-      </TableView>
+      </TreeTableView>
       <Pane layoutY="244.0" prefHeight="25.0" prefWidth="800.0">
          <children>
             <Label layoutX="9.0" layoutY="4.0" text="Orders:" />

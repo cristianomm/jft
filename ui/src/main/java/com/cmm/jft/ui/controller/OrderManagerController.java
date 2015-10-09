@@ -14,6 +14,9 @@ import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.vo.OrdersVO;
 
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,6 +27,10 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -65,43 +72,45 @@ public class OrderManagerController implements Initializable {
 
 
 	@FXML
-	private TableColumn<OrdersVO, String> colSymbol;
+	private TreeTableColumn<OrdersVO, String> colSymbol;
 
 	@FXML
-	private TableColumn<OrdersVO, OrderStatus> colStatus;
+	private TreeTableColumn<OrdersVO, OrderStatus> colStatus;
 
 	@FXML
-	private TableColumn<OrdersVO, Side> colSide;
+	private TreeTableColumn<OrdersVO, Side> colSide;
 
 	@FXML
-	private TableColumn<OrdersVO, Date> colDate;
+	private TreeTableColumn<OrdersVO, Date> colDate;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colVolume;
+	private TreeTableColumn<OrdersVO, Double> colVolume;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colExecVolume;
+	private TreeTableColumn<OrdersVO, Double> colExecVolume;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colPrice;
+	private TreeTableColumn<OrdersVO, Double> colPrice;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colAvgPrice;
+	private TreeTableColumn<OrdersVO, Double> colAvgPrice;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colStopLoss;
+	private TreeTableColumn<OrdersVO, Double> colStopLoss;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colStopGain;
+	private TreeTableColumn<OrdersVO, Double> colStopGain;
 
 	@FXML
-	private TableView<OrdersVO> tblOrders;
+	private TreeTableView<OrdersVO> tblOrders;
 
 
 	private ObservableList<OrdersVO> data;
 
+	private TreeItem<OrdersVO> root; 
 
 	public OrderManagerController() {
+		root = new TreeItem<>(new OrdersVO());
 		data = FXCollections.observableArrayList();
 	}
 
@@ -111,11 +120,19 @@ public class OrderManagerController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		colSymbol.setCellValueFactory(new PropertyValueFactory<>("securityID"));
-		colDate.setCellValueFactory(new PropertyValueFactory<>("orderDateTime"));
+		
+		colSymbol.setCellValueFactory(
+				(TreeTableColumn.CellDataFeatures<OrdersVO, String> val) ->
+				new ReadOnlyStringWrapper(val.getValue().getValue().getSecurityID())
+				);
+		
+		colDate.setCellValueFactory(
+				(TreeTableColumn.CellDataFeatures<OrdersVO, Date> val) ->
+				new ReadOnlyObjectWrapper<Date>(val.getValue().getValue().getOrderDateTime())
+				);
+		
 		colDate.setCellFactory(column -> {
-			return new TableCell<OrdersVO, Date>(){
+			return new TreeTableCell<OrdersVO, Date>(){
 				@Override
 				protected void updateItem(Date item, boolean empty){
 					super.updateItem(item, empty);
@@ -129,13 +146,17 @@ public class OrderManagerController implements Initializable {
 				}
 			};
 		});
-
-
-		colSide.setCellValueFactory(new PropertyValueFactory<>("side"));
-		colStatus.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
+		colSide.setCellValueFactory(
+				(TreeTableColumn.CellDataFeatures<OrdersVO, Side> val) ->
+				new ReadOnlyObjectWrapper<Side>(val.getValue().getValue().getSide())
+				);
+		
+		colStatus.setCellValueFactory(
+				(TreeTableColumn.CellDataFeatures<OrdersVO, OrderStatus> val) ->
+				new ReadOnlyObjectWrapper<OrderStatus>(val.getValue().getValue().getOrderStatus())
+				);
 		colStatus.setCellFactory(column -> {
-			return new TableCell<OrdersVO, OrderStatus>(){
-								
+			return new TreeTableCell<OrdersVO, OrderStatus>(){
 				@Override
 				protected void updateItem(OrderStatus status, boolean empty){
 					super.updateItem(status, empty);
@@ -148,44 +169,43 @@ public class OrderManagerController implements Initializable {
 						case EXPIRED:
 							style = "order_canceled";
 							break;
-
 						case FILLED:
 							style = "order_filled";
 							break;
 						case PARTIALLY_FILLED:
 							style = "order_partially_filled";
 							break;
-
 						case CREATED:
 						case NEW:
 						case REPLACED:
 						case SUBMITTED:
 							style = "order_new";
 							break;
-
 						case REJECTED:
 						case SUSPENDED:
 							style = "order_rejected";
 							break;
-
 						default:
-
 							break;
 						}
 						
-//						getStyleClass().add(style);
-						getTableRow().getStyleClass().add(style);
+						getTreeTableRow().getStyleClass().add(style);
 					}
 				}
 			};
 		});
-
-
-
-		colVolume.setCellValueFactory(new PropertyValueFactory<>("volume"));
-		colExecVolume.setCellValueFactory(new PropertyValueFactory<>("executedVolume"));
+		
+		colVolume.setCellValueFactory(
+				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getVolume())
+				);
+		
+		colExecVolume.setCellValueFactory(
+				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getExecutedVolume())
+				);
 		colExecVolume.setCellFactory(column -> {
-			return new TableCell<OrdersVO, Double>(){
+			return new TreeTableCell<OrdersVO, Double>(){
 				@Override
 				protected void updateItem(Double item, boolean empty){
 					super.updateItem(item, empty);
@@ -199,15 +219,30 @@ public class OrderManagerController implements Initializable {
 		});
 		
 		
-
-		colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-		colStopGain.setCellValueFactory(new PropertyValueFactory<>("stopPrice"));
-		colStopLoss.setCellValueFactory(new PropertyValueFactory<>("stopPrice"));
-		colAvgPrice.setCellValueFactory(new PropertyValueFactory<>("avgPrice"));
-
-		tblOrders.setItems(data);
 		
-
+		colPrice.setCellValueFactory(
+				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getPrice())
+				);
+		
+		colStopGain.setCellValueFactory(
+				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getStopPrice())
+				);
+		
+		colStopLoss.setCellValueFactory(
+				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getStopPrice())
+				);
+		
+		colAvgPrice.setCellValueFactory(
+				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getAvgPrice())
+				);
+		
+		 
+		tblOrders.setRoot(root);
+		
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
@@ -222,28 +257,33 @@ public class OrderManagerController implements Initializable {
 					vo.setPrice(12.4);
 					vo.setStopPrice(0);
 					vo.setAvgPrice(0);
-					data.add(vo);
+					add(vo);
 					try {
 						Thread.sleep(2500);
 						vo.setOrderStatus(OrderStatus.PARTIALLY_FILLED);
 						vo.setExecutedVolume(1+i);
-						//tblOrders .getColumns().get(0).setVisible(false);
-						//tblOrders.getColumns().get(0).setVisible(true);
-						ObservableList<OrdersVO> aux = data;
-						data = FXCollections.observableArrayList(aux);
-						
-						
+												
 						Thread.sleep(2500);
 						vo.setOrderStatus(OrderStatus.FILLED);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 
-					System.out.println(tblOrders.getItems().size());
+					System.out.println();
 				}
 			}
 		}).start();
 
 	}
-
+	
+	
+	
+	
+	public void add(OrdersVO ordr) {
+		data.add(ordr);
+		root.getChildren().add(new TreeItem(ordr));
+	}
+	
+	
+	
 }

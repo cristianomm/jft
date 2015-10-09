@@ -5,7 +5,6 @@
 
 package com.cmm.jft.vo;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -91,69 +90,119 @@ public class OrdersVO implements DBObject<OrdersVO> {
 	
 	public OrdersVO() {
 		this.eventsList = new ArrayList<OrderEventVO>();
-		
-		this.avgPrice = new SimpleDoubleProperty(0);
-		this.executedVolume = new SimpleDoubleProperty(0);
-		this.lastPrice = new SimpleDoubleProperty(0);
-		this.leavesVolume = new SimpleDoubleProperty(0);
-		this.maxFloor = new SimpleDoubleProperty(0);
-		this.price = new SimpleDoubleProperty(0);
-		this.protectionPrice = new SimpleDoubleProperty(0);
-		this.stopPrice = new SimpleDoubleProperty(0);
-		this.volume = new SimpleDoubleProperty(0);
-				
-		this.clOrdID = new SimpleStringProperty("");
-		this.origClOrdID = new SimpleStringProperty("");
-		this.comment = new SimpleStringProperty("");
-		this.partyID = new SimpleStringProperty("");
-		this.partyRole = new SimpleStringProperty("");
-		this.securityID = new SimpleStringProperty("");
-		
 	}
 	
 	
 	public SimpleLongProperty orderIDProperty(){
+		if(orderID == null) {
+			orderID = new SimpleLongProperty();
+		}
 		return orderID;
 	}
 	
 	public SimpleDoubleProperty priceProperty(){
+		if(price == null) {
+			price = new SimpleDoubleProperty();
+		}
 		return price;
 	}
 	
 	public SimpleDoubleProperty stopPriceProperty(){
+		if(stopPrice == null) {
+			stopPrice = new SimpleDoubleProperty();
+		}
+		
 		return stopPrice;
 	}
 	
 	public SimpleDoubleProperty volumeProperty(){
+		if(volume == null) {
+			volume = new SimpleDoubleProperty();
+		}
 		return volume;
 	}
 	
 	public SimpleDoubleProperty leavesVolumeProperty(){
+		if(leavesVolume == null) {
+			leavesVolume = new SimpleDoubleProperty();
+		}
 		return leavesVolume;
 	}
 
 	public SimpleDoubleProperty executedVolumeProperty(){
+		if(executedVolume == null) {
+			executedVolume = new SimpleDoubleProperty();
+		}
 		return executedVolume;
 	}
 	
 	public SimpleDoubleProperty lastPriceProperty(){
+		if(lastPrice == null) {
+			lastPrice = new SimpleDoubleProperty();
+		}
 		return lastPrice;
 	}
 	
 	public SimpleDoubleProperty avgPriceProperty(){
+		if(avgPrice == null) {
+			avgPrice = new SimpleDoubleProperty();
+		}
 		return avgPrice;
 	}
 	
 	public SimpleDoubleProperty protectionPriceProperty(){
+		if(protectionPrice == null) {
+			protectionPrice = new SimpleDoubleProperty();
+		}
 		return protectionPrice;
 	}
 	
 	public SimpleDoubleProperty maxFloorProperty(){
+		if(maxFloor == null) {
+			maxFloor = new SimpleDoubleProperty();
+		}
 		return maxFloor;
 	}
 	
 	
-	
+	public SimpleStringProperty clOrdIDProperty(){
+		if(clOrdID == null) {
+			clOrdID = new SimpleStringProperty("");
+		}
+		return clOrdID;
+	}
+
+	public SimpleStringProperty origClOrdIDProperty(){
+		if(origClOrdID == null) {
+			origClOrdID = new SimpleStringProperty("");
+		}
+		return origClOrdID;
+	}
+	public SimpleStringProperty commentProperty(){
+		if(comment == null) {
+			comment = new SimpleStringProperty("");
+		}
+		return comment;
+	}
+	public SimpleStringProperty partyIDProperty(){
+		if(partyID == null) {
+			partyID = new SimpleStringProperty("");
+		}
+		return partyID;
+	}
+	public SimpleStringProperty partyRoleProperty(){
+		if(partyRole == null) {
+			partyRole = new SimpleStringProperty("");
+		}
+		return partyRole;
+	}
+
+	public SimpleStringProperty securityIDProperty(){
+		if(securityID == null) {
+			securityID = new SimpleStringProperty("");
+		}
+		return securityID;
+	}
 	
 	
 	
@@ -161,86 +210,86 @@ public class OrdersVO implements DBObject<OrdersVO> {
 	 * @return the price
 	 */
 	public double getPrice() {
-		return this.price.get();
+		return this.priceProperty().get();
 	}
 	
 	/**
 	 * @param price the price to set
 	 */
 	public void setPrice(double price) {
-		this.price.set(price);
+		this.priceProperty().set(price);
 	}
 
 	public long getOrderID() {
-		return orderID.get();
+		return orderIDProperty().get();
 	}
 
 	public void setOrderID(long orderID) {
-		this.orderID.set(orderID);
+		this.orderIDProperty().set(orderID);
 	}
 
 	public double getStopPrice() {
-		return stopPrice.get();
+		return stopPriceProperty().get();
 	}
 
 	public void setStopPrice(double stopPrice) {
-		this.stopPrice.set(stopPrice);
+		this.stopPriceProperty().set(stopPrice);
 	}
 
 	public double getVolume() {
-		return volume.get();
+		return volumeProperty().get();
 	}
 
 	public void setVolume(double volume) {
-		this.volume.set(volume);
+		this.volumeProperty().set(volume);
 	}
 
 	public double getLeavesVolume() {
-		return leavesVolume.get();
+		return leavesVolumeProperty().get();
 	}
 
 	public void setLeavesVolume(double leavesVolume) {
-		this.leavesVolume.set(leavesVolume);
+		this.leavesVolumeProperty().set(leavesVolume);
 	}
 
 	public double getLastPrice() {
-		return lastPrice.get();
+		return lastPriceProperty().get();
 	}
 
 	public void setLastPrice(double lastPrice) {
-		this.lastPrice.set(lastPrice);
+		this.lastPriceProperty().set(lastPrice);
 	}
 
 	public double getAvgPrice() {
-		return avgPrice.get();
+		return avgPriceProperty().get();
 	}
 
 	public void setAvgPrice(double avgPrice) {
-		this.avgPrice.set(avgPrice);
+		this.avgPriceProperty().set(avgPrice);
 	}
 
 	public double getProtectionPrice() {
-		return protectionPrice.get();
+		return protectionPriceProperty().get();
 	}
 
 	public void setProtectionPrice(double protectionPrice) {
-		this.protectionPrice.set(protectionPrice);
+		this.protectionPriceProperty().set(protectionPrice);
 	}
 
 	public double getMaxFloor() {
-		return maxFloor.get();
+		return maxFloorProperty().get();
 	}
 
 	public void setMaxFloor(double maxFloor) {
-		this.maxFloor.set(maxFloor);
+		this.maxFloorProperty().set(maxFloor);
 	}
 
 	public double getExecutedVolume() {
-		return executedVolume.get();
+		return executedVolumeProperty().get();
 	}
 
 	public void setExecutedVolume(double executedVolume) {
-		this.executedVolume.set(executedVolume);
+		this.executedVolumeProperty().set(executedVolume);
 	}
 
 	public Date getDuration() {
@@ -308,35 +357,35 @@ public class OrdersVO implements DBObject<OrdersVO> {
 	}
 
 	public String getComment() {
-		return comment.get();
+		return commentProperty().get();
 	}
 
 	public void setComment(String comment) {
-		this.comment.set(comment);
+		this.commentProperty().set(comment);
 	}
 
 	public String getClOrdID() {
-		return clOrdID.get();
+		return clOrdIDProperty().get();
 	}
 
 	public void setClOrdID(String clOrdID) {
-		this.clOrdID.set(clOrdID);
+		this.clOrdIDProperty().set(clOrdID);
 	}
 
 	public String getOrigClOrdID() {
-		return origClOrdID.get();
+		return origClOrdIDProperty().get();
 	}
 
 	public void setOrigClOrdID(String origClOrdID) {
-		this.origClOrdID.set(origClOrdID);
+		this.origClOrdIDProperty().set(origClOrdID);
 	}
 
 	public String getPartyID() {
-		return partyID.get();
+		return partyIDProperty().get();
 	}
 
 	public void setPartyID(String partyID) {
-		this.partyID.set(partyID);
+		this.partyIDProperty().set(partyID);
 	}
 
 	public char getPartyIdSource() {
@@ -348,19 +397,19 @@ public class OrdersVO implements DBObject<OrdersVO> {
 	}
 
 	public String getPartyRole() {
-		return partyRole.get();
+		return partyRoleProperty().get();
 	}
 
 	public void setPartyRole(String partyRole) {
-		this.partyRole.set(partyRole);
+		this.partyRoleProperty().set(partyRole);
 	}
 
 	public String getSecurityID() {
-		return securityID.get();
+		return securityIDProperty().get();
 	}
 
 	public void setSecurityID(String securityID) {
-		this.securityID.set(securityID);
+		this.securityIDProperty().set(securityID);
 	}
 
 	public List<OrderEventVO> getEventsList() {
