@@ -48,7 +48,7 @@ public class OrderService {
 	}
 
 	
-	public List<Orders> newOrder(OrderTypes orderType, Security security, Side side, int volume,
+	public List<Orders> newOrder(OrderTypes orderType, Security security, Side side, double volume,
 			double price, double limitPrice, double stopLoss, double stopGain){
 		
 		List<Orders> ordrs = new ArrayList<Orders>();
@@ -123,7 +123,7 @@ public class OrderService {
 		return ordrs;
 	}
 	
-	public Orders newLimitOrder(Security security, Side side, int volume, double limitPrice){
+	public Orders newLimitOrder(Security security, Side side, double volume, double limitPrice){
 		Orders ordr = null;
 		try {
 			ordr = new Orders(security, side, limitPrice, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE);			
@@ -135,7 +135,7 @@ public class OrderService {
 		return ordr;
 	}
 	
-	public Orders newStopOrder(Security security, Side side, int volume, double stopPrice){
+	public Orders newStopOrder(Security security, Side side, double volume, double stopPrice){
 		Orders ordr = null;
 		try {
 			//calcula o valor maximo limite que a ordem podera ser executada
@@ -152,7 +152,7 @@ public class OrderService {
 		return ordr;
 	}
 			
-	public Orders newMarketOrder(Security security, Side side, int volume){
+	public Orders newMarketOrder(Security security, Side side, double volume){
 		Orders ordrs = null;
 		try {
 			ordrs = new Orders(security, side, 0, volume, OrderTypes.Market, TradeTypes.DAY_TRADE);
@@ -171,7 +171,7 @@ public class OrderService {
 	}	
 	
 	
-	private Orders[] createLossAndGain(Security security, Side sideExit, int volume, double price, double stopLoss, double stopGain){
+	private Orders[] createLossAndGain(Security security, Side sideExit, double volume, double price, double stopLoss, double stopGain){
 		
 		Orders[] ordrs = new Orders[2];
 		

@@ -70,10 +70,10 @@
 		<mapping class="com.cmm.jft.trading.Orders"/>
 		
 		
-		<mapping class="com.cmm.jft.trading.marketdata.HistoricalQuote"/>
-		<mapping class="com.cmm.jft.trading.marketdata.MarketEvent"/>
-		<mapping class="com.cmm.jft.trading.marketdata.MarketOrder"/>
-		<mapping class="com.cmm.jft.trading.marketdata.MarketTrade"/>
+		<mapping class="com.cmm.jft.marketdata.HistoricalQuote"/>
+		<mapping class="com.cmm.jft.marketdata.MarketEvent"/>
+		<mapping class="com.cmm.jft.marketdata.MarketOrder"/>
+		<mapping class="com.cmm.jft.marketdata.MarketTrade"/>
 		<mapping class="com.cmm.jft.security.Country"/>
 		<mapping class="com.cmm.jft.security.Security"/>
 		<mapping class="com.cmm.jft.security.SecurityInfo"/>

@@ -21,7 +21,6 @@ import org.jsoup.nodes.Element;
 import com.cmm.jft.core.enums.GeneralStatus;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
-import com.cmm.jft.vo.Extractable;
 
 /**
  * <p><code>CVMCiasExtractor.java</code></p>

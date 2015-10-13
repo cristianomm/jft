@@ -2,7 +2,8 @@ package com.cmm.jft.vo;
 
 import java.util.Date;
 
-import com.cmm.jft.vo.Extractable;
+import com.cmm.jft.data.extractor.Extractable;
+
 
 public class TradeVO implements Extractable {
 	

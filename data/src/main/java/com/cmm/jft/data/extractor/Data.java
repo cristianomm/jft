@@ -5,7 +5,6 @@ package com.cmm.jft.data.extractor;
 
 import java.util.HashMap;
 
-import com.cmm.jft.vo.Extractable;
 
 /**
  * <p><code>Data.java</code></p>

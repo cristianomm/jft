@@ -419,5 +419,22 @@ public class OrdersVO implements DBObject<OrdersVO> {
 	public void setEventsList(List<OrderEventVO> eventsList) {
 		this.eventsList = eventsList;
 	}
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		boolean res = false;
+		if(obj != null && obj instanceof OrdersVO){
+			res = getClOrdID().equals(((OrdersVO)obj).getClOrdID());
+		}
+		
+		return res;
+	}
+	
+	
+	
 	
 }

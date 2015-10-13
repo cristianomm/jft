@@ -19,6 +19,9 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -72,45 +75,43 @@ public class OrderManagerController implements Initializable {
 
 
 	@FXML
-	private TreeTableColumn<OrdersVO, String> colSymbol;
+	private TableColumn<OrdersVO, String> colSymbol;
 
 	@FXML
-	private TreeTableColumn<OrdersVO, OrderStatus> colStatus;
+	private TableColumn<OrdersVO, OrderStatus> colStatus;
 
 	@FXML
-	private TreeTableColumn<OrdersVO, Side> colSide;
+	private TableColumn<OrdersVO, Side> colSide;
 
 	@FXML
-	private TreeTableColumn<OrdersVO, Date> colDate;
+	private TableColumn<OrdersVO, Date> colDate;
 
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colVolume;
+	private TableColumn<OrdersVO, Double> colVolume;
 
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colExecVolume;
+	private TableColumn<OrdersVO, Double> colExecVolume;
 
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colPrice;
+	private TableColumn<OrdersVO, Double> colPrice;
 
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colAvgPrice;
+	private TableColumn<OrdersVO, Double> colAvgPrice;
 
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colStopLoss;
+	private TableColumn<OrdersVO, Double> colStopLoss;
 
 	@FXML
-	private TreeTableColumn<OrdersVO, Double> colStopGain;
+	private TableColumn<OrdersVO, Double> colStopGain;
 
 	@FXML
-	private TreeTableView<OrdersVO> tblOrders;
+	private TableView<OrdersVO> tblOrders;
 
 
 	private ObservableList<OrdersVO> data;
-
-	private TreeItem<OrdersVO> root; 
-
+	
+	
 	public OrderManagerController() {
-		root = new TreeItem<>(new OrdersVO());
 		data = FXCollections.observableArrayList();
 	}
 
@@ -121,18 +122,41 @@ public class OrderManagerController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
+		btnCancelAll.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				
+			}
+		});
+		
+		
+		btnCancelOrdr.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				
+			}
+		});
+		
+		btnModifyOrdr.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				
+			}
+		});
+		
+		
 		colSymbol.setCellValueFactory(
-				(TreeTableColumn.CellDataFeatures<OrdersVO, String> val) ->
-				new ReadOnlyStringWrapper(val.getValue().getValue().getSecurityID())
+				(TableColumn.CellDataFeatures<OrdersVO, String> val) ->
+				new ReadOnlyStringWrapper(val.getValue().getSecurityID())
 				);
 		
 		colDate.setCellValueFactory(
-				(TreeTableColumn.CellDataFeatures<OrdersVO, Date> val) ->
-				new ReadOnlyObjectWrapper<Date>(val.getValue().getValue().getOrderDateTime())
+				(TableColumn.CellDataFeatures<OrdersVO, Date> val) ->
+				new ReadOnlyObjectWrapper<Date>(val.getValue().getOrderDateTime())
 				);
 		
 		colDate.setCellFactory(column -> {
-			return new TreeTableCell<OrdersVO, Date>(){
+			return new TableCell<OrdersVO, Date>(){
 				@Override
 				protected void updateItem(Date item, boolean empty){
 					super.updateItem(item, empty);
@@ -147,25 +171,27 @@ public class OrderManagerController implements Initializable {
 			};
 		});
 		colSide.setCellValueFactory(
-				(TreeTableColumn.CellDataFeatures<OrdersVO, Side> val) ->
-				new ReadOnlyObjectWrapper<Side>(val.getValue().getValue().getSide())
+				(TableColumn.CellDataFeatures<OrdersVO, Side> val) ->
+				new ReadOnlyObjectWrapper<Side>(val.getValue().getSide())
 				);
 		
 		colStatus.setCellValueFactory(
-				(TreeTableColumn.CellDataFeatures<OrdersVO, OrderStatus> val) ->
-				new ReadOnlyObjectWrapper<OrderStatus>(val.getValue().getValue().getOrderStatus())
+				(TableColumn.CellDataFeatures<OrdersVO, OrderStatus> val) ->
+				new ReadOnlyObjectWrapper<OrderStatus>(val.getValue().getOrderStatus())
 				);
 		colStatus.setCellFactory(column -> {
-			return new TreeTableCell<OrdersVO, OrderStatus>(){
+			return new TableCell<OrdersVO, OrderStatus>(){
 				@Override
 				protected void updateItem(OrderStatus status, boolean empty){
 					super.updateItem(status, empty);
-					if(status != null || !empty){
+					if(status != null){
 						setText(status.name());
 						
 						String style = "";
 						switch (status) {
-						case CANCELED:					
+						case CANCELED:
+							style = "order_canceled";
+							break;
 						case EXPIRED:
 							style = "order_canceled";
 							break;
@@ -176,36 +202,45 @@ public class OrderManagerController implements Initializable {
 							style = "order_partially_filled";
 							break;
 						case CREATED:
+							style = "order_new";
+							break;
 						case NEW:
+							style = "order_new";
+							break;
 						case REPLACED:
+							style = "order_new";
+							break;
 						case SUBMITTED:
 							style = "order_new";
 							break;
 						case REJECTED:
+							style = "order_rejected";
+							break;
 						case SUSPENDED:
 							style = "order_rejected";
 							break;
 						default:
+							style = "order_new";
 							break;
 						}
 						
-						getTreeTableRow().getStyleClass().add(style);
+						getTableRow().getStyleClass().add(style);
 					}
 				}
 			};
 		});
 		
 		colVolume.setCellValueFactory(
-				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
-				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getVolume())
+				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getVolume())
 				);
 		
 		colExecVolume.setCellValueFactory(
-				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
-				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getExecutedVolume())
+				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getExecutedVolume())
 				);
 		colExecVolume.setCellFactory(column -> {
-			return new TreeTableCell<OrdersVO, Double>(){
+			return new TableCell<OrdersVO, Double>(){
 				@Override
 				protected void updateItem(Double item, boolean empty){
 					super.updateItem(item, empty);
@@ -221,33 +256,34 @@ public class OrderManagerController implements Initializable {
 		
 		
 		colPrice.setCellValueFactory(
-				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
-				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getPrice())
+				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getPrice())
 				);
 		
 		colStopGain.setCellValueFactory(
-				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
-				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getStopPrice())
+				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getStopPrice())
 				);
 		
 		colStopLoss.setCellValueFactory(
-				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
-				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getStopPrice())
+				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getStopPrice())
 				);
 		
 		colAvgPrice.setCellValueFactory(
-				(TreeTableColumn.CellDataFeatures<OrdersVO, Double> val) ->
-				new ReadOnlyObjectWrapper<Double>(val.getValue().getValue().getAvgPrice())
+				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				new ReadOnlyObjectWrapper<Double>(val.getValue().getAvgPrice())
 				);
 		
 		 
-		tblOrders.setRoot(root);
+		tblOrders.setItems(data);
 		
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
 				for(int i=0;i<4;i++){
 					OrdersVO vo = new OrdersVO();
+					vo.setClOrdID(""+i);
 					vo.setSecurityID("WDOV15");
 					vo.setOrderDateTime(new Date());
 					vo.setSide(Side.BUY);
@@ -262,14 +298,15 @@ public class OrderManagerController implements Initializable {
 						Thread.sleep(2500);
 						vo.setOrderStatus(OrderStatus.PARTIALLY_FILLED);
 						vo.setExecutedVolume(1+i);
-												
+						update(vo);
 						Thread.sleep(2500);
-						vo.setOrderStatus(OrderStatus.FILLED);
+						vo.setOrderStatus(OrderStatus.CANCELED);
+						vo.setSecurityID("WDOV15");
+						update(vo);
+						Thread.sleep(2500);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-
-					System.out.println();
 				}
 			}
 		}).start();
@@ -280,10 +317,20 @@ public class OrderManagerController implements Initializable {
 	
 	
 	public void add(OrdersVO ordr) {
-		data.add(ordr);
-		root.getChildren().add(new TreeItem(ordr));
+		if(ordr!=null){
+			data.add(ordr);
+		}
 	}
 	
-	
+	public void update(OrdersVO ordr){
+		if(ordr != null){
+			int idx = data.indexOf(ordr);
+			if(idx >=0){
+				//data.remove(idx);
+				data.set(idx, ordr);
+			}
+		}
+		
+	}
 	
 }

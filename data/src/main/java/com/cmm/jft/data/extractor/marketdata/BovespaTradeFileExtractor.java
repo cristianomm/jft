@@ -19,9 +19,9 @@ import com.cmm.jft.core.format.DoubleFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.core.format.IntFormatter;
-import com.cmm.jft.vo.Extractable;
 import com.cmm.jft.vo.OrderEventVO;
 import com.cmm.jft.vo.TradeVO;
+import com.cmm.jft.data.extractor.Extractable;
 import com.cmm.jft.data.files.CSV;
 import com.cmm.logging.Logging;
 
@@ -154,7 +154,7 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 	
 	public List<Extractable> extracts() {
 		
-		List<Extractable> bsEvents = new ArrayList<>(1000000);
+		ArrayList<Extractable> bsEvents = new ArrayList<>(1000000);
 		try {
 			DateTimeFormatter dtf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.DATE_TIME_F8);
 			DateTimeFormatter tf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.TIME_F3);

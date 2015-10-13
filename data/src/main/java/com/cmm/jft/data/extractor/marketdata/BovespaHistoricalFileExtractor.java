@@ -3,25 +3,15 @@
  */
 package com.cmm.jft.data.extractor.marketdata;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
 
 import org.apache.log4j.Level;
 
-import com.cmm.jft.core.util.TimeCounter;
-import com.cmm.jft.vo.Extractable;
-import com.cmm.jft.data.dde.QuoteData;
-import com.cmm.jft.data.enums.DataFields;
 import com.cmm.jft.data.extractor.Data;
+import com.cmm.jft.data.extractor.Extractable;
 import com.cmm.logging.Logging;
-import com.sun.glass.ui.SystemClipboard;
-import com.sun.glass.ui.Timer;
 
 /**
  * <p><code>BovespaHistoricalFileExtractor.java</code></p>

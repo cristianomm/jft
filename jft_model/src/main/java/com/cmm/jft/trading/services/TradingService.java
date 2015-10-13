@@ -166,7 +166,7 @@ public class TradingService {
 	//
 	//	}
 
-	public void newOrder(OrderTypes orderType, Side side, String symbol, int volume, 
+	public void newOrder(OrderTypes orderType, Side side, String symbol, double volume, 
 			double price, double limitPrice, double stopLoss, double stopGain, 
 			Date duration, TradeTypes tradeType) {
 

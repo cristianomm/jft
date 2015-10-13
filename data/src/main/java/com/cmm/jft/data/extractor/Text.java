@@ -3,7 +3,6 @@
  */
 package com.cmm.jft.data.extractor;
 
-import com.cmm.jft.vo.Extractable;
 
 /**
  * <p><code>Text.java</code></p>

@@ -18,7 +18,7 @@ public class App extends Application {
 		try {
 			///ui/src/main/resources/forms/DOMForm.fxml
 			///ui/src/main/java/com/cmm/jft/ui/App.java
-			Pane g = FXMLLoader.load(App.class.getResource("../../../../forms/OrderManagerForm.fxml"));
+			Pane g = FXMLLoader.load(App.class.getResource("../../../../forms/PlaceOrderForm.fxml"));
 			
 			Scene scene = new Scene(g);
 			scene.getStylesheets().add("file://" + App.class.getResource("../../../../forms/forms.css").getFile());

@@ -9,16 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 import org.apache.log4j.Level;
-import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
 
-import com.cmm.jft.vo.Extractable;
-import com.cmm.jft.data.test.TestPDF;
 import com.cmm.logging.Logging;
 
 /**

@@ -95,6 +95,12 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 	private int minimalVolume;
 	
 	/**
+	 * Maximal volume for a deal
+	 */
+	@Column(name="MaxVolume")
+	private int maxVolume;
+	
+	/**
 	 * Minimal volume change step for deal execution
 	 */
 	@Column(name="StepVolume")
@@ -272,8 +278,20 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 	public void setMinimalVolume(int minimalVolume) {
 		this.minimalVolume = minimalVolume;
 	}
-
-
+	
+	/**
+	 * @return the maxVolume
+	 */
+	public int getMaxVolume() {
+		return this.maxVolume;
+	}
+	
+	/**
+	 * @param maxVolume the maxVolume to set
+	 */
+	public void setMaxVolume(int maxVolume) {
+		this.maxVolume = maxVolume;
+	}
 	/**
 	 * @return the stepVolume
 	 */

@@ -6653,4 +6653,335 @@
   2015-09-11 11:09:54,719 [main] (DEBUG) org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl -> HHH000420: Closing un-released batch
   2015-09-11 11:09:54,719 [main] (DEBUG) org.hibernate.engine.jdbc.internal.LogicalConnectionImpl -> Releasing JDBC connection
   2015-09-11 11:09:54,719 [main] (DEBUG) org.hibernate.engine.jdbc.internal.LogicalConnectionImpl -> Released JDBC connection
+  2015-10-12 04:03:59,546 [main] (DEBUG) org.jboss.logging -> Logging Provider: org.jboss.logging.Log4jLoggerProvider
+  2015-10-12 04:03:59,587 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration boolean -> org.hibernate.type.BooleanType@1963006a
+  2015-10-12 04:03:59,587 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration boolean -> org.hibernate.type.BooleanType@1963006a
+  2015-10-12 04:03:59,587 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Boolean -> org.hibernate.type.BooleanType@1963006a
+  2015-10-12 04:03:59,590 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration numeric_boolean -> org.hibernate.type.NumericBooleanType@6d9c638
+  2015-10-12 04:03:59,592 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration true_false -> org.hibernate.type.TrueFalseType@6504e3b2
+  2015-10-12 04:03:59,593 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration yes_no -> org.hibernate.type.YesNoType@5e91993f
+  2015-10-12 04:03:59,608 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration byte -> org.hibernate.type.ByteType@1175e2db
+  2015-10-12 04:03:59,609 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration byte -> org.hibernate.type.ByteType@1175e2db
+  2015-10-12 04:03:59,609 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Byte -> org.hibernate.type.ByteType@1175e2db
+  2015-10-12 04:03:59,611 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration character -> org.hibernate.type.CharacterType@53bd815b
+  2015-10-12 04:03:59,611 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration char -> org.hibernate.type.CharacterType@53bd815b
+  2015-10-12 04:03:59,611 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Character -> org.hibernate.type.CharacterType@53bd815b
+  2015-10-12 04:03:59,615 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration short -> org.hibernate.type.ShortType@39ed3c8d
+  2015-10-12 04:03:59,615 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration short -> org.hibernate.type.ShortType@39ed3c8d
+  2015-10-12 04:03:59,615 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Short -> org.hibernate.type.ShortType@39ed3c8d
+  2015-10-12 04:03:59,617 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration integer -> org.hibernate.type.IntegerType@73a28541
+  2015-10-12 04:03:59,617 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration int -> org.hibernate.type.IntegerType@73a28541
+  2015-10-12 04:03:59,617 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Integer -> org.hibernate.type.IntegerType@73a28541
+  2015-10-12 04:03:59,620 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration long -> org.hibernate.type.LongType@200a570f
+  2015-10-12 04:03:59,620 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration long -> org.hibernate.type.LongType@200a570f
+  2015-10-12 04:03:59,622 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Long -> org.hibernate.type.LongType@200a570f
+  2015-10-12 04:03:59,625 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration float -> org.hibernate.type.FloatType@48cf768c
+  2015-10-12 04:03:59,625 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration float -> org.hibernate.type.FloatType@48cf768c
+  2015-10-12 04:03:59,625 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Float -> org.hibernate.type.FloatType@48cf768c
+  2015-10-12 04:03:59,627 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration double -> org.hibernate.type.DoubleType@2c13da15
+  2015-10-12 04:03:59,628 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration double -> org.hibernate.type.DoubleType@2c13da15
+  2015-10-12 04:03:59,628 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Double -> org.hibernate.type.DoubleType@2c13da15
+  2015-10-12 04:03:59,631 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration big_decimal -> org.hibernate.type.BigDecimalType@707f7052
+  2015-10-12 04:03:59,631 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.math.BigDecimal -> org.hibernate.type.BigDecimalType@707f7052
+  2015-10-12 04:03:59,633 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration big_integer -> org.hibernate.type.BigIntegerType@77468bd9
+  2015-10-12 04:03:59,633 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.math.BigInteger -> org.hibernate.type.BigIntegerType@77468bd9
+  2015-10-12 04:03:59,635 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration string -> org.hibernate.type.StringType@6ed3ef1
+  2015-10-12 04:03:59,635 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.String -> org.hibernate.type.StringType@6ed3ef1
+  2015-10-12 04:03:59,637 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration nstring -> org.hibernate.type.StringNVarcharType@7b1d7fff
+  2015-10-12 04:03:59,639 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration ncharacter -> org.hibernate.type.CharacterNCharType@2e5c649
+  2015-10-12 04:03:59,640 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration url -> org.hibernate.type.UrlType@6a38e57f
+  2015-10-12 04:03:59,641 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.net.URL -> org.hibernate.type.UrlType@6a38e57f
+  2015-10-12 04:03:59,644 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration date -> org.hibernate.type.DateType@5f205aa
+  2015-10-12 04:03:59,645 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.Date -> org.hibernate.type.DateType@5f205aa
+  2015-10-12 04:03:59,648 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration time -> org.hibernate.type.TimeType@532760d8
+  2015-10-12 04:03:59,648 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.Time -> org.hibernate.type.TimeType@532760d8
+  2015-10-12 04:03:59,652 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration timestamp -> org.hibernate.type.TimestampType@4f47d241
+  2015-10-12 04:03:59,653 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.Timestamp -> org.hibernate.type.TimestampType@4f47d241
+  2015-10-12 04:03:59,653 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.Date -> org.hibernate.type.TimestampType@4f47d241
+  2015-10-12 04:03:59,657 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration dbtimestamp -> org.hibernate.type.DbTimestampType@5679c6c6
+  2015-10-12 04:03:59,660 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration calendar -> org.hibernate.type.CalendarType@3cd1f1c8
+  2015-10-12 04:03:59,660 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.Calendar -> org.hibernate.type.CalendarType@3cd1f1c8
+  2015-10-12 04:03:59,660 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.GregorianCalendar -> org.hibernate.type.CalendarType@3cd1f1c8
+  2015-10-12 04:03:59,661 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration calendar_date -> org.hibernate.type.CalendarDateType@3339ad8e
+  2015-10-12 04:03:59,663 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration locale -> org.hibernate.type.LocaleType@8807e25
+  2015-10-12 04:03:59,663 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.Locale -> org.hibernate.type.LocaleType@8807e25
+  2015-10-12 04:03:59,667 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration currency -> org.hibernate.type.CurrencyType@5cbc508c
+  2015-10-12 04:03:59,667 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.Currency -> org.hibernate.type.CurrencyType@5cbc508c
+  2015-10-12 04:03:59,669 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration timezone -> org.hibernate.type.TimeZoneType@59690aa4
+  2015-10-12 04:03:59,669 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.TimeZone -> org.hibernate.type.TimeZoneType@59690aa4
+  2015-10-12 04:03:59,670 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration class -> org.hibernate.type.ClassType@6c629d6e
+  2015-10-12 04:03:59,670 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Class -> org.hibernate.type.ClassType@6c629d6e
+  2015-10-12 04:03:59,673 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration uuid-binary -> org.hibernate.type.UUIDBinaryType@4fccd51b
+  2015-10-12 04:03:59,673 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.UUID -> org.hibernate.type.UUIDBinaryType@4fccd51b
+  2015-10-12 04:03:59,674 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration uuid-char -> org.hibernate.type.UUIDCharType@4ca8195f
+  2015-10-12 04:03:59,676 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration pg-uuid -> org.hibernate.type.PostgresUUIDType@490d6c15
+  2015-10-12 04:03:59,677 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration binary -> org.hibernate.type.BinaryType@7bfcd12c
+  2015-10-12 04:03:59,678 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration byte[] -> org.hibernate.type.BinaryType@7bfcd12c
+  2015-10-12 04:03:59,678 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration [B -> org.hibernate.type.BinaryType@7bfcd12c
+  2015-10-12 04:03:59,680 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration wrapper-binary -> org.hibernate.type.WrapperBinaryType@18e8568
+  2015-10-12 04:03:59,680 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration Byte[] -> org.hibernate.type.WrapperBinaryType@18e8568
+  2015-10-12 04:03:59,680 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration [Ljava.lang.Byte; -> org.hibernate.type.WrapperBinaryType@18e8568
+  2015-10-12 04:03:59,684 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration image -> org.hibernate.type.ImageType@4f4a7090
+  2015-10-12 04:03:59,686 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration characters -> org.hibernate.type.CharArrayType@ba4d54
+  2015-10-12 04:03:59,687 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration char[] -> org.hibernate.type.CharArrayType@ba4d54
+  2015-10-12 04:03:59,687 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration [C -> org.hibernate.type.CharArrayType@ba4d54
+  2015-10-12 04:03:59,689 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration wrapper-characters -> org.hibernate.type.CharacterArrayType@67117f44
+  2015-10-12 04:03:59,689 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration [Ljava.lang.Character; -> org.hibernate.type.CharacterArrayType@67117f44
+  2015-10-12 04:03:59,689 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration Character[] -> org.hibernate.type.CharacterArrayType@67117f44
+  2015-10-12 04:03:59,691 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration text -> org.hibernate.type.TextType@763d9750
+  2015-10-12 04:03:59,692 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration ntext -> org.hibernate.type.NTextType@50675690
+  2015-10-12 04:03:59,700 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration blob -> org.hibernate.type.BlobType@326de728
+  2015-10-12 04:03:59,700 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.Blob -> org.hibernate.type.BlobType@326de728
+  2015-10-12 04:03:59,701 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration materialized_blob -> org.hibernate.type.MaterializedBlobType@71f2a7d5
+  2015-10-12 04:03:59,723 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration clob -> org.hibernate.type.ClobType@3ab39c39
+  2015-10-12 04:03:59,723 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.Clob -> org.hibernate.type.ClobType@3ab39c39
+  2015-10-12 04:03:59,732 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration nclob -> org.hibernate.type.NClobType@23223dd8
+  2015-10-12 04:03:59,732 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.NClob -> org.hibernate.type.NClobType@23223dd8
+  2015-10-12 04:03:59,734 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration materialized_clob -> org.hibernate.type.MaterializedClobType@ea4a92b
+  2015-10-12 04:03:59,735 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration materialized_nclob -> org.hibernate.type.MaterializedNClobType@5a01ccaa
+  2015-10-12 04:03:59,738 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration serializable -> org.hibernate.type.SerializableType@1fbc7afb
+  2015-10-12 04:03:59,742 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration object -> org.hibernate.type.ObjectType@7dc36524
+  2015-10-12 04:03:59,742 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Object -> org.hibernate.type.ObjectType@7dc36524
+  2015-10-12 04:03:59,744 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_date -> org.hibernate.type.AdaptedImmutableType@5a39699c
+  2015-10-12 04:03:59,744 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_time -> org.hibernate.type.AdaptedImmutableType@3cb5cdba
+  2015-10-12 04:03:59,745 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_timestamp -> org.hibernate.type.AdaptedImmutableType@56cbfb61
+  2015-10-12 04:03:59,745 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_dbtimestamp -> org.hibernate.type.AdaptedImmutableType@1134affc
+  2015-10-12 04:03:59,745 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_calendar -> org.hibernate.type.AdaptedImmutableType@d041cf
+  2015-10-12 04:03:59,745 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_calendar_date -> org.hibernate.type.AdaptedImmutableType@129a8472
+  2015-10-12 04:03:59,745 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_binary -> org.hibernate.type.AdaptedImmutableType@1b0375b3
+  2015-10-12 04:03:59,747 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_serializable -> org.hibernate.type.AdaptedImmutableType@2f7c7260
+  2015-10-12 04:03:59,777 [main] (INFO) org.hibernate.annotations.common.Version -> HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+  2015-10-12 04:03:59,794 [main] (INFO) org.hibernate.Version -> HHH000412: Hibernate Core {4.3.10.Final}
+  2015-10-12 04:03:59,799 [main] (INFO) org.hibernate.cfg.Environment -> HHH000206: hibernate.properties not found
+  2015-10-12 04:03:59,802 [main] (INFO) org.hibernate.cfg.Environment -> HHH000021: Bytecode provider name : javassist
+  2015-10-12 04:03:59,825 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [uuid2] -> [org.hibernate.id.UUIDGenerator]
+  2015-10-12 04:03:59,825 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [guid] -> [org.hibernate.id.GUIDGenerator]
+  2015-10-12 04:03:59,827 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [uuid] -> [org.hibernate.id.UUIDHexGenerator]
+  2015-10-12 04:03:59,827 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [uuid.hex] -> [org.hibernate.id.UUIDHexGenerator]
+  2015-10-12 04:03:59,829 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [hilo] -> [org.hibernate.id.TableHiLoGenerator]
+  2015-10-12 04:03:59,830 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [assigned] -> [org.hibernate.id.Assigned]
+  2015-10-12 04:03:59,831 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [identity] -> [org.hibernate.id.IdentityGenerator]
+  2015-10-12 04:03:59,832 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [select] -> [org.hibernate.id.SelectGenerator]
+  2015-10-12 04:03:59,833 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [sequence] -> [org.hibernate.id.SequenceGenerator]
+  2015-10-12 04:03:59,833 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [seqhilo] -> [org.hibernate.id.SequenceHiLoGenerator]
+  2015-10-12 04:03:59,834 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [increment] -> [org.hibernate.id.IncrementGenerator]
+  2015-10-12 04:03:59,835 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [foreign] -> [org.hibernate.id.ForeignGenerator]
+  2015-10-12 04:03:59,835 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [sequence-identity] -> [org.hibernate.id.SequenceIdentityGenerator]
+  2015-10-12 04:03:59,836 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [enhanced-sequence] -> [org.hibernate.id.enhanced.SequenceStyleGenerator]
+  2015-10-12 04:03:59,837 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [enhanced-table] -> [org.hibernate.id.enhanced.TableGenerator]
+  2015-10-12 04:03:59,849 [main] (INFO) org.hibernate.cfg.Configuration -> HHH000043: Configuring from resource: ./META-INF/hibernate.cfg.xml
+  2015-10-12 04:03:59,849 [main] (INFO) org.hibernate.cfg.Configuration -> HHH000040: Configuration resource: ./META-INF/hibernate.cfg.xml
+  2015-10-12 04:03:59,933 [main] (DEBUG) org.hibernate.internal.util.xml.DTDEntityResolver -> Trying to resolve system-id [http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd]
+  2015-10-12 04:03:59,933 [main] (DEBUG) org.hibernate.internal.util.xml.DTDEntityResolver -> Recognized hibernate namespace; attempting to resolve on classpath under org/hibernate/
+  2015-10-12 04:03:59,935 [main] (DEBUG) org.hibernate.internal.util.xml.DTDEntityResolver -> Located [http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd] in classpath
+  2015-10-12 04:03:59,970 [main] (DEBUG) org.hibernate.cfg.Configuration -> connection.driver_class=org.postgresql.Driver
+  2015-10-12 04:03:59,970 [main] (DEBUG) org.hibernate.cfg.Configuration -> connection.url=jdbc:postgresql://localhost:5432/StockData
+  2015-10-12 04:03:59,970 [main] (DEBUG) org.hibernate.cfg.Configuration -> connection.username=stockdata
+  2015-10-12 04:03:59,970 [main] (DEBUG) org.hibernate.cfg.Configuration -> connection.password=123456
+  2015-10-12 04:03:59,970 [main] (DEBUG) org.hibernate.cfg.Configuration -> connection.pool_size=1
+  2015-10-12 04:03:59,970 [main] (DEBUG) org.hibernate.cfg.Configuration -> dialect=org.hibernate.dialect.PostgreSQLDialect
+  2015-10-12 04:03:59,970 [main] (DEBUG) org.hibernate.cfg.Configuration -> current_session_context_class=thread
+  2015-10-12 04:03:59,970 [main] (DEBUG) org.hibernate.cfg.Configuration -> hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory
+  2015-10-12 04:03:59,971 [main] (DEBUG) org.hibernate.cfg.Configuration -> hibernate.cache.use_second_level_cache=true
+  2015-10-12 04:03:59,971 [main] (DEBUG) org.hibernate.cfg.Configuration -> hibernate.cache.use_query_cache=true
+  2015-10-12 04:03:59,971 [main] (DEBUG) org.hibernate.cfg.Configuration -> show_sql=false
+  2015-10-12 04:03:59,971 [main] (DEBUG) org.hibernate.cfg.Configuration -> hbm2ddl.auto=update
+  2015-10-12 04:03:59,975 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.core.Configuration] for mapping
+  2015-10-12 04:04:00,003 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Account] for mapping
+  2015-10-12 04:04:00,008 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Broker] for mapping
+  2015-10-12 04:04:00,011 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Brokerage] for mapping
+  2015-10-12 04:04:00,012 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Commission] for mapping
+  2015-10-12 04:04:00,013 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.CostCenter] for mapping
+  2015-10-12 04:04:00,013 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Currency] for mapping
+  2015-10-12 04:04:00,014 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.CurrencyQuote] for mapping
+  2015-10-12 04:04:00,015 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Deposit] for mapping
+  2015-10-12 04:04:00,015 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.DistributionRule] for mapping
+  2015-10-12 04:04:00,017 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.EntryRegister] for mapping
+  2015-10-12 04:04:00,018 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.ExchangeTax] for mapping
+  2015-10-12 04:04:00,019 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.JournalEntry] for mapping
+  2015-10-12 04:04:00,020 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Rule] for mapping
+  2015-10-12 04:04:00,020 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.RuleFormula] for mapping
+  2015-10-12 04:04:00,021 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Tax] for mapping
+  2015-10-12 04:04:00,022 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.TaxSetup] for mapping
+  2015-10-12 04:04:00,023 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.db.DBObject] for mapping
+  2015-10-12 04:04:00,023 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.trading.OrderEvent] for mapping
+  2015-10-12 04:04:00,024 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.trading.Orders] for mapping
+  2015-10-12 04:04:00,025 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.trading.marketdata.HistoricalQuote] for mapping
+  2015-10-12 04:05:28,029 [main] (DEBUG) org.jboss.logging -> Logging Provider: org.jboss.logging.Log4jLoggerProvider
+  2015-10-12 04:05:28,062 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration boolean -> org.hibernate.type.BooleanType@1963006a
+  2015-10-12 04:05:28,063 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration boolean -> org.hibernate.type.BooleanType@1963006a
+  2015-10-12 04:05:28,063 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Boolean -> org.hibernate.type.BooleanType@1963006a
+  2015-10-12 04:05:28,065 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration numeric_boolean -> org.hibernate.type.NumericBooleanType@6d9c638
+  2015-10-12 04:05:28,067 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration true_false -> org.hibernate.type.TrueFalseType@6504e3b2
+  2015-10-12 04:05:28,068 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration yes_no -> org.hibernate.type.YesNoType@5e91993f
+  2015-10-12 04:05:28,071 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration byte -> org.hibernate.type.ByteType@1175e2db
+  2015-10-12 04:05:28,072 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration byte -> org.hibernate.type.ByteType@1175e2db
+  2015-10-12 04:05:28,072 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Byte -> org.hibernate.type.ByteType@1175e2db
+  2015-10-12 04:05:28,074 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration character -> org.hibernate.type.CharacterType@53bd815b
+  2015-10-12 04:05:28,074 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration char -> org.hibernate.type.CharacterType@53bd815b
+  2015-10-12 04:05:28,074 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Character -> org.hibernate.type.CharacterType@53bd815b
+  2015-10-12 04:05:28,078 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration short -> org.hibernate.type.ShortType@39ed3c8d
+  2015-10-12 04:05:28,078 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration short -> org.hibernate.type.ShortType@39ed3c8d
+  2015-10-12 04:05:28,078 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Short -> org.hibernate.type.ShortType@39ed3c8d
+  2015-10-12 04:05:28,080 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration integer -> org.hibernate.type.IntegerType@73a28541
+  2015-10-12 04:05:28,080 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration int -> org.hibernate.type.IntegerType@73a28541
+  2015-10-12 04:05:28,080 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Integer -> org.hibernate.type.IntegerType@73a28541
+  2015-10-12 04:05:28,084 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration long -> org.hibernate.type.LongType@200a570f
+  2015-10-12 04:05:28,084 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration long -> org.hibernate.type.LongType@200a570f
+  2015-10-12 04:05:28,086 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Long -> org.hibernate.type.LongType@200a570f
+  2015-10-12 04:05:28,089 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration float -> org.hibernate.type.FloatType@48cf768c
+  2015-10-12 04:05:28,089 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration float -> org.hibernate.type.FloatType@48cf768c
+  2015-10-12 04:05:28,089 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Float -> org.hibernate.type.FloatType@48cf768c
+  2015-10-12 04:05:28,092 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration double -> org.hibernate.type.DoubleType@2c13da15
+  2015-10-12 04:05:28,092 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration double -> org.hibernate.type.DoubleType@2c13da15
+  2015-10-12 04:05:28,092 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Double -> org.hibernate.type.DoubleType@2c13da15
+  2015-10-12 04:05:28,096 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration big_decimal -> org.hibernate.type.BigDecimalType@707f7052
+  2015-10-12 04:05:28,096 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.math.BigDecimal -> org.hibernate.type.BigDecimalType@707f7052
+  2015-10-12 04:05:28,098 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration big_integer -> org.hibernate.type.BigIntegerType@77468bd9
+  2015-10-12 04:05:28,098 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.math.BigInteger -> org.hibernate.type.BigIntegerType@77468bd9
+  2015-10-12 04:05:28,100 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration string -> org.hibernate.type.StringType@6ed3ef1
+  2015-10-12 04:05:28,100 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.String -> org.hibernate.type.StringType@6ed3ef1
+  2015-10-12 04:05:28,102 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration nstring -> org.hibernate.type.StringNVarcharType@7b1d7fff
+  2015-10-12 04:05:28,104 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration ncharacter -> org.hibernate.type.CharacterNCharType@2e5c649
+  2015-10-12 04:05:28,106 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration url -> org.hibernate.type.UrlType@6a38e57f
+  2015-10-12 04:05:28,106 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.net.URL -> org.hibernate.type.UrlType@6a38e57f
+  2015-10-12 04:05:28,109 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration date -> org.hibernate.type.DateType@5f205aa
+  2015-10-12 04:05:28,110 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.Date -> org.hibernate.type.DateType@5f205aa
+  2015-10-12 04:05:28,113 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration time -> org.hibernate.type.TimeType@532760d8
+  2015-10-12 04:05:28,113 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.Time -> org.hibernate.type.TimeType@532760d8
+  2015-10-12 04:05:28,117 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration timestamp -> org.hibernate.type.TimestampType@4f47d241
+  2015-10-12 04:05:28,118 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.Timestamp -> org.hibernate.type.TimestampType@4f47d241
+  2015-10-12 04:05:28,119 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.Date -> org.hibernate.type.TimestampType@4f47d241
+  2015-10-12 04:05:28,122 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration dbtimestamp -> org.hibernate.type.DbTimestampType@5679c6c6
+  2015-10-12 04:05:28,125 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration calendar -> org.hibernate.type.CalendarType@3cd1f1c8
+  2015-10-12 04:05:28,125 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.Calendar -> org.hibernate.type.CalendarType@3cd1f1c8
+  2015-10-12 04:05:28,125 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.GregorianCalendar -> org.hibernate.type.CalendarType@3cd1f1c8
+  2015-10-12 04:05:28,126 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration calendar_date -> org.hibernate.type.CalendarDateType@3339ad8e
+  2015-10-12 04:05:28,129 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration locale -> org.hibernate.type.LocaleType@8807e25
+  2015-10-12 04:05:28,129 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.Locale -> org.hibernate.type.LocaleType@8807e25
+  2015-10-12 04:05:28,133 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration currency -> org.hibernate.type.CurrencyType@5cbc508c
+  2015-10-12 04:05:28,134 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.Currency -> org.hibernate.type.CurrencyType@5cbc508c
+  2015-10-12 04:05:28,136 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration timezone -> org.hibernate.type.TimeZoneType@59690aa4
+  2015-10-12 04:05:28,136 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.TimeZone -> org.hibernate.type.TimeZoneType@59690aa4
+  2015-10-12 04:05:28,138 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration class -> org.hibernate.type.ClassType@6c629d6e
+  2015-10-12 04:05:28,138 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Class -> org.hibernate.type.ClassType@6c629d6e
+  2015-10-12 04:05:28,141 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration uuid-binary -> org.hibernate.type.UUIDBinaryType@4fccd51b
+  2015-10-12 04:05:28,141 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.util.UUID -> org.hibernate.type.UUIDBinaryType@4fccd51b
+  2015-10-12 04:05:28,142 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration uuid-char -> org.hibernate.type.UUIDCharType@4ca8195f
+  2015-10-12 04:05:28,143 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration pg-uuid -> org.hibernate.type.PostgresUUIDType@490d6c15
+  2015-10-12 04:05:28,145 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration binary -> org.hibernate.type.BinaryType@7bfcd12c
+  2015-10-12 04:05:28,145 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration byte[] -> org.hibernate.type.BinaryType@7bfcd12c
+  2015-10-12 04:05:28,147 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration [B -> org.hibernate.type.BinaryType@7bfcd12c
+  2015-10-12 04:05:28,153 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration wrapper-binary -> org.hibernate.type.WrapperBinaryType@18e8568
+  2015-10-12 04:05:28,153 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration Byte[] -> org.hibernate.type.WrapperBinaryType@18e8568
+  2015-10-12 04:05:28,153 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration [Ljava.lang.Byte; -> org.hibernate.type.WrapperBinaryType@18e8568
+  2015-10-12 04:05:28,155 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration image -> org.hibernate.type.ImageType@4f4a7090
+  2015-10-12 04:05:28,159 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration characters -> org.hibernate.type.CharArrayType@ba4d54
+  2015-10-12 04:05:28,160 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration char[] -> org.hibernate.type.CharArrayType@ba4d54
+  2015-10-12 04:05:28,160 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration [C -> org.hibernate.type.CharArrayType@ba4d54
+  2015-10-12 04:05:28,162 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration wrapper-characters -> org.hibernate.type.CharacterArrayType@67117f44
+  2015-10-12 04:05:28,162 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration [Ljava.lang.Character; -> org.hibernate.type.CharacterArrayType@67117f44
+  2015-10-12 04:05:28,162 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration Character[] -> org.hibernate.type.CharacterArrayType@67117f44
+  2015-10-12 04:05:28,164 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration text -> org.hibernate.type.TextType@763d9750
+  2015-10-12 04:05:28,165 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration ntext -> org.hibernate.type.NTextType@50675690
+  2015-10-12 04:05:28,171 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration blob -> org.hibernate.type.BlobType@326de728
+  2015-10-12 04:05:28,172 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.Blob -> org.hibernate.type.BlobType@326de728
+  2015-10-12 04:05:28,172 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration materialized_blob -> org.hibernate.type.MaterializedBlobType@71f2a7d5
+  2015-10-12 04:05:28,191 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration clob -> org.hibernate.type.ClobType@3ab39c39
+  2015-10-12 04:05:28,192 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.Clob -> org.hibernate.type.ClobType@3ab39c39
+  2015-10-12 04:05:28,200 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration nclob -> org.hibernate.type.NClobType@23223dd8
+  2015-10-12 04:05:28,201 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.sql.NClob -> org.hibernate.type.NClobType@23223dd8
+  2015-10-12 04:05:28,202 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration materialized_clob -> org.hibernate.type.MaterializedClobType@ea4a92b
+  2015-10-12 04:05:28,203 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration materialized_nclob -> org.hibernate.type.MaterializedNClobType@5a01ccaa
+  2015-10-12 04:05:28,206 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration serializable -> org.hibernate.type.SerializableType@1fbc7afb
+  2015-10-12 04:05:28,212 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration object -> org.hibernate.type.ObjectType@7dc36524
+  2015-10-12 04:05:28,212 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration java.lang.Object -> org.hibernate.type.ObjectType@7dc36524
+  2015-10-12 04:05:28,213 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_date -> org.hibernate.type.AdaptedImmutableType@5a39699c
+  2015-10-12 04:05:28,213 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_time -> org.hibernate.type.AdaptedImmutableType@3cb5cdba
+  2015-10-12 04:05:28,213 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_timestamp -> org.hibernate.type.AdaptedImmutableType@56cbfb61
+  2015-10-12 04:05:28,213 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_dbtimestamp -> org.hibernate.type.AdaptedImmutableType@1134affc
+  2015-10-12 04:05:28,213 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_calendar -> org.hibernate.type.AdaptedImmutableType@d041cf
+  2015-10-12 04:05:28,213 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_calendar_date -> org.hibernate.type.AdaptedImmutableType@129a8472
+  2015-10-12 04:05:28,213 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_binary -> org.hibernate.type.AdaptedImmutableType@1b0375b3
+  2015-10-12 04:05:28,214 [main] (DEBUG) org.hibernate.type.BasicTypeRegistry -> Adding type registration imm_serializable -> org.hibernate.type.AdaptedImmutableType@2f7c7260
+  2015-10-12 04:05:28,242 [main] (INFO) org.hibernate.annotations.common.Version -> HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+  2015-10-12 04:05:28,254 [main] (INFO) org.hibernate.Version -> HHH000412: Hibernate Core {4.3.10.Final}
+  2015-10-12 04:05:28,259 [main] (INFO) org.hibernate.cfg.Environment -> HHH000206: hibernate.properties not found
+  2015-10-12 04:05:28,261 [main] (INFO) org.hibernate.cfg.Environment -> HHH000021: Bytecode provider name : javassist
+  2015-10-12 04:05:28,283 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [uuid2] -> [org.hibernate.id.UUIDGenerator]
+  2015-10-12 04:05:28,284 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [guid] -> [org.hibernate.id.GUIDGenerator]
+  2015-10-12 04:05:28,286 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [uuid] -> [org.hibernate.id.UUIDHexGenerator]
+  2015-10-12 04:05:28,286 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [uuid.hex] -> [org.hibernate.id.UUIDHexGenerator]
+  2015-10-12 04:05:28,288 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [hilo] -> [org.hibernate.id.TableHiLoGenerator]
+  2015-10-12 04:05:28,288 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [assigned] -> [org.hibernate.id.Assigned]
+  2015-10-12 04:05:28,290 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [identity] -> [org.hibernate.id.IdentityGenerator]
+  2015-10-12 04:05:28,291 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [select] -> [org.hibernate.id.SelectGenerator]
+  2015-10-12 04:05:28,291 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [sequence] -> [org.hibernate.id.SequenceGenerator]
+  2015-10-12 04:05:28,293 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [seqhilo] -> [org.hibernate.id.SequenceHiLoGenerator]
+  2015-10-12 04:05:28,293 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [increment] -> [org.hibernate.id.IncrementGenerator]
+  2015-10-12 04:05:28,294 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [foreign] -> [org.hibernate.id.ForeignGenerator]
+  2015-10-12 04:05:28,295 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [sequence-identity] -> [org.hibernate.id.SequenceIdentityGenerator]
+  2015-10-12 04:05:28,295 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [enhanced-sequence] -> [org.hibernate.id.enhanced.SequenceStyleGenerator]
+  2015-10-12 04:05:28,296 [main] (DEBUG) org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory -> Registering IdentifierGenerator strategy [enhanced-table] -> [org.hibernate.id.enhanced.TableGenerator]
+  2015-10-12 04:05:28,307 [main] (INFO) org.hibernate.cfg.Configuration -> HHH000043: Configuring from resource: ./META-INF/hibernate.cfg.xml
+  2015-10-12 04:05:28,307 [main] (INFO) org.hibernate.cfg.Configuration -> HHH000040: Configuration resource: ./META-INF/hibernate.cfg.xml
+  2015-10-12 04:05:28,386 [main] (DEBUG) org.hibernate.internal.util.xml.DTDEntityResolver -> Trying to resolve system-id [http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd]
+  2015-10-12 04:05:28,386 [main] (DEBUG) org.hibernate.internal.util.xml.DTDEntityResolver -> Recognized hibernate namespace; attempting to resolve on classpath under org/hibernate/
+  2015-10-12 04:05:28,388 [main] (DEBUG) org.hibernate.internal.util.xml.DTDEntityResolver -> Located [http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd] in classpath
+  2015-10-12 04:05:28,419 [main] (DEBUG) org.hibernate.cfg.Configuration -> connection.driver_class=org.postgresql.Driver
+  2015-10-12 04:05:28,420 [main] (DEBUG) org.hibernate.cfg.Configuration -> connection.url=jdbc:postgresql://localhost:5432/StockData
+  2015-10-12 04:05:28,420 [main] (DEBUG) org.hibernate.cfg.Configuration -> connection.username=stockdata
+  2015-10-12 04:05:28,420 [main] (DEBUG) org.hibernate.cfg.Configuration -> connection.password=123456
+  2015-10-12 04:05:28,420 [main] (DEBUG) org.hibernate.cfg.Configuration -> connection.pool_size=1
+  2015-10-12 04:05:28,420 [main] (DEBUG) org.hibernate.cfg.Configuration -> dialect=org.hibernate.dialect.PostgreSQLDialect
+  2015-10-12 04:05:28,420 [main] (DEBUG) org.hibernate.cfg.Configuration -> current_session_context_class=thread
+  2015-10-12 04:05:28,420 [main] (DEBUG) org.hibernate.cfg.Configuration -> hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory
+  2015-10-12 04:05:28,420 [main] (DEBUG) org.hibernate.cfg.Configuration -> hibernate.cache.use_second_level_cache=true
+  2015-10-12 04:05:28,420 [main] (DEBUG) org.hibernate.cfg.Configuration -> hibernate.cache.use_query_cache=true
+  2015-10-12 04:05:28,420 [main] (DEBUG) org.hibernate.cfg.Configuration -> show_sql=false
+  2015-10-12 04:05:28,420 [main] (DEBUG) org.hibernate.cfg.Configuration -> hbm2ddl.auto=update
+  2015-10-12 04:05:28,421 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.core.Configuration] for mapping
+  2015-10-12 04:05:28,449 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Account] for mapping
+  2015-10-12 04:05:28,451 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Broker] for mapping
+  2015-10-12 04:05:28,452 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Brokerage] for mapping
+  2015-10-12 04:05:28,452 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Commission] for mapping
+  2015-10-12 04:05:28,453 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.CostCenter] for mapping
+  2015-10-12 04:05:28,453 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Currency] for mapping
+  2015-10-12 04:05:28,454 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.CurrencyQuote] for mapping
+  2015-10-12 04:05:28,455 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Deposit] for mapping
+  2015-10-12 04:05:28,455 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.DistributionRule] for mapping
+  2015-10-12 04:05:28,456 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.EntryRegister] for mapping
+  2015-10-12 04:05:28,457 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.ExchangeTax] for mapping
+  2015-10-12 04:05:28,458 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.JournalEntry] for mapping
+  2015-10-12 04:05:28,459 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Rule] for mapping
+  2015-10-12 04:05:28,460 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.RuleFormula] for mapping
+  2015-10-12 04:05:28,460 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.Tax] for mapping
+  2015-10-12 04:05:28,461 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.financial.TaxSetup] for mapping
+  2015-10-12 04:05:28,462 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.db.DBObject] for mapping
+  2015-10-12 04:05:28,462 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.trading.OrderEvent] for mapping
+  2015-10-12 04:05:28,463 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.trading.Orders] for mapping
+  2015-10-12 04:05:28,464 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.marketdata.HistoricalQuote] for mapping
+  2015-10-12 04:05:28,465 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.marketdata.MarketEvent] for mapping
+  2015-10-12 04:05:28,466 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.marketdata.MarketOrder] for mapping
+  2015-10-12 04:05:28,467 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.marketdata.MarketTrade] for mapping
+  2015-10-12 04:05:28,467 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.security.Country] for mapping
+  2015-10-12 04:05:28,468 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.security.Security] for mapping
+  2015-10-12 04:05:28,469 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.security.SecurityInfo] for mapping
+  2015-10-12 04:05:28,470 [main] (DEBUG) org.hibernate.cfg.Configuration -> Session-factory config [null] named class [com.cmm.jft.security.StockExchange] for mapping
+  2015-10-12 04:05:28,471 [main] (INFO) org.hibernate.cfg.Configuration -> HHH000041: Configured SessionFactory: null
+  2015-10-12 04:05:28,471 [main] (DEBUG) org.hibernate.cfg.Configuration -> Properties: {show_sql=false, java.vendor=Oracle Corporation, sun.java.launcher=SUN_STANDARD, hibernate.connection.url=jdbc:postgresql://localhost:5432/StockData, sun.management.compiler=HotSpot 64-Bit Tiered Compilers, hbm2ddl.auto=update, os.name=Windows 10, sun.boot.class.path=C:\Program Files\Java\jdk1.8.0_60\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_60\jre\classes, hibernate.current_session_context_class=thread, sun.desktop=windows, java.vm.specification.vendor=Oracle Corporation, java.runtime.version=1.8.0_60-b27, user.name=cristiano, connection.driver_class=org.postgresql.Driver, current_session_context_class=thread, user.language=en, sun.boot.library.path=C:\Program Files\Java\jdk1.8.0_60\jre\bin, dialect=org.hibernate.dialect.PostgreSQLDialect, java.version=1.8.0_60, user.timezone=America/Sao_Paulo, sun.arch.data.model=64, java.endorsed.dirs=C:\Program Files\Java\jdk1.8.0_60\jre\lib\endorsed, sun.cpu.isalist=amd64, sun.jnu.encoding=Cp1252, file.encoding.pkg=sun.io, file.separator=\, java.specification.name=Java Platform API Specification, java.class.version=52.0, user.country=US, connection.url=jdbc:postgresql://localhost:5432/StockData, java.home=C:\Program Files\Java\jdk1.8.0_60\jre, java.vm.info=mixed mode, os.version=10.0, path.separator=;, connection.password=123456, java.vm.version=25.60-b23, hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory, hibernate.connection.password=123456, user.variant=, java.awt.printerjob=sun.awt.windows.WPrinterJob, sun.io.unicode.encoding=UnicodeLittle, awt.toolkit=sun.awt.windows.WToolkit, hibernate.connection.username=stockdata, user.script=, user.home=C:\Users\crist, java.specification.vendor=Oracle Corporation, hibernate.hbm2ddl.auto=update, java.library.path=C:\Program Files\Java\jdk1.8.0_60\jre\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre1.8.0_60/bin/server;C:/Program Files/Java/jre1.8.0_60/bin;C:/Program Files/Java/jre1.8.0_60/lib/amd64;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Java\jdk1.8.0_60\bin;C:\Program Files (x86)\Common Files\Roxio Shared\DLLShared\;C:\Program Files (x86)\Common Files\Roxio Shared\9.0\DLLShared\;C:\Program Files\MiKTeX 2.9\miktex\bin\x64\;c:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\;c:\Program Files\Microsoft SQL Server\100\Tools\Binn\;c:\Program Files\Microsoft SQL Server\100\DTS\Binn\;C:\Programs\eclipse;;., java.vendor.url=http://java.oracle.com/, hibernate.connection.driver_class=org.postgresql.Driver, connection.username=stockdata, java.vm.vendor=Oracle Corporation, hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect, java.runtime.name=Java(TM) SE Runtime Environment, sun.java.command=com.cmm.jft.init.DBInitialization, java.class.path=C:\Disco\Workspaces\JFT\jft_modules\init\target\classes;C:\Disco\Workspaces\JFT\jft_modules\lib\jdbc\postgresql-9.0-801.jdbc4.jar;C:\Disco\Workspaces\JFT\jft_modules\logging\target\classes;C:\Disco\Workspaces\m2\repository\log4j\log4j\1.2.16\log4j-1.2.16.jar;C:\Disco\Workspaces\JFT\jft_modules\db\target\classes;C:\Disco\Workspaces\m2\repository\org\hibernate\hibernate-core\4.3.10.Final\hibernate-core-4.3.10.Final.jar;C:\Disco\Workspaces\m2\repository\org\jboss\logging\jboss-logging\3.1.3.GA\jboss-logging-3.1.3.GA.jar;C:\Disco\Workspaces\m2\repository\org\jboss\logging\jboss-logging-annotations\1.2.0.Beta1\jboss-logging-annotations-1.2.0.Beta1.jar;C:\Disco\Workspaces\m2\repository\org\jboss\spec\javax\transaction\jboss-transaction-api_1.2_spec\1.0.0.Final\jboss-transaction-api_1.2_spec-1.0.0.Final.jar;C:\Disco\Workspaces\m2\repository\dom4j\dom4j\1.6.1\dom4j-1.6.1.jar;C:\Disco\Workspaces\m2\repository\xml-apis\xml-apis\1.0.b2\xml-apis-1.0.b2.jar;C:\Disco\Workspaces\m2\repository\org\hibernate\common\hibernate-commons-annotations\4.0.5.Final\hibernate-commons-annotations-4.0.5.Final.jar;C:\Disco\Workspaces\m2\repository\org\hibernate\javax\persistence\hibernate-jpa-2.1-api\1.0.0.Final\hibernate-jpa-2.1-api-1.0.0.Final.jar;C:\Disco\Workspaces\m2\repository\org\javassist\javassist\3.18.1-GA\javassist-3.18.1-GA.jar;C:\Disco\Workspaces\m2\repository\antlr\antlr\2.7.7\antlr-2.7.7.jar;C:\Disco\Workspaces\m2\repository\org\jboss\jandex\1.1.0.Final\jandex-1.1.0.Final.jar;C:\Disco\Workspaces\m2\repository\org\hibernate\hibernate-ehcache\4.3.10.Final\hibernate-ehcache-4.3.10.Final.jar;C:\Disco\Workspaces\m2\repository\net\sf\ehcache\ehcache-core\2.4.3\ehcache-core-2.4.3.jar;C:\Disco\Workspaces\m2\repository\org\slf4j\slf4j-api\1.6.1\slf4j-api-1.6.1.jar;C:\Disco\Workspaces\JFT\jft_modules\jft_model\target\classes;C:\Disco\Workspaces\JFT\jft_modules\core\target\classes;C:\Disco\Workspaces\m2\repository\org\beanshell\bsh\2.0b5\bsh-2.0b5.jar;C:\Disco\Workspaces\JFT\jft_modules\data\target\classes;C:\Disco\Workspaces\JFT\jft_modules\lib\ftp4j\ftp4j-1.7.2.jar;C:\Disco\Workspaces\JFT\jft_modules\lib\jdde\pretty-tools-JDDE-2.0.1.jar;C:\Disco\Workspaces\JFT\jft_modules\lib\jxl\jxl.jar;C:\Disco\Workspaces\JFT\jft_modules\lib\jsoup\jsoup-1.8.1.jar;C:\Disco\Workspaces\m2\repository\org\apache\pdfbox\pdfbox-ant\1.8.9\pdfbox-ant-1.8.9.jar;C:\Disco\Workspaces\m2\repository\org\apache\pdfbox\pdfbox\1.8.9\pdfbox-1.8.9.jar;C:\Disco\Workspaces\m2\repository\org\apache\pdfbox\fontbox\1.8.9\fontbox-1.8.9.jar;C:\Disco\Workspaces\m2\repository\org\apache\pdfbox\jempbox\1.8.9\jempbox-1.8.9.jar;C:\Disco\Workspaces\m2\repository\commons-logging\commons-logging\1.1.1\commons-logging-1.1.1.jar;C:\Disco\Workspaces\m2\repository\org\apache\ant\ant\1.8.1\ant-1.8.1.jar;C:\Disco\Workspaces\m2\repository\org\apache\ant\ant-launcher\1.8.1\ant-launcher-1.8.1.jar;C:\Disco\Workspaces\m2\repository\com\sun\mail\javax.mail\1.5.3\javax.mail-1.5.3.jar;C:\Disco\Workspaces\m2\repository\javax\activation\activation\1.1\activation-1.1.jar, hibernate.bytecode.use_reflection_optimizer=false, java.vm.specification.name=Java Virtual Machine Specification, java.vm.specification.version=1.8, hibernate.cache.use_query_cache=true, sun.cpu.endian=little, sun.os.patch.level=, connection.pool_size=1, java.io.tmpdir=C:\Users\crist\AppData\Local\Temp\, java.vendor.url.bug=http://bugreport.sun.com/bugreport/, os.arch=amd64, java.awt.graphicsenv=sun.awt.Win32GraphicsEnvironment, java.ext.dirs=C:\Program Files\Java\jdk1.8.0_60\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext, user.dir=C:\Disco\Workspaces\JFT\jft_modules\init, line.separator=
+, java.vm.name=Java HotSpot(TM) 64-Bit Server VM, hibernate.cache.use_second_level_cache=true, file.encoding=Cp1252, java.specification.version=1.8, hibernate.show_sql=false, hibernate.connection.pool_size=1}
+  2015-10-12 04:05:28,536 [main] (DEBUG) org.hibernate.integrator.internal.IntegratorServiceImpl -> Adding Integrator [org.hibernate.cfg.beanvalidation.BeanValidationIntegrator].
+  2015-10-12 04:05:28,539 [main] (DEBUG) org.hibernate.integrator.internal.IntegratorServiceImpl -> Adding Integrator [org.hibernate.secure.spi.JaccIntegrator].
+  2015-10-12 04:05:28,548 [main] (DEBUG) org.hibernate.integrator.internal.IntegratorServiceImpl -> Adding Integrator [org.hibernate.cache.internal.CollectionCacheInvalidator].
+  2015-10-12 04:05:28,586 [main] (DEBUG) org.hibernate.boot.registry.selector.internal.StrategySelectorImpl -> Registering named strategy selector [org.hibernate.dialect.Dialect] : [MySQL5] -> [org.hibernate.dialect.MySQL5Dialect] (replacing [org.hibernate.dialect.MySQL5Dialect])
+  2015-10-12 04:05:28,586 [main] (DEBUG) org.hibernate.boot.registry.selector.internal.StrategySelectorImpl -> Registering named strategy selector [org.hibernate.dialect.Dialect] : [MySQL5InnoDB] -> [org.hibernate.dialect.MySQL5InnoDBDialect] (replacing [org.hibernate.dialect.MySQL5InnoDBDialect])
+  2015-10-12 04:05:28,765 [main] (DEBUG) org.hibernate.service.spi.ServiceBinding -> Overriding existing service binding [org.hibernate.secure.spi.JaccService]
+  2015-10-12 04:05:28,766 [main] (DEBUG) org.hibernate.cfg.Configuration -> Preparing to build session factory with filters : {}
+  2015-10-12 04:05:28,794 [main] (WARN) org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl -> HHH000402: Using Hibernate built-in connection pool (not for production use!)
+  2015-10-12 04:05:28,849 [main] (INFO) org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl -> HHH000401: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://localhost:5432/StockData]
+  2015-10-12 04:05:28,851 [main] (INFO) org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl -> HHH000046: Connection properties: {user=stockdata, password=123456}
+  2015-10-12 04:05:28,851 [main] (INFO) org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl -> HHH000006: Autocommit mode: false
+  2015-10-12 04:05:28,853 [main] (INFO) org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl -> HHH000115: Hibernate connection pool size: 1 (min=1)
+  2015-10-12 04:05:28,853 [main] (DEBUG) org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl -> Initializing Connection pool with 1 Connections
   

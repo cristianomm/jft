@@ -32,3 +32,15 @@
 	-fx-control-inner-background: #ff8080;
 }
 
+.button_buy{
+	-fx-control-inner-background: #77bbff;
+}
+
+.button_sell{
+	-fx-control-inner-background: #ff8080;
+}
+
+.fonts{
+	-fx-font: 10px "System";
+}
+
