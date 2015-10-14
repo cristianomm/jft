@@ -86,7 +86,7 @@ public class Book implements MessageSender {
 		valid = valid && !order.getClOrdID().isEmpty();
 		
 		//verifica se a quantidade para o instrumento eh valida
-		valid = valid && (order.getVolume() % security.getSecurityInfoID().getMinimalVolume()) == 0;
+		valid = valid && (order.getVolume() % security.getSecurityInfoID().getMinVolume()) == 0;
 
 		//verifica se o preco esta correto
 		if(order.getPrice() == 0) {

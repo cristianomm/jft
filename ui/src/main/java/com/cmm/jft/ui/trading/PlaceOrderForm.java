@@ -425,14 +425,14 @@ public class PlaceOrderForm extends AbstractForm {
 			String symbol = txtSecurity.getText();
 			Security s = SecurityService.getInstance().provideSecurity(symbol);
 			SecurityInfo si = s.getSecurityInfoID();
-			si.getMinimalVolume();
+			si.getMinVolume();
 			si.getDigits();
 			si.getTickSize();
 			si.getTickValue();
 
 			double actualPrice = 0;
 
-			spnVolume.setModel(new SpinnerNumberModel(Integer.valueOf(0), si.getMinimalVolume(), null, si.getMinimalVolume()));
+			spnVolume.setModel(new SpinnerNumberModel(Integer.valueOf(0), si.getMinVolume(), null, si.getMinVolume()));
 			spnPrice.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
 			spnLimitPrice.setModel(new SpinnerNumberModel(actualPrice, Double.valueOf(0.0d), null, si.getTickSize()));
 
