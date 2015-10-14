@@ -75,7 +75,7 @@ public class SecurityService {
 		} catch (DataBaseException e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
-
+		
 		return s;
 	}
 	

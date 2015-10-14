@@ -91,8 +91,8 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 	/**
 	 * Minimal volume for a deal
 	 */
-	@Column(name="MinimalVolume")
-	private int minimalVolume;
+	@Column(name="MinVolume")
+	private int minVolume;
 	
 	/**
 	 * Maximal volume for a deal
@@ -265,18 +265,18 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 
 
 	/**
-	 * @return the minimalVolume
+	 * @return the minVolume
 	 */
-	public int getMinimalVolume() {
-		return this.minimalVolume;
+	public int getMinVolume() {
+		return this.minVolume;
 	}
 
 
 	/**
-	 * @param minimalVolume the minimalVolume to set
+	 * @param minVolume the minVolume to set
 	 */
-	public void setMinimalVolume(int minimalVolume) {
-		this.minimalVolume = minimalVolume;
+	public void setMinVolume(int minVolume) {
+		this.minVolume = minVolume;
 	}
 	
 	/**

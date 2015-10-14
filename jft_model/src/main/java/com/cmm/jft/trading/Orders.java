@@ -701,7 +701,8 @@ public class Orders implements DBObject<Orders> {
 		try {
 			// verifica se o volume esta de acordo com o lote padrao do simbolo,
 			// caso n esteja, lanca exception
-			if ((volume % securityID.getSecurityInfoID().getMinimalVolume()) != 0) {
+			if (volume < securityID.getSecurityInfoID().getMinVolume() || 
+					volume > securityID.getSecurityInfoID().getMaxVolume()) {
 				throw new OrderException("Invalid Volume:" + volume);
 			}
 			

@@ -188,10 +188,10 @@ public class PlaceOrderController implements Initializable {
 		double volumeIncr = 1;
 		
 		try{
-			Security security = null;//SecurityService.getInstance().provideSecurity(symbol);
+			Security security = SecurityService.getInstance().provideSecurity(symbol);
 			priceIncr = security.getSecurityInfoID().getTickSize();
 			volumeIncr = security.getSecurityInfoID().getStepVolume();
-			minVolume = security.getSecurityInfoID().getMinimalVolume();
+			minVolume = security.getSecurityInfoID().getMinVolume();
 			maxVolume = security.getSecurityInfoID().getMaxVolume();
 		}catch(NullPointerException e){}
 		

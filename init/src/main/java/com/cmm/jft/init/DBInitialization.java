@@ -341,7 +341,8 @@ public class DBInitialization {
 			//DBFacade.getInstance().queryAsMap("SecurityType.findAll", specis, SecurityType.class, "getCode");
 			//Symbol;ISIN;StockCode;Descricao;TipoAtivoObjeto;EstiloOpcao;Situacao;DataEmissao;DataExpiracao;PrecoExercicio;TipoAtivo;Categoria;secType;secSpeci 
 
-			//SYMBOL;DESCRIPTION;ISIN;CURRENCY_BASE;CONTRACT_SIZE;TICK_SIZE;TICK_VALUE;DIGITS;MINIMAL_VOLUME;STEP_VOLUME;START_TIME;EXPIRATION_TIME;OPTION_MODE;OPTION_RIGHT;OPTION_STRIKE
+			//SYMBOL;DESCRIPTION;ISIN;CURRENCY_BASE;CONTRACT_SIZE;TICK_SIZE;TICK_VALUE;DIGITS;
+			//MINIMAL_VOLUME;STEP_VOLUME;START_TIME;EXPIRATION_TIME;OPTION_MODE;OPTION_RIGHT;OPTION_STRIKE
 			CSV csv = new CSV(fileName, ";","#");
 			String[] vs = csv.readLine();
 			while(csv.hasNext()) {
@@ -358,14 +359,15 @@ public class DBInitialization {
 				double tickValue = ((double)FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[6]));
 				int digits = ((int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[7]));
 				int minVolume = ((int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[8]));
-				int stepVolume = ((int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[9]));
-				String assetType = vs[10];
-				String category = vs[11];
-				Date emissionDate=((Date)FormatterFactory.getFormatter(FormatterTypes.DATE_TIME_F10).parse(vs[12]));
-				Date expirationDate=((Date)FormatterFactory.getFormatter(FormatterTypes.DATE_TIME_F10).parse(vs[13]));
-				OptionStyles style = OptionStyles.getByValue(vs[14]);
-				OptionRights optionRight = OptionRights.getByValue(vs[15]);
-				double strikePrice = (Double)FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[16]);
+				int maxVolume = ((int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[9]));
+				int stepVolume = ((int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[10]));
+				String assetType = vs[11];
+				String category = vs[12];
+				Date emissionDate=((Date)FormatterFactory.getFormatter(FormatterTypes.DATE_TIME_F10).parse(vs[13]));
+				Date expirationDate=((Date)FormatterFactory.getFormatter(FormatterTypes.DATE_TIME_F10).parse(vs[14]));
+				OptionStyles style = OptionStyles.getByValue(vs[15]);
+				OptionRights optionRight = OptionRights.getByValue(vs[16]);
+				double strikePrice = (Double)FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[17]);
 
 				SecurityCategory secCat = SecurityCategory.getByISIN(ISIN);
 				//AssetTypes objAsset = AssetTypes.getByValue(tipoAtivoObjeto);
@@ -382,7 +384,8 @@ public class DBInitialization {
 				info.setTickSize(tickSize);
 				info.setTickValue(tickValue);
 				info.setDigits(digits);
-				info.setMinimalVolume(minVolume);
+				info.setMinVolume(minVolume);
+				info.setMaxVolume(maxVolume);
 				info.setStepVolume(stepVolume);
 				info.setObjectAsset(null);
 				info.setCategory(secCat);
