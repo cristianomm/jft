@@ -13,7 +13,7 @@
       <DatePicker fx:id="dtDate" layoutX="286.0" layoutY="128.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
       <ComboBox fx:id="cmbOrderTypes" layoutX="82.0" layoutY="68.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0">
          <padding>
-            <Insets bottom="-4.0" top="-3.0" />
+            <Insets bottom="-5.0" top="-1.0" />
          </padding></ComboBox>
       <Spinner fx:id="spnStop" layoutX="82.0" layoutY="158.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
       <Spinner fx:id="spnVolume" layoutX="286.0" layoutY="68.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
@@ -27,7 +27,7 @@
       <TextField fx:id="txtComment" layoutX="81.0" layoutY="218.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="305.0" />
       <ComboBox fx:id="cmbValidityTypes" layoutX="286.0" layoutY="98.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0">
          <padding>
-            <Insets bottom="-4.0" top="-3.0"/>
+            <Insets bottom="-4.0" />
          </padding></ComboBox>
       <Label layoutX="234.0" layoutY="100.0" text="Validity" />
       <Label layoutX="15.0" layoutY="27.0" text="Security" />
