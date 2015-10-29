@@ -5,20 +5,34 @@ package com.cmm.jft.messaging.fix44;
 
 import quickfix.FieldNotFound;
 import quickfix.Message;
+import quickfix.field.ClOrdID;
 import quickfix.field.ExecType;
+import quickfix.field.ExpireDate;
+import quickfix.field.OrdType;
+import quickfix.field.OrderQty;
+import quickfix.field.Price;
+import quickfix.field.SecurityExchange;
+import quickfix.field.Symbol;
+import quickfix.field.TimeInForce;
+import quickfix.field.TransactTime;
 import quickfix.fix44.ExecutionReport;
+import quickfix.fix44.NewOrderSingle;
 import quickfix.fix44.OrderCancelReject;
 import quickfix.fix44.OrderCancelReplaceRequest;
 import quickfix.fix44.OrderCancelRequest;
 
 import org.apache.log4j.Level;
 
+import com.cmm.jft.core.format.DateTimeFormatter;
+import com.cmm.jft.core.format.FormatterFactory;
+import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.services.SecurityService;
 import com.cmm.logging.Logging;
@@ -160,8 +174,26 @@ public class Fix44MessageDecoder implements MessageDecoder {
 	 */
 	@Override
 	public Orders newOrderSingle(Message message) {
-		// TODO Auto-generated method stub
-		return null;
+		Orders ordr = null;
+
+		try {
+			ordr = new Orders();
+			NewOrderSingle orderSingle = (NewOrderSingle) message;
+			ordr.setClOrdID(orderSingle.getClOrdID().getValue());
+			ordr.setSecurityID(SecurityService.getInstance().provideSecurity(orderSingle.getSecurityID().getValue()));
+			ordr.setSide(Side.getByValue(orderSingle.getSide().getValue()));
+			ordr.setOrderDateTime(orderSingle.getTransactTime().getValue());
+			ordr.setVolume(orderSingle.getOrderQty().getValue());
+			ordr.setOrderType(OrderTypes.getByValue(orderSingle.getOrdType().getValue()));
+			ordr.setPrice(orderSingle.getPrice().getValue());
+			ordr.setValidityType(OrderValidityTypes.getByValue(orderSingle.getTimeInForce().getValue()));
+			ordr.setDuration(((DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).parse(orderSingle.getExpireDate().getValue()));
+			ordr.setComment(orderSingle.getString(5149));
+		}catch(FieldNotFound e) {
+			ordr = null;
+		}
+
+		return ordr;
 	}
 
 	/* (non-Javadoc)

@@ -47,23 +47,22 @@ import quickfix.mina.acceptor.DynamicAcceptorSessionProvider;
 import quickfix.mina.acceptor.DynamicAcceptorSessionProvider.TemplateMapping;
 
 /**
- * <p><code>EntryPointListener.java</code></p>
+ * <p><code>App.java</code></p>
  * @author Cristiano M Martins
  * @version 13 de jul de 2015 00:05:40
  *
  */
-public class EntryPointListener implements Service {
+public class App implements Service {
 	
 	
 	private EntryPoint entryPoint;
 	private SocketAcceptor acceptor;
-	
 	private JmxExporter jmxExporter;
 	private ObjectName connectorObjectName;
 	private HashMap<InetSocketAddress, List<TemplateMapping>> dynamicSessionMappings;
-		
 	
-	public EntryPointListener() {
+	
+	public App() {
 		this.dynamicSessionMappings = new HashMap<InetSocketAddress, List<TemplateMapping>>();
 		initListener();
 	}
@@ -71,7 +70,7 @@ public class EntryPointListener implements Service {
 	
 	private void initListener(){
 		try{
-			SessionSettings settings = new SessionSettings(EntryPointListener.class.getResourceAsStream("EntryPointListener.cfg"));
+			SessionSettings settings = new SessionSettings(App.class.getResourceAsStream("App.cfg"));
 			
 			entryPoint = new EntryPoint(settings);
 			MessageStoreFactory storeFactory = new FileStoreFactory(settings);
@@ -173,64 +172,9 @@ public class EntryPointListener implements Service {
 		return running;
 	}
 	
-	/*
-	public static BigDecimal fact(Integer n){
-		
-		if(n < 1) return BigDecimal.ONE;
-		
-		return fact(n - 1).multiply(new BigDecimal(n.toString()));
-	}*/
-	
 	public static void main(String[] args) {
-		/*
-		System.out.println(false && false);
-		
-		System.out.println(StrictMath.multiplyExact(7, 4));
-		
-		float num = 0f;
-		
-		for(int i=0;i<1000;i++) {
-			num+= .0000001;
-		}
-		System.out.println(String.format("%.25f", num));
-		System.exit(0);
-		
-		System.out.println(fact(22));
-		
-		BigDecimal val = new BigDecimal(0);
-		BigDecimal one = new BigDecimal(1); 
-		System.out.println(one.divide(new BigDecimal(6), BigDecimal.ROUND_HALF_UP));
-		for(int i=0;i<1000;i++){
-			val = val.add(one.divide(fact(i), 1000000, BigDecimal.ROUND_DOWN));
-		}
-		System.out.println(val);
-		 */
-		
-		double eps = 1;
-		while(eps+1 > 1){
-			eps = .5 * eps;
-		}
-		System.out.println(eps);
-		
-		System.exit(0);
-		
-		/*
-		try{
-			Scanner sc = new Scanner(new File("c:\\Disco\\Bancos\\dmps\\member_login.dump"));
-			sc.useDelimiter("[\n|\r]+");
-			int c=0;
-			while(c++ <10000){
-				System.out.println(sc.nextLine());
-			}
-		}
-		catch(FileNotFoundException e){
-			
-		}
-		*/
-		
-		EntryPointListener listener = new EntryPointListener();
-		listener.start();		
-		
+		App listener = new App();
+		listener.start();
 	}
 	
 

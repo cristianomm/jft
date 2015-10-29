@@ -10,7 +10,7 @@ import quickfix.SessionID;
 
 
 /**
- * <p><code>EntryPointListener.java</code></p>
+ * <p><code>App.java</code></p>
  * @author Cristiano M Martins
  * @version 22 de jul de 2015 11:14:09
  *

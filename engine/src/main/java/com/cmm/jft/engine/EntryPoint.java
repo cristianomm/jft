@@ -8,6 +8,7 @@ import java.util.HashMap;
 import com.cmm.jft.engine.message.Fix44EngineHandler;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageHandler;
+import com.cmm.jft.messaging.enums.FIXProtocols;
 import com.cmm.jft.messaging.fix44.Fix44MessageEncoder;
 
 import quickfix.Application;
@@ -32,10 +33,8 @@ import quickfix.UnsupportedMessageType;
  */
 public class EntryPoint extends MessageCracker implements Application {
 	
-	
-	private HashMap<String, MessageHandler> handlers;
-	private HashMap<String, MessageEncoder> encoders;
-	
+	private HashMap<FIXProtocols, MessageHandler> handlers;
+	private HashMap<FIXProtocols, MessageEncoder> encoders;
 	
 	
 	/**
@@ -53,7 +52,6 @@ public class EntryPoint extends MessageCracker implements Application {
 		initEncoders(settings);
 		initHandlers(settings);
 		initRepositories();
-		
 	}
 	
 	
@@ -70,7 +68,6 @@ public class EntryPoint extends MessageCracker implements Application {
 	public void onLogon(SessionID sessionId) {
 		if(verifyLogon(sessionId)) {
 			SessionRepository.getInstance().addSession(sessionId);
-			
 		}
 		
 	}
@@ -116,7 +113,6 @@ public class EntryPoint extends MessageCracker implements Application {
 			UnsupportedMessageType {
 		
 		crack(message, sessionId);
-		
 	}
 			
 	
@@ -133,7 +129,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	
 	public void initEncoders(SessionSettings settings) {
 		this.encoders = new HashMap<>();
-		this.encoders.put("FIX.4.4", Fix44MessageEncoder.getInstance());
+		this.encoders.put(FIXProtocols.FIX44, Fix44MessageEncoder.getInstance());
 	}
 	
 	public void initHandlers(SessionSettings settings) {
@@ -141,22 +137,16 @@ public class EntryPoint extends MessageCracker implements Application {
 		
 		MessageHandler handler = new Fix44EngineHandler();
 		initialize(handler);
-		this.handlers.put("FIX.4.4", handler);
-		
+		this.handlers.put(FIXProtocols.FIX44, handler);
 	}
 	
 	public void initRepositories() {
-		
 		MessageRepository.getInstance();
 		SessionRepository.getInstance();
-		
 	}
 	
 	public void initOrderBooks(SessionSettings settings) {
 		BookRepository.getInstance();
-		
 	}
-	
-	
 	
 }

@@ -6,6 +6,7 @@ import com.cmm.jft.engine.BookRepository;
 import com.cmm.jft.marketdata.MarketOrder;
 import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.messaging.MessageHandler;
+import com.cmm.jft.messaging.fix44.Fix44MessageDecoder;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 
@@ -29,15 +30,13 @@ import quickfix.fix44.SecurityDefinitionRequest;
 
 public class Fix44EngineHandler implements MessageHandler {
 	
-	
-	//private static Fix44MessageHandler instance;
+	private Fix44MessageDecoder decoder;
 		
 	public Fix44EngineHandler(){
 		//initialize(this);
+		this.decoder = new Fix44MessageDecoder();
 		System.out.println(getClass() + " initialized.");
 	}
-	
-	
 	
 	public void onMessage(NewOrderSingle message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
@@ -46,8 +45,7 @@ public class Fix44EngineHandler implements MessageHandler {
 		Book book = null;
 		
 		if((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null){
-			Orders order = new Orders();
-			
+			Orders order = decoder.newOrderSingle(message);
 			//try to add the order in the book
 			book.addOrder(order, sessionID);
 		}

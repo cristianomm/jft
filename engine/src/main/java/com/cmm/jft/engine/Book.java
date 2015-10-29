@@ -142,22 +142,20 @@ public class Book implements MessageSender {
 				order.setWorkingIndicator(WorkingIndicator.No_Working);
 				order.setOrderStatus(OrderStatus.SUSPENDED);
 			}
-
+			
 			//ainda nao adicionou no book, deve primeiro verificar se pode executar 
 			//antes de inserir no book
 			if(added) {
-				
 				//envia mensagem informando que a ordem foi aceita
 				OrderEvent oe = new OrderEvent(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice());
 				oe.setMessage("Order received");
 				oe.setOrderID(order);
 				order.addExecution(oe);
-
+				
 				sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
 				orderCount++;
-				  
-				added = added && orderMatcher.addOrder(order);
 				
+				added = added && orderMatcher.addOrder(order);
 			}
 
 		}catch(OrderException e) {

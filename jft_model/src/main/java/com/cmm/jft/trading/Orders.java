@@ -385,9 +385,17 @@ public class Orders implements DBObject<Orders> {
 	public Date getOrderDateTime() {
 		return this.orderDateTime;
 	}
-
+	
+	public void setOrderDateTime(Date orderDateTime) {
+		this.orderDateTime = orderDateTime;
+	}
+	
 	public OrderValidityTypes getValidityType() {
 		return validityType;
+	}
+	
+	public void setValidityType(OrderValidityTypes validityType) {
+		this.validityType = validityType;
 	}
 
 	public OrderStatus getOrderStatus() {
@@ -422,6 +430,10 @@ public class Orders implements DBObject<Orders> {
 	 */
 	public String getComment() {
 		return this.comment;
+	}
+	
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public TradeTypes getTradeType() {
