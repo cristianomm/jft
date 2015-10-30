@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -36,8 +37,17 @@
             <Separator layoutX="710.0" layoutY="4.0" orientation="VERTICAL" prefHeight="17.0" prefWidth="4.0" />
          </children>
       </Pane>
-      <Button fx:id="btnCancelAll" layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Cancel All" />
-      <Button fx:id="btnModifyOrdr" layoutX="176.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Modify" />
-      <Button fx:id="btnCancelOrdr" layoutX="95.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Cancel" />
+      <Button fx:id="btnCancelAll" layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Cancel All">
+         <font>
+            <Font size="11.0" />
+         </font></Button>
+      <Button fx:id="btnModifyOrdr" layoutX="176.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Modify">
+         <font>
+            <Font size="11.0" />
+         </font></Button>
+      <Button fx:id="btnCancelOrdr" layoutX="95.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Cancel">
+         <font>
+            <Font size="11.0" />
+         </font></Button>
    </children>
 </Pane>

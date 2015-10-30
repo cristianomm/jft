@@ -44,3 +44,14 @@
 	-fx-font: 10px "System";
 }
 
+.time_sales_sell{
+	-fx-control-inner-background: #fd7c79;
+  	-fx-accent: derive(-fx-control-inner-background, -40%);
+  	-fx-cell-hover-color: derive(-fx-control-inner-background, -20%);
+}
+
+.time_sales_buy{
+	-fx-control-inner-background: #77bbff;
+  	-fx-accent: derive(-fx-control-inner-background, -40%);
+  	-fx-cell-hover-color: derive(-fx-control-inner-background, -20%);
+}
