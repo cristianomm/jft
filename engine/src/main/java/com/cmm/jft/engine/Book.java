@@ -156,6 +156,10 @@ public class Book implements MessageSender {
 				orderCount++;
 				
 				added = added && orderMatcher.addOrder(order);
+				
+				//envia mensagem aos participantes
+				
+				
 			}
 
 		}catch(OrderException e) {

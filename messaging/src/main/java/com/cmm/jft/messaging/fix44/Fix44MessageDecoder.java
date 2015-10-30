@@ -152,7 +152,7 @@ public class Fix44MessageDecoder implements MessageDecoder {
 						er.getOrderQty().getValue(), er.getPrice().getValue()
 						);
 			}catch(FieldNotFound e) {
-
+				
 			}
 
 		}
@@ -177,19 +177,27 @@ public class Fix44MessageDecoder implements MessageDecoder {
 		Orders ordr = null;
 
 		try {
-			ordr = new Orders();
-			NewOrderSingle orderSingle = (NewOrderSingle) message;
-			ordr.setClOrdID(orderSingle.getClOrdID().getValue());
-			ordr.setSecurityID(SecurityService.getInstance().provideSecurity(orderSingle.getSecurityID().getValue()));
-			ordr.setSide(Side.getByValue(orderSingle.getSide().getValue()));
-			ordr.setOrderDateTime(orderSingle.getTransactTime().getValue());
-			ordr.setVolume(orderSingle.getOrderQty().getValue());
-			ordr.setOrderType(OrderTypes.getByValue(orderSingle.getOrdType().getValue()));
-			ordr.setPrice(orderSingle.getPrice().getValue());
-			ordr.setValidityType(OrderValidityTypes.getByValue(orderSingle.getTimeInForce().getValue()));
-			ordr.setDuration(((DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).parse(orderSingle.getExpireDate().getValue()));
-			ordr.setComment(orderSingle.getString(5149));
+
+			if(message instanceof NewOrderSingle) {
+				ordr = new Orders();
+				NewOrderSingle orderSingle = (NewOrderSingle) message;
+				ordr.setClOrdID(orderSingle.getClOrdID().getValue());
+				ordr.setSecurityID(SecurityService.getInstance().provideSecurity(orderSingle.getSecurityID().getValue()));
+				ordr.setSide(Side.getByValue(orderSingle.getSide().getValue()));
+				ordr.setOrderDateTime(orderSingle.getTransactTime().getValue());
+				ordr.setVolume(orderSingle.getOrderQty().getValue());
+				ordr.setOrderType(OrderTypes.getByValue(orderSingle.getOrdType().getValue()));
+				ordr.setPrice(orderSingle.getPrice().getValue());
+				ordr.setValidityType(OrderValidityTypes.getByValue(orderSingle.getTimeInForce().getValue()));
+				ordr.setDuration(((DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).parse(orderSingle.getExpireDate().getValue()));
+				ordr.setComment(orderSingle.getString(5149));
+			}
+			else {
+				throw new Exception("Message is not fix44.NewOrderSingle: " + message); 
+			}
 		}catch(FieldNotFound e) {
+			ordr = null;
+		} catch(Exception e) {
 			ordr = null;
 		}
 

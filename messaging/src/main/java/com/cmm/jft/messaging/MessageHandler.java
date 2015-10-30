@@ -3,8 +3,6 @@
  */
 package com.cmm.jft.messaging;
 
-import quickfix.MessageCracker;
-
 /**
  * <p><code>MessageHandler.java</code></p>
  * @author Cristiano M Martins
@@ -12,5 +10,6 @@ import quickfix.MessageCracker;
  *
  */
 public interface MessageHandler {
-
+	
+	
 }

@@ -19,5 +19,6 @@
     <module>conector</module>
     <module>messaging</module>
     <module>searchbox</module>
+    <module>marketdata_connector</module>
   </modules>
 </project>

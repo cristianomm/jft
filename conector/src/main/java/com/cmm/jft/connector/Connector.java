@@ -1,10 +1,6 @@
-/**
- * 
- */
 package com.cmm.jft.connector;
 
-
-import com.cmm.jft.connector.message.Fix44ClMessageHandler;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import quickfix.Application;
 import quickfix.DoNotSend;
@@ -18,127 +14,70 @@ import quickfix.Session;
 import quickfix.SessionID;
 import quickfix.SessionNotFound;
 import quickfix.UnsupportedMessageType;
-import quickfix.field.ClOrdID;
-import quickfix.field.NoPartyIDs;
-import quickfix.field.OrdType;
-import quickfix.field.OrderQty;
-import quickfix.field.Side;
-import quickfix.field.Symbol;
-import quickfix.field.TransactTime;
-import quickfix.fix44.NewOrderSingle;
-import sun.util.resources.cldr.kk.CalendarData_kk_Cyrl_KZ;
+
 
 /**
- * <p><code>Connector.java</code></p>
+ * 
  * @author Cristiano M Martins
- * @version 30 de jul de 2015 23:54:28
- *
+ * @version 30-10-2015 15:14:17
+ * 
  */
-public class Connector extends MessageCracker implements Application{
-	
-	private SessionID sessionID;
-	
+public class Connector extends MessageCracker implements Application {
+
+	protected SessionID sessionID;
+	protected ConcurrentLinkedQueue<Message> inMessages;
+	protected ConcurrentLinkedQueue<Message> outMessages;
+
 	public Connector() {
-		new Fix44ClMessageHandler();
+		super();
 	}
-	
-	
-	
-	/* (non-Javadoc)
-	 * @see quickfix.Application#onCreate(quickfix.SessionID)
-	 */
+
 	@Override
 	public void onCreate(SessionID sessionId) {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see quickfix.Application#onLogon(quickfix.SessionID)
-	 */
 	@Override
 	public void onLogon(SessionID sessionId) {
 		this.sessionID  = sessionId;
 	}
 
-	/* (non-Javadoc)
-	 * @see quickfix.Application#onLogout(quickfix.SessionID)
-	 */
 	@Override
 	public void onLogout(SessionID sessionId) {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see quickfix.Application#toAdmin(quickfix.Message, quickfix.SessionID)
-	 */
 	@Override
 	public void toAdmin(Message message, SessionID sessionId) {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see quickfix.Application#fromAdmin(quickfix.Message, quickfix.SessionID)
-	 */
 	@Override
-	public void fromAdmin(Message message, SessionID sessionId)
-			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, RejectLogon {
-		
-	}
+	public void fromAdmin(Message message, SessionID sessionId) throws FieldNotFound,
+			IncorrectDataFormat, IncorrectTagValue, RejectLogon {
+				
+			}
 
-	/* (non-Javadoc)
-	 * @see quickfix.Application#toApp(quickfix.Message, quickfix.SessionID)
-	 */
 	@Override
 	public void toApp(Message message, SessionID sessionId) throws DoNotSend {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see quickfix.Application#fromApp(quickfix.Message, quickfix.SessionID)
-	 */
 	@Override
-	public void fromApp(Message message, SessionID sessionId)
-			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
-		crack(message, sessionId);
-	}
-	
-	
+	public void fromApp(Message message, SessionID sessionId) throws FieldNotFound,
+			IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
+				crack(message, sessionId);
+			}
+
 	public boolean send(quickfix.Message message, SessionID sessionID) {
-        boolean ret = false;
+	    boolean ret = false;
 		try {
-            ret = Session.sendToTarget(message, sessionID);
-        } catch (SessionNotFound e) {
-            System.out.println(e);
-        }
-		
-		return ret;
-    }
-	
-	
-	public boolean sendTestMessage() {
-		boolean ret = false;
-		
-		NewOrderSingle message = new NewOrderSingle();
-		message.set(new ClOrdID("123456")); 
-		message.set(new NoPartyIDs(0));
-		
-		message.set(new Symbol("WINV15"));		
-		message.set(new Side('1')); 
-		message.set(new TransactTime());
-		
-		message.set(new OrderQty(1));
-		message.set(new OrdType('1'));
-				
-		if(Session.doesSessionExist(sessionID)) {
-			System.out.println("Sending test message: " + message);
-			ret = send(message, this.sessionID);
-			ret = send(message, this.sessionID);
-			System.out.println("Send status: " + ret);
-		}
-		
+	        ret = Session.sendToTarget(message, sessionID);
+	    } catch (SessionNotFound e) {
+	        System.out.println(e);
+	    }
 		
 		return ret;
 	}
-	
 
 }

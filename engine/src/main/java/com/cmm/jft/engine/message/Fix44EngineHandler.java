@@ -4,6 +4,7 @@ package com.cmm.jft.engine.message;
 import com.cmm.jft.engine.Book;
 import com.cmm.jft.engine.BookRepository;
 import com.cmm.jft.marketdata.MarketOrder;
+import com.cmm.jft.messaging.EngineMessageHandler;
 import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.messaging.MessageHandler;
 import com.cmm.jft.messaging.fix44.Fix44MessageDecoder;
@@ -28,7 +29,7 @@ import quickfix.fix44.QuoteRequestReject;
 import quickfix.fix44.SecurityDefinitionRequest;
 
 
-public class Fix44EngineHandler implements MessageHandler {
+public class Fix44EngineHandler extends EngineMessageHandler {
 	
 	private Fix44MessageDecoder decoder;
 		
@@ -113,7 +114,6 @@ public class Fix44EngineHandler implements MessageHandler {
 	public void onMessage(AllocationInstruction message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 		
-	}
-	
+	}	
 	
 }
