@@ -1,8 +1,11 @@
 package com.cmm.jft.ui;
 
+import com.cmm.jft.db.DBFacade;
+import com.cmm.jft.db.exceptions.DataBaseException;
+import com.cmm.jft.ui.utils.ImageIcons;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -16,19 +19,43 @@ public class App extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
-			///ui/src/main/resources/forms/DOMForm.fxml
-			///ui/src/main/java/com/cmm/jft/ui/App.java
-			Pane g = FXMLLoader.load(App.class.getResource("../../../../forms/TimesSalesForm.fxml"));
+			Pane g = FXMLLoader.load(App.class.getResource("../../../../forms/ProgramForm.fxml"));
 			
 			Scene scene = new Scene(g);
 			scene.getStylesheets().add("file://" + App.class.getResource("../../../../forms/forms.css").getFile());
 			stage.setMaxWidth(g.getPrefWidth()+15);
 			stage.setScene(scene);
+			stage.getIcons().add(ImageIcons.getProgramImage().getImage());
 			stage.show();
 			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see javafx.application.Application#init()
+	 */
+	@Override
+	public void init() throws Exception {
+		//start database connection
+		DBFacade.getInstance();
+		
+		super.init();
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see javafx.application.Application#stop()
+	 */
+	@Override
+	public void stop() throws Exception {
+		try {
+			DBFacade.getInstance().closeSession();
+		} catch (DataBaseException e) {
+			e.printStackTrace();
+		}
+		super.stop();
 	}
 
 }

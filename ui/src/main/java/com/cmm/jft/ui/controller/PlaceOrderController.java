@@ -194,6 +194,7 @@ public class PlaceOrderController implements Initializable {
 			minVolume = security.getSecurityInfoID().getMinVolume();
 			maxVolume = security.getSecurityInfoID().getMaxVolume();
 		}catch(NullPointerException e){}
+		catch(Exception e){}
 		
 		spnLimit.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(min, max, initialPrice, priceIncr));
 		spnStop.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(min, max, initialPrice, priceIncr));

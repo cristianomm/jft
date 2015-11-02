@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cmm.jft.ui.controller.ProgramController">
+   <children>
+      <ToolBar fx:id="tbButtons" prefHeight="40.0" prefWidth="600.0">
+        <items>
+          <Button fx:id="btnPlaceOrder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="Button" />
+            <Button fx:id="btnOrderManager" mnemonicParsing="false" text="Button" />
+            <Button fx:id="btnBook" mnemonicParsing="false" text="Button" />
+            <Button fx:id="btnDOM" mnemonicParsing="false" text="Button" />
+            <Button fx:id="btnTimeSales" mnemonicParsing="false" text="Button" />
+        </items>
+      </ToolBar>
+   </children>
+</Pane>

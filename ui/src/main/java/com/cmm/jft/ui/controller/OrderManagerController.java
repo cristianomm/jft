@@ -70,10 +70,8 @@ public class OrderManagerController implements Initializable {
 
 	@FXML
 	private ImageView imgStatus;
-
-
-
-
+	
+	
 	@FXML
 	private TableColumn<OrdersVO, String> colSymbol;
 
@@ -129,7 +127,6 @@ public class OrderManagerController implements Initializable {
 			}
 		});
 		
-		
 		btnCancelOrdr.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -143,7 +140,6 @@ public class OrderManagerController implements Initializable {
 				
 			}
 		});
-		
 		
 		colSymbol.setCellValueFactory(
 				(TableColumn.CellDataFeatures<OrdersVO, String> val) ->
@@ -170,6 +166,7 @@ public class OrderManagerController implements Initializable {
 				}
 			};
 		});
+		
 		colSide.setCellValueFactory(
 				(TableColumn.CellDataFeatures<OrdersVO, Side> val) ->
 				new ReadOnlyObjectWrapper<Side>(val.getValue().getSide())
@@ -179,6 +176,7 @@ public class OrderManagerController implements Initializable {
 				(TableColumn.CellDataFeatures<OrdersVO, OrderStatus> val) ->
 				new ReadOnlyObjectWrapper<OrderStatus>(val.getValue().getOrderStatus())
 				);
+		
 		colStatus.setCellFactory(column -> {
 			return new TableCell<OrdersVO, OrderStatus>(){
 				@Override
@@ -239,6 +237,7 @@ public class OrderManagerController implements Initializable {
 				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
 				new ReadOnlyObjectWrapper<Double>(val.getValue().getExecutedVolume())
 				);
+		
 		colExecVolume.setCellFactory(column -> {
 			return new TableCell<OrdersVO, Double>(){
 				@Override
@@ -252,7 +251,6 @@ public class OrderManagerController implements Initializable {
 				}
 			};
 		});
-		
 		
 		
 		colPrice.setCellValueFactory(
