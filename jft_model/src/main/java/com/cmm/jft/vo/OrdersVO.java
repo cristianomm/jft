@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.cmm.jft.vo.OrderEventVO;
-import com.cmm.jft.vo.OrdersVO;
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
@@ -18,6 +16,8 @@ import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.enums.WorkingIndicator;
+import com.cmm.jft.vo.OrderEventVO;
+import com.cmm.jft.vo.OrdersVO;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;

@@ -15,6 +15,7 @@ import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
 
+import com.cmm.jft.vo.Extractable;
 import com.cmm.logging.Logging;
 
 /**

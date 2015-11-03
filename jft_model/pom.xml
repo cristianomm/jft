@@ -29,11 +29,6 @@
 			<artifactId>bsh</artifactId>
 			<version>2.0b5</version>
 		</dependency>
-		<dependency>
-			<groupId>jft</groupId>
-			<artifactId>data</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

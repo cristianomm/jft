@@ -23,41 +23,44 @@ public class App extends Application {
 	public void start(Stage stage) {
 		try {
 			Pane g = FXMLLoader.load(App.class.getResource("../../../../forms/ProgramForm.fxml"));
-			
+
 			Scene scene = new Scene(g);
 			scene.getStylesheets().add("file://" + App.class.getResource("../../../../forms/forms.css").getFile());
 			stage.setMaxWidth(g.getPrefWidth()+15);
 			stage.setScene(scene);
 			stage.getIcons().add(ImageIcons.getProgramImage().getImage());
 			stage.show();
-			
+
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see javafx.application.Application#init()
 	 */
 	@Override
 	public void init() throws Exception {
 		//start database connection & services
-		System.out.println("Initializing Database");
-		DBFacade.getInstance();
-		
-		System.out.println("Initializing Securities Service");
-		SecurityService.getInstance();
-		
-		System.out.println("Initializing Orders Service");
-		OrderService.getInstance();
-		
-		System.out.println("Initializing Trading Service");
-		TradingService.getInstance();
-		
+		try {
+			System.out.println("Initializing Database");
+			DBFacade.getInstance();
+
+			System.out.println("Initializing Securities Service");
+			SecurityService.getInstance();
+
+			System.out.println("Initializing Orders Service");
+			OrderService.getInstance();
+
+			System.out.println("Initializing Trading Service");
+			TradingService.getInstance();
+		}catch(Exception e) {
+
+		}
 		super.init();
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see javafx.application.Application#stop()
 	 */

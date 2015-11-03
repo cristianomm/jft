@@ -10,7 +10,7 @@ import java.util.List;
 import org.apache.log4j.Level;
 
 import com.cmm.jft.data.extractor.Data;
-import com.cmm.jft.data.extractor.Extractable;
+import com.cmm.jft.vo.Extractable;
 import com.cmm.logging.Logging;
 
 /**

@@ -8,13 +8,6 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import com.cmm.jft.core.format.DateTimeFormatter;
-import com.cmm.jft.core.format.FormatterFactory;
-import com.cmm.jft.core.format.FormatterTypes;
-import com.cmm.jft.security.Security;
-import com.cmm.jft.trading.services.SecurityService;
-import com.cmm.jft.vo.TimeSalesVO;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,12 +15,20 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.converter.LocalDateTimeStringConverter;
+
+import com.cmm.jft.core.format.DateTimeFormatter;
+import com.cmm.jft.core.format.FormatterFactory;
+import com.cmm.jft.core.format.FormatterTypes;
+import com.cmm.jft.security.Security;
+import com.cmm.jft.trading.services.SecurityService;
+import com.cmm.jft.ui.utils.ImageIcons;
+import com.cmm.jft.vo.TimeSalesVO;
 
 /**
  * @author Cristiano M Martins
@@ -41,6 +42,16 @@ public class TimeSalesController implements Initializable {
 
 	@FXML
 	private Button btnSrchSymbol;
+	
+	@FXML
+	private Label lblTradeCount;
+	
+	@FXML
+	private Label lblLstVolume;
+	
+	@FXML
+	private Label lblLstPrice;
+	
 
 
 	@FXML
@@ -78,6 +89,8 @@ public class TimeSalesController implements Initializable {
 	@Override
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 
+		btnSrchSymbol.setGraphic(ImageIcons.getSecurityImage());
+		
 		btnSrchSymbol.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -155,7 +168,6 @@ public class TimeSalesController implements Initializable {
 					try {
 						Thread.sleep(1000 );
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -166,8 +178,12 @@ public class TimeSalesController implements Initializable {
 
 	}
 
-	public void addTimeSales(TimeSalesVO timeSalesVO){
-		data.add(timeSalesVO);
+	public synchronized void addTimeSales(TimeSalesVO timeSalesVO){
+		if(timeSalesVO!=null) {
+			data.add(timeSalesVO);
+			lblLstPrice.setText(timeSalesVO.getPrice() + "");
+			lblLstVolume.setText(timeSalesVO.getVolume() + "");
+		}
 	}
 
 

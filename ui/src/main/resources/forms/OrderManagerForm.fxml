@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
@@ -8,7 +9,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cmm.jft.ui.controller.OrderManagerController">
    <children>
-      <TableView fx:id="tblOrders" layoutY="54.0" prefHeight="190.0" prefWidth="800.0">
+      <TableView fx:id="tblOrders" layoutY="50.0" prefHeight="194.0" prefWidth="800.0">
         <columns>
             <TableColumn fx:id="colSymbol" prefWidth="69.0" text="Symbol" />
           	<TableColumn fx:id="colStatus" prefWidth="75.0" text="Status" />
@@ -22,7 +23,7 @@
             <TableColumn fx:id="colStopGain" prefWidth="75.0" text="Stop Gain" />
         </columns>
       </TableView>
-      <Pane layoutY="244.0" prefHeight="25.0" prefWidth="800.0">
+      <Pane layoutY="245.0" prefHeight="25.0" prefWidth="800.0">
          <children>
             <Label layoutX="9.0" layoutY="4.0" text="Orders:" />
             <Label layoutX="349.0" layoutY="4.0" text="Profit:" />
