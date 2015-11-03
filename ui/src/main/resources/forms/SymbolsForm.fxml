@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cmm.jft.ui.controller.SymbolsController">
+   <children>
+      <TableView fx:id="tblSymbols" layoutY="53.0" prefHeight="495.0" prefWidth="300.0">
+        <columns>
+          <TableColumn fx:id="colSymbol" prefWidth="106.0" text="Symbol" />
+          <TableColumn fx:id="colDescription" prefWidth="191.0" text="Description" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnOK" layoutX="156.0" layoutY="561.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="OK" />
+      <Button fx:id="btnCancel" layoutX="226.0" layoutY="561.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Cancel" />
+      <Label layoutX="14.0" layoutY="14.0" text="Symbol" />
+      <TextField fx:id="txtSymbol" layoutX="66.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="200.0" />
+   </children>
+</Pane>

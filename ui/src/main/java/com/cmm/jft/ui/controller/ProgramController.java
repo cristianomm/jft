@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.cmm.jft.ui.utils.FormUtils;
 import com.cmm.jft.ui.utils.ImageIcons;
 
 import javafx.event.ActionEvent;
@@ -18,8 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -67,26 +66,24 @@ public class ProgramController implements Initializable {
 		btnPlaceOrder.setTooltip(new Tooltip("Place Order"));
 		btnTimeSales.setTooltip(new Tooltip("Time & Sales"));
 		
-		
-		
 		btnBook.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				openForm("../../../../../forms/BookForm.fxml");
+				FormUtils.getInstance().openForm("../../../../../forms/BookForm.fxml", "Book");
 			}
 		});
 		
 		btnDOM.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				openForm("../../../../../forms/DOMForm.fxml");
+				FormUtils.getInstance().openForm("../../../../../forms/DOMForm.fxml", "DOM");
 			}
 		});
 		
 		btnOrderManager.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				openForm("../../../../../forms/OrderManagerForm.fxml");
+				FormUtils.getInstance().openForm("../../../../../forms/OrderManagerForm.fxml", "Order Manager");
 			}
 		});
 		
@@ -96,7 +93,7 @@ public class ProgramController implements Initializable {
 			 */
 			@Override
 			public void handle(ActionEvent event) {
-				openForm("../../../../../forms/PlaceOrderForm.fxml");
+				FormUtils.getInstance().openForm("../../../../../forms/PlaceOrderForm.fxml", "Place Order");
 			}
 		});
 		
@@ -106,27 +103,10 @@ public class ProgramController implements Initializable {
 			 */
 			@Override
 			public void handle(ActionEvent event) {
-				openForm("../../../../../forms/TimesSalesForm.fxml");
+				FormUtils.getInstance().openForm("../../../../../forms/TimeSalesForm.fxml", "Time & Sales");
 			}
 		});
 		
-	}
-	
-	
-	
-	private void openForm(String form){
-		try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(form));
-            Parent root = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.NONE);
-            stage.initStyle(StageStyle.UNDECORATED);
-            //stage.setTitle();
-            stage.setScene(new Scene(root));  
-            stage.show();
-          }catch(IOException e){
-        	  e.printStackTrace();
-          }
 	}
 
 }

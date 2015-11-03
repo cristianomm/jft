@@ -15,6 +15,9 @@ import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.services.SecurityService;
 import com.cmm.jft.trading.services.TradingService;
+import com.cmm.jft.ui.utils.FormUtils;
+import com.cmm.jft.ui.utils.ImageIcons;
+import com.cmm.jft.ui.utils.Memory;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +31,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * <p><code>PlaceOrderController.java</code></p>
@@ -42,6 +46,9 @@ public class PlaceOrderController implements Initializable {
 	
 	@FXML
 	private Button btnSell;
+	
+	@FXML
+	private Button btnSrchSymbol;
 	
 	@FXML
 	private Spinner<Double> spnVolume;
@@ -112,12 +119,11 @@ public class PlaceOrderController implements Initializable {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				if(txtSecurity.getText().length()>4){
+				if(txtSecurity.getText().length()>1){
 					setSpinners(txtSecurity.getText());
 				}
 			}
 		});
-		
 		
 		
 		cmbOrderTypes.setItems(FXCollections.observableArrayList(
@@ -133,7 +139,6 @@ public class PlaceOrderController implements Initializable {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				
 				OrderTypes orderType = cmbOrderTypes.getValue();
 				String symbol = txtSecurity.getText();
 				double volume = spnVolume.getValue();
@@ -156,7 +161,6 @@ public class PlaceOrderController implements Initializable {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				
 				OrderTypes orderType = cmbOrderTypes.getValue();
 				String symbol = txtSecurity.getText();
 				double volume = spnVolume.getValue();
@@ -175,6 +179,18 @@ public class PlaceOrderController implements Initializable {
 			}
 		});
 		
+		
+		btnSrchSymbol.setGraphic(ImageIcons.getSecurityImage());
+		btnSrchSymbol.setOnAction(new EventHandler<ActionEvent>() {
+			/* (non-Javadoc)
+			 * @see javafx.event.EventHandler#handle(javafx.event.Event)
+			 */
+			@Override
+			public void handle(ActionEvent event) {
+				Memory.getInstance().setTextField(txtSecurity);
+				FormUtils.getInstance().openForm("../../../../../forms/SymbolsForm.fxml", "Symbols");
+			}
+		});
 		
 	}
 	

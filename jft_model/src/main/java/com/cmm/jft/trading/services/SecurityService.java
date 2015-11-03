@@ -6,6 +6,7 @@ package com.cmm.jft.trading.services;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Level;
@@ -26,13 +27,15 @@ import com.cmm.logging.Logging;
  */
 public class SecurityService {
 
+	private HashMap<String, Security> securities;
 	private static SecurityService instance;
 
 	/**
      * 
      */
 	private SecurityService() {
-		// TODO Auto-generated constructor stub
+		this.securities = new HashMap<>();
+		loadSecurityList();
 	}
 
 	public static synchronized SecurityService getInstance() {
@@ -46,15 +49,20 @@ public class SecurityService {
 		Security sec = null;
 
 		try {
-			HashMap<String, Object> params = new HashMap<String, Object>();
-			params.put("symbol", symbol);
-
-			List rs = DBFacade.getInstance().queryNamed(
-					"Security.findBySymbol", params);
-			if (rs != null && !rs.isEmpty()) {
-				sec = (Security) rs.get(0);
+			if(!securities.containsKey(symbol)){
+				HashMap<String, Object> params = new HashMap<String, Object>();
+				params.put("symbol", symbol);
+	
+				List rs = DBFacade.getInstance().queryNamed(
+						"Security.findBySymbol", params);
+				if (rs != null && !rs.isEmpty()) {
+					sec = (Security) rs.get(0);
+					securities.put(symbol, sec);
+				}
 			}
-
+			
+			sec = securities.get(symbol);
+			
 		} catch (DataBaseException e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
@@ -77,6 +85,24 @@ public class SecurityService {
 		}
 		
 		return s;
+	}
+	
+	
+	private void loadSecurityList(){
+		try {
+			List<Security> data = (List<Security>) DBFacade.getInstance().queryNamed("Security.findAll", null);
+			data.parallelStream().forEach(s ->
+				securities.put(s.getSymbol(), s)
+			);
+		} catch (DataBaseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public List<Security> getSecurityList(){
+		List<Security> data = new LinkedList<>();
+		securities.values().forEach(s -> data.add(s));
+		return data;
 	}
 	
 

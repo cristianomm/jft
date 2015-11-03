@@ -8,19 +8,16 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cmm.jft.ui.controller.PlaceOrderController">
    <children>
-      <Button fx:id="btnBuy" layoutX="269.0" layoutY="254.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" text="Buy">
+      <Button fx:id="btnBuy" layoutX="269.0" layoutY="254.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Buy">
          <font>
             <Font size="11.0" />
          </font></Button>
-      <Button fx:id="btnSell" layoutX="329.0" layoutY="254.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="50.0" text="Sell">
+      <Button fx:id="btnSell" layoutX="329.0" layoutY="254.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Sell">
          <font>
             <Font size="11.0" />
          </font></Button>
       <DatePicker fx:id="dtDate" layoutX="286.0" layoutY="128.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <ComboBox fx:id="cmbOrderTypes" layoutX="82.0" layoutY="68.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0">
-         <padding>
-            <Insets bottom="-5.0" top="-1.0" />
-         </padding></ComboBox>
+      <ComboBox fx:id="cmbOrderTypes" layoutX="82.0" layoutY="68.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
       <Spinner fx:id="spnStop" layoutX="82.0" layoutY="158.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
       <Spinner fx:id="spnVolume" layoutX="286.0" layoutY="68.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
       <Spinner fx:id="spnPrice" layoutX="81.0" layoutY="98.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
@@ -41,11 +38,12 @@
       <Label layoutX="15.0" layoutY="130.0" text="Limit" />
       <TextField fx:id="txtSecurity" layoutX="82.0" layoutY="26.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0">
          <font>
-            <Font size="10.0" />
+            <Font size="11.0" />
          </font></TextField>
       <Spinner fx:id="spnLoss" layoutX="286.0" layoutY="188.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
       <Label layoutX="234.0" layoutY="190.0" text="Loss" />
       <Spinner fx:id="spnProfit" layoutX="81.0" layoutY="188.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
       <Label layoutX="15.0" layoutY="190.0" text="Profit" />
+      <Button fx:id="btnSrchSymbol" layoutX="192.0" layoutY="23.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="30.0" />
    </children>
 </Pane>

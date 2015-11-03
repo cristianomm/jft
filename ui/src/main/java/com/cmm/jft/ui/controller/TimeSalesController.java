@@ -5,10 +5,7 @@ package com.cmm.jft.ui.controller;
 
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 import com.cmm.jft.core.format.DateTimeFormatter;
@@ -18,8 +15,6 @@ import com.cmm.jft.security.Security;
 import com.cmm.jft.trading.services.SecurityService;
 import com.cmm.jft.vo.TimeSalesVO;
 
-import antlr.StringUtils;
-import bsh.StringUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,7 +34,7 @@ import javafx.util.converter.LocalDateTimeStringConverter;
  * @version October 29, 2015 at 10:24:44 PM
  *
  */
-public class TimesSalesController implements Initializable {
+public class TimeSalesController implements Initializable {
 
 	@FXML
 	private TextField txtSymbol;
@@ -75,7 +70,7 @@ public class TimesSalesController implements Initializable {
 
 
 
-	public TimesSalesController() {
+	public TimeSalesController() {
 		data = FXCollections.observableArrayList();
 	}
 

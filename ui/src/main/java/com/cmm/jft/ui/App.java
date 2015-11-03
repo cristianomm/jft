@@ -2,6 +2,9 @@ package com.cmm.jft.ui;
 
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
+import com.cmm.jft.trading.services.OrderService;
+import com.cmm.jft.trading.services.SecurityService;
+import com.cmm.jft.trading.services.TradingService;
 import com.cmm.jft.ui.utils.ImageIcons;
 
 import javafx.application.Application;
@@ -38,8 +41,18 @@ public class App extends Application {
 	 */
 	@Override
 	public void init() throws Exception {
-		//start database connection
+		//start database connection & services
+		System.out.println("Initializing Database");
 		DBFacade.getInstance();
+		
+		System.out.println("Initializing Securities Service");
+		SecurityService.getInstance();
+		
+		System.out.println("Initializing Orders Service");
+		OrderService.getInstance();
+		
+		System.out.println("Initializing Trading Service");
+		TradingService.getInstance();
 		
 		super.init();
 	}

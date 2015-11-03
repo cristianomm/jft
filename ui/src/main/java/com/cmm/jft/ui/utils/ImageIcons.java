@@ -21,6 +21,7 @@ public class ImageIcons {
 	private static ImageView imgOrderManager;
 	private static ImageView imgTimeSales;
 	private static ImageView imgProgram;
+	private static ImageView imgSecurity;
 	
 	
 	public static ImageView getDOMImage(){
@@ -41,7 +42,7 @@ public class ImageIcons {
 	
 	public static ImageView getPlaceOrderImage(){
 		if(imgPlaceOrder==null){
-			Image img = new Image(ImageIcons.class.getResourceAsStream("../../../../../image/icons/chart.png"));
+			Image img = new Image(ImageIcons.class.getResourceAsStream("../../../../../image/icons/ticket.png"));
 			imgPlaceOrder = new ImageView(img);
 		}
 		return imgPlaceOrder;
@@ -49,7 +50,7 @@ public class ImageIcons {
 	
 	public static ImageView getOrderManagerImage(){
 		if(imgOrderManager==null){
-			Image img = new Image(ImageIcons.class.getResourceAsStream("../../../../../image/icons/chart.png"));
+			Image img = new Image(ImageIcons.class.getResourceAsStream("../../../../../image/icons/clipboard-task.png"));
 			imgOrderManager = new ImageView(img);
 		}
 		return imgOrderManager;
@@ -79,4 +80,13 @@ public class ImageIcons {
 		}
 		return imgProgram;
 	}
+	
+	public static ImageView getSecurityImage(){
+		if (imgSecurity == null) {
+			Image img = new Image(ImageIcons.class.getResourceAsStream("../../../../../image/icons/book-open-list.png"));
+			imgSecurity = new ImageView(img);
+		}
+		return imgSecurity;
+	}
+	
 }

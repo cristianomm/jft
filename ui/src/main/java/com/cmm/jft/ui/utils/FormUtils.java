@@ -3,12 +3,20 @@
  */
 package com.cmm.jft.ui.utils;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * <p><code>FormUtils.java</code></p>
@@ -71,6 +79,25 @@ public class FormUtils {
 		return parameters.get(key);
 	}
 
-
+	public Stage openForm(String form, String title){
+		Stage stage = null;
+		try{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(form));
+            Parent root = (Parent) fxmlLoader.load();
+            stage = new Stage();
+            stage.initModality(Modality.NONE);
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setTitle(title);
+            stage.setResizable(false);
+            stage.setScene(new Scene(root));
+            stage.getScene().getStylesheets().add("file://" + getClass().getResource("../../../../../forms/forms.css").getFile());
+            
+            stage.show();
+          }catch(IOException e){
+        	  e.printStackTrace();
+          }
+		
+		return stage;
+	}
 
 }
