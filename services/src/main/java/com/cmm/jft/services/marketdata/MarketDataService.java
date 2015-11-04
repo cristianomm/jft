@@ -11,7 +11,7 @@ import com.cmm.jft.trading.enums.MarketPhase;
  * <p><code>MarketDataService.java</code></p>
  * @author Cristiano M Martins
  * @version Nov 3, 2015 4:42:53 PM
- *
+ * @updated 04-nov-2015 13:32:49
  */
 public class MarketDataService {
 	
