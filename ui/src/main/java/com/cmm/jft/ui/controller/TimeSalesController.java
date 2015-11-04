@@ -174,7 +174,6 @@ public class TimeSalesController implements Initializable {
 			}
 			
 		}).start();
-		
 
 	}
 
