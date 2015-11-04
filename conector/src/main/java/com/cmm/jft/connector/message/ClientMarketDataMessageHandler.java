@@ -14,57 +14,36 @@ import quickfix.fix50.SecurityStatus;
 
 import com.cmm.jft.messaging.MarketDataMessageHandler;
 
-public class ClientMarketDataMessageHandler implements MarketDataMessageHandler {
+public abstract class ClientMarketDataMessageHandler implements MarketDataMessageHandler {
 
 	@Override
-	public void onMessage(SequenceReset message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void onMessage(SequenceReset message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
 
 	@Override
-	public void onMessage(Heartbeat message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void onMessage(Heartbeat message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
 
 	@Override
-	public void onMessage(SecurityList message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void onMessage(SecurityList message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
 
 	@Override
-	public void onMessage(MarketDataIncrementalRefresh message,
+	public abstract void onMessage(MarketDataIncrementalRefresh message,
 			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		// TODO Auto-generated method stub
-
-	}
+			IncorrectTagValue;
 
 	@Override
-	public void onMessage(MarketDataSnapshotFullRefresh message,
+	public abstract void onMessage(MarketDataSnapshotFullRefresh message,
 			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		// TODO Auto-generated method stub
-
-	}
+			IncorrectTagValue;
 
 	@Override
-	public void onMessage(SecurityStatus message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void onMessage(SecurityStatus message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
 
 	@Override
-	public void onMessage(News message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void onMessage(News message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
 
 }

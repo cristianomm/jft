@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.trading.services;
+package com.cmm.jft.services.trading;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,6 +39,7 @@ import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.exceptions.OrderException;
+import com.cmm.jft.trading.services.SecurityService;
 import com.cmm.logging.Logging;
 
 /**

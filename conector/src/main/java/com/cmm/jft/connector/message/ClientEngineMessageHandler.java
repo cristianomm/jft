@@ -24,10 +24,6 @@ import quickfix.fix44.SecurityDefinition;
 
 public class ClientEngineMessageHandler extends EngineMessageHandler {
 	
-	
-	public ClientEngineMessageHandler(){
-		System.out.println(getClass() + " initialized.");
-	}
 
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.messaging.fix44.Fix44MessageHandler#onMessage(quickfix.fix44.BusinessMessageReject, quickfix.SessionID)

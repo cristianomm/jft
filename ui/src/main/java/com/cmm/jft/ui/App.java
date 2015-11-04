@@ -2,9 +2,9 @@ package com.cmm.jft.ui;
 
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
-import com.cmm.jft.trading.services.OrderService;
-import com.cmm.jft.trading.services.SecurityService;
-import com.cmm.jft.trading.services.TradingService;
+import com.cmm.jft.services.security.SecurityService;
+import com.cmm.jft.services.trading.OrderService;
+import com.cmm.jft.services.trading.TradingService;
 import com.cmm.jft.ui.utils.ImageIcons;
 
 import javafx.application.Application;

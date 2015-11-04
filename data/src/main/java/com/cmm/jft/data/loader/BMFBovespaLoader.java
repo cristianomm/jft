@@ -165,21 +165,21 @@ public abstract class BMFBovespaLoader {
 	// //adiciona os tipos de mercado
 	// DBFacade.getInstance().persistMarkettype(new MarketTypes(10L, "VISTA"));
 	// DBFacade.getInstance().persistMarkettype(new MarketTypes(12L,
-	// "EXERCÍCIO DE OPÇÕES DE COMPRA"));
+	// "EXERCï¿½CIO DE OPï¿½ï¿½ES DE COMPRA"));
 	// DBFacade.getInstance().persistMarkettype(new MarketTypes(13L,
-	// "EXERCÍCIO DE OPÇÕES DE VENDA"));
-	// DBFacade.getInstance().persistMarkettype(new MarketTypes(17L, "LEILÃO"));
+	// "EXERCï¿½CIO DE OPï¿½ï¿½ES DE VENDA"));
+	// DBFacade.getInstance().persistMarkettype(new MarketTypes(17L, "LEILï¿½O"));
 	// DBFacade.getInstance().persistMarkettype(new MarketTypes(20L,
-	// "FRACIONÁRIO"));
+	// "FRACIONï¿½RIO"));
 	// DBFacade.getInstance().persistMarkettype(new MarketTypes(30L, "TERMO"));
 	// DBFacade.getInstance().persistMarkettype(new MarketTypes(50L,
-	// "FUTURO COM RETENÇÃO DE GANHO"));
+	// "FUTURO COM RETENï¿½ï¿½O DE GANHO"));
 	// DBFacade.getInstance().persistMarkettype(new MarketTypes(60L,
-	// "FUTURO COM MOVIMENTAÇÃO CONTÍNUA"));
+	// "FUTURO COM MOVIMENTAï¿½ï¿½O CONTï¿½NUA"));
 	// DBFacade.getInstance().persistMarkettype(new MarketTypes(70L,
-	// "OPÇÕES DE COMPRA"));
+	// "OPï¿½ï¿½ES DE COMPRA"));
 	// DBFacade.getInstance().persistMarkettype(new MarketTypes(80L,
-	// "OPÇÕES DE VENDA"));
+	// "OPï¿½ï¿½ES DE VENDA"));
 	// }
 	//
 	// return ex;
@@ -228,7 +228,7 @@ public abstract class BMFBovespaLoader {
 	// }
 	// }catch(StringIndexOutOfBoundsException e) {
 	// System.out.println("Empresa " + txt +
-	// " não possui codigo de negociacao. Linha:"+line);
+	// " nï¿½o possui codigo de negociacao. Linha:"+line);
 	// }
 	// return txt;
 	// }
@@ -381,7 +381,7 @@ public abstract class BMFBovespaLoader {
 	//
 	//
 	// System.out.println("Arquivo "+ file.getName()
-	// +" inserido com sucesso, n° de registros adicionados: " + regcont +
+	// +" inserido com sucesso, nï¿½ de registros adicionados: " + regcont +
 	// " linhas: " + linecount);
 	//
 	// System.out.println("Empresas:"+companies.size());

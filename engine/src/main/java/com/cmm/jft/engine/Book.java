@@ -14,6 +14,7 @@ import com.cmm.jft.engine.match.OrderMatcher;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageSender;
 import com.cmm.jft.security.Security;
+import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
@@ -21,7 +22,6 @@ import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.OrderException;
-import com.cmm.jft.trading.services.SecurityService;
 import com.cmm.logging.Logging;
 
 import quickfix.Message;

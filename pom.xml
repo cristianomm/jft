@@ -20,5 +20,6 @@
     <module>messaging</module>
     <module>searchbox</module>
     <module>marketdata_connector</module>
+    <module>services</module>
   </modules>
 </project>

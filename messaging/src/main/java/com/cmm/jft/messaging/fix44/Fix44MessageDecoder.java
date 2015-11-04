@@ -28,13 +28,13 @@ import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.security.Security;
+import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.services.SecurityService;
 import com.cmm.logging.Logging;
 
 /**

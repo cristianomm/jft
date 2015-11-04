@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.trading.services;
+package com.cmm.jft.services.trading;
 
 import java.util.ArrayList;
 import java.util.HashMap;
