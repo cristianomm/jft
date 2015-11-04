@@ -28,7 +28,7 @@ import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.security.Security;
-import com.cmm.jft.services.security.SecurityService;
+//import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
@@ -182,7 +182,7 @@ public class Fix44MessageDecoder implements MessageDecoder {
 				ordr = new Orders();
 				NewOrderSingle orderSingle = (NewOrderSingle) message;
 				ordr.setClOrdID(orderSingle.getClOrdID().getValue());
-				ordr.setSecurityID(SecurityService.getInstance().provideSecurity(orderSingle.getSecurityID().getValue()));
+				//ordr.setSecurityID(SecurityService.getInstance().provideSecurity(orderSingle.getSecurityID().getValue()));
 				ordr.setSide(Side.getByValue(orderSingle.getSide().getValue()));
 				ordr.setOrderDateTime(orderSingle.getTransactTime().getValue());
 				ordr.setVolume(orderSingle.getOrderQty().getValue());
@@ -228,7 +228,7 @@ public class Fix44MessageDecoder implements MessageDecoder {
 			ordr.setClOrdID(request.getClOrdID().getValue());
 			ordr.setOrigClOrdID(request.getOrigClOrdID().getValue());
 			ordr.setMaxFloor(request.getMaxFloor().getValue());
-			ordr.setSecurityID(SecurityService.getInstance().provideSecurity(request.getSymbol().getValue()));
+			//ordr.setSecurityID(SecurityService.getInstance().provideSecurity(request.getSymbol().getValue()));
 			ordr.setSide(Side.getByValue(request.getSide().getValue()));
 			ordr.setVolume(request.getOrderQty().getValue());
 			ordr.setOrderType(OrderTypes.getByValue(request.getOrdType().getValue()));
@@ -251,7 +251,7 @@ public class Fix44MessageDecoder implements MessageDecoder {
 		try{
 			ordr.setClOrdID(request.getClOrdID().getValue());
 			ordr.setOrigClOrdID(request.getOrigClOrdID().getValue());
-			ordr.setSecurityID(SecurityService.getInstance().provideSecurity(request.getSymbol().getValue()));
+			//ordr.setSecurityID(SecurityService.getInstance().provideSecurity(request.getSymbol().getValue()));
 			ordr.setSide(Side.getByValue(request.getSide().getValue()));
 			ordr.setVolume(request.getOrderQty().getValue());
 		}catch(FieldNotFound e){
