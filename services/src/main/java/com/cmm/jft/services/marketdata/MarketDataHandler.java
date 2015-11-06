@@ -4,11 +4,14 @@
 package com.cmm.jft.services.marketdata;
 
 import java.util.Date;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import com.cmm.jft.connector.message.ClientMarketDataMessageHandler;
+import com.cmm.jft.vo.NewsVO;
 
 import quickfix.FieldNotFound;
 import quickfix.IncorrectTagValue;
+import quickfix.Message;
 import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
 import quickfix.fix44.Heartbeat;
@@ -27,7 +30,12 @@ import quickfix.fix50.SecurityStatus;
  */
 public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	
+	private LinkedBlockingQueue<Message> messages;
 	
+	
+	public MarketDataHandler() {
+		this.messages = new LinkedBlockingQueue<Message>();
+	}
 	
 	
 	/* (non-Javadoc)
@@ -36,7 +44,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(SequenceReset message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		// TODO Auto-generated method stub
+		messages.add(message);
 	}
 
 	/* (non-Javadoc)
@@ -45,7 +53,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(Heartbeat message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		// TODO Auto-generated method stub
+		messages.add(message);
 	}
 
 	/* (non-Javadoc)
@@ -54,7 +62,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(SecurityList message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		// TODO Auto-generated method stub
+		messages.add(message);
 	}
 
 	/* (non-Javadoc)
@@ -63,7 +71,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(MarketDataIncrementalRefresh message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		// TODO Auto-generated method stub
+		messages.add(message);
 	}
 
 	/* (non-Javadoc)
@@ -72,7 +80,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(MarketDataSnapshotFullRefresh message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		// TODO Auto-generated method stub
+		messages.add(message);
 	}
 
 	/* (non-Javadoc)
@@ -81,7 +89,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(SecurityStatus message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		// TODO Auto-generated method stub
+		messages.add(message);
 	}
 
 	/* (non-Javadoc)
@@ -90,13 +98,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(News message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		int lines = message.getNoLinesOfText().getValue();
-		while(lines-- > 0){
-			Date time = message.getOrigTime().getValue();
-			String text = message.getString(58);
-			
-		}
-		
+		messages.add(message);
 	}
 
 }

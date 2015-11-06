@@ -3,14 +3,12 @@ package com.cmm.jft.ui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.cmm.jft.trading.enums.Side;
-
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
@@ -19,7 +17,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class DOMController implements Initializable{
+import com.cmm.jft.trading.enums.Side;
+
+public class DOMController extends AbstractController {
 
 	@FXML
 	private Button btnBuy;
@@ -68,7 +68,6 @@ public class DOMController implements Initializable{
 	
 	@FXML
 	private TableColumn<DOMElement, Button> colSellBtn;
-	
 	
 	
 	
@@ -125,6 +124,26 @@ public class DOMController implements Initializable{
 		data.add(new DOMElement(Side.BUY, 12.42, 1000));
 		tblDOM.setItems(data);
 		System.out.println(tblDOM.getItems().size());
+		
+	}
+
+
+
+	@Override
+	public void addData(Object domElement) {
+		Platform.runLater(()->{
+			if(domElement instanceof DOMElement) {
+				this.data.add((DOMElement) domElement);
+			}
+		});
+		
+	}
+
+
+
+	@Override
+	public void updateData(Object data) {
+		// TODO Auto-generated method stub
 		
 	}
 	

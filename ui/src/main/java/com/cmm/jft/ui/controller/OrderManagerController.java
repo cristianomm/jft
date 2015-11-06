@@ -7,6 +7,21 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.image.ImageView;
+
 import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
@@ -14,37 +29,13 @@ import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.vo.OrdersVO;
 
-import javafx.beans.property.ReadOnlyDoubleWrapper;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 /**
  * <p><code>OrderManagerController.java</code></p>
  * @author Cristiano M Martins
  * @version Oct 6, 2015 9:39:07 PM
  *
  */
-public class OrderManagerController implements Initializable {
+public class OrderManagerController extends AbstractController {
 
 
 	@FXML
@@ -291,16 +282,16 @@ public class OrderManagerController implements Initializable {
 					vo.setPrice(12.4);
 					vo.setStopPrice(0);
 					vo.setAvgPrice(0);
-					add(vo);
+					addData(vo);
 					try {
 						Thread.sleep(2500);
 						vo.setOrderStatus(OrderStatus.PARTIALLY_FILLED);
 						vo.setExecutedVolume(1+i);
-						update(vo);
+						updateData(vo);
 						Thread.sleep(2500);
 						vo.setOrderStatus(OrderStatus.CANCELED);
 						vo.setSecurityID("WDOV15");
-						update(vo);
+						updateData(vo);
 						Thread.sleep(2500);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -311,24 +302,30 @@ public class OrderManagerController implements Initializable {
 
 	}
 	
-	
-	
-	
-	public void add(OrdersVO ordr) {
-		if(ordr!=null){
-			data.add(ordr);
-		}
-	}
-	
-	public void update(OrdersVO ordr){
-		if(ordr != null){
-			int idx = data.indexOf(ordr);
-			if(idx >=0){
-				//data.remove(idx);
-				data.set(idx, ordr);
+
+	@Override
+	public void addData(Object ordr) {
+		Platform.runLater(() -> {
+			if(ordr!=null && ordr instanceof OrdersVO){
+				this.data.add(((OrdersVO)ordr));
 			}
-		}
-		
+		});
 	}
+
+
+	@Override
+	public void updateData(Object ordr) {
+		Platform.runLater(()->{
+			if(ordr != null && ordr instanceof OrdersVO){
+				int idx = data.indexOf(ordr);
+				if(idx >=0){
+					//data.remove(idx);
+					data.set(idx, (OrdersVO) ordr);
+				}
+			}
+		});
+	}
+	
+	
 	
 }

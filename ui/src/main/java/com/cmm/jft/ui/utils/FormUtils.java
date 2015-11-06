@@ -11,6 +11,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
+import com.cmm.jft.ui.controller.AbstractController;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -79,12 +81,12 @@ public class FormUtils {
 		return parameters.get(key);
 	}
 
-	public Stage openForm(String form, String title){
-		Stage stage = null;
+	public AbstractController openForm(String form, String title){
+		AbstractController controller = null;
 		try{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(form));
             Parent root = (Parent) fxmlLoader.load();
-            stage = new Stage();
+            Stage stage = new Stage();
             stage.initModality(Modality.NONE);
             stage.initStyle(StageStyle.DECORATED);
             stage.setTitle(title);
@@ -93,11 +95,12 @@ public class FormUtils {
             stage.getScene().getStylesheets().add("file://" + getClass().getResource("../../../../../forms/forms.css").getFile());
             
             stage.show();
+            controller = fxmlLoader.getController();
+            
           }catch(IOException e){
         	  e.printStackTrace();
           }
-		
-		return stage;
+		return controller;
 	}
 
 }

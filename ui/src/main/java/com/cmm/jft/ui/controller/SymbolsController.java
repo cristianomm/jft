@@ -32,7 +32,7 @@ import javafx.stage.Stage;
  * @version Nov 2, 2015 2:23:58 PM
  *
  */
-public class SymbolsController implements Initializable {
+public class SymbolsController extends AbstractController {
 
 	@FXML
 	private Button btnOK;
@@ -132,6 +132,20 @@ public class SymbolsController implements Initializable {
 		if(filter!=null){
 			data.removeIf( s -> !s.getSymbol().startsWith(filter));
 		}
+	}
+
+
+	@Override
+	public void addData(Object data) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void updateData(Object data) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

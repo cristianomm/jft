@@ -4,6 +4,9 @@
 package com.cmm.jft.services.marketdata;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import quickfix.Message;
 
 import com.cmm.jft.security.Security;
 import com.cmm.jft.services.security.SecurityService;
@@ -97,8 +100,6 @@ public class Market {
 		//snapshot:
 		//fila de ordens compra e venda
 		//estatisticas do mercado
-		
-		
 		
 	}
 	
@@ -313,7 +314,6 @@ public class Market {
 	public void setPhase(MarketPhase phase) {
 		this.phase = phase;
 	}
-		
 	
 
 }

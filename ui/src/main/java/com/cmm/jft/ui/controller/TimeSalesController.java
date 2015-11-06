@@ -8,12 +8,12 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -35,7 +35,7 @@ import com.cmm.jft.vo.TimeSalesVO;
  * @version October 29, 2015 at 10:24:44 PM
  *
  */
-public class TimeSalesController implements Initializable {
+public class TimeSalesController extends AbstractController {
 
 	@FXML
 	private TextField txtSymbol;
@@ -125,6 +125,9 @@ public class TimeSalesController implements Initializable {
 				protected void updateItem(Character item, boolean empty){
 					super.updateItem(item, empty);
 					if(item != null){
+						long t0 = System.currentTimeMillis();
+						tblTimesSales.getSelectionModel().selectLast();
+						tblTimesSales.scrollTo(tblTimesSales.getItems().size());
 						switch(item){
 						case 'B':
 							getTableRow().getStyleClass().add("time_sales_buy");
@@ -134,6 +137,8 @@ public class TimeSalesController implements Initializable {
 							getTableRow().getStyleClass().add("time_sales_sell");
 							break;
 						}
+						
+						System.out.println(System.currentTimeMillis() - t0);
 						
 					}
 				}
@@ -150,23 +155,29 @@ public class TimeSalesController implements Initializable {
 				for(int i=0;i<20;i++){
 					TimeSalesVO vo = new TimeSalesVO();
 					vo.dateTime = new Date();
-					vo.price = 3982;
+					vo.price = 3988;
 					vo.volume = 3+i;
 					vo.buyer = "";
 					vo.seller = "";
 					vo.side = 'B';
-					addTimeSales(vo);
+					addData(vo);
 					
-					vo = new TimeSalesVO();
-					vo.dateTime = new Date();
-					vo.price = 3982;
-					vo.volume = 3+i;
-					vo.buyer = "";
-					vo.seller = "";
-					vo.side = 'S';
-					addTimeSales(vo);
 					try {
-						Thread.sleep(1000 );
+						Thread.sleep(150);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					TimeSalesVO vo2 = new TimeSalesVO();
+					vo2.dateTime = new Date();
+					vo2.price = 3982;
+					vo2.volume = 2+i;
+					vo2.buyer = "";
+					vo2.seller = "";
+					vo2.side = 'S';
+					addData(vo2);
+					try {
+						Thread.sleep(150 );
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -177,12 +188,24 @@ public class TimeSalesController implements Initializable {
 
 	}
 
-	public synchronized void addTimeSales(TimeSalesVO timeSalesVO){
-		if(timeSalesVO!=null) {
-			data.add(timeSalesVO);
-			lblLstPrice.setText(timeSalesVO.getPrice() + "");
-			lblLstVolume.setText(timeSalesVO.getVolume() + "");
-		}
+	@Override
+	public void addData(Object data) {
+		Platform.runLater(() -> {
+			TimeSalesVO timeSalesVO = (TimeSalesVO) data;
+			if(timeSalesVO!=null) {
+				this.data.add(timeSalesVO);
+				lblLstPrice.setText(timeSalesVO.getPrice() + "");
+				lblLstVolume.setText(timeSalesVO.getVolume() + "");
+			}
+		});
+		
+	}
+
+
+	@Override
+	public void updateData(Object data) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -3,25 +3,19 @@
  */
 package com.cmm.jft.ui.controller;
 
-import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
-
-import com.cmm.jft.ui.utils.FormUtils;
-import com.cmm.jft.ui.utils.ImageIcons;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+
+import com.cmm.jft.ui.utils.FormUtils;
+import com.cmm.jft.ui.utils.ImageIcons;
 
 /**
  * <p><code>ProgramController.java</code></p>
@@ -47,6 +41,9 @@ public class ProgramController implements Initializable {
 	private Button btnTimeSales;
 	
 	
+	private LinkedHashMap<String, AbstractController> forms;
+	
+	
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
 	 */
@@ -69,21 +66,22 @@ public class ProgramController implements Initializable {
 		btnBook.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				FormUtils.getInstance().openForm("../../../../../forms/BookForm.fxml", "Book");
+				Forms.getInstance().addForm("Book", FormUtils.getInstance().openForm("../../../../../forms/BookForm.fxml", "Book"));
 			}
 		});
 		
 		btnDOM.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				FormUtils.getInstance().openForm("../../../../../forms/DOMForm.fxml", "DOM");
+				Forms.getInstance().addForm("DOM", FormUtils.getInstance().openForm("../../../../../forms/DOMForm.fxml", "DOM"));
 			}
 		});
 		
 		btnOrderManager.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				FormUtils.getInstance().openForm("../../../../../forms/OrderManagerForm.fxml", "Order Manager");
+				Forms.getInstance().addForm("OrderManager", 
+						FormUtils.getInstance().openForm("../../../../../forms/OrderManagerForm.fxml", "Order Manager"));
 			}
 		});
 		
@@ -93,7 +91,8 @@ public class ProgramController implements Initializable {
 			 */
 			@Override
 			public void handle(ActionEvent event) {
-				FormUtils.getInstance().openForm("../../../../../forms/PlaceOrderForm.fxml", "Place Order");
+				Forms.getInstance().addForm("PlaceOrder", 
+						FormUtils.getInstance().openForm("../../../../../forms/PlaceOrderForm.fxml", "Place Order"));
 			}
 		});
 		
@@ -103,7 +102,8 @@ public class ProgramController implements Initializable {
 			 */
 			@Override
 			public void handle(ActionEvent event) {
-				FormUtils.getInstance().openForm("../../../../../forms/TimeSalesForm.fxml", "Time & Sales");
+				Forms.getInstance().addForm("TimeSales", 
+						FormUtils.getInstance().openForm("../../../../../forms/TimeSalesForm.fxml", "Time & Sales"));
 			}
 		});
 		

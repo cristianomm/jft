@@ -39,7 +39,7 @@ import javafx.stage.Stage;
  * @version Oct 11, 2015 7:22:46 PM
  *
  */
-public class PlaceOrderController implements Initializable {
+public class PlaceOrderController extends AbstractController {
 	
 	@FXML
 	private Button btnBuy;
@@ -220,6 +220,18 @@ public class PlaceOrderController implements Initializable {
 		spnLoss.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(min, max, 0, priceIncr));
 		
 		spnVolume.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(minVolume, maxVolume, initialVolume, volumeIncr));
+		
+	}
+
+	@Override
+	public void addData(Object data) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateData(Object data) {
+		// TODO Auto-generated method stub
 		
 	}
 
