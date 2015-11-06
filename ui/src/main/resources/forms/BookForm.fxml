@@ -4,22 +4,32 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView prefHeight="526.0" prefWidth="200.0">
-        <columns>
-          <TableColumn prefWidth="57.0" text="Broker" />
-          <TableColumn prefWidth="64.0" text="Volume" />
-            <TableColumn prefWidth="78.0" text="Price" />
-        </columns>
-      </TableView>
-      <TableView layoutX="200.0" prefHeight="526.0" prefWidth="200.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="Price" />
-          <TableColumn prefWidth="75.0" text="Volume" />
-            <TableColumn prefWidth="49.0" text="Broker" />
-        </columns>
-      </TableView>
+      <GridPane prefHeight="526.0" prefWidth="400.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="244.0" minWidth="10.0" prefWidth="200.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="301.0" minWidth="10.0" prefWidth="200.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+        </rowConstraints>
+         <children>
+            <TableView prefHeight="526.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+              <columns>
+                  <TableColumn prefWidth="49.0" text="Broker" />
+                <TableColumn prefWidth="75.0" text="Volume" />
+                <TableColumn prefWidth="75.0" text="Price" />
+              </columns>
+            </TableView>
+            <TableView prefHeight="526.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+              <columns>
+                  <TableColumn prefWidth="78.0" text="Price" />
+                <TableColumn prefWidth="64.0" text="Volume" />
+                <TableColumn prefWidth="57.0" text="Broker" />
+              </columns>
+            </TableView>
+         </children>
+      </GridPane>
    </children>
 </Pane>
