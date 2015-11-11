@@ -74,6 +74,9 @@ public class MarketDataStarter {
 		for (SessionID sessionId : initiator.getSessions()) {
 			Session.lookupSession(sessionId).logon();
 		}
+		
+		
+		
 
 	}
 

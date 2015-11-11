@@ -19,7 +19,56 @@ import quickfix.fix50.MessageCracker;
  */
 
 public class MarketDataConnector extends MessageCracker implements Application {
-
+	
+	
+	private SessionID instrumentDefinition;
+	private SessionID incrementalStream;
+	private SessionID recoveryStream;
+	
+	
+	/**
+	 * @return the incrementalStream
+	 */
+	public SessionID getIncrementalStream() {
+		return this.incrementalStream;
+	}
+	
+	/**
+	 * @return the instrumentDefinition
+	 */
+	public SessionID getInstrumentDefinition() {
+		return this.instrumentDefinition;
+	}
+	
+	/**
+	 * @return the recoveryStream
+	 */
+	public SessionID getRecoveryStream() {
+		return this.recoveryStream;
+	}
+	
+	/**
+	 * @param incrementalStream the incrementalStream to set
+	 */
+	public void setIncrementalStream(SessionID incrementalStream) {
+		this.incrementalStream = incrementalStream;
+	}
+	
+	/**
+	 * @param instrumentDefinition the instrumentDefinition to set
+	 */
+	public void setInstrumentDefinition(SessionID instrumentDefinition) {
+		this.instrumentDefinition = instrumentDefinition;
+	}
+	
+	/**
+	 * @param recoveryStream the recoveryStream to set
+	 */
+	public void setRecoveryStream(SessionID recoveryStream) {
+		this.recoveryStream = recoveryStream;
+	}
+	
+	
 	@Override
 	public void onCreate(SessionID sessionId) {
 		// TODO Auto-generated method stub

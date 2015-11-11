@@ -34,8 +34,7 @@ public class SecurityService {
      * 
      */
 	private SecurityService() {
-		this.securities = new HashMap<>();
-		loadSecurityList();
+		restartSecurityList();
 	}
 
 	public static synchronized SecurityService getInstance() {
@@ -103,6 +102,12 @@ public class SecurityService {
 		List<Security> data = new LinkedList<>();
 		securities.values().forEach(s -> data.add(s));
 		return data;
+	}
+	
+	
+	public void restartSecurityList(){
+		securities = new HashMap<>();
+		loadSecurityList();
 	}
 	
 

@@ -3,11 +3,9 @@
  */
 package com.cmm.jft.services.marketdata;
 
-import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.cmm.jft.connector.message.ClientMarketDataMessageHandler;
-import com.cmm.jft.vo.NewsVO;
 
 import quickfix.FieldNotFound;
 import quickfix.IncorrectTagValue;
@@ -24,17 +22,17 @@ import quickfix.fix50.SecurityStatus;
 
 /**
  * <p><code>MarketDataHandler.java</code></p>
- * @author cristiano
+ * @author Cristiano M Martins
  * @version Nov 3, 2015 9:46:53 PM
  *
  */
 public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	
-	private LinkedBlockingQueue<Message> messages;
+	
 	
 	
 	public MarketDataHandler() {
-		this.messages = new LinkedBlockingQueue<Message>();
+		this.messageQueue = new LinkedBlockingQueue<Message>();
 	}
 	
 	
@@ -44,7 +42,10 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(SequenceReset message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		messages.add(message);
+		
+		messageQueue.add(message);
+		
+		
 	}
 
 	/* (non-Javadoc)
@@ -53,7 +54,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(Heartbeat message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		messages.add(message);
+		messageQueue.add(message);
 	}
 
 	/* (non-Javadoc)
@@ -62,7 +63,11 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(SecurityList message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		messages.add(message);
+		messageQueue.add(message);
+		
+		//este metodo trata as mensagens provenientes do stream instrument definition
+		//processa a mensagem, recuperando os instrumentos presentes na mensagem
+		
 	}
 
 	/* (non-Javadoc)
@@ -71,7 +76,14 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(MarketDataIncrementalRefresh message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		messages.add(message);
+		messageQueue.add(message);
+		
+		/*
+		 * Este metodo eh responsavel pelo recebimento das mensagens que contem informacao sobre
+		 * negociacao, book de ofertas
+		 */
+		
+		
 	}
 
 	/* (non-Javadoc)
@@ -80,7 +92,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(MarketDataSnapshotFullRefresh message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		messages.add(message);
+		messageQueue.add(message);
 	}
 
 	/* (non-Javadoc)
@@ -89,7 +101,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(SecurityStatus message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		messages.add(message);
+		messageQueue.add(message);
 	}
 
 	/* (non-Javadoc)
@@ -98,7 +110,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(News message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		messages.add(message);
+		messageQueue.add(message);
 	}
 
 }
