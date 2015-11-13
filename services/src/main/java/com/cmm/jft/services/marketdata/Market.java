@@ -21,9 +21,10 @@ import com.cmm.jft.trading.enums.MarketPhase;
  */
 public class Market {
 	
+	private int msgSeqNum;
 	
 	private Security security;
-		
+	
 	/**
 	 * MDEntryType=0
 	 */
@@ -84,16 +85,16 @@ public class Market {
 	private Market(String symbol){
 		this.phase = MarketPhase.Close;
 		this.security = SecurityService.getInstance().provideSecurity(symbol);
-		resetMarketData();
+		resetMarketData(msgSeqNum);
 	}
 	
 	
-	private void resetMarketData(){
+	public void resetMarketData(int newSeqNum){
+		this.msgSeqNum = newSeqNum;
 		this.buyQueue = new ConcurrentLinkedQueue<>();
 		this.sellQueue = new ConcurrentLinkedQueue<>();
 		
 	}
-	
 	
 	public void addSnapshot(){
 		
@@ -102,11 +103,6 @@ public class Market {
 		//estatisticas do mercado
 		
 	}
-	
-	public void addSnapShotFullRefresh(){
-		
-	}
-
 
 	/**
 	 * @return the security

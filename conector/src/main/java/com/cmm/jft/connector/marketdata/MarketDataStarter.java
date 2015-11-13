@@ -48,7 +48,7 @@ public class MarketDataStarter {
 		SessionSettings settings = new SessionSettings(inputStream);
 		inputStream.close();
 
-		connector = new MarketDataConnector();
+		connector = MarketDataConnector.getInstance();
 		MessageStoreFactory messageStoreFactory = new FileStoreFactory(settings);
 		LogFactory logFactory = new FileLogFactory(settings);
 		MessageFactory messageFactory = new DefaultMessageFactory();
@@ -74,9 +74,6 @@ public class MarketDataStarter {
 		for (SessionID sessionId : initiator.getSessions()) {
 			Session.lookupSession(sessionId).logon();
 		}
-		
-		
-		
 
 	}
 

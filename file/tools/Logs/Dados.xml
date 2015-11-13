@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dados>
+	<Instrumento name="CERB001D" />
+	<Instrumento name="DOLV07" />
+	<Instrumento name="DOLF09" />
+
+	<MsgType type="V" name="Request (V)">
+		<MDEntryType enum="0" name="Bid" />
+		<MDEntryType enum="1" name="Offer" />
+		<MDEntryType enum="2" name="Trade" />
+		<MDEntryType enum="4" name="Opening Price" />
+		<MDEntryType enum="7" name="Trading Session High Price" />
+		<MDEntryType enum="8" name="Trading Session Low Price" />
+		<MDEntryType enum="9" name="Trading Session VWAP Price" />
+		<MDEntryType enum="X" name="Top of book – offer" />
+		<MDEntryType enum="Z" name="Top of book – bid" />
+		<!--MDEntryType enum="9" name="Referential prices" />
+		<MDEntryType enum="V" name="Instrument trading phase" />
+		<MDEntryType enum="V" name="Instrument state" /-->
+		<MDEntryType enum="B" name="Trade Volume" />
+	</MsgType>	
+	<MsgType type="X" name="Incremental (X)">
+		<MDEntryType enum="0" name="Bid" />
+		<MDEntryType enum="1" name="Offer" />
+		<MDEntryType enum="2" name="Trade" />
+		<MDEntryType enum="4" name="Opening Price" />
+		<MDEntryType enum="7" name="Trading Session High Price" />
+		<MDEntryType enum="8" name="Trading Session Low Price" />
+		<MDEntryType enum="9" name="Trading Session VWAP Price" />
+		<MDEntryType enum="X" name="Top of book – offer" />
+		<MDEntryType enum="Z" name="Top of book – bid" />
+		<!--MDEntryType enum="9" name="Referential prices" />
+		<MDEntryType enum="V" name="Instrument trading phase" />
+		<MDEntryType enum="V" name="Instrument state" /-->
+		<MDEntryType enum="B" name="Trade Volume" />
+	</MsgType>
+	<MsgType type="W" name="Snapshot (W)">
+		<MDEntryType enum="0" name="Bid" />
+		<MDEntryType enum="1" name="Offer" />
+		<MDEntryType enum="2" name="Trade" />
+		<MDEntryType enum="4" name="Opening Price" />
+		<MDEntryType enum="7" name="Trading Session High Price" />
+		<MDEntryType enum="8" name="Trading Session Low Price" />
+		<MDEntryType enum="9" name="Trading Session VWAP Price" />
+		<MDEntryType enum="X" name="Top of book – offer" />
+		<MDEntryType enum="Z" name="Top of book – bid" />
+		<!--MDEntryType enum="9" name="Referential prices" />
+		<MDEntryType enum="V" name="Instrument trading phase" />
+		<MDEntryType enum="V" name="Instrument state" /-->
+		<MDEntryType enum="B" name="Trade Volume" />
+	</MsgType>
+
+	<Message name="Logon">
+		<Field type="[DEFAULT]" value="" />
+		<Field type="SocketAcceptPort" value="" />
+		<Field type="SocketReuseAddress" value="N" />
+		<Field type="HeartBtInt" value="120" />
+		<Field type="SenderCompID" value="" />
+		<Field type="FileStorePath" value="" />
+		<Field type="FileLogPath" value="" />
+		<Field type="[SESSION]" value="" />
+		<Field type="BeginString" value="FIX.4.4" />
+		<Field type="StartTime" value="00:00:01" />
+		<Field type="EndTime" value="23:59:59" />
+		<Field type="ConnectionType" value="" />
+		<Field type="SocketConnectHost" value="" />
+		<Field type="SocketConnectPort" value ="" />
+		
+		<Field type="TargetCompID" value="" />
+		<Field type="RawDataLength" value="6" />
+		<Field type="RawData" value="bmf123" />
+		<Field type="ResetOnLogon" value="Y" />
+		<Field type="CheckLatency" value="N" />
+		<Field type="LogonTimeout" value="3" />
+		<Field type="UseDataDictionary" value="Y" />
+		<Field type="DataDictionary" value="" />		
+	</Message>
+</Dados>

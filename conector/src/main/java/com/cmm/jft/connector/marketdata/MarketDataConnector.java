@@ -1,5 +1,7 @@
 package com.cmm.jft.connector.marketdata;
 
+import com.cmm.jft.connector.Connector;
+
 import quickfix.Application;
 import quickfix.DoNotSend;
 import quickfix.FieldNotFound;
@@ -9,6 +11,7 @@ import quickfix.Message;
 import quickfix.RejectLogon;
 import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
+import quickfix.fix44.Logout;
 import quickfix.fix50.MessageCracker;
 
 
@@ -18,101 +21,97 @@ import quickfix.fix50.MessageCracker;
  * 
  */
 
-public class MarketDataConnector extends MessageCracker implements Application {
-	
-	
-	private SessionID instrumentDefinition;
-	private SessionID incrementalStream;
+public class MarketDataConnector extends Connector {
+
+
 	private SessionID recoveryStream;
-	
-	
+	private SessionID incrementalStream;
+	private SessionID instrumentDefinition;
+
+	private static MarketDataConnector instance;
+
+	private MarketDataConnector() {
+
+	}
+
+	public synchronized static MarketDataConnector getInstance() {
+		if(instance == null) {
+			instance = new MarketDataConnector();
+		}
+		return instance;
+	}
+
+
+
 	/**
 	 * @return the incrementalStream
 	 */
 	public SessionID getIncrementalStream() {
 		return this.incrementalStream;
 	}
-	
+
 	/**
 	 * @return the instrumentDefinition
 	 */
 	public SessionID getInstrumentDefinition() {
 		return this.instrumentDefinition;
 	}
-	
+
 	/**
 	 * @return the recoveryStream
 	 */
 	public SessionID getRecoveryStream() {
 		return this.recoveryStream;
 	}
-	
+
 	/**
 	 * @param incrementalStream the incrementalStream to set
 	 */
 	public void setIncrementalStream(SessionID incrementalStream) {
 		this.incrementalStream = incrementalStream;
 	}
-	
+
 	/**
 	 * @param instrumentDefinition the instrumentDefinition to set
 	 */
 	public void setInstrumentDefinition(SessionID instrumentDefinition) {
 		this.instrumentDefinition = instrumentDefinition;
 	}
-	
+
 	/**
 	 * @param recoveryStream the recoveryStream to set
 	 */
 	public void setRecoveryStream(SessionID recoveryStream) {
 		this.recoveryStream = recoveryStream;
 	}
-	
-	
-	@Override
-	public void onCreate(SessionID sessionId) {
-		// TODO Auto-generated method stub
+
+
+
+	public void joinInstrumentDefinition() {
+
+	}
+
+	public void joinIncrementalStream() {
+
+	}
+
+	public void joinRecoveryStream() {
 		
 	}
 
-	@Override
-	public void onLogon(SessionID sessionId) {
-		// TODO Auto-generated method stub
-		
+
+	public void exitInstrumentDefinition() {
+
 	}
 
-	@Override
-	public void onLogout(SessionID sessionId) {
-		// TODO Auto-generated method stub
-		
+	public void exitIncrementalStream() {
+
 	}
 
-	@Override
-	public void toAdmin(Message message, SessionID sessionId) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void fromAdmin(Message message, SessionID sessionId)
-			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
-			RejectLogon {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void toApp(Message message, SessionID sessionId) throws DoNotSend {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void fromApp(Message message, SessionID sessionId)
-			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
-			UnsupportedMessageType {
-		// TODO Auto-generated method stub
-		
+	public void exitRecoveryStream() {
+		//sai do canal
+		Logout logout = new Logout();
+		MarketDataConnector.getInstance().send(logout, MarketDataConnector.getInstance().getInstrumentDefinition());
 	}
 
 }
