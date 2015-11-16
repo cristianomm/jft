@@ -36,7 +36,7 @@ public class MarketDataStarter {
 	public void start() throws Exception {
 		init();
 		if (!System.getProperties().containsKey("openfix")) {
-			logon();
+			setChannels();
 		}
 
 	}
@@ -60,7 +60,7 @@ public class MarketDataStarter {
 
 	}
 
-	private synchronized void logon() {
+	private synchronized void setChannels() {
 		if (!initiatorStarted) {
 			try {
 				initiator.start();
@@ -72,16 +72,20 @@ public class MarketDataStarter {
 		} 
 
 		for (SessionID sessionId : initiator.getSessions()) {
-			Session.lookupSession(sessionId).logon();
+			if(sessionId.getTargetCompID().equalsIgnoreCase("INCREMENTAL")){
+				connector.setIncrementalStream(sessionId);
+			}
+			else if(sessionId.getTargetCompID().equalsIgnoreCase("INSTRUMENT")){
+				connector.setInstrumentDefinition(sessionId);
+			}
+			else if(sessionId.getTargetCompID().equalsIgnoreCase("RECOVERY")){
+				connector.setRecoveryStream(sessionId);
+			}
+			
 		}
 
 	}
-
-	private void logout() {
-		for (SessionID sessionId : initiator.getSessions()) {
-			Session.lookupSession(sessionId).logout("user requested");
-		}
-	}
-
+	
+	
 
 }

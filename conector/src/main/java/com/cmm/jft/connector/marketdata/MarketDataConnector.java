@@ -9,6 +9,7 @@ import quickfix.IncorrectDataFormat;
 import quickfix.IncorrectTagValue;
 import quickfix.Message;
 import quickfix.RejectLogon;
+import quickfix.Session;
 import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
 import quickfix.fix44.Logout;
@@ -88,30 +89,28 @@ public class MarketDataConnector extends Connector {
 
 
 	public void joinInstrumentDefinition() {
-
+		Session.lookupSession(instrumentDefinition).logon();
 	}
 
 	public void joinIncrementalStream() {
-
+		Session.lookupSession(incrementalStream).logon();
 	}
 
 	public void joinRecoveryStream() {
-		
+		Session.lookupSession(recoveryStream).logon();
 	}
 
 
 	public void exitInstrumentDefinition() {
-
+		Session.lookupSession(instrumentDefinition).logout("user requested");
 	}
 
 	public void exitIncrementalStream() {
-
+		Session.lookupSession(incrementalStream).logout("user requested");
 	}
 
 	public void exitRecoveryStream() {
-		//sai do canal
-		Logout logout = new Logout();
-		MarketDataConnector.getInstance().send(logout, MarketDataConnector.getInstance().getInstrumentDefinition());
+		Session.lookupSession(recoveryStream).logout("user requested");
 	}
 
 }
