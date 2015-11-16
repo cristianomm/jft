@@ -1,0 +1,292 @@
+<style type="text/css">
+<!--
+ /* Font Definitions */
+ /* Style Definitions */
+h1
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:16.0pt;
+	font-family:"Trebuchet MS";
+	mso-bidi-font-family:Arial;
+	color:#999066;
+	mso-font-kerning:16.0pt;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+h2
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:14.0pt;
+	font-family:"Trebuchet MS";
+	mso-bidi-font-family:Arial;
+	color:#333399;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;
+	mso-bidi-font-style:italic;}
+h3
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	font-size:12.0pt;
+	font-family:"Trebuchet MS";
+	mso-bidi-font-family:Arial;
+	color:#666666;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+h4
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	font-size:12.0pt;
+	font-family:"Trebuchet MS";
+	color:#999066;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+h5
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:5;
+	font-size:10.0pt;
+	font-family:"Trebuchet MS";
+	color:#333399;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;
+	mso-bidi-font-style:italic;}
+h6
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:7.5pt;
+	font-family:"Trebuchet MS";
+	color:#999999;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:#3366CC;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:#666666;
+	text-decoration:underline;
+	text-underline:single;}
+th
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:7.5pt;
+	font-family:"Trebuchet MS";
+	color:#white;
+	font-weight:bold}
+td
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:8.5pt;
+	font-family:"Trebuchet MS";
+	color:#333333;
+	font-weight:normal}
+
+.td_noborder
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:7.5pt;
+	font-family:"Trebuchet MS";
+	color:#333333;
+	font-weight:normal}
+
+.td_border
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:9.0pt;
+	font-family:"Trebuchet MS";
+	color:#000000;
+	background-color:#FFFFFF;
+	border-top:3pt solid;
+	border-left:3pt solid;
+	border-right:3pt solid;
+	border-bottom:3pt solid;
+	border-color:#F0F0F0;
+	font-weight:normal}
+
+.td_border_rowleft
+	{mso-style-next:Normal;
+	margin-top:0.0pt;
+	margin-right:0.0pt;
+	margin-bottom:0.0pt;
+	margin-left:0.0pt;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:7.5pt;
+	font-family:"Trebuchet MS";
+	color:#333333;
+	border-top:1pt solid;
+	border-left:1pt solid;
+	border-right:0pt solid;
+	border-bottom:1pt solid;
+	font-weight:normal}
+
+.td_border_rowright
+	{mso-style-next:Normal;
+	margin-top:0.0pt;
+	margin-right:0.0pt;
+	margin-bottom:0.0pt;
+	margin-left:1.0pt;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:7.5pt;
+	font-family:"Trebuchet MS";
+	color:#333333;
+	border-top:1pt solid;
+	border-left:0pt solid;
+	border-right:1pt solid;
+	border-bottom:1pt solid;
+	font-weight:normal}
+
+.td_border_rowmid
+	{mso-style-next:Normal;
+	margin-top:0.0pt;
+	margin-right:0.0pt;
+	margin-bottom:0.0pt;
+	margin-left:0.0pt;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:7.5pt;
+	font-family:"Trebuchet MS";
+	color:#333333;
+	border-top:1pt solid;
+	border-left:0pt solid;
+	border-right:0pt solid;
+	border-bottom:1pt solid;
+	font-weight:normal}
+
+.td_borderbold
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:7.5pt;
+	font-family:"Trebuchet MS";
+	color:#333333;
+	border-top:1pt solid;
+	border-left:1pt solid;
+	border-right:1pt solid;
+	border-bottom:1pt solid;
+	font-weight:bold}
+
+.td_borderleft
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:7.5pt;
+	font-family:"Trebuchet MS";
+	color:#333333;
+	border-left:1pt solid;
+	font-weight:normal}
+.td_borderright
+	{mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:7.5pt;
+	font-family:"Trebuchet MS";
+	color:#333333;
+	border-right:1pt solid;
+	font-weight:normal}
+
+-->
+</style>
+<!-- report ID: 25957 -->
+<table summary=nemo_exec border=0 cellpadding=1 cellspacing=0>
+<tr><th colspan=7><img src="bvmf.JPG"></th><tr><th colspan=7><h2>UMDF PUMA Trading System - Market Data Statistics  - 20111005 - PUMA PROD</h2></th></tr>
+<tr><th><h3>NEMO</h3></th><th colspan=53><h3>Trading Systems Performance</h3></th><th colspan=2><h3>2011-10-05<br /><font size=-2>06:00:00-19:00:00</font></h3></th></tr>
+<tr>
+				<td class=td_border><b>UMDF Channel</b></td>
+				<td align=center class=td_border><b>Number of Messages</b></td>
+				<td align=center class=td_border><b>Maximum MPS (msgs/sec)</b></td>
+				<td align=center class=td_border><b>Average MPS (msgs/sec)</b></td>
+				<td align=center class=td_border><b>Maximum <font color=red><sup><a href=#five>5</a></sup></font> Latency (ms)</b></td>
+				<td align=center class=td_border><b>Average Latency (ms)</b></td>
+				<td align=center class=td_border><b>Latency Standard Deviation</b></td>
+			</tr>
+<!-- getMobyMdStats num Function elapsed time: 0 seconds -->
+<!-- getMobyMdStats stats Function elapsed time: 1 seconds -->
+<!-- getMobyMdStats mps Function elapsed time: 0 seconds -->
+<!-- getMobyMdStats bw Function elapsed time: 0 seconds  -->
+<tr><td>MBO Ch.1 - FX Futures</td><td align=right style="background-color:F0F0F0;">350.811</td><td align=right>376</td><td align=right style="background-color:F0F0F0;">12,69</td><td align=right>12</td><td align=right style="background-color:F0F0F0;">0,09</td><td align=right>0,28</td></tr>
+<tr><td>MBO Ch.2 - FX Options</td><td align=right style="background-color:F0F0F0;">7.148</td><td align=right>515</td><td align=right style="background-color:F0F0F0;">2,89</td><td align=right>6</td><td align=right style="background-color:F0F0F0;">1,33</td><td align=right>1,23</td></tr>
+<tr><td>MBO Ch.3 - Interest rate Futures</td><td align=right style="background-color:F0F0F0;">89.292</td><td align=right>536</td><td align=right style="background-color:F0F0F0;">8,57</td><td align=right>6</td><td align=right style="background-color:F0F0F0;">0,11</td><td align=right>0,39</td></tr>
+<tr><td>MBO Ch.4 - Interest rate Option</td><td align=right style="background-color:F0F0F0;">5.321</td><td align=right>336</td><td align=right style="background-color:F0F0F0;">2,07</td><td align=right>6</td><td align=right style="background-color:F0F0F0;">0,57</td><td align=right>1,1</td></tr>
+<tr><td>MBO Ch.5 - Commodity Futures</td><td align=right style="background-color:F0F0F0;">43.121</td><td align=right>76</td><td align=right style="background-color:F0F0F0;">4,02</td><td align=right>10</td><td align=right style="background-color:F0F0F0;">0,1</td><td align=right>0,3</td></tr>
+<tr><td>MBO Ch.6 - Commodity Options</td><td align=right style="background-color:F0F0F0;">5.728</td><td align=right>391</td><td align=right style="background-color:F0F0F0;">2,53</td><td align=right>5</td><td align=right style="background-color:F0F0F0;">1,19</td><td align=right>1,16</td></tr>
+<tr><td>MBO Ch.7 - Equity Index Futures</td><td align=right style="background-color:F0F0F0;">3.241</td><td align=right>20</td><td align=right style="background-color:F0F0F0;">1,46</td><td align=right>4</td><td align=right style="background-color:F0F0F0;">0,2</td><td align=right>0,42</td></tr>
+<tr><td>MBO Ch.8 - Equity Index Options</td><td align=right style="background-color:F0F0F0;">3.239</td><td align=right>24</td><td align=right style="background-color:F0F0F0;">1,45</td><td align=right>4</td><td align=right style="background-color:F0F0F0;">0,21</td><td align=right>0,41</td></tr>
+<tr><td>MBO Ch.9 - FX Spot</td><td align=right style="background-color:F0F0F0;">34.177</td><td align=right>78</td><td align=right style="background-color:F0F0F0;">4,14</td><td align=right>9</td><td align=right style="background-color:F0F0F0;">0,1</td><td align=right>0,31</td></tr>
+<tr><td>MBO Ch.10 - Equity Index Fut-mini</td><td align=right style="background-color:F0F0F0;">3.221</td><td align=right>22</td><td align=right style="background-color:F0F0F0;">1,43</td><td align=right>1</td><td align=right style="background-color:F0F0F0;">0,16</td><td align=right>0,37</td></tr>
+</table>
+<table summary=nemo_exec_foonotes border=0 cellpadding=1 cellspacing=0>
+<tr><td colspan=13><u>Footnotes:</u></td></tr>
+<tr><td colspan=13><a name=one>1.&nbsp;&nbsp;Volume statistics are approximate.  They are BUY side only. </a></td></tr>
+<tr><td colspan=13><a name=two>2.&nbsp;&nbsp;Rejected orders are not included in the message statistics.</a></td></tr>
+<tr><td colspan=2 class=td_bordernone><br /></td><td colspan=5 class=td_bordernone><br /></td><td colspan=2><br /></td></tr>
+</table>
+
+<!-- Overall report elapsed time: 1 seconds -->
+
+<!-- Overall report elapsed time: 00:00:00:01 -->
