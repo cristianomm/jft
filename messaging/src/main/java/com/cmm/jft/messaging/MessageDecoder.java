@@ -5,6 +5,7 @@ package com.cmm.jft.messaging;
 
 import quickfix.Message;
 import quickfix.SessionID;
+import quickfix.field.MDEntryType;
 
 import com.cmm.jft.marketdata.MarketOrder;
 import com.cmm.jft.trading.OrderEvent;
@@ -27,7 +28,7 @@ public interface MessageDecoder {
 			decoder = null;
 			break;
 		}
-
+		
 		return decoder;
 	}
 
