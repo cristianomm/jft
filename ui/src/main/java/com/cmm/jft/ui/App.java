@@ -30,7 +30,7 @@ public class App extends Application {
 			stage.setScene(scene);
 			stage.getIcons().add(ImageIcons.getProgramImage().getImage());
 			stage.show();
-
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -55,7 +55,7 @@ public class App extends Application {
 			System.out.println("Initializing Trading Service");
 			TradingService.getInstance();
 		}catch(Exception e) {
-
+			
 		}
 		super.init();
 	}

@@ -42,10 +42,7 @@ public class MarketDataHandler extends ClientMarketDataMessageHandler {
 	@Override
 	public void onMessage(SequenceReset message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
 		messageQueue.add(message);
-		
-		
 	}
 
 	/* (non-Javadoc)

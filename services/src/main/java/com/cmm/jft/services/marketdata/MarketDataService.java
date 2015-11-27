@@ -3,11 +3,9 @@
  */
 package com.cmm.jft.services.marketdata;
 
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import quickfix.DataDictionary;
@@ -201,7 +199,6 @@ public class MarketDataService {
 			while(gCount < incrRefresh.getNoMDEntries().getValue())	{
 				
 				Group group = incrRefresh.getGroup(gCount++, 268);
-				//group.
 				
 				incrRefresh.getMDBookType();
 				incrRefresh.getChar(MDEntryType.FIELD);
@@ -240,7 +237,6 @@ public class MarketDataService {
 				
 				//position of bid/offer, numbererd from most to least competitive
 				incrRefresh.getInt(MDEntryPositionNo.FIELD);
-				
 				
 			}
 			

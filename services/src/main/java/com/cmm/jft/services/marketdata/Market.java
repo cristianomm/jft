@@ -4,9 +4,9 @@
 package com.cmm.jft.services.marketdata;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import quickfix.Message;
+import quickfix.fix50.MarketDataIncrementalRefresh;
 
 import com.cmm.jft.security.Security;
 import com.cmm.jft.services.security.SecurityService;
@@ -15,7 +15,7 @@ import com.cmm.jft.trading.enums.MarketPhase;
 
 /**
  * <p><code>Market.java</code></p>
- * @author cristiano
+ * @author Cristiano M Martins
  * @version Nov 3, 2015 6:57:10 PM
  *
  */
@@ -96,11 +96,22 @@ public class Market {
 		
 	}
 	
-	public void addSnapshot(){
+	public void addSnapshot(Message message){
+		
+		if(message instanceof  MarketDataIncrementalRefresh) {
+			
+		}
+		
+		if(message instanceof  MarketDataIncrementalRefresh) {
+			
+		}
+		
 		
 		//snapshot:
 		//fila de ordens compra e venda
 		//estatisticas do mercado
+		
+		
 		
 	}
 
