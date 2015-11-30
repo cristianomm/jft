@@ -5,8 +5,12 @@ package com.cmm.jft.services.marketdata;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import quickfix.FieldNotFound;
 import quickfix.Message;
+import quickfix.field.MsgSeqNum;
+import quickfix.field.MsgType;
 import quickfix.fix50.MarketDataIncrementalRefresh;
+import quickfix.fix50.MarketDataSnapshotFullRefresh;
 
 import com.cmm.jft.security.Security;
 import com.cmm.jft.services.security.SecurityService;
@@ -20,100 +24,112 @@ import com.cmm.jft.trading.enums.MarketPhase;
  *
  */
 public class Market {
-	
+
 	private int msgSeqNum;
-	
+
 	private Security security;
-	
+
 	/**
 	 * MDEntryType=0
 	 */
 	private ConcurrentLinkedQueue<Orders> buyQueue;
-	
+
 	/**
 	 * MDEntryType=1
 	 */
 	private ConcurrentLinkedQueue<Orders> sellQueue;
-	
+
 	/**
 	 * MDEntryType=2
 	 */
 	private long tradeCount;
-	
+
 	/**
 	 * MDEntryType=4
 	 */
 	private double openPrice;
-	
+
 	/**
 	 * MDEntryType=5
 	 */
 	private double closePrice;
-	
+
 	/**
 	 * MDEntryType=7
 	 */
 	private double maxPrice;
-	
+
 	/**
 	 * MDEntryType=8
 	 */
 	private double minPrice;
-	
+
 	private double lastVolume;
-	
+
 	private double lastPrice;
-	
-	
+
+
 	/**
 	 * MDEntryType=9
 	 */
 	private double vwap;
-	
+
 	/**
 	 * MDEntryType=B
 	 */
 	private double tradeVolume;
-	
+
 	/**
 	 * MDEntryType=c
 	 */
 	private MarketPhase phase;
-	
-	
-	
+
+
+
 	private Market(String symbol){
 		this.phase = MarketPhase.Close;
 		this.security = SecurityService.getInstance().provideSecurity(symbol);
 		resetMarketData(msgSeqNum);
 	}
-	
-	
+
+
 	public void resetMarketData(int newSeqNum){
 		this.msgSeqNum = newSeqNum;
 		this.buyQueue = new ConcurrentLinkedQueue<>();
 		this.sellQueue = new ConcurrentLinkedQueue<>();
-		
+
 	}
-	
+
 	public void addSnapshot(Message message){
-		
-		if(message instanceof  MarketDataIncrementalRefresh) {
-			
+
+		try {
+			//snapshot:
+			//fila de ordens compra e venda
+			//estatisticas do mercado
+			char type = message.getChar(MsgType.FIELD);	
+			msgSeqNum = message.getInt(MsgSeqNum.FIELD);
+
+			if(type == 'X') {//Incr Refresh
+				addIncrementalRefresh((MarketDataIncrementalRefresh) message);
+			}
+			else if(type == 'W') {//Snapshot Full Refresh
+				addSnapshotFullRefresh((MarketDataSnapshotFullRefresh) message);	
+			}
+
+		} catch (FieldNotFound e) {
+			e.printStackTrace();
 		}
-		
-		if(message instanceof  MarketDataIncrementalRefresh) {
-			
-		}
-		
-		
-		//snapshot:
-		//fila de ordens compra e venda
-		//estatisticas do mercado
-		
-		
-		
+
 	}
+
+	private void addIncrementalRefresh(MarketDataIncrementalRefresh incrementalRefresh) {
+
+	}
+
+	private void addSnapshotFullRefresh(MarketDataSnapshotFullRefresh fullRefresh) {
+
+	}
+
 
 	/**
 	 * @return the security
@@ -321,6 +337,6 @@ public class Market {
 	public void setPhase(MarketPhase phase) {
 		this.phase = phase;
 	}
-	
+
 
 }

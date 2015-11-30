@@ -206,21 +206,21 @@ public class MarketDataService {
 				incrRefresh.getInt(RptSeq.FIELD);
 				
 				//symbol identification
-				incrRefresh.getString(Symbol.FIELD);
-				incrRefresh.getString(SecurityIDSource.FIELD);
-				incrRefresh.getString(SecurityExchange.FIELD);
+				String symbol = group.getString(Symbol.FIELD);
+				group.getString(SecurityIDSource.FIELD);
+				group.getString(SecurityExchange.FIELD);
 								
 				//values
-				incrRefresh.getDouble(MDEntryPx.FIELD);
-				incrRefresh.getDouble(MDEntrySize.FIELD);
+				group.getDouble(MDEntryPx.FIELD);
+				group.getDouble(MDEntrySize.FIELD);
 				
-				//Iinsert date & time when inserted on the book
-				incrRefresh.getUtcDateOnly(MDEntryDate.FIELD);
-				incrRefresh.getUtcTimeOnly(MDEntryTime.FIELD);
+				//Insert date & time when inserted on the book
+				group.getUtcDateOnly(MDEntryDate.FIELD);
+				group.getUtcTimeOnly(MDEntryTime.FIELD);
 				
 				//Insert Date & Time when the order is inserted on the book
-				incrRefresh.getUtcTimeOnly(37016);
-				incrRefresh.getUtcTimeOnly(37017);
+				group.getUtcTimeOnly(37016);
+				group.getUtcTimeOnly(37017);
 				
 				
 				incrRefresh.getString(OrderID.FIELD);
@@ -237,6 +237,14 @@ public class MarketDataService {
 				
 				//position of bid/offer, numbererd from most to least competitive
 				incrRefresh.getInt(MDEntryPositionNo.FIELD);
+				
+				
+				//for each market in this message, add the info corresponding to this group
+				if(markets.containsKey(symbol)) {
+					
+					markets.get(symbol);
+					
+				}
 				
 			}
 			
