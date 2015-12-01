@@ -13,6 +13,7 @@ import quickfix.FieldException;
 import quickfix.FieldNotFound;
 import quickfix.Group;
 import quickfix.Message;
+import quickfix.field.MDBookType;
 import quickfix.field.MDEntryDate;
 import quickfix.field.MDEntryPositionNo;
 import quickfix.field.MDEntryPx;
@@ -200,43 +201,43 @@ public class MarketDataService {
 				
 				Group group = incrRefresh.getGroup(gCount++, 268);
 				
-				incrRefresh.getMDBookType();
-				incrRefresh.getChar(MDEntryType.FIELD);
-				incrRefresh.getChar(MDUpdateAction.FIELD);
-				incrRefresh.getInt(RptSeq.FIELD);
+				group.getInt(MDBookType.FIELD);
+				group.getChar(MDEntryType.FIELD);
+				group.getChar(MDUpdateAction.FIELD);
+				group.getInt(RptSeq.FIELD);
 				
 				//symbol identification
-				incrRefresh.getString(Symbol.FIELD);
-				incrRefresh.getString(SecurityIDSource.FIELD);
-				incrRefresh.getString(SecurityExchange.FIELD);
+				group.getString(Symbol.FIELD);
+				group.getString(SecurityIDSource.FIELD);
+				group.getString(SecurityExchange.FIELD);
 								
 				//values
-				incrRefresh.getDouble(MDEntryPx.FIELD);
-				incrRefresh.getDouble(MDEntrySize.FIELD);
+				group.getDouble(MDEntryPx.FIELD);
+				group.getDouble(MDEntrySize.FIELD);
 				
 				//Iinsert date & time when inserted on the book
-				incrRefresh.getUtcDateOnly(MDEntryDate.FIELD);
-				incrRefresh.getUtcTimeOnly(MDEntryTime.FIELD);
+				group.getUtcDateOnly(MDEntryDate.FIELD);
+				group.getUtcTimeOnly(MDEntryTime.FIELD);
 				
 				//Insert Date & Time when the order is inserted on the book
-				incrRefresh.getUtcTimeOnly(37016);
-				incrRefresh.getUtcTimeOnly(37017);
+				group.getUtcTimeOnly(37016);
+				group.getUtcTimeOnly(37017);
 				
 				
-				incrRefresh.getString(OrderID.FIELD);
-				incrRefresh.getString(TradeID.FIELD);
+				group.getString(OrderID.FIELD);
+				group.getString(TradeID.FIELD);
 				
 				
-				incrRefresh.getDouble(MDEntryPx.FIELD);
-				incrRefresh.getDouble(MDEntryPx.FIELD);
+				group.getDouble(MDEntryPx.FIELD);
+				group.getDouble(MDEntryPx.FIELD);
 				
 				
 				//MBP
-				incrRefresh.getInt(NumberOfOrders.FIELD);
+				group.getInt(NumberOfOrders.FIELD);
 				
 				
 				//position of bid/offer, numbererd from most to least competitive
-				incrRefresh.getInt(MDEntryPositionNo.FIELD);
+				group.getInt(MDEntryPositionNo.FIELD);
 				
 			}
 			
