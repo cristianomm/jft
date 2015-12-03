@@ -20,6 +20,7 @@ import com.cmm.jft.vo.OrderEventVO;
 import com.cmm.jft.vo.OrdersVO;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -35,7 +36,7 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class OrdersVO implements DBObject<OrdersVO> {
 	
-	public SimpleLongProperty orderID;
+	public SimpleStringProperty orderID;
 	
 	public SimpleDoubleProperty price;
 	
@@ -87,15 +88,17 @@ public class OrdersVO implements DBObject<OrdersVO> {
 	
 	public List<OrderEventVO> eventsList;
 	
+	public SimpleIntegerProperty queuePosition;
+	
 	
 	public OrdersVO() {
 		this.eventsList = new ArrayList<OrderEventVO>();
 	}
 	
 	
-	public SimpleLongProperty orderIDProperty(){
+	public SimpleStringProperty orderIDProperty(){
 		if(orderID == null) {
-			orderID = new SimpleLongProperty();
+			orderID = new SimpleStringProperty();
 		}
 		return orderID;
 	}
@@ -203,6 +206,14 @@ public class OrdersVO implements DBObject<OrdersVO> {
 		}
 		return securityID;
 	}
+		
+	public SimpleIntegerProperty queuePosition(){
+		if(queuePosition == null) {
+			queuePosition = new SimpleIntegerProperty(0);
+		}
+		return queuePosition;
+	}
+	
 	
 	
 	
@@ -220,11 +231,11 @@ public class OrdersVO implements DBObject<OrdersVO> {
 		this.priceProperty().set(price);
 	}
 
-	public long getOrderID() {
+	public String getOrderID() {
 		return orderIDProperty().get();
 	}
 
-	public void setOrderID(long orderID) {
+	public void setOrderID(String orderID) {
 		this.orderIDProperty().set(orderID);
 	}
 
@@ -286,6 +297,15 @@ public class OrdersVO implements DBObject<OrdersVO> {
 
 	public double getExecutedVolume() {
 		return executedVolumeProperty().get();
+	}
+	
+	public SimpleIntegerProperty getQueuePosition() {
+		return queuePosition;
+	}
+	
+	
+	public void setQueuePosition(int queuePosition) {
+		this.queuePosition().set(queuePosition);
 	}
 
 	public void setExecutedVolume(double executedVolume) {

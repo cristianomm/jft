@@ -3,6 +3,7 @@
  */
 package com.cmm.jft.services.marketdata;
 
+import java.util.Date;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import quickfix.FieldNotFound;
@@ -14,8 +15,12 @@ import quickfix.fix50.MarketDataSnapshotFullRefresh;
 
 import com.cmm.jft.security.Security;
 import com.cmm.jft.services.security.SecurityService;
+import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.MarketPhase;
+import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.vo.OrderEventVO;
+import com.cmm.jft.vo.OrdersVO;
 
 /**
  * <p><code>Market.java</code></p>
@@ -38,6 +43,10 @@ public class Market {
 	 * MDEntryType=1
 	 */
 	private ConcurrentLinkedQueue<Orders> sellQueue;
+
+
+	private ConcurrentLinkedQueue<OrderEvent> timeSales;
+
 
 	/**
 	 * MDEntryType=2
@@ -97,6 +106,7 @@ public class Market {
 		this.msgSeqNum = newSeqNum;
 		this.buyQueue = new ConcurrentLinkedQueue<>();
 		this.sellQueue = new ConcurrentLinkedQueue<>();
+		this.timeSales = new ConcurrentLinkedQueue<OrderEvent>();
 
 	}
 
@@ -123,14 +133,134 @@ public class Market {
 	}
 
 	private void addIncrementalRefresh(MarketDataIncrementalRefresh incrementalRefresh) {
-		
+
 	}
 
 	private void addSnapshotFullRefresh(MarketDataSnapshotFullRefresh fullRefresh) {
-		
-		
-		
+
+
+
 	}
+
+
+	//de acordo com MDEntryType
+	//Type Market Data entry. Valid values:
+	/**
+	 * 0 = Bid
+	 * 1 = Offer
+	 * 
+	 */
+	private void addOrder(Message message) {
+		try {
+			
+			
+			
+			OrdersVO order = new OrdersVO();
+			/*
+			Types of Market Data update action
+			0 = New
+			1 = Change
+			2 = Delete
+			3 = Delete Thru
+			4 = Delete From
+			5 = Overlay
+			*/
+			order.setQueuePosition(message.getInt(290));
+			order.setOrderID(message.getString(37));
+			
+			
+			
+			
+			/*
+			279 MDUpdateAction “0”,”1”,”2”,”3”,”4”
+			269 MDEntryType “0”,”1”
+			83 RptSeq X
+			48 SecurityID X 
+			22 SecurityIDSource X 
+			207 SecurityExchange X
+			1500 MDStreamID C “L” - for BTC book 
+			270 MDEntryPx C Not sent for MOA and MOC
+			271 MDEntrySize X
+			432 ExpireDate C Used for BTC contracts only
+			37019 EarlyTermination C Used for BTC contracts only 272 MDEntryDate X
+			273 MDEntryTime X
+			37016 MDInsertDate X
+			37017 MDInsertTime X
+			276 QuoteCondition “C”, ”R” “R” – On book retransmission
+			288 MDEntryBuyer C Sent on bids, but not on MBP/TOB or FX 289 MDEntrySeller C Sent on offers, but not on MBP/TOB or FX
+			290 MDEntryPositionNo X
+			37 OrderID X*/
+
+			order.setSide(Side.getByValue(message.getChar(269)));
+			order.setSecurityID(message.getString(48));
+			order.setPrice(message.getDouble(270));
+			order.setVolume(message.getDouble(271));
+
+			//(message.getString(37016) + message.getString(37017));
+			//order.setOrderDateTime(orderDateTime);
+			
+			
+		}catch(Exception e) {
+
+		}
+
+	}
+
+	/**
+	 * 2 = Trade 
+	 */
+
+	/**
+	 * 	3 = Index Value
+	 */
+
+	/**
+	 * 	4 = Opening Price
+	 */
+
+	/**
+	 * 	5 = Closing Price
+	 */
+
+	/**
+	 * 	6 = Settlement Price
+	 */
+
+	/**
+	 * 7 = Session High Price
+	 * 8 = Session Low Price
+	 * 9 = Session VWAP Price
+	 * 
+	 */
+
+	/**
+	 * A = Imbalance
+	 */
+
+	/**
+	 * B = Trade Volume
+	 */
+
+	/**
+	 * C = Open Interest
+	 */
+
+	/**
+	 * J = Empty Book
+	 */
+
+	/**
+	 * g = Price band
+	 */
+
+	/**
+	 * h = Quantity band
+	 */
+
+	/**
+	 * D = Composite Underlying Price (future use)
+	 */
+
 
 
 	/**

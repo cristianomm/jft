@@ -79,9 +79,6 @@ public class MarketDataService {
 			System.out.println(lf.getGroups(m).size());
 						
 		}
-		/*catch(InvalidMessage e){
-			e.printStackTrace();
-		}*/ 
 		catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -236,7 +233,7 @@ public class MarketDataService {
 				group.getInt(NumberOfOrders.FIELD);
 				
 				
-				//position of bid/offer, numbererd from most to least competitive
+				//position of bid/offer, numbered from most to least competitive
 				group.getInt(MDEntryPositionNo.FIELD);
 				
 			}
@@ -248,7 +245,7 @@ public class MarketDataService {
 	}
 
 	private void consumeMDSnapshotFullRefresh(MarketDataSnapshotFullRefresh snapshotFullRefresh){
-
+		
 	}
 
 	private void consumeNews(News news){
@@ -316,9 +313,7 @@ public class MarketDataService {
 	private void consumeSequenceReset(SequenceReset sequenceReset) {
 		try {
 			int newSeqNum = sequenceReset.getNewSeqNo().getValue();
-
 			markets.forEach((k,m) -> m.resetMarketData(newSeqNum));
-
 		}catch(FieldNotFound e) {
 
 		}

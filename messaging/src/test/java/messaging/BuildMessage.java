@@ -9,11 +9,10 @@ import quickfix.DefaultMessageFactory;
 import quickfix.InvalidMessage;
 import quickfix.Message;
 import quickfix.MessageUtils;
-import quickfix.fix44.MessageFactory;
 
 /**
  * <p><code>BuildMessage.java</code></p>
- * @author cristiano
+ * @author Cristiano M Martins
  * @version Nov 5, 2015 1:03:38 AM
  *
  */
@@ -35,5 +34,8 @@ public class BuildMessage {
 		}
 
 	}
+	
+	
+	
 
 }
