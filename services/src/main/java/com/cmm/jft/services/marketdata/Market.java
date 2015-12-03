@@ -152,9 +152,6 @@ public class Market {
 	 */
 	private void addOrder(Message message) {
 		try {
-			
-			
-			
 			OrdersVO order = new OrdersVO();
 			/*
 			Types of Market Data update action
@@ -165,6 +162,10 @@ public class Market {
 			4 = Delete From
 			5 = Overlay
 			*/
+			
+			
+			char mdUpdtAction = message.getChar(279);//item dentro de grupo mdEntryType
+			
 			order.setQueuePosition(message.getInt(290));
 			order.setOrderID(message.getString(37));
 			
