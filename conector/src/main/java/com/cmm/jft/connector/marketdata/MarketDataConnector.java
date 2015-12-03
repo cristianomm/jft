@@ -1,19 +1,9 @@
 package com.cmm.jft.connector.marketdata;
 
-import com.cmm.jft.connector.Connector;
-
-import quickfix.Application;
-import quickfix.DoNotSend;
-import quickfix.FieldNotFound;
-import quickfix.IncorrectDataFormat;
-import quickfix.IncorrectTagValue;
-import quickfix.Message;
-import quickfix.RejectLogon;
 import quickfix.Session;
 import quickfix.SessionID;
-import quickfix.UnsupportedMessageType;
-import quickfix.fix44.Logout;
-import quickfix.fix50.MessageCracker;
+
+import com.cmm.jft.connector.Connector;
 
 
 /**

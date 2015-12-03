@@ -9,9 +9,6 @@ public class Snapshot {
 	private MDEntryType mdEntryType;
 	
 	
-	
-	
-	
 	//TOB- Top Of Book
 	
 	//MBP - Market By Price
