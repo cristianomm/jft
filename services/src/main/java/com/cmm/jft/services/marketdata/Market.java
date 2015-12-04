@@ -3,10 +3,16 @@
  */
 package com.cmm.jft.services.marketdata;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import quickfix.FieldMap;
 import quickfix.FieldNotFound;
+import quickfix.Group;
 import quickfix.Message;
 import quickfix.field.MsgSeqNum;
 import quickfix.field.MsgType;
@@ -21,6 +27,7 @@ import com.cmm.jft.trading.enums.MarketPhase;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.vo.OrderEventVO;
 import com.cmm.jft.vo.OrdersVO;
+import com.cmm.jft.vo.TimeSalesVO;
 
 /**
  * <p><code>Market.java</code></p>
@@ -43,9 +50,11 @@ public class Market {
 	 * MDEntryType=1
 	 */
 	private ConcurrentLinkedQueue<Orders> sellQueue;
-
-
-	private ConcurrentLinkedQueue<OrderEvent> timeSales;
+	
+	private ConcurrentHashMap<String, Orders> orders;
+	
+	private ConcurrentHashMap<String, TimeSalesVO> timeSales;
+	//private ConcurrentLinkedQueue<OrderEvent> timeSales;
 
 
 	/**
@@ -106,7 +115,8 @@ public class Market {
 		this.msgSeqNum = newSeqNum;
 		this.buyQueue = new ConcurrentLinkedQueue<>();
 		this.sellQueue = new ConcurrentLinkedQueue<>();
-		this.timeSales = new ConcurrentLinkedQueue<OrderEvent>();
+		this.orders = new ConcurrentHashMap<String, Orders>();
+		this.timeSales = new ConcurrentHashMap<String, TimeSalesVO>();
 
 	}
 
@@ -150,7 +160,7 @@ public class Market {
 	 * 1 = Offer
 	 * 
 	 */
-	private void addOrder(Message message) {
+	private void treatOrder(Group message) {
 		try {
 			OrdersVO order = new OrdersVO();
 			/*
@@ -161,17 +171,15 @@ public class Market {
 			3 = Delete Thru
 			4 = Delete From
 			5 = Overlay
-			*/
-			
-			
+			 */			
+
 			char mdUpdtAction = message.getChar(279);//item dentro de grupo mdEntryType
 			
 			order.setQueuePosition(message.getInt(290));
 			order.setOrderID(message.getString(37));
-			
-			
-			
-			
+
+
+			//common
 			/*
 			279 MDUpdateAction “0”,”1”,”2”,”3”,”4”
 			269 MDEntryType “0”,”1”
@@ -180,6 +188,10 @@ public class Market {
 			22 SecurityIDSource X 
 			207 SecurityExchange X
 			1500 MDStreamID C “L” - for BTC book 
+			 */
+
+
+			/*
 			270 MDEntryPx C Not sent for MOA and MOC
 			271 MDEntrySize X
 			432 ExpireDate C Used for BTC contracts only
@@ -192,24 +204,66 @@ public class Market {
 			290 MDEntryPositionNo X
 			37 OrderID X*/
 
-			order.setSide(Side.getByValue(message.getChar(269)));
 			order.setSecurityID(message.getString(48));
+			String secIdSource = message.getString(22);
+			String securityExchange = message.getString(207);
+
+			order.setSide(Side.getByValue(message.getChar(269)));
 			order.setPrice(message.getDouble(270));
 			order.setVolume(message.getDouble(271));
 
 			//(message.getString(37016) + message.getString(37017));
 			//order.setOrderDateTime(orderDateTime);
-			
-			
+
+
 		}catch(Exception e) {
 
 		}
 
 	}
 
+
 	/**
 	 * 2 = Trade 
 	 */
+	private void treatTrade(Group message) {
+		try {
+
+			if(message.getChar(269) == '2') {
+
+				int mdUpdtAction = message.getInt(279);
+				String tradeID = message.getString(1003);
+				if(mdUpdtAction == 0) {
+
+					//String security = message.getString(48);
+					//String secIdSource = message.getString(22);
+					//String securityExchange = message.getString(207);
+
+					TimeSalesVO ts = new TimeSalesVO();
+					ts.setPrice(message.getDouble(270));
+					ts.setVolume(message.getDouble(271));
+
+					String date = message.getString(272);
+					String time = message.getString(273);
+					Instant i = Instant.from(DateTimeFormatter.ofPattern("yyyyMMdd hh:mm:ss").parse(date + " " + time));
+					ts.setDateTime(Date.from(i));
+
+					ts.setBuyer(message.getString(288));
+					ts.setSeller(message.getString(289));
+
+					timeSales.put(tradeID, ts);
+
+				}else if(mdUpdtAction == 2) {
+					timeSales.remove(tradeID);
+				}
+
+			}
+
+		}catch(FieldNotFound e) {
+
+		}
+	}
+
 
 	/**
 	 * 	3 = Index Value
@@ -218,10 +272,49 @@ public class Market {
 	/**
 	 * 	4 = Opening Price
 	 */
+	private void treatOpeningPrice(Group message) {
+		try {
+
+			if(message.getChar(269) == '4') {
+				//String security = message.getString(48);
+				//String secIdSource = message.getString(22);
+				//String securityExchange = message.getString(207);
+
+				double price = message.getDouble(270);
+				if(message.getInt(279) == 2) {
+					price = 0;
+				}
+
+				openPrice = price;
+			}
+
+		}catch(FieldNotFound e) {
+
+		}
+	}
+
 
 	/**
 	 * 	5 = Closing Price
 	 */
+	private void treatClosingPrice(Group message) {
+		try {
+
+			if(message.getChar(269) == '5') {
+				//String security = message.getString(48);
+				//String secIdSource = message.getString(22);
+				//String securityExchange = message.getString(207);
+
+				//sempre sobrescreve
+				closePrice = message.getDouble(270);
+			}
+
+		}catch(FieldNotFound e) {
+
+		}
+	}
+
+
 
 	/**
 	 * 	6 = Settlement Price
@@ -233,6 +326,37 @@ public class Market {
 	 * 9 = Session VWAP Price
 	 * 
 	 */
+	private void treatHighLowVWAPPrice(Group message) {
+		try {
+
+			int type = message.getInt(269);
+			if(type >=7 && type <= 9 ) {
+				double price = message.getDouble(270);
+				if(message.getInt(279) == 2) {
+					price = 0;
+				}			
+
+				switch(type) {
+				case '7':
+					maxPrice = price;
+					break;
+
+				case '8':
+					minPrice = price;
+					break;
+
+				case '9':
+					vwap = price;
+					break;
+				}
+			}
+
+		}catch(FieldNotFound e) {
+
+		}
+
+	}
+
 
 	/**
 	 * A = Imbalance
@@ -241,6 +365,21 @@ public class Market {
 	/**
 	 * B = Trade Volume
 	 */
+	private void treatTradeVolume(Group message) {
+		try {
+			if(message.getChar(269) == 'B') {
+				tradeCount = message.getInt(271);
+				tradeVolume = message.getDouble(270);
+
+			}
+
+		}catch(FieldNotFound e) {
+
+		}
+
+	}
+
+
 
 	/**
 	 * C = Open Interest
