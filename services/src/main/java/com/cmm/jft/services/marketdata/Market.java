@@ -51,7 +51,7 @@ public class Market {
 	 */
 	private ConcurrentLinkedQueue<Orders> sellQueue;
 	
-	private ConcurrentHashMap<String, Orders> orders;
+	private ConcurrentHashMap<String, OrdersVO> orders;
 	
 	private ConcurrentHashMap<String, TimeSalesVO> timeSales;
 	//private ConcurrentLinkedQueue<OrderEvent> timeSales;
@@ -115,7 +115,7 @@ public class Market {
 		this.msgSeqNum = newSeqNum;
 		this.buyQueue = new ConcurrentLinkedQueue<>();
 		this.sellQueue = new ConcurrentLinkedQueue<>();
-		this.orders = new ConcurrentHashMap<String, Orders>();
+		this.orders = new ConcurrentHashMap<String, OrdersVO>();
 		this.timeSales = new ConcurrentHashMap<String, TimeSalesVO>();
 
 	}
@@ -147,15 +147,34 @@ public class Market {
 	}
 
 	private void addSnapshotFullRefresh(MarketDataSnapshotFullRefresh fullRefresh) {
-
-
-
+		
+		//tag 264 indica a profundidade de mercado nas mensagens, pois ha dois canais 
+		//MBO e MBP, verificar o canal tambem
+		
 	}
 
-
-	//de acordo com MDEntryType
-	//Type Market Data entry. Valid values:
 	/**
+	 * MDUpdateAction 0 e 1
+	 * @param order
+	 */
+	private void newOrder(OrdersVO order) {
+		//adiciona ou sobrescreve...
+		orders.put(order.getOrderID(), order);
+	}
+	
+	
+	/**
+	 * Para MDUpdateAction 2, 3 e 4
+	 */
+	private void deleteOrder() {
+		
+		
+		
+	}
+	
+	
+	/**
+	 * Type Market Data entry. Valid values:
 	 * 0 = Bid
 	 * 1 = Offer
 	 * 
@@ -177,9 +196,7 @@ public class Market {
 			
 			order.setQueuePosition(message.getInt(290));
 			order.setOrderID(message.getString(37));
-
-
-			//common
+			
 			/*
 			279 MDUpdateAction “0”,”1”,”2”,”3”,”4”
 			269 MDEntryType “0”,”1”
@@ -187,15 +204,12 @@ public class Market {
 			48 SecurityID X 
 			22 SecurityIDSource X 
 			207 SecurityExchange X
-			1500 MDStreamID C “L” - for BTC book 
-			 */
-
-
-			/*
+			1500 MDStreamID C “L” - for BTC book
 			270 MDEntryPx C Not sent for MOA and MOC
 			271 MDEntrySize X
 			432 ExpireDate C Used for BTC contracts only
-			37019 EarlyTermination C Used for BTC contracts only 272 MDEntryDate X
+			37019 EarlyTermination C Used for BTC contracts only 
+			272 MDEntryDate X
 			273 MDEntryTime X
 			37016 MDInsertDate X
 			37017 MDInsertTime X
@@ -214,7 +228,9 @@ public class Market {
 
 			//(message.getString(37016) + message.getString(37017));
 			//order.setOrderDateTime(orderDateTime);
-
+			
+			
+			
 
 		}catch(Exception e) {
 
