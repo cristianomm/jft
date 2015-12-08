@@ -218,6 +218,13 @@ public class Market {
 		
 	}
 	
+	
+	
+	private void overlay(Side side) {
+		
+		
+		
+	}
 	 
 	
 	
@@ -245,12 +252,12 @@ public class Market {
 			int queuePos = message.getInt(290);
 			String ordrID = message.getString(37);
 			
-			order.setQueuePosition(queuePos);
-			order.setOrderID(ordrID);
-			//order.setSecurityID(message.getString(48));
+			String securityID = message.getString(48);
 			String secIdSource = message.getString(22);
 			String securityExchange = message.getString(207);
-
+			
+			order.setQueuePosition(queuePos);
+			order.setOrderID(ordrID);
 			order.setSide(side);
 			order.setPrice(message.getDouble(270));
 			order.setVolume(message.getDouble(271));
@@ -272,7 +279,7 @@ public class Market {
 				deleteThru(side, queuePos);
 				break;
 			case 5:
-				
+				overlay(side);
 				break;
 			}
 						
