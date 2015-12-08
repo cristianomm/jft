@@ -44,12 +44,12 @@ public class Market {
 	/**
 	 * MDEntryType=0
 	 */
-	private ConcurrentLinkedQueue<Orders> buyQueue;
+	private ConcurrentLinkedQueue<OrdersVO> buyQueue;
 
 	/**
 	 * MDEntryType=1
 	 */
-	private ConcurrentLinkedQueue<Orders> sellQueue;
+	private ConcurrentLinkedQueue<OrdersVO> sellQueue;
 	
 	private ConcurrentHashMap<String, OrdersVO> orders;
 	
@@ -166,11 +166,59 @@ public class Market {
 	/**
 	 * Para MDUpdateAction 2, 3 e 4
 	 */
-	private void deleteOrder() {
+	private void deleteOrder(String orderID) {
+		orders.remove(orderID);
+	}
+	
+	/**
+	 * Remove as ordens contidas no book a partir da posicao 
+	 * passada por parametro ate a primeira posicao. 
+	 * @param side lado que devera ser removida a ordem.
+	 * @param position posicao a partir da qual as ordens serao removidas.
+	 */
+	private void deleteFrom(Side side, int position) {
+		ConcurrentLinkedQueue<OrdersVO> queue = null;
+		if(side == Side.BUY) {
+			queue = buyQueue;
+			
+		}
+		else {
+			queue = sellQueue;
+		}
 		
+		queue.removeIf(
+				ord -> 
+				ord.getQueuePosition() < position
+				);
+		queue.parallelStream()
+		.forEach(
+				ord -> 
+				ord.setQueuePosition(ord.getQueuePosition() - (position))
+				);
+		
+	}
+	
+	/**
+	 * Remove todas as ofertas no book a partir da posicao enviada
+	 * 
+	 * @param side lado ao qual deve-se remover as ofertas do book.
+	 * @param position posicao a partir da qual deve-se remover as ofertas.
+	 */
+	private void deleteThru(Side side, int position) {
+		
+		//como a bvmf emvia fixo 1. 
+		//sera feita a selecao do lado e a remocao de todas ofertas
+		if(side == Side.BUY) {
+			buyQueue.clear();
+		}
+		else {
+			sellQueue.clear();
+		}
 		
 		
 	}
+	
+	 
 	
 	
 	/**
@@ -192,11 +240,42 @@ public class Market {
 			5 = Overlay
 			 */			
 
-			char mdUpdtAction = message.getChar(279);//item dentro de grupo mdEntryType
+			int mdUpdtAction = message.getChar(279);//item dentro de grupo mdEntryType
+			Side side = Side.getByValue(message.getChar(269));
+			int queuePos = message.getInt(290);
+			String ordrID = message.getString(37);
 			
-			order.setQueuePosition(message.getInt(290));
-			order.setOrderID(message.getString(37));
+			order.setQueuePosition(queuePos);
+			order.setOrderID(ordrID);
+			//order.setSecurityID(message.getString(48));
+			String secIdSource = message.getString(22);
+			String securityExchange = message.getString(207);
+
+			order.setSide(side);
+			order.setPrice(message.getDouble(270));
+			order.setVolume(message.getDouble(271));
 			
+			switch(mdUpdtAction) {
+			case 0:
+				newOrder(order);
+				break;
+			case 1:
+				newOrder(order);
+				break;
+			case 2:
+				deleteOrder(ordrID);
+				break;
+			case 3:
+				deleteFrom(side, queuePos);
+				break;
+			case 4:
+				deleteThru(side, queuePos);
+				break;
+			case 5:
+				
+				break;
+			}
+						
 			/*
 			279 MDUpdateAction “0”,”1”,”2”,”3”,”4”
 			269 MDEntryType “0”,”1”
@@ -217,14 +296,6 @@ public class Market {
 			288 MDEntryBuyer C Sent on bids, but not on MBP/TOB or FX 289 MDEntrySeller C Sent on offers, but not on MBP/TOB or FX
 			290 MDEntryPositionNo X
 			37 OrderID X*/
-
-			order.setSecurityID(message.getString(48));
-			String secIdSource = message.getString(22);
-			String securityExchange = message.getString(207);
-
-			order.setSide(Side.getByValue(message.getChar(269)));
-			order.setPrice(message.getDouble(270));
-			order.setVolume(message.getDouble(271));
 
 			//(message.getString(37016) + message.getString(37017));
 			//order.setOrderDateTime(orderDateTime);
@@ -430,7 +501,7 @@ public class Market {
 	/**
 	 * @return the buyQueue
 	 */
-	public ConcurrentLinkedQueue<Orders> getBuyQueue() {
+	public ConcurrentLinkedQueue<OrdersVO> getBuyQueue() {
 		return buyQueue;
 	}
 
@@ -438,7 +509,7 @@ public class Market {
 	/**
 	 * @return the sellQueue
 	 */
-	public ConcurrentLinkedQueue<Orders> getSellQueue() {
+	public ConcurrentLinkedQueue<OrdersVO> getSellQueue() {
 		return sellQueue;
 	}
 
@@ -534,7 +605,7 @@ public class Market {
 	/**
 	 * @param buyQueue the buyQueue to set
 	 */
-	public void setBuyQueue(ConcurrentLinkedQueue<Orders> buyQueue) {
+	public void setBuyQueue(ConcurrentLinkedQueue<OrdersVO> buyQueue) {
 		this.buyQueue = buyQueue;
 	}
 
@@ -542,7 +613,7 @@ public class Market {
 	/**
 	 * @param sellQueue the sellQueue to set
 	 */
-	public void setSellQueue(ConcurrentLinkedQueue<Orders> sellQueue) {
+	public void setSellQueue(ConcurrentLinkedQueue<OrdersVO> sellQueue) {
 		this.sellQueue = sellQueue;
 	}
 

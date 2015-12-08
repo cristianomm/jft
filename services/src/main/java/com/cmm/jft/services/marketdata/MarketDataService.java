@@ -108,7 +108,6 @@ public class MarketDataService {
 
 
 	public void start(){
-
 		startConnection();
 //		requestSecurityList();
 
@@ -125,7 +124,7 @@ public class MarketDataService {
 		MarketDataConnector.getInstance().send(request, MarketDataConnector.getInstance().getInstrumentDefinition());
 		MarketDataConnector.getInstance().exitInstrumentDefinition();
 	}
-*/
+	 */
 
 
 	private void consumeMessages(){

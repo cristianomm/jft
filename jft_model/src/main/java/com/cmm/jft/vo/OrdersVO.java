@@ -299,8 +299,8 @@ public class OrdersVO implements DBObject<OrdersVO> {
 		return executedVolumeProperty().get();
 	}
 	
-	public SimpleIntegerProperty getQueuePosition() {
-		return queuePosition;
+	public int getQueuePosition() {
+		return queuePosition.get();
 	}
 	
 	
