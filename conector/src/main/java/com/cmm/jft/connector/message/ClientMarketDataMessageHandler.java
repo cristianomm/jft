@@ -15,6 +15,7 @@ import quickfix.fix50.SecurityStatus;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.cmm.jft.connector.enums.Streams;
 import com.cmm.jft.messaging.MarketDataMessageHandler;
 
 public abstract class ClientMarketDataMessageHandler implements MarketDataMessageHandler {
@@ -28,14 +29,43 @@ public abstract class ClientMarketDataMessageHandler implements MarketDataMessag
 	 */
 	protected volatile long lastTimeMessage;
 	
-	protected LinkedBlockingQueue<Message> messageQueue;
+	protected LinkedBlockingQueue<Message> instrumentStream;
+	protected LinkedBlockingQueue<Message> incrementalStream;
+	protected LinkedBlockingQueue<Message> snapshotStream;
+	protected LinkedBlockingQueue<Message> recoveryStream;
 	
 	
-	/**
-	 * @return the messageQueue
-	 */
-	public LinkedBlockingQueue<Message> getMessageQueue() {
-		return this.messageQueue;
+	protected void addOnStream(Message message, SessionID sessionID) {
+		if(sessionID.getTargetCompID().equalsIgnoreCase(Streams.INCREMENTAL.name())){
+			incrementalStream.add(message);
+		}
+		else if(sessionID.getTargetCompID().equalsIgnoreCase(Streams.INSTRUMENT.name())){
+			instrumentStream.add(message);
+		}
+		else if(sessionID.getTargetCompID().equalsIgnoreCase(Streams.RECOVERY.name())){
+			recoveryStream.add(message);
+		}
+		else if(sessionID.getTargetCompID().equalsIgnoreCase(Streams.SNAPSHOT.name())){
+			snapshotStream.add(message);
+		}
+		
+	}
+	
+	
+	public LinkedBlockingQueue<Message> getIncrementalStream() {
+		return incrementalStream;
+	}
+	
+	public LinkedBlockingQueue<Message> getInstrumentStream() {
+		return instrumentStream;
+	}
+	
+	public LinkedBlockingQueue<Message> getRecoveryStream() {
+		return recoveryStream;
+	}
+	
+	public LinkedBlockingQueue<Message> getSnapshotStream() {
+		return snapshotStream;
 	}
 	
 	

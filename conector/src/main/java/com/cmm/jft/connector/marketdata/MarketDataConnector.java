@@ -14,7 +14,7 @@ import com.cmm.jft.connector.Connector;
 
 public class MarketDataConnector extends Connector {
 
-
+	private SessionID snapshotStream;
 	private SessionID recoveryStream;
 	private SessionID incrementalStream;
 	private SessionID instrumentDefinition;
@@ -54,6 +54,14 @@ public class MarketDataConnector extends Connector {
 	public SessionID getRecoveryStream() {
 		return this.recoveryStream;
 	}
+	
+	/**
+	 * 
+	 * @return the snapshotStream
+	 */
+	public SessionID getSnapshotStream() {
+		return snapshotStream;
+	}
 
 	/**
 	 * @param incrementalStream the incrementalStream to set
@@ -75,6 +83,14 @@ public class MarketDataConnector extends Connector {
 	public void setRecoveryStream(SessionID recoveryStream) {
 		this.recoveryStream = recoveryStream;
 	}
+	
+	/**
+	 * 
+	 * @param snapshotStream
+	 */
+	public void setSnapshotStream(SessionID snapshotStream) {
+		this.snapshotStream = snapshotStream;
+	}
 
 
 
@@ -90,6 +106,9 @@ public class MarketDataConnector extends Connector {
 		Session.lookupSession(recoveryStream).logon();
 	}
 
+	public void joinSnapshotStream() {
+		Session.lookupSession(snapshotStream).logon();
+	}
 
 	public void exitInstrumentDefinition() {
 		Session.lookupSession(instrumentDefinition).logout("user requested");
@@ -102,5 +121,10 @@ public class MarketDataConnector extends Connector {
 	public void exitRecoveryStream() {
 		Session.lookupSession(recoveryStream).logout("user requested");
 	}
+	
+	public void exitSnapshotStream() {
+		Session.lookupSession(snapshotStream).logout("user requested");
+	}
+	
 
 }

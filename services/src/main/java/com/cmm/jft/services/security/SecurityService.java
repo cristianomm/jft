@@ -29,7 +29,9 @@ public class SecurityService {
 
 	private HashMap<String, Security> securities;
 	private static SecurityService instance;
-
+	
+	
+	
 	/**
      * 
      */
@@ -42,6 +44,12 @@ public class SecurityService {
 			instance = new SecurityService();
 		}
 		return instance;
+	}
+	
+	public void loadSecurity(Security security) {
+		if(security != null) {
+			securities.put(security.getSymbol(), security);
+		}
 	}
 
 	private Security loadSecurity(String symbol) {
@@ -67,7 +75,19 @@ public class SecurityService {
 		}
 		return sec;
 	}
-
+	
+	public Security findSecurity(int securityID, char secIDSrc, String securityExchange) {
+		
+		Security sec = securities.values().parallelStream().
+		filter(s -> 
+		s.getSecurityID() == securityID && 
+		s.getSecurityIDSrc() == secIDSrc && 
+		s.getStockExchangeID().getStockExchangeID().equalsIgnoreCase(securityExchange)
+		).findFirst().orElse(null);
+		
+		return sec;
+	}
+	
 	public Security provideSecurity(String symbol) {
 
 		Security s = null;

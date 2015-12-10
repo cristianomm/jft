@@ -47,6 +47,9 @@ public class Security implements DBObject<Security> {
 	@Basic(optional = false)
 	@Column(name = "securityID", nullable = false)
 	private Long securityID;
+	
+	@Column(name = "SecurityIDSrc", nullable = false, length = 1)
+	private char securityIDSrc;
 
 	@Basic(optional = false)
 	@Column(name = "Symbol", nullable = false, length = 50)
@@ -112,6 +115,18 @@ public class Security implements DBObject<Security> {
 	 */
 	public Long getSecurityID() {
 		return this.securityID;
+	}
+	
+	public char getSecurityIDSrc() {
+		return securityIDSrc;
+	}
+	
+	public void setSecurityID(Long securityID) {
+		this.securityID = securityID;
+	}
+	
+	public void setSecurityIDSrc(char securityIDSrc) {
+		this.securityIDSrc = securityIDSrc;
 	}
 
 	/**

@@ -17,6 +17,7 @@ import quickfix.SessionID;
 import quickfix.SessionSettings;
 import quickfix.SocketInitiator;
 
+import com.cmm.jft.connector.enums.Streams;
 import com.cmm.logging.Logging;
 
 
@@ -72,16 +73,18 @@ public class MarketDataStarter {
 		} 
 
 		for (SessionID sessionId : initiator.getSessions()) {
-			if(sessionId.getTargetCompID().equalsIgnoreCase("INCREMENTAL")){
+			if(sessionId.getTargetCompID().equalsIgnoreCase(Streams.INCREMENTAL.name())){
 				connector.setIncrementalStream(sessionId);
 			}
-			else if(sessionId.getTargetCompID().equalsIgnoreCase("INSTRUMENT")){
+			else if(sessionId.getTargetCompID().equalsIgnoreCase(Streams.INSTRUMENT.name())){
 				connector.setInstrumentDefinition(sessionId);
 			}
-			else if(sessionId.getTargetCompID().equalsIgnoreCase("RECOVERY")){
+			else if(sessionId.getTargetCompID().equalsIgnoreCase(Streams.RECOVERY.name())){
 				connector.setRecoveryStream(sessionId);
 			}
-			
+			else if(sessionId.getTargetCompID().equalsIgnoreCase(Streams.SNAPSHOT.name())){
+				connector.setSnapshotStream(sessionId);
+			}
 		}
 
 	}

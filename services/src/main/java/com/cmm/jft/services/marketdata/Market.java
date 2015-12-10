@@ -143,7 +143,9 @@ public class Market {
 	}
 
 	private void addIncrementalRefresh(MarketDataIncrementalRefresh incrementalRefresh) {
-
+		
+		
+		
 	}
 
 	private void addSnapshotFullRefresh(MarketDataSnapshotFullRefresh fullRefresh) {
@@ -247,6 +249,15 @@ public class Market {
 			5 = Overlay
 			 */			
 
+//			tag 279-MDUpdateAction
+//			tag 269-MDEntryType
+//			tag 48-SecurityID
+//			tag 83-RptSeq
+//			tag 270-MDEntryPx
+//			tag 271-MDEntrySize
+//			tag 1023-MDPriceLevel
+//			tag 346-NumberOfOrders
+			
 			int mdUpdtAction = message.getChar(279);//item dentro de grupo mdEntryType
 			Side side = Side.getByValue(message.getChar(269));
 			int queuePos = message.getInt(290);
@@ -307,9 +318,6 @@ public class Market {
 			//(message.getString(37016) + message.getString(37017));
 			//order.setOrderDateTime(orderDateTime);
 			
-			
-			
-
 		}catch(Exception e) {
 
 		}
