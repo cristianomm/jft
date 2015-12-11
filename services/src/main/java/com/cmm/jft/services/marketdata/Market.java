@@ -3,29 +3,18 @@
  */
 package com.cmm.jft.services.marketdata;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-import quickfix.FieldMap;
 import quickfix.FieldNotFound;
 import quickfix.Group;
-import quickfix.Message;
-import quickfix.field.MsgSeqNum;
-import quickfix.field.MsgType;
-import quickfix.fix50.MarketDataIncrementalRefresh;
-import quickfix.fix50.MarketDataSnapshotFullRefresh;
 
 import com.cmm.jft.security.Security;
 import com.cmm.jft.services.security.SecurityService;
-import com.cmm.jft.trading.OrderEvent;
-import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.MarketPhase;
 import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.vo.OrderEventVO;
 import com.cmm.jft.vo.OrdersVO;
 import com.cmm.jft.vo.TimeSalesVO;
 
@@ -40,21 +29,15 @@ public class Market {
 	private int msgSeqNum;
 
 	private Security security;
-
-	/**
-	 * MDEntryType=0
-	 */
-	private ConcurrentLinkedQueue<OrdersVO> buyQueue;
-
-	/**
-	 * MDEntryType=1
-	 */
-	private ConcurrentLinkedQueue<OrdersVO> sellQueue;
 	
-	private ConcurrentHashMap<String, OrdersVO> orders;
+	/**
+	 * MDEntryType=0, 1 
+	 */
+	private ConcurrentHashMap<String, OrdersVO> buyOrders;
 	
+	private ConcurrentHashMap<String, OrdersVO> sellOrders;
+
 	private ConcurrentHashMap<String, TimeSalesVO> timeSales;
-	//private ConcurrentLinkedQueue<OrderEvent> timeSales;
 
 
 	/**
@@ -113,65 +96,99 @@ public class Market {
 
 	public void resetMarketData(int newSeqNum){
 		this.msgSeqNum = newSeqNum;
-		this.buyQueue = new ConcurrentLinkedQueue<>();
-		this.sellQueue = new ConcurrentLinkedQueue<>();
-		this.orders = new ConcurrentHashMap<String, OrdersVO>();
+		this.buyOrders = new ConcurrentHashMap<String, OrdersVO>();
+		this.sellOrders = new ConcurrentHashMap<String, OrdersVO>();
 		this.timeSales = new ConcurrentHashMap<String, TimeSalesVO>();
-
 	}
 
-	public void addSnapshot(Message message){
-
+	public void addMDEntry(Group entry){
 		try {
+			
 			//snapshot:
-			//fila de ordens compra e venda
-			//estatisticas do mercado
-			char type = message.getChar(MsgType.FIELD);	
-			msgSeqNum = message.getInt(MsgSeqNum.FIELD);
+			//fila de ordens compra e venda, estatisticas do mercado
+			//tag 264 indica a profundidade de mercado nas mensagens, pois ha dois canais 
+			//MBO e MBP, verificar o canal tambem
+			switch(entry.getChar(269)) {
 
-			if(type == 'X') {//Incr Refresh
-				addIncrementalRefresh((MarketDataIncrementalRefresh) message);
-			}
-			else if(type == 'W') {//Snapshot Full Refresh
-				addSnapshotFullRefresh((MarketDataSnapshotFullRefresh) message);	
-			}
+			case '0':
+			case '1':
+				treatOrder(entry);
+				break;
 
+			case '2':
+				treatTrade(entry);
+				break;
+
+			case '3':
+				break;
+
+			case '4':
+				treatOpeningPrice(entry);
+				break;
+
+			case '5':
+				treatClosingPrice(entry);
+				break;
+
+			case '6':
+				break;
+
+			case '7':
+			case '8':
+			case '9':
+				treatHighLowVWAPPrice(entry);
+				break;
+
+			case 'A':
+				break;
+				
+			case 'B':
+				treatTradeVolume(entry);
+				break;
+				
+			case 'C':
+			case 'J':
+			case 'g':
+			case 'h':
+			case 'D':
+				break;
+			}
+			
 		} catch (FieldNotFound e) {
 			e.printStackTrace();
 		}
 
 	}
-
-	private void addIncrementalRefresh(MarketDataIncrementalRefresh incrementalRefresh) {
-		
-		
-		
-	}
-
-	private void addSnapshotFullRefresh(MarketDataSnapshotFullRefresh fullRefresh) {
-		
-		//tag 264 indica a profundidade de mercado nas mensagens, pois ha dois canais 
-		//MBO e MBP, verificar o canal tambem
-		
-	}
-
+	
+	
+	
 	/**
 	 * MDUpdateAction 0 e 1
 	 * @param order
 	 */
 	private void newOrder(OrdersVO order) {
+		ConcurrentHashMap<String, OrdersVO> orders = null;
+		
 		//adiciona ou sobrescreve...
+		if(order.side == Side.BUY) {
+			orders = buyOrders;
+		}
+		else {
+			orders = sellOrders;
+		}
+		
 		orders.put(order.getOrderID(), order);
 	}
-	
-	
+
+
 	/**
 	 * Para MDUpdateAction 2, 3 e 4
 	 */
 	private void deleteOrder(String orderID) {
-		orders.remove(orderID);
+		buyOrders.remove(orderID);
+		sellOrders.remove(orderID);
 	}
-	
+
 	/**
 	 * Remove as ordens contidas no book a partir da posicao 
 	 * passada por parametro ate a primeira posicao. 
@@ -179,27 +196,26 @@ public class Market {
 	 * @param position posicao a partir da qual as ordens serao removidas.
 	 */
 	private void deleteFrom(Side side, int position) {
-		ConcurrentLinkedQueue<OrdersVO> queue = null;
+		ConcurrentHashMap<String, OrdersVO> orders = null;
 		if(side == Side.BUY) {
-			queue = buyQueue;
-			
+			orders = buyOrders;
 		}
 		else {
-			queue = sellQueue;
+			orders = sellOrders;
 		}
-		
-		queue.removeIf(
+
+		orders.values().removeIf(
 				ord -> 
 				ord.getQueuePosition() < position
 				);
-		queue.parallelStream()
+		orders.values().parallelStream()
 		.forEach(
 				ord -> 
 				ord.setQueuePosition(ord.getQueuePosition() - (position))
 				);
-		
+
 	}
-	
+
 	/**
 	 * Remove todas as ofertas no book a partir da posicao enviada
 	 * 
@@ -207,29 +223,32 @@ public class Market {
 	 * @param position posicao a partir da qual deve-se remover as ofertas.
 	 */
 	private void deleteThru(Side side, int position) {
-		
+
 		//como a bvmf emvia fixo 1. 
 		//sera feita a selecao do lado e a remocao de todas ofertas
 		if(side == Side.BUY) {
-			buyQueue.clear();
+			buyOrders.clear();
 		}
 		else {
-			sellQueue.clear();
+			sellOrders.clear();
 		}
-		
-		
+
 	}
-	
-	
-	
+
+
 	private void overlay(Side side) {
-		
-		
-		
+
+
+
 	}
-	 
-	
-	
+
+
+
+
+
+
+
+
 	/**
 	 * Type Market Data entry. Valid values:
 	 * 0 = Bid
@@ -239,6 +258,45 @@ public class Market {
 	private void treatOrder(Group message) {
 		try {
 			OrdersVO order = new OrdersVO();
+			//verifica se eh MBP ou MBO			
+			
+			
+			
+			//agregado por preco(270, 271, 272, 273, 346 )
+//			Market Data Incremental Refresh
+//			MDEntryPositionNo	1
+//			MDUpdateAction		New
+//			MDEntrySize			1000
+//			MDEntryPx			10.60
+//			NumberOfOrders		1
+			
+			
+			//agregado por ordem(37, 270, 271, 272, 273, 290)
+						
+			//			tag 279-MDUpdateAction	
+			//			tag 269-MDEntryType		
+			//			tag 48-SecurityID		
+			//			tag 83-RptSeq			
+			//			tag 270-MDEntryPx		
+			//			tag 271-MDEntrySize		
+			//			tag 1023-MDPriceLevel	
+			//			tag 346-NumberOfOrders	
+
+			int mdUpdtAction = message.getChar(279);//item dentro de grupo mdEntryType
+			Side side = Side.getByValue(message.getChar(269));
+			int queuePos = message.getInt(290);
+			String ordrID = message.getString(37);
+
+			String securityID = message.getString(48);
+			String secIdSource = message.getString(22);
+			String securityExchange = message.getString(207);
+
+			order.setQueuePosition(queuePos);
+			order.setOrderID(ordrID);
+			order.setSide(side);
+			order.setPrice(message.getDouble(270));
+			order.setVolume(message.getDouble(271));
+
 			/*
 			Types of Market Data update action
 			0 = New
@@ -247,32 +305,7 @@ public class Market {
 			3 = Delete Thru
 			4 = Delete From
 			5 = Overlay
-			 */			
-
-//			tag 279-MDUpdateAction
-//			tag 269-MDEntryType
-//			tag 48-SecurityID
-//			tag 83-RptSeq
-//			tag 270-MDEntryPx
-//			tag 271-MDEntrySize
-//			tag 1023-MDPriceLevel
-//			tag 346-NumberOfOrders
-			
-			int mdUpdtAction = message.getChar(279);//item dentro de grupo mdEntryType
-			Side side = Side.getByValue(message.getChar(269));
-			int queuePos = message.getInt(290);
-			String ordrID = message.getString(37);
-			
-			String securityID = message.getString(48);
-			String secIdSource = message.getString(22);
-			String securityExchange = message.getString(207);
-			
-			order.setQueuePosition(queuePos);
-			order.setOrderID(ordrID);
-			order.setSide(side);
-			order.setPrice(message.getDouble(270));
-			order.setVolume(message.getDouble(271));
-			
+			 */
 			switch(mdUpdtAction) {
 			case 0:
 				newOrder(order);
@@ -293,7 +326,7 @@ public class Market {
 				overlay(side);
 				break;
 			}
-						
+
 			/*
 			279 MDUpdateAction “0”,”1”,”2”,”3”,”4”
 			269 MDEntryType “0”,”1”
@@ -317,7 +350,7 @@ public class Market {
 
 			//(message.getString(37016) + message.getString(37017));
 			//order.setOrderDateTime(orderDateTime);
-			
+
 		}catch(Exception e) {
 
 		}
@@ -514,18 +547,18 @@ public class Market {
 
 
 	/**
-	 * @return the buyQueue
+	 * @return the buyOrders
 	 */
-	public ConcurrentLinkedQueue<OrdersVO> getBuyQueue() {
-		return buyQueue;
+	public ConcurrentHashMap<String, OrdersVO> getBuyQueue() {
+		return buyOrders;
 	}
 
 
 	/**
-	 * @return the sellQueue
+	 * @return the sellOrders
 	 */
-	public ConcurrentLinkedQueue<OrdersVO> getSellQueue() {
-		return sellQueue;
+	public ConcurrentHashMap<String, OrdersVO> getSellQueue() {
+		return sellOrders;
 	}
 
 
@@ -615,23 +648,6 @@ public class Market {
 	public void setSecurity(Security security) {
 		this.security = security;
 	}
-
-
-	/**
-	 * @param buyQueue the buyQueue to set
-	 */
-	public void setBuyQueue(ConcurrentLinkedQueue<OrdersVO> buyQueue) {
-		this.buyQueue = buyQueue;
-	}
-
-
-	/**
-	 * @param sellQueue the sellQueue to set
-	 */
-	public void setSellQueue(ConcurrentLinkedQueue<OrdersVO> sellQueue) {
-		this.sellQueue = sellQueue;
-	}
-
 
 	/**
 	 * @param tradeCount the tradeCount to set

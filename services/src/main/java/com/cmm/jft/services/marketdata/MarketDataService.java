@@ -3,7 +3,6 @@
  */
 package com.cmm.jft.services.marketdata;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -15,26 +14,10 @@ import quickfix.FieldException;
 import quickfix.FieldNotFound;
 import quickfix.Group;
 import quickfix.Message;
-import quickfix.field.MDBookType;
-import quickfix.field.MDEntryDate;
-import quickfix.field.MDEntryPositionNo;
-import quickfix.field.MDEntryPx;
-import quickfix.field.MDEntrySize;
-import quickfix.field.MDEntryTime;
-import quickfix.field.MDEntryType;
-import quickfix.field.MDUpdateAction;
 import quickfix.field.MsgSeqNum;
 import quickfix.field.MsgType;
-import quickfix.field.NumberOfOrders;
-import quickfix.field.OrderID;
-import quickfix.field.RptSeq;
-import quickfix.field.SecurityExchange;
-import quickfix.field.SecurityIDSource;
-import quickfix.field.SecurityTradingStatus;
 import quickfix.field.SendingTime;
-import quickfix.field.Symbol;
 import quickfix.field.TradeDate;
-import quickfix.field.TradeID;
 import quickfix.fix44.Heartbeat;
 import quickfix.fix44.SequenceReset;
 import quickfix.fix50.MarketDataIncrementalRefresh;
@@ -67,14 +50,14 @@ public class MarketDataService {
 	private long lstInstrumentHbt;
 	private long lstSnapshotHbt;
 	private long lstRecoveryHbt;
-
+	
 	private MarketDataHandler marketDataHandler;
 	private LinkedHashMap<String, Market> markets;
-
+	
 	private LinkedList<NewsVO> newsFeed;
 	private ConcurrentLinkedQueue<Message> snapshots;
 	private static MarketDataService instance;
-
+	
 	public static void main(String[] args){
 		try{
 
@@ -119,7 +102,6 @@ public class MarketDataService {
 
 	public void start(){
 		startConnection();
-		//		requestSecurityList();
 
 		started = true;
 	}
@@ -263,7 +245,6 @@ public class MarketDataService {
 				//caso tenha passado o tempo, reset no book 
 				if((aux - lstIncrementalHbt)>30000) {
 					resetBooks();
-
 				}
 				lstIncrementalHbt = aux;
 			}
@@ -291,45 +272,7 @@ public class MarketDataService {
 				String securityExchange = group.getString(207);
 				Security sec = SecurityService.getInstance().findSecurity(securityID, secIDSrc, securityExchange);
 					
-				markets.get(sec.getSymbol()).addSnapshot(incrRefresh);
-				/*
-				group.getInt(MDBookType.FIELD);
-				group.getChar(MDEntryType.FIELD);
-				group.getChar(MDUpdateAction.FIELD);
-				group.getInt(RptSeq.FIELD);
-
-				//symbol identification
-				group.getString(Symbol.FIELD);
-				group.getString(SecurityIDSource.FIELD);
-				group.getString(SecurityExchange.FIELD);
-
-				//values
-				group.getDouble(MDEntryPx.FIELD);
-				group.getDouble(MDEntrySize.FIELD);
-
-				//Iinsert date & time when inserted on the book
-				group.getUtcDateOnly(MDEntryDate.FIELD);
-				group.getUtcTimeOnly(MDEntryTime.FIELD);
-
-				//Insert Date & Time when the order is inserted on the book
-				group.getUtcTimeOnly(37016);
-				group.getUtcTimeOnly(37017);
-
-
-				group.getString(OrderID.FIELD);
-				group.getString(TradeID.FIELD);
-
-
-				group.getDouble(MDEntryPx.FIELD);
-				group.getDouble(MDEntryPx.FIELD);
-
-
-				//MBP
-				group.getInt(NumberOfOrders.FIELD);
-
-				//position of bid/offer, numbered from most to least competitive
-				group.getInt(MDEntryPositionNo.FIELD);
-				*/
+				markets.get(sec.getSymbol()).addMDEntry(group);
 			}
 
 		}catch(FieldNotFound e) {
