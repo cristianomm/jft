@@ -38,7 +38,11 @@ public class Market {
 	private ConcurrentHashMap<String, OrdersVO> sellOrders;
 
 	private ConcurrentHashMap<String, TimeSalesVO> timeSales;
-
+	
+//	private ConcurrentHashMap<Double, OrdersVO> mbpEntries;
+	
+//	private ConcurrentHashMap<Double, OrdersVO> mboEntries;
+	
 
 	/**
 	 * MDEntryType=2

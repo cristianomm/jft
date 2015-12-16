@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.cmm.jft.connector.Connector;
 import com.cmm.jft.connector.message.ClientEngineMessageHandler;
+import com.cmm.jft.messaging.fix44.Fix44MessageEncoder;
+import com.cmm.jft.trading.Orders;
 
 import quickfix.Application;
 import quickfix.Message;
@@ -31,12 +33,44 @@ import sun.util.resources.cldr.kk.CalendarData_kk_Cyrl_KZ;
  */
 public class EngineConnector extends Connector {
 	
-	public EngineConnector() {
+	
+	private ConcurrentLinkedQueue<Message> messages;
+	
+	private static EngineConnector instance;
+	
+	private EngineConnector() {
 		this.inMessages = new ConcurrentLinkedQueue<Message>();
 		this.outMessages = new ConcurrentLinkedQueue<Message>();
-		new ClientEngineMessageHandler();
+		this.messages = new ConcurrentLinkedQueue<Message>();
 	}
 	
+	
+	public synchronized static EngineConnector getInstance() {
+		if(instance == null) {
+			instance = new EngineConnector();
+		}
+		return instance;
+	}
+	
+	public void newOrderSingle(Orders ordr) {
+		Message m = Fix44MessageEncoder.getInstance().newOrderSingle(ordr);
+		send(m, sessionID);
+	}
+	
+	public void cancelReplaceRequest(Orders ordr) {
+		Message m = Fix44MessageEncoder.getInstance().orderCancelReplaceRequest(ordr);
+		send(m, sessionID);
+	}
+	
+	public void cancelRequest(Orders ordr) {
+		Message m = Fix44MessageEncoder.getInstance().orderCancelRequest(ordr);
+		send(m, sessionID);
+	}
+	
+	public void newOrderCross(Orders ordr) {
+		Message m = Fix44MessageEncoder.getInstance().newOrderCross(ordr);
+		send(m, sessionID);
+	}
 	
 	
 	public boolean sendTestMessage() {
@@ -59,7 +93,6 @@ public class EngineConnector extends Connector {
 			ret = send(message, this.sessionID);
 			System.out.println("Send status: " + ret);
 		}
-		
 		
 		return ret;
 	}

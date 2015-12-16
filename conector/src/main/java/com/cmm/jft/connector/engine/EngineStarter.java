@@ -60,7 +60,7 @@ public class EngineStarter {
 		SessionSettings settings = new SessionSettings(inputStream);
 		inputStream.close();
 		
-		connector = new EngineConnector();
+		connector = EngineConnector.getInstance();
 		MessageStoreFactory messageStoreFactory = new FileStoreFactory(settings);
 		LogFactory logFactory = new FileLogFactory(settings);
 		MessageFactory messageFactory = new DefaultMessageFactory();

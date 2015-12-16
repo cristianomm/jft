@@ -14,13 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Level;
 
+import com.cmm.jft.connector.Connector;
+import com.cmm.jft.connector.engine.EngineConnector;
+import com.cmm.jft.connector.message.ClientEngineMessageHandler;
 import com.cmm.jft.core.Configuration;
 import com.cmm.jft.core.enums.Objects;
-import com.cmm.jft.data.connection.Connection;
-import com.cmm.jft.data.connection.Event;
-import com.cmm.jft.data.connection.EventFields;
-import com.cmm.jft.data.connection.Events;
-import com.cmm.jft.data.exceptions.ConnectionException;
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
 import com.cmm.jft.financial.Broker;
@@ -32,6 +30,7 @@ import com.cmm.jft.financial.JournalEntry;
 import com.cmm.jft.financial.Rule;
 import com.cmm.jft.financial.exceptions.RegistrationException;
 import com.cmm.jft.financial.services.JournalService;
+import com.cmm.jft.messaging.fix44.Fix44MessageEncoder;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.Position;
@@ -39,7 +38,7 @@ import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.exceptions.OrderException;
-import com.cmm.jft.trading.services.SecurityService;
+import com.cmm.jft.services.security.SecurityService;
 import com.cmm.logging.Logging;
 
 /**
@@ -65,8 +64,10 @@ public class TradingService {
 	/**
 	 * Market Connection.
 	 */
-	private Connection connection;
-
+	private EngineConnector connection;
+	
+	private EngineHandler engineHandler;
+	
 	/**
 	 * Map to the existing orders, orders are referenced by Position,
 	 * the orderkey are the key.
@@ -90,7 +91,8 @@ public class TradingService {
 
 		this.orders = new ConcurrentHashMap<String, Orders>();
 		this.openPositions = new ConcurrentHashMap<String, Position>();
-
+		this.connection = EngineConnector.getInstance();
+		this.engineHandler = new EngineHandler();
 	}
 
 	/**
@@ -244,7 +246,7 @@ public class TradingService {
 			sendCancelOrderEvent(order);
 			//order.cancel();
 			orders.put(order.getClOrdID(), order);
-		} catch (ConnectionException | OrderException e) {
+		} catch (OrderException e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
 
@@ -260,8 +262,6 @@ public class TradingService {
 			//}
 		} catch(OrderException e){
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
-		} catch (ConnectionException e) {
-			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
 	}
 
@@ -275,65 +275,40 @@ public class TradingService {
 			//}
 		} catch(OrderException e){
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
-		} catch (ConnectionException e) {
-			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
 	}
 
 
-	private void sendNewOrderEvent(Orders ordr) throws ConnectionException, OrderException{
-		Event event = new Event();
-
-		event.addValue(EventFields.EventType, Events.ORDER_SEND);
-		event.addValue(EventFields.OrderID, ordr.getOrderID());
-		event.addValue(EventFields.OrderSide, ordr.getSide());
-		event.addValue(EventFields.OrderDate, ordr.getOrderDateTime());
-		event.addValue(EventFields.OrderExpireDate, ordr.getDuration());
-		event.addValue(EventFields.OrderType, ordr.getOrderType());
-		event.addValue(EventFields.OrderSymbol, ordr.getSecurityID().getSymbol());
-		event.addValue(EventFields.OrderVolume, ordr.getVolume());
-		event.addValue(EventFields.OrderPrice, ordr.getPrice());
-		
-		//envia o evento para a conexao
-		Event retev = null;//connection.sendEvent(event);
-
+	private void sendNewOrderEvent(Orders ordr) throws OrderException{
+		connection.newOrderSingle(ordr);
 		//verifica o retorno
-		if(retev.getValue(EventFields.EventType) == Events.ORDER_SEND){
-			Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() + " has sent to market.", Level.INFO);
-		}else{
-			throw new OrderException("Error sending order " + ordr.getClOrdID() + retev.getValue(EventFields.Message));
-		}
+//		if(retev.getValue(EventFields.EventType) == Events.ORDER_SEND){
+//			Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() + " has sent to market.", Level.INFO);
+//		}else{
+//			throw new OrderException("Error sending order " + ordr.getClOrdID() + retev.getValue(EventFields.Message));
+//		}
 
 	}
 
-	private void sendCancelOrderEvent(Orders ordr) throws ConnectionException, OrderException{
-		Event event = new Event();
-
-		event.addValue(EventFields.EventType, Events.ORDER_CANCEL);
-		event.addValue(EventFields.OrderID, ordr.getClOrdID());
-
-		Event ret = null;//connection.sendEvent(event);
-		if(ret.getValue(EventFields.EventType) == Events.ORDER_CANCEL){
-			Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() + " has cancelled.", Level.INFO);
-		}else{
-			throw new OrderException("Error sending order " + ordr.getClOrdID() + ret.getValue(EventFields.Message));
-		}
+	private void sendCancelOrderEvent(Orders ordr) throws OrderException{
+		connection.cancelRequest(ordr);
+//		Event ret = null;//connection.sendEvent(event);
+//		if(ret.getValue(EventFields.EventType) == Events.ORDER_CANCEL){
+//			Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() + " has cancelled.", Level.INFO);
+//		}else{
+//			throw new OrderException("Error sending order " + ordr.getClOrdID() + ret.getValue(EventFields.Message));
+//		}
 
 	}
 
-	private void sendChangeOrderEvent(Orders ordr) throws ConnectionException, OrderException{
-		Event event = new Event();
-
-		event.addValue(EventFields.EventType, Events.ORDER_UPDATE);
-		event.addValue(EventFields.OrderID, ordr.getClOrdID());
-		event.addValue(EventFields.OrderVolume, ordr.getVolume());
-
-		Event ret = null;//connection.sendEvent(event);
-		if(ret.getValue(EventFields.EventType) == Events.ORDER_UPDATE){
-			Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() + " has changed.", Level.INFO);
-		}else{
-			throw new OrderException("Error sending order " + ordr.getClOrdID() + ret.getValue(EventFields.Message));
-		}
+	private void sendChangeOrderEvent(Orders ordr) throws OrderException{
+		connection.cancelReplaceRequest(ordr);
+//		Event ret = null;//connection.sendEvent(event);
+//		if(ret.getValue(EventFields.EventType) == Events.ORDER_UPDATE){
+//			Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() + " has changed.", Level.INFO);
+//		}else{
+//			throw new OrderException("Error sending order " + ordr.getClOrdID() + ret.getValue(EventFields.Message));
+//		}
 	}
 
 	/**
@@ -350,7 +325,7 @@ public class TradingService {
 		boolean ret = false;
 		try {
 			if(orders.contains(orderSerial)){
-				//ret = orders.get(orderSerial).addExecution(executionDateTime, execVolume, execPrice);
+				//ret = orders.get(orderSerial). addExecution(executionDateTime, execVolume, execPrice);
 			}
 		} catch (Exception e) {
 			Logging.getInstance().log(getClass(),
