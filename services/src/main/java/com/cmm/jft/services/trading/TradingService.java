@@ -14,9 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Level;
 
-import com.cmm.jft.connector.Connector;
 import com.cmm.jft.connector.engine.EngineConnector;
-import com.cmm.jft.connector.message.ClientEngineMessageHandler;
 import com.cmm.jft.core.Configuration;
 import com.cmm.jft.core.enums.Objects;
 import com.cmm.jft.db.DBFacade;
@@ -30,15 +28,14 @@ import com.cmm.jft.financial.JournalEntry;
 import com.cmm.jft.financial.Rule;
 import com.cmm.jft.financial.exceptions.RegistrationException;
 import com.cmm.jft.financial.services.JournalService;
-import com.cmm.jft.messaging.fix44.Fix44MessageEncoder;
 import com.cmm.jft.security.Security;
+import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.Position;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.exceptions.OrderException;
-import com.cmm.jft.services.security.SecurityService;
 import com.cmm.logging.Logging;
 
 /**
@@ -228,10 +225,10 @@ public class TradingService {
 				//calcula a duracao da ordem - ate o fim do dia
 				LocalDateTime ldt = LocalDate.now().atTime(23, 59, 50);
 				Date duration = Date.from(ZonedDateTime.of(ldt, ZoneId.systemDefault()).toInstant());
-
+				
 				// lanca ordem inversa(a posicao) a mercado do mesmo tipo do Position
 				newOrder(OrderTypes.Market, side, position.getSymbol(), volume, 0, 0, 0, 0, duration, TradeTypes.DAY_TRADE);
-
+				
 			}
 
 		} catch (Exception e) {
