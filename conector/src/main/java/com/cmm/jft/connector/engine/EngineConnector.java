@@ -8,13 +8,21 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.cmm.jft.connector.Connector;
 import com.cmm.jft.connector.message.ClientEngineMessageHandler;
-import com.cmm.jft.messaging.fix44.Fix44MessageEncoder;
+import com.cmm.jft.messaging.MessageRepository;
+import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.trading.Orders;
 
 import quickfix.Application;
+import quickfix.DoNotSend;
+import quickfix.FieldNotFound;
+import quickfix.IncorrectDataFormat;
+import quickfix.IncorrectTagValue;
 import quickfix.Message;
 import quickfix.MessageCracker;
+import quickfix.RejectLogon;
 import quickfix.Session;
+import quickfix.SessionID;
+import quickfix.UnsupportedMessageType;
 import quickfix.field.ClOrdID;
 import quickfix.field.NoPartyIDs;
 import quickfix.field.OrdType;
@@ -22,7 +30,18 @@ import quickfix.field.OrderQty;
 import quickfix.field.Side;
 import quickfix.field.Symbol;
 import quickfix.field.TransactTime;
+import quickfix.fix44.AllocationReport;
+import quickfix.fix44.BusinessMessageReject;
+import quickfix.fix44.ExecutionReport;
 import quickfix.fix44.NewOrderSingle;
+import quickfix.fix44.OrderCancelReject;
+import quickfix.fix44.PositionMaintenanceReport;
+import quickfix.fix44.Quote;
+import quickfix.fix44.QuoteCancel;
+import quickfix.fix44.QuoteRequest;
+import quickfix.fix44.QuoteRequestReject;
+import quickfix.fix44.QuoteStatusReport;
+import quickfix.fix44.SecurityDefinition;
 import sun.util.resources.cldr.kk.CalendarData_kk_Cyrl_KZ;
 
 /**
@@ -31,16 +50,14 @@ import sun.util.resources.cldr.kk.CalendarData_kk_Cyrl_KZ;
  * @version 30-07-2015 23:54:28
  *
  */
-public class EngineConnector extends Connector {
+public class EngineConnector extends ClientEngineMessageHandler {
 	
-	
+	private SessionID sessionID;
 	private ConcurrentLinkedQueue<Message> messages;
 	
 	private static EngineConnector instance;
 	
 	private EngineConnector() {
-		this.inMessages = new ConcurrentLinkedQueue<Message>();
-		this.outMessages = new ConcurrentLinkedQueue<Message>();
 		this.messages = new ConcurrentLinkedQueue<Message>();
 	}
 	
@@ -53,48 +70,215 @@ public class EngineConnector extends Connector {
 	}
 	
 	public void newOrderSingle(Orders ordr) {
-		Message m = Fix44MessageEncoder.getInstance().newOrderSingle(ordr);
-		send(m, sessionID);
+		Message m = Fix44EngineMessageEncoder.getInstance().newOrderSingle(ordr);
+		MessageRepository.getInstance().addMessage(m, sessionID);
 	}
 	
 	public void cancelReplaceRequest(Orders ordr) {
-		Message m = Fix44MessageEncoder.getInstance().orderCancelReplaceRequest(ordr);
-		send(m, sessionID);
+		Message m = Fix44EngineMessageEncoder.getInstance().orderCancelReplaceRequest(ordr);
+		MessageRepository.getInstance().addMessage(m, sessionID);
 	}
 	
 	public void cancelRequest(Orders ordr) {
-		Message m = Fix44MessageEncoder.getInstance().orderCancelRequest(ordr);
-		send(m, sessionID);
+		Message m = Fix44EngineMessageEncoder.getInstance().orderCancelRequest(ordr);
+		MessageRepository.getInstance().addMessage(m, sessionID);
 	}
 	
 	public void newOrderCross(Orders ordr) {
-		Message m = Fix44MessageEncoder.getInstance().newOrderCross(ordr);
-		send(m, sessionID);
+		Message m = Fix44EngineMessageEncoder.getInstance().newOrderCross(ordr);
+		MessageRepository.getInstance().addMessage(m, sessionID);
 	}
 	
-	
-	public boolean sendTestMessage() {
-		boolean ret = false;
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#fromAdmin(quickfix.Message, quickfix.SessionID)
+	 */
+	@Override
+	public void fromAdmin(Message message, SessionID sessionID)
+			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, RejectLogon {
+		// TODO Auto-generated method stub
 		
-		NewOrderSingle message = new NewOrderSingle();
-		message.set(new ClOrdID("123456")); 
-		message.set(new NoPartyIDs(0));
+	}
+
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#fromApp(quickfix.Message, quickfix.SessionID)
+	 */
+	@Override
+	public void fromApp(Message message, SessionID sessionID)
+			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
+		crack(message, sessionID);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#onCreate(quickfix.SessionID)
+	 */
+	@Override
+	public void onCreate(SessionID sessionID) {
+		// TODO Auto-generated method stub
 		
-		message.set(new Symbol("WINV15"));		
-		message.set(new Side('1')); 
-		message.set(new TransactTime());
-		
-		message.set(new OrderQty(1));
-		message.set(new OrdType('1'));
-				
-		if(Session.doesSessionExist(sessionID)) {
-			System.out.println("Sending test message: " + message);
-			ret = send(message, this.sessionID);
-			ret = send(message, this.sessionID);
-			System.out.println("Send status: " + ret);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#onLogon(quickfix.SessionID)
+	 */
+	@Override
+	public void onLogon(SessionID sessionID) {
+		if(Session.doesSessionExist(sessionID)){
+			this.sessionID = sessionID;
 		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#onLogout(quickfix.SessionID)
+	 */
+	@Override
+	public void onLogout(SessionID sessionID) {
+		this.sessionID = null;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#toAdmin(quickfix.Message, quickfix.SessionID)
+	 */
+	@Override
+	public void toAdmin(Message message, SessionID sessionID) {
+		// TODO Auto-generated method stub
 		
-		return ret;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#toApp(quickfix.Message, quickfix.SessionID)
+	 */
+	@Override
+	public void toApp(Message message, SessionID sessionID) throws DoNotSend {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientEngineMessageHandler#onMessage(quickfix.fix44.BusinessMessageReject, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(BusinessMessageReject message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientEngineMessageHandler#onMessage(quickfix.fix44.ExecutionReport, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(ExecutionReport message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientEngineMessageHandler#onMessage(quickfix.fix44.OrderCancelReject, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(OrderCancelReject message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientEngineMessageHandler#onMessage(quickfix.fix44.SecurityDefinition, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(SecurityDefinition message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientEngineMessageHandler#onMessage(quickfix.fix44.QuoteRequest, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(QuoteRequest message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientEngineMessageHandler#onMessage(quickfix.fix44.QuoteStatusReport, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(QuoteStatusReport message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientEngineMessageHandler#onMessage(quickfix.fix44.Quote, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(Quote message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientEngineMessageHandler#onMessage(quickfix.fix44.QuoteCancel, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(QuoteCancel message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientEngineMessageHandler#onMessage(quickfix.fix44.QuoteRequestReject, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(QuoteRequestReject message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientEngineMessageHandler#onMessage(quickfix.fix44.PositionMaintenanceReport, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(PositionMaintenanceReport message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientEngineMessageHandler#onMessage(quickfix.fix44.AllocationReport, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(AllocationReport message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

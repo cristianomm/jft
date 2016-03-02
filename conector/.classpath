@@ -34,7 +34,5 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/quickfixj"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/openfast"/>
-	<classpathentry kind="lib" path="/jft_modules/lib/quickfixj/quickfixj-1.5.3/slf4j-api-1.6.3.jar"/>
-	<classpathentry kind="lib" path="/jft_modules/lib/quickfixj/quickfixj-1.5.3/slf4j-jdk14-1.6.3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -45,6 +45,15 @@ public class EngineStarter {
 	private boolean initiatorStarted = false;
 	
 	
+	public static void main(String[] args) {
+		try {
+			new EngineStarter().start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void start() throws Exception {
 		init();
 		if (!System.getProperties().containsKey("openfix")) {
@@ -55,7 +64,7 @@ public class EngineStarter {
 	
 	
 	private void init() throws Exception {
-		InputStream inputStream = EngineStarter.class.getResourceAsStream("ClientConnector.cfg");
+		InputStream inputStream = EngineStarter.class.getResourceAsStream("EngineClientConnector.cfg");
 		
 		SessionSettings settings = new SessionSettings(inputStream);
 		inputStream.close();

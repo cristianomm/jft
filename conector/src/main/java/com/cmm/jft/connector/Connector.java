@@ -34,12 +34,13 @@ public class Connector extends MessageCracker implements Application {
 
 	@Override
 	public void onCreate(SessionID sessionId) {
-
+		System.out.println("Connector-client create: " + sessionId.toString());
 	}
 
 	@Override
 	public void onLogon(SessionID sessionId) {
 		this.sessionID  = sessionId;
+		System.out.println("Connector-logon " + sessionID);
 	}
 
 	@Override
@@ -66,6 +67,7 @@ public class Connector extends MessageCracker implements Application {
 	@Override
 	public void fromApp(Message message, SessionID sessionId) throws FieldNotFound,
 	IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
+		System.out.println("Connector-message: " + message);
 		crack(message, sessionId);
 	}
 

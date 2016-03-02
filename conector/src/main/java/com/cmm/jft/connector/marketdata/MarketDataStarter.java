@@ -1,6 +1,7 @@
 package com.cmm.jft.connector.marketdata;
 
 import java.io.InputStream;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.log4j.Level;
 import org.quickfixj.jmx.JmxExporter;
@@ -12,12 +13,13 @@ import quickfix.Initiator;
 import quickfix.LogFactory;
 import quickfix.MessageFactory;
 import quickfix.MessageStoreFactory;
-import quickfix.Session;
 import quickfix.SessionID;
 import quickfix.SessionSettings;
 import quickfix.SocketInitiator;
+import quickfix.mina.SessionConnector;
 
 import com.cmm.jft.connector.enums.Streams;
+import com.cmm.jft.core.services.Service;
 import com.cmm.logging.Logging;
 
 
@@ -27,19 +29,48 @@ import com.cmm.logging.Logging;
  * @version 30-10-2015 12:08:50
  *
  */
-public class MarketDataStarter {
+public class MarketDataStarter implements Service {
 
 	private MarketDataConnector connector;
 	private Initiator initiator = null;
+	private boolean started;
 	private boolean initiatorStarted = false;
-
-
-	public void start() throws Exception {
-		init();
-		if (!System.getProperties().containsKey("openfix")) {
-			setChannels();
+	private static final CountDownLatch shutdownLatch = new CountDownLatch(1);
+	
+	public static void main(String[] args) {
+		try {
+			MarketDataStarter mds = new MarketDataStarter();
+			mds.start();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
+	}
+	
+	public boolean start() {
+		try {
+			init();
+			
+			if (!System.getProperties().containsKey("openfix")) {
+				setChannels();
+			}
+			
+			shutdownLatch.await();
+			started = true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return started;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.core.services.Service#stop()
+	 */
+	@Override
+	public boolean stop() {
+		shutdownLatch.countDown();
+		return (started = false);
 	}
 
 
@@ -74,21 +105,19 @@ public class MarketDataStarter {
 
 		for (SessionID sessionId : initiator.getSessions()) {
 			if(sessionId.getTargetCompID().equalsIgnoreCase(Streams.INCREMENTAL.name())){
-				connector.setIncrementalStream(sessionId);
+				connector.setIncrementalStreamSID(sessionId);
 			}
 			else if(sessionId.getTargetCompID().equalsIgnoreCase(Streams.INSTRUMENT.name())){
-				connector.setInstrumentDefinition(sessionId);
+				connector.setInstrumentDefinitionSID(sessionId);
 			}
 			else if(sessionId.getTargetCompID().equalsIgnoreCase(Streams.RECOVERY.name())){
-				connector.setRecoveryStream(sessionId);
+				connector.setRecoveryStreamSID(sessionId);
 			}
 			else if(sessionId.getTargetCompID().equalsIgnoreCase(Streams.SNAPSHOT.name())){
-				connector.setSnapshotStream(sessionId);
+				connector.setSnapshotStreamSID(sessionId);
 			}
 		}
 
 	}
-	
-	
 
 }

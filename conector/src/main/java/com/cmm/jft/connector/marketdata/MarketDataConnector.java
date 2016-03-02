@@ -1,9 +1,26 @@
 package com.cmm.jft.connector.marketdata;
 
+import quickfix.DoNotSend;
+import quickfix.FieldNotFound;
+import quickfix.IncorrectDataFormat;
+import quickfix.IncorrectTagValue;
+import quickfix.Message;
+import quickfix.RejectLogon;
 import quickfix.Session;
 import quickfix.SessionID;
+import quickfix.UnsupportedMessageType;
+import quickfix.fix44.Heartbeat;
+import quickfix.fix44.SequenceReset;
+import quickfix.fix44.MarketDataIncrementalRefresh;
+import quickfix.fix44.MarketDataSnapshotFullRefresh;
+import quickfix.fix44.News;
+import quickfix.fix44.SecurityList;
+import quickfix.fix44.SecurityStatus;
 
-import com.cmm.jft.connector.Connector;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import com.cmm.jft.connector.enums.Streams;
+import com.cmm.jft.connector.message.ClientMarketDataMessageHandler;
 
 
 /**
@@ -12,17 +29,16 @@ import com.cmm.jft.connector.Connector;
  * 
  */
 
-public class MarketDataConnector extends Connector {
+public class MarketDataConnector extends ClientMarketDataMessageHandler {
 
-	private SessionID snapshotStream;
-	private SessionID recoveryStream;
-	private SessionID incrementalStream;
-	private SessionID instrumentDefinition;
-
+	
 	private static MarketDataConnector instance;
 
 	private MarketDataConnector() {
-
+		this.incrementalStream = new LinkedBlockingQueue<Message>();
+		this.instrumentStream = new LinkedBlockingQueue<Message>();
+		this.snapshotStream = new LinkedBlockingQueue<Message>();
+		this.recoveryStream = new LinkedBlockingQueue<Message>();
 	}
 
 	public synchronized static MarketDataConnector getInstance() {
@@ -31,99 +47,193 @@ public class MarketDataConnector extends Connector {
 		}
 		return instance;
 	}
-
-
-
-	/**
-	 * @return the incrementalStream
-	 */
-	public SessionID getIncrementalStream() {
-		return this.incrementalStream;
-	}
-
-	/**
-	 * @return the instrumentDefinition
-	 */
-	public SessionID getInstrumentDefinition() {
-		return this.instrumentDefinition;
-	}
-
-	/**
-	 * @return the recoveryStream
-	 */
-	public SessionID getRecoveryStream() {
-		return this.recoveryStream;
-	}
 	
-	/**
-	 * 
-	 * @return the snapshotStream
-	 */
-	public SessionID getSnapshotStream() {
-		return snapshotStream;
+	protected void addOnStream(Message message, SessionID sessionID) {
+		if(sessionID.getTargetCompID().equalsIgnoreCase(Streams.INCREMENTAL.name())){
+			incrementalStream.add(message);
+		}
+		else if(sessionID.getTargetCompID().equalsIgnoreCase(Streams.INSTRUMENT.name())){
+			instrumentStream.add(message);
+		}
+		else if(sessionID.getTargetCompID().equalsIgnoreCase(Streams.RECOVERY.name())){
+			recoveryStream.add(message);
+		}
+		else if(sessionID.getTargetCompID().equalsIgnoreCase(Streams.SNAPSHOT.name())){
+			snapshotStream.add(message);
+		}
+		
 	}
-
-	/**
-	 * @param incrementalStream the incrementalStream to set
-	 */
-	public void setIncrementalStream(SessionID incrementalStream) {
-		this.incrementalStream = incrementalStream;
-	}
-
-	/**
-	 * @param instrumentDefinition the instrumentDefinition to set
-	 */
-	public void setInstrumentDefinition(SessionID instrumentDefinition) {
-		this.instrumentDefinition = instrumentDefinition;
-	}
-
-	/**
-	 * @param recoveryStream the recoveryStream to set
-	 */
-	public void setRecoveryStream(SessionID recoveryStream) {
-		this.recoveryStream = recoveryStream;
-	}
-	
-	/**
-	 * 
-	 * @param snapshotStream
-	 */
-	public void setSnapshotStream(SessionID snapshotStream) {
-		this.snapshotStream = snapshotStream;
-	}
-
 
 
 	public void joinInstrumentDefinition() {
-		Session.lookupSession(instrumentDefinition).logon();
+		Session.lookupSession(instrumentDefinitionSID).logon();
 	}
 
 	public void joinIncrementalStream() {
-		Session.lookupSession(incrementalStream).logon();
+		Session.lookupSession(incrementalStreamSID).logon();
 	}
 
 	public void joinRecoveryStream() {
-		Session.lookupSession(recoveryStream).logon();
+		Session.lookupSession(recoveryStreamSID).logon();
 	}
 
 	public void joinSnapshotStream() {
-		Session.lookupSession(snapshotStream).logon();
+		Session.lookupSession(snapshotStreamSID).logon();
 	}
 
 	public void exitInstrumentDefinition() {
-		Session.lookupSession(instrumentDefinition).logout("user requested");
+		Session.lookupSession(instrumentDefinitionSID).logout("user requested");
 	}
 
 	public void exitIncrementalStream() {
-		Session.lookupSession(incrementalStream).logout("user requested");
+		Session.lookupSession(incrementalStreamSID).logout("user requested");
 	}
 
 	public void exitRecoveryStream() {
-		Session.lookupSession(recoveryStream).logout("user requested");
+		Session.lookupSession(recoveryStreamSID).logout("user requested");
 	}
 	
 	public void exitSnapshotStream() {
-		Session.lookupSession(snapshotStream).logout("user requested");
+		Session.lookupSession(snapshotStreamSID).logout("user requested");
+	}
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#fromAdmin(quickfix.Message, quickfix.SessionID)
+	 */
+	@Override
+	public void fromAdmin(Message message, SessionID sessionID)
+			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, RejectLogon {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#fromApp(quickfix.Message, quickfix.SessionID)
+	 */
+	@Override
+	public void fromApp(Message message, SessionID sessionID)
+			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
+		//System.out.println(message);
+		//System.out.println(sessionID);
+		System.out.println("fromApp: " + message);
+		crack(message, sessionID);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#onCreate(quickfix.SessionID)
+	 */
+	@Override
+	public void onCreate(SessionID sessionID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#onLogon(quickfix.SessionID)
+	 */
+	@Override
+	public void onLogon(SessionID sessionID) {
+		System.out.println(sessionID);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#onLogout(quickfix.SessionID)
+	 */
+	@Override
+	public void onLogout(SessionID sessionID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#toAdmin(quickfix.Message, quickfix.SessionID)
+	 */
+	@Override
+	public void toAdmin(Message message, SessionID sessionID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see quickfix.Application#toApp(quickfix.Message, quickfix.SessionID)
+	 */
+	@Override
+	public void toApp(Message message, SessionID sessionID) throws DoNotSend {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientMarketDataMessageHandler#onMessage(quickfix.fix44.SequenceReset, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(SequenceReset message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		System.out.println("SequenceReset - " + message);
+		addOnStream(message, sessionID);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientMarketDataMessageHandler#onMessage(quickfix.fix44.Heartbeat, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(Heartbeat message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		System.out.println("heartbeat - " + message);
+		addOnStream(message, sessionID);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientMarketDataMessageHandler#onMessage(quickfix.fix50sp2.SecurityList, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(SecurityList message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		System.out.println("securityList - " + message);
+		addOnStream(message, sessionID);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientMarketDataMessageHandler#onMessage(quickfix.fix50sp2.MarketDataIncrementalRefresh, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(MarketDataIncrementalRefresh message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		System.out.println("MDIncrRefresh - " + message);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientMarketDataMessageHandler#onMessage(quickfix.fix50sp2.MarketDataSnapshotFullRefresh, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(MarketDataSnapshotFullRefresh message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientMarketDataMessageHandler#onMessage(quickfix.fix50sp2.SecurityStatus, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(SecurityStatus message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.connector.message.ClientMarketDataMessageHandler#onMessage(quickfix.fix50sp2.News, quickfix.SessionID)
+	 */
+	@Override
+	public void onMessage(News message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// TODO Auto-generated method stub
+		
 	}
 	
 
