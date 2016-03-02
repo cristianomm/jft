@@ -46,7 +46,7 @@ public class Security implements DBObject<Security> {
 	@GeneratedValue(generator = "SECURITY_SEQ", strategy = GenerationType.AUTO)
 	@Basic(optional = false)
 	@Column(name = "securityID", nullable = false)
-	private Long securityID;
+	private Integer securityID;
 	
 	@Column(name = "SecurityIDSrc", nullable = false, length = 1)
 	private char securityIDSrc;
@@ -113,7 +113,7 @@ public class Security implements DBObject<Security> {
 	/**
 	 * @return the securityID
 	 */
-	public Long getSecurityID() {
+	public Integer getSecurityID() {
 		return this.securityID;
 	}
 	
@@ -121,7 +121,7 @@ public class Security implements DBObject<Security> {
 		return securityIDSrc;
 	}
 	
-	public void setSecurityID(Long securityID) {
+	public void setSecurityID(Integer securityID) {
 		this.securityID = securityID;
 	}
 	
