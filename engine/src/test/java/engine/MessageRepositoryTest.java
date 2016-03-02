@@ -9,8 +9,8 @@ import quickfix.field.EncryptMethod;
 import quickfix.field.HeartBtInt;
 import quickfix.fix44.Logon;
 
-import com.cmm.jft.engine.MessageRepository;
-import com.cmm.jft.messaging.fix44.Fix44MessageEncoder;
+import com.cmm.jft.messaging.MessageRepository;
+import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 
 public class MessageRepositoryTest {
 
@@ -29,7 +29,7 @@ public class MessageRepositoryTest {
 			new Thread(new Runnable() {			
 				public void run() {
 					for(int i=0;i<b;i++) {
-						Message message = Fix44MessageEncoder.getInstance().heartbeat();
+						Message message = Fix44EngineMessageEncoder.getInstance().heartbeat();
 						//repo.addMessage(message);
 					}
 				}

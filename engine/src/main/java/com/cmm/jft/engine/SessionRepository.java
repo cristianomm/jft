@@ -2,42 +2,57 @@ package com.cmm.jft.engine;
 
 import java.util.HashMap;
 
+import org.omg.CORBA.portable.Streamable;
+
+import com.cmm.jft.engine.enums.StreamTypes;
+
 import quickfix.Session;
 import quickfix.SessionID;
 import quickfix.SessionStateListener;
 
 public class SessionRepository {
 	
-		
 	private static SessionRepository instance;
-	private HashMap<String, SessionID> sessions;
+	
+	private HashMap<StreamTypes, HashMap<String, SessionID>> sessions;
 	
 	
 	private SessionRepository() {
-		this.sessions = new HashMap<String, SessionID>();
+		this.sessions = new HashMap<StreamTypes, HashMap<String, SessionID>>();
+		
+		for(StreamTypes st: StreamTypes.values()){
+			sessions.put(st, new HashMap<>());
+		}
+		
 	}
 	
-	public synchronized static SessionRepository getInstance() {
+	
+	/**
+	 * @return the instance
+	 */
+	public static synchronized SessionRepository getInstance() {
 		if(instance == null){
 			instance = new SessionRepository();
 		}
-		
 		return instance;
 	}
 	
-	
-	public void addSession(SessionID sessionID){
+	public void addSession(StreamTypes stream, SessionID sessionID){
 		if(sessionID != null){
-			sessions.put(sessionID.getSenderCompID(), sessionID);
+			sessions.get(stream).put(sessionID.getSenderCompID(), sessionID);
 		}
 	}
 	
-	public void removeSession(SessionID sessionID){
-		sessions.remove(sessionID.getSenderCompID());
+	public void removeSession(StreamTypes stream, SessionID sessionID){
+		sessions.get(stream).remove(sessionID.getSenderCompID());
 	}
 	
-	public SessionID getSession(String partyID) {
-		return sessions.get(partyID);
+	public SessionID getSession(StreamTypes stream, String partyID) {
+		return sessions.get(stream).get(partyID);
+	}
+	
+	public HashMap<String, SessionID> getSessions(StreamTypes stream){
+		return sessions.get(stream);
 	}
 	
 }

@@ -13,11 +13,14 @@ import java.util.concurrent.PriorityBlockingQueue;
 import quickfix.Message;
 import quickfix.SessionID;
 
-import com.cmm.jft.engine.MessageRepository;
 import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.engine.enums.MatchTypes;
+import com.cmm.jft.engine.enums.StreamTypes;
+import com.cmm.jft.engine.marketdata.UMDF;
 import com.cmm.jft.messaging.MessageEncoder;
+import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.MessageSender;
+import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
@@ -32,7 +35,7 @@ import com.cmm.jft.trading.exceptions.OrderException;
  * @version 17/08/15 11:17:42
  *
  */
-public class OrderMatcher  implements MessageSender {
+public class OrderMatcher implements MessageSender {
 
 
 	private class StopOrderReleaser implements Runnable {
@@ -170,12 +173,17 @@ public class OrderMatcher  implements MessageSender {
 				this.lastVolume = qtyToFill;
 
 				//recupera a sessao da ordem recebida
-				SessionID orderSession = SessionRepository.getInstance().getSession(newOrder.getPartyID());
-				send = sendMessage(MessageEncoder.getEncoder(orderSession).executionReport(orderFill), orderSession);
+				SessionID orderSession = SessionRepository.getInstance().getSession(StreamTypes.ENTRYPOINT, newOrder.getPartyID());
+				Fix44EngineMessageEncoder encoder = (Fix44EngineMessageEncoder) MessageEncoder.getEncoder(orderSession); 
+				send = sendMessage(encoder.executionReport(orderFill), orderSession);
 
 				//recupera a sessao da ordem que estava no book
-				SessionID bookOrderSession = SessionRepository.getInstance().getSession(bookOrder.getPartyID());
-				send = sendMessage(MessageEncoder.getEncoder(bookOrderSession).executionReport(bookFill), bookOrderSession);
+				SessionID bookOrderSession = SessionRepository.getInstance().getSession(StreamTypes.ENTRYPOINT, bookOrder.getPartyID());
+				send = sendMessage(encoder.executionReport(bookFill), bookOrderSession);
+				
+				//envia mensagem aos participantes informando a execucao
+				UMDF.getInstance().informTrade(orderFill);
+				
 			}else {
 				throw new OrderException("Error on add executions.");
 			}
@@ -381,8 +389,9 @@ public class OrderMatcher  implements MessageSender {
 
 		ordr.addExecution(oe);
 
-		SessionID bookOrderSession = SessionRepository.getInstance().getSession(ordr.getPartyID());
-		sendMessage(MessageEncoder.getEncoder(bookOrderSession).executionReport(oe), bookOrderSession);
+		SessionID bookOrderSession = SessionRepository.getInstance().getSession(StreamTypes.ENTRYPOINT, ordr.getPartyID());
+		Fix44EngineMessageEncoder encoder = (Fix44EngineMessageEncoder) MessageEncoder.getEncoder(bookOrderSession);
+		sendMessage(encoder.executionReport(oe), bookOrderSession);
 	}
 
 
@@ -390,5 +399,7 @@ public class OrderMatcher  implements MessageSender {
 	public boolean sendMessage(Message message, SessionID sessionID) {
 		return MessageRepository.getInstance().addMessage(message, sessionID);
 	}
+	
+	
 
 }

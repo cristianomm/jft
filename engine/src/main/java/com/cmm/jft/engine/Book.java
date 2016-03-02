@@ -5,14 +5,18 @@ package com.cmm.jft.engine;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import org.apache.log4j.Level;
 
 import com.cmm.jft.engine.enums.MatchTypes;
+import com.cmm.jft.engine.marketdata.UMDF;
 import com.cmm.jft.engine.match.OrderMatcher;
 import com.cmm.jft.messaging.MessageEncoder;
+import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.MessageSender;
+import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.trading.OrderEvent;
@@ -20,6 +24,7 @@ import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
@@ -152,13 +157,11 @@ public class Book implements MessageSender {
 				oe.setOrderID(order);
 				order.addExecution(oe);
 				
-				sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
+				sendMessage(((Fix44EngineMessageEncoder)MessageEncoder.getEncoder(sessionID)).executionReport(oe), sessionID);
 				orderCount++;
 				
+				//adiciona a ordem no match engines
 				added = added && orderMatcher.addOrder(order);
-				
-				//envia mensagem aos participantes
-				
 				
 			}
 
@@ -167,7 +170,7 @@ public class Book implements MessageSender {
 			OrderEvent oe = new OrderEvent(ExecutionTypes.REJECTED, new Date(), order.getVolume(), order.getPrice());
 			oe.setMessage("Order rejected: " + e.getMessage());
 			oe.setOrderID(order);
-			sendMessage(MessageEncoder.getEncoder(sessionID).executionReport(oe), sessionID);
+			sendMessage(((Fix44EngineMessageEncoder)MessageEncoder.getEncoder(sessionID)).executionReport(oe), sessionID);
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
 
@@ -181,12 +184,21 @@ public class Book implements MessageSender {
 	}
 	
 	public void replaceOrder(Orders ordr){
+		if(ordr.getSide() == Side.BUY){
+			buyQueue.forEach(o -> o.getClOrdID().equals(ordr.getClOrdID()));
+		}
+		else{
+			sellQueue.forEach(o -> o.getClOrdID().equals(ordr.getClOrdID()));
+		}
 		
 	}
 	
 	
 	
 	public void closeBook() {
+		
+		buyQueue.forEach(o -> cancelOrder(o));
+		sellQueue.forEach(o -> cancelOrder(o));
 		
 	}	
 	

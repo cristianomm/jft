@@ -7,7 +7,7 @@ import com.cmm.jft.marketdata.MarketOrder;
 import com.cmm.jft.messaging.EngineMessageHandler;
 import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.messaging.MessageHandler;
-import com.cmm.jft.messaging.fix44.Fix44MessageDecoder;
+import com.cmm.jft.messaging.fix44.Fix44EngineMessageDecoder;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 
@@ -31,11 +31,11 @@ import quickfix.fix44.SecurityDefinitionRequest;
 
 public class Fix44EngineHandler extends EngineMessageHandler {
 	
-	private Fix44MessageDecoder decoder;
+	private Fix44EngineMessageDecoder decoder;
 		
 	public Fix44EngineHandler(){
 		//initialize(this);
-		this.decoder = new Fix44MessageDecoder();
+		this.decoder = new Fix44EngineMessageDecoder();
 		System.out.println(getClass() + " initialized.");
 	}
 	

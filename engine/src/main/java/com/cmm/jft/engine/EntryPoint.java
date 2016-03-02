@@ -5,13 +5,14 @@ package com.cmm.jft.engine;
 
 import java.util.HashMap;
 
-
-
+import com.cmm.jft.connector.enums.Streams;
+import com.cmm.jft.engine.enums.StreamTypes;
 import com.cmm.jft.engine.message.Fix44EngineHandler;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageHandler;
+import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.enums.FIXProtocols;
-import com.cmm.jft.messaging.fix44.Fix44MessageEncoder;
+import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 
 import quickfix.Application;
 import quickfix.ConfigError;
@@ -69,7 +70,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	 */
 	public void onLogon(SessionID sessionId) {
 		if(verifyLogon(sessionId)) {
-			SessionRepository.getInstance().addSession(sessionId);
+			SessionRepository.getInstance().addSession(StreamTypes.ENTRYPOINT, sessionId);
 		}
 		
 	}
@@ -78,7 +79,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	 * @see quickfix.Application#onLogout(quickfix.SessionID)
 	 */
 	public void onLogout(SessionID sessionId) {
-		SessionRepository.getInstance().removeSession(sessionId);
+		SessionRepository.getInstance().removeSession(StreamTypes.ENTRYPOINT, sessionId);
 	}
 
 	/* (non-Javadoc)
@@ -131,7 +132,7 @@ public class EntryPoint extends MessageCracker implements Application {
 	
 	public void initEncoders(SessionSettings settings) {
 		this.encoders = new HashMap<>();
-		this.encoders.put(FIXProtocols.FIX44, Fix44MessageEncoder.getInstance());
+		this.encoders.put(FIXProtocols.FIX44, Fix44EngineMessageEncoder.getInstance());
 	}
 	
 	public void initHandlers(SessionSettings settings) {

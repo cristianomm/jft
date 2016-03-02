@@ -42,12 +42,12 @@ import com.cmm.jft.core.services.Service;
 import com.cmm.logging.Logging;
 
 /**
- * <p><code>App.java</code></p>
+ * <p><code>EntryPointService.java</code></p>
  * @author Cristiano M Martins
  * @version 13 de jul de 2015 00:05:40
  *
  */
-public class App implements Service {
+public class EntryPointService implements Service {
 	
 	
 	private EntryPoint entryPoint;
@@ -57,7 +57,7 @@ public class App implements Service {
 	private HashMap<InetSocketAddress, List<TemplateMapping>> dynamicSessionMappings;
 	
 	
-	public App() {
+	public EntryPointService() {
 		this.dynamicSessionMappings = new HashMap<InetSocketAddress, List<TemplateMapping>>();
 		initListener();
 	}
@@ -65,7 +65,7 @@ public class App implements Service {
 	
 	private void initListener(){
 		try{
-			SessionSettings settings = new SessionSettings(App.class.getResourceAsStream("App.cfg"));
+			SessionSettings settings = new SessionSettings(EntryPointService.class.getResourceAsStream("EntryPointService.cfg"));
 			
 			entryPoint = new EntryPoint(settings);
 			MessageStoreFactory storeFactory = new FileStoreFactory(settings);
@@ -168,7 +168,7 @@ public class App implements Service {
 	}
 	
 	public static void main(String[] args) {
-		App listener = new App();
+		EntryPointService listener = new EntryPointService();
 		listener.start();
 	}
 	
