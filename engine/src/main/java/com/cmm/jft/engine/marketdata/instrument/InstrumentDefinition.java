@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.engine.marketdata;
+package com.cmm.jft.engine.marketdata.instrument;
 
 import java.util.ArrayList;
 
