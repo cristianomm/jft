@@ -7,7 +7,6 @@ import javax.management.JMException;
 
 import org.slf4j.LoggerFactory;
 
-import com.cmm.jft.core.services.Service;
 import com.cmm.jft.engine.EngineService;
 import com.cmm.jft.engine.EntryPoint;
 import com.cmm.jft.engine.EntryPointService;
@@ -25,9 +24,6 @@ import quickfix.SessionSettings;
 public class MarketDataService extends EngineService {
 	
 	
-	/**
-	 * 
-	 */
 	public MarketDataService() {
 		try {
 			SessionSettings settings = new SessionSettings(
