@@ -38,11 +38,11 @@ import com.cmm.jft.trading.enums.Side;
 import com.cmm.logging.Logging;
 
 /**
- * <p><code>Fix44MessageDecoder.java</code> </p>
+ * <p><code>Fix44EngineMessageDecoder.java</code> </p>
  * @author Cristiano M Martins
  * @version 11/08/2015 13:49:32
  */
-public class Fix44MessageDecoder implements MessageDecoder {
+public class Fix44EngineMessageDecoder implements MessageDecoder {
 
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageDecoder#heartbeat()

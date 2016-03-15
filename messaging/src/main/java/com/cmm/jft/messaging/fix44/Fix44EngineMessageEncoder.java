@@ -80,25 +80,25 @@ import com.cmm.jft.trading.enums.RejectTypes;
 
 
 /**
- * <p><code>Fix44MessageEncoder.java</code></p>
+ * <p><code>Fix44EngineMessageEncoder.java</code></p>
  * @author Cristiano
  * @version 17/06/2015 17:31:27
  *
  */
-public class Fix44MessageEncoder implements MessageEncoder {
+public class Fix44EngineMessageEncoder implements MessageEncoder {
 	
 	
-	private static MessageEncoder instance;
+	private static Fix44EngineMessageEncoder instance;
 	
 	
-	private Fix44MessageEncoder() {
+	private Fix44EngineMessageEncoder() {
 		
 	}
 	
 	
-	public static synchronized MessageEncoder getInstance() {
+	public static synchronized Fix44EngineMessageEncoder getInstance() {
 		if(instance == null) {
-			instance = new Fix44MessageEncoder();
+			instance = new Fix44EngineMessageEncoder();
 		}
 		return instance;
 	}
@@ -108,14 +108,13 @@ public class Fix44MessageEncoder implements MessageEncoder {
 		
 		
 		
-		System.out.println(new Fix44MessageEncoder().testRequest());
+		System.out.println(new Fix44EngineMessageEncoder().testRequest());
 	}
 	
 	
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageEncoder#addIdFields(quickfix.Message)
 	 */
-	@Override
 	public void addIdFields(Message message) {
 		
 		message.setField(new NoPartyIDs(1));

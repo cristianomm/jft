@@ -12,4 +12,6 @@ package com.cmm.jft.messaging;
 public interface MessageHandler {
 	
 	
+	
+	
 }
