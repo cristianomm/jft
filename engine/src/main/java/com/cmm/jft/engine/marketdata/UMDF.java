@@ -51,8 +51,6 @@ public class UMDF {
 		
 	}
 	
-	
-	
 	public void informTrade(OrderEvent orderFill){
 		
 	}
