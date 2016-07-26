@@ -64,7 +64,7 @@ public class EngineStarter {
 	
 	
 	private void init() throws Exception {
-		InputStream inputStream = EngineStarter.class.getResourceAsStream("EngineClientConnector.cfg");
+		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("EngineClientConnector.cfg");
 		
 		SessionSettings settings = new SessionSettings(inputStream);
 		inputStream.close();

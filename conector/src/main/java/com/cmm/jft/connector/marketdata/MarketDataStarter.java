@@ -75,7 +75,7 @@ public class MarketDataStarter implements Service {
 
 
 	private void init() throws Exception {
-		InputStream inputStream = MarketDataStarter.class.getResourceAsStream("MDClientConnector.cfg");
+		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("MDClientConnector.cfg");
 
 		SessionSettings settings = new SessionSettings(inputStream);
 		inputStream.close();

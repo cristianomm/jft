@@ -11,6 +11,8 @@ import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
 import quickfix.fix44.Heartbeat;
 import quickfix.fix44.SequenceReset;
+import quickfix.mina.message.FIXMessageDecoder;
+import quickfix.mina.message.FIXMessageEncoder;
 import quickfix.fix44.MarketDataIncrementalRefresh;
 import quickfix.fix44.MarketDataSnapshotFullRefresh;
 import quickfix.fix44.News;
@@ -115,7 +117,7 @@ public class MarketDataConnector extends ClientMarketDataMessageHandler {
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
 		//System.out.println(message);
 		//System.out.println(sessionID);
-		System.out.println("fromApp: " + message);
+		//System.out.println("fromApp: " + message);
 		crack(message, sessionID);
 		
 	}
@@ -135,6 +137,7 @@ public class MarketDataConnector extends ClientMarketDataMessageHandler {
 	@Override
 	public void onLogon(SessionID sessionID) {
 		System.out.println(sessionID);
+		
 		
 	}
 
