@@ -11,6 +11,7 @@ import com.cmm.jft.engine.enums.StreamTypes;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
 import com.cmm.jft.security.Security;
+import com.cmm.jft.security.SecurityInfo;
 
 import quickfix.Application;
 import quickfix.DoNotSend;
@@ -25,8 +26,8 @@ import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
 import quickfix.field.NewSeqNo;
 import quickfix.fix44.Heartbeat;
-import quickfix.fix44.MarketDataIncrementalRefresh;
-import quickfix.fix44.SecurityList;
+import quickfix.fix50sp2.MarketDataIncrementalRefresh;
+import quickfix.fix50sp2.SecurityList;
 import quickfix.fix44.SequenceReset;
 
 /**
@@ -45,10 +46,6 @@ public class InstrumentDefinition extends MessageCracker implements Application 
 	public InstrumentDefinition(){
 		securities = new ArrayList<>();
 		loadSecurities();
-		
-		//securities.add(new Security("AABB"));
-		//securities.get(0).setDescription("AABB  PN");
-		//securities.get(0).setSecurityID(1234567);
 		
 		createInstrumentList();
 		new Thread(new Runnable() {
@@ -75,11 +72,21 @@ public class InstrumentDefinition extends MessageCracker implements Application 
 	}
 	
 	private void loadFile(){
-		CSV csv = new CSV("/SecuritiesMT.csv", ";", "#");
 		
+		CSV csv = new CSV(
+				Thread.currentThread().getContextClassLoader().getResource("SecuritiesMT.csv").getPath()
+				, ";", "#");
+		int id = 5000000;
 		while (csv.hasNext()) {
 			String[] line = csv.readLine();
 			
+			Security s = new Security(line[0]);
+			s.setDescription(line[1]);
+			s.setSecurityID(id++);
+			s.setSecurityInfoID(new SecurityInfo(s, null));
+			s.getSecurityInfoID().setIsin(line[2]);
+			
+			securities.add(s);
 		}
 		
 	}
@@ -184,7 +191,7 @@ public class InstrumentDefinition extends MessageCracker implements Application 
 		for(int i=0;i<securities.size();i+=10){
 			
 			Security[] secsTemp = new Security[10];
-			for(int j=0;j<10;j++){
+			for(int j=0;j<10 && (i+j) < securities.size();j++){
 				secsTemp[j] = securities.get(i+j);
 			}
 			
@@ -195,7 +202,6 @@ public class InstrumentDefinition extends MessageCracker implements Application 
 			}else{
 				list.setBoolean(893, false);
 			}
-			list.setInt(146, 1);
 			
 			instruments.add(list);
 			
@@ -204,8 +210,8 @@ public class InstrumentDefinition extends MessageCracker implements Application 
 	}
 
 	private void sendInstruments(){
-		
 		for(SessionID sid: SessionRepository.getInstance().getSessions(StreamTypes.INSTRUMENT).values()){
+			MessageRepository.getInstance().addMessage(Fix50SP2MDMessageEncoder.getInstance().sequenceReset(), sid);
 			for(SecurityList sl:instruments){
 				MessageRepository.getInstance().addMessage(sl, sid);
 			}

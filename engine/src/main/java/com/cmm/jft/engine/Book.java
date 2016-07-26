@@ -100,7 +100,7 @@ public class Book implements MessageSender {
 					&& order.getOrderType() != OrderTypes.MarketWithLeftOverAsLimit;
 			
 		}else if(order.getPrice() > 0) {
-			valid = valid;
+			valid = valid && true;
 		}
 		
 		return valid;
@@ -160,7 +160,7 @@ public class Book implements MessageSender {
 				sendMessage(((Fix44EngineMessageEncoder)MessageEncoder.getEncoder(sessionID)).executionReport(oe), sessionID);
 				orderCount++;
 				
-				//adiciona a ordem no match engines
+				//adiciona a ordem no match engine
 				added = added && orderMatcher.addOrder(order);
 				
 			}
@@ -186,10 +186,19 @@ public class Book implements MessageSender {
 	public void replaceOrder(Orders ordr){
 		if(ordr.getSide() == Side.BUY){
 			buyQueue.forEach(o -> o.getClOrdID().equals(ordr.getClOrdID()));
+			
 		}
 		else{
 			sellQueue.forEach(o -> o.getClOrdID().equals(ordr.getClOrdID()));
 		}
+		
+		
+		
+		
+		
+		//TERMINAR:
+		//enviar o estado atual do book com o que mudou do estado anterior
+		
 		
 	}
 	

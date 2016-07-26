@@ -27,13 +27,29 @@ public class MarketDataService extends EngineService {
 	public MarketDataService() {
 		try {
 			SessionSettings settings = new SessionSettings(
-					EntryPointService.class.getResourceAsStream("MarketDataService.cfg"));
+					Thread.currentThread().getContextClassLoader().getResourceAsStream("MarketDataService.cfg"));
 			log = LoggerFactory.getLogger(MarketDataService.class);
 			init(settings, new EntryPoint(settings));
 		} catch (ConfigError | FieldConvertError | JMException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 	}
 	
+	
+	public static void main(String[] args){
+		try{
+		MarketDataService service = new MarketDataService();
+		service.start();
+		
+		System.out.println("press <enter> to quit");
+        System.in.read();
+		
+		service.stop();
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	
 }

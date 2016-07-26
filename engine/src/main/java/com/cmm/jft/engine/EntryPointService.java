@@ -23,7 +23,7 @@ public class EntryPointService extends EngineService {
 	public EntryPointService() {
 		try {
 			SessionSettings settings = new SessionSettings(
-					EntryPointService.class.getResourceAsStream("EntryPointService.cfg"));
+					Thread.currentThread().getContextClassLoader().getResourceAsStream("EntryPointService.cfg"));
 			log = LoggerFactory.getLogger(EntryPointService.class);
 			init(settings, new EntryPoint(settings));
 		} catch (ConfigError | FieldConvertError | JMException e) {

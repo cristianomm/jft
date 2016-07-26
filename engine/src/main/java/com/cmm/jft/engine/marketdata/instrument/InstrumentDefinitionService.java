@@ -25,10 +25,11 @@ public class InstrumentDefinitionService extends EngineService {
     public InstrumentDefinitionService() {
     	try {
     		SessionSettings settings = new SessionSettings(
-    				EntryPointService.class.getResourceAsStream("InstrumentDefinitionService.cfg"));
+    				Thread.currentThread().getContextClassLoader().getResourceAsStream("InstrumentDefinitionService.cfg"));
     		log = LoggerFactory.getLogger(InstrumentDefinitionService.class);
 			init(settings, new InstrumentDefinition());
 		} catch (ConfigError | FieldConvertError | JMException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
     }
@@ -44,7 +45,8 @@ public class InstrumentDefinitionService extends EngineService {
 
             service.stop();
         } catch (Exception e) {
-            //log.error(e.getMessage(), e);
+        	e.printStackTrace();
+            //log.error(e.getMessage());
         }
     }
 

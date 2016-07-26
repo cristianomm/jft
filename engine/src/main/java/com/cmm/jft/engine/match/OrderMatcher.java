@@ -6,7 +6,6 @@ package com.cmm.jft.engine.match;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -65,8 +64,16 @@ public class OrderMatcher implements MessageSender {
 
 	private int phase;
 	private boolean verifyStopOrders;
+	private double highPrice;
+	private double lowPrice;
 	private double lastPrice;
+	private double vwapPrice;
 	private double lastVolume;
+	private double totalVolume;
+	private int totalTrades;
+	
+	private double sumPriceVolume;
+	
 	private double protectionLevel;
 	private PriorityBlockingQueue<Orders> buyQueue;
 	private PriorityBlockingQueue<Orders> sellQueue;
@@ -88,14 +95,50 @@ public class OrderMatcher implements MessageSender {
 
 	}
 
-
+	/**
+	 * @return the highPrice
+	 */
+	public double getHighPrice() {
+		return this.highPrice;
+	}
+	
+	/**
+	 * @return the lowPrice
+	 */
+	public double getLowPrice() {
+		return this.lowPrice;
+	}
+	
 	public double getLastPrice() {
 		return lastPrice;
+	}
+	
+	/**
+	 * @return the vwapPrice
+	 */
+	public double getVwapPrice() {
+		return this.vwapPrice;
 	}
 
 	public double getLastVolume() {
 		return lastVolume;
 	}
+	
+	/**
+	 * @return the totalVolume
+	 */
+	public double getTotalVolume() {
+		return this.totalVolume;
+	}
+	
+	/**
+	 * @return the totalTrades
+	 */
+	public int getTotalTrades() {
+		return this.totalTrades;
+	}
+	
+	
 
 	/**
 	 * @return the buyQueue
@@ -169,8 +212,15 @@ public class OrderMatcher implements MessageSender {
 			if(newOrder.addExecution(orderFill) && bookOrder.addExecution(bookFill)) {
 
 				//ajusta os valores para ultima execucao
-				this.lastPrice = priceToFill;
-				this.lastVolume = qtyToFill;
+				lastPrice = priceToFill;
+				highPrice = highPrice < priceToFill ? priceToFill : highPrice;
+				lowPrice = lowPrice > priceToFill ? priceToFill : lowPrice;
+				lastVolume = qtyToFill;
+				totalVolume += qtyToFill;
+				totalTrades++;
+				
+				sumPriceVolume += lastPrice * lastVolume;
+				vwapPrice = sumPriceVolume/totalVolume;
 
 				//recupera a sessao da ordem recebida
 				SessionID orderSession = SessionRepository.getInstance().getSession(StreamTypes.ENTRYPOINT, newOrder.getPartyID());

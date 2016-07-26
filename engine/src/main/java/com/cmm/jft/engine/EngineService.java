@@ -131,7 +131,7 @@ public class EngineService implements Service {
 	protected static InputStream getSettingsInputStream(String[] args) throws FileNotFoundException {
 		InputStream inputStream = null;
 		if (args.length == 0) {
-			inputStream = InstrumentDefinitionService.class.getResourceAsStream("InstrumentDefinitionService.cfg");
+			inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("InstrumentDefinitionService.cfg");
 		} else if (args.length == 1) {
 			inputStream = new FileInputStream(args[0]);
 		}
