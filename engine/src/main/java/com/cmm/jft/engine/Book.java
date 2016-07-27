@@ -31,6 +31,9 @@ import com.cmm.logging.Logging;
 
 import quickfix.Message;
 import quickfix.SessionID;
+import quickfix.field.SecurityExchange;
+import quickfix.field.SecurityID;
+import quickfix.field.SecurityIDSource;
 
 /**
  * <p><code>Book.java</code></p>
@@ -61,7 +64,13 @@ public class Book implements MessageSender {
 		this.protectionLevel = protectionLevel;
 		this.security = SecurityService.getInstance().provideSecurity(symbol);
 		this.validOrderTypes = orderTypes;
-		this.orderMatcher = new OrderMatcher(matchType, this.protectionLevel);
+		
+		UMDF umdf = new UMDF(
+				security.getSecurityID().toString(),
+				security.getSecurityIDSrc() + "",
+				security.getStockExchangeID().getStockExchangeID());
+		
+		this.orderMatcher = new OrderMatcher(matchType, this.protectionLevel, umdf);
 		this.buyQueue = orderMatcher.getBuyQueue();
 		this.sellQueue = orderMatcher.getSellQueue();
 	}

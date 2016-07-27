@@ -47,8 +47,8 @@ public class SessionRepository {
 		sessions.get(stream).remove(sessionID.getSenderCompID());
 	}
 	
-	public SessionID getSession(StreamTypes stream, String partyID) {
-		return sessions.get(stream).get(partyID);
+	public SessionID getSession(StreamTypes stream, String traderID) {
+		return sessions.get(stream).get(traderID);
 	}
 	
 	public HashMap<String, SessionID> getSessions(StreamTypes stream){

@@ -74,13 +74,16 @@ public class OrderMatcher implements MessageSender {
 	
 	private double sumPriceVolume;
 	
+	private UMDF umdf;
+	
 	private double protectionLevel;
 	private PriorityBlockingQueue<Orders> buyQueue;
 	private PriorityBlockingQueue<Orders> sellQueue;
 	private ConcurrentHashMap<String, Orders> orders;
+	
 
-
-	public OrderMatcher(MatchTypes matchTypes, double protectionLevel) {
+	public OrderMatcher(MatchTypes matchTypes, double protectionLevel, UMDF umdf) {
+		this.umdf = umdf;
 		this.verifyStopOrders = true;
 		this.protectionLevel = protectionLevel;
 		if(matchTypes == MatchTypes.FIFO) {
@@ -223,16 +226,16 @@ public class OrderMatcher implements MessageSender {
 				vwapPrice = sumPriceVolume/totalVolume;
 
 				//recupera a sessao da ordem recebida
-				SessionID orderSession = SessionRepository.getInstance().getSession(StreamTypes.ENTRYPOINT, newOrder.getPartyID());
+				SessionID orderSession = SessionRepository.getInstance().getSession(StreamTypes.ENTRYPOINT, newOrder.getTraderID());
 				Fix44EngineMessageEncoder encoder = (Fix44EngineMessageEncoder) MessageEncoder.getEncoder(orderSession); 
 				send = sendMessage(encoder.executionReport(orderFill), orderSession);
 
 				//recupera a sessao da ordem que estava no book
-				SessionID bookOrderSession = SessionRepository.getInstance().getSession(StreamTypes.ENTRYPOINT, bookOrder.getPartyID());
+				SessionID bookOrderSession = SessionRepository.getInstance().getSession(StreamTypes.ENTRYPOINT, bookOrder.getTraderID());
 				send = sendMessage(encoder.executionReport(bookFill), bookOrderSession);
 				
-				//envia mensagem aos participantes informando a execucao
-				UMDF.getInstance().informTrade(orderFill);
+				//cria um evento de trade e um de vwap para enviar o MD
+				umdf.informTrade(orderFill, bookFill, vwapPrice, totalVolume);
 				
 			}else {
 				throw new OrderException("Error on add executions.");
@@ -439,11 +442,11 @@ public class OrderMatcher implements MessageSender {
 
 		ordr.addExecution(oe);
 
-		SessionID bookOrderSession = SessionRepository.getInstance().getSession(StreamTypes.ENTRYPOINT, ordr.getPartyID());
+		SessionID bookOrderSession = SessionRepository.getInstance().getSession(StreamTypes.ENTRYPOINT, ordr.getTraderID());
 		Fix44EngineMessageEncoder encoder = (Fix44EngineMessageEncoder) MessageEncoder.getEncoder(bookOrderSession);
 		sendMessage(encoder.executionReport(oe), bookOrderSession);
 	}
-
+	
 
 	@Override
 	public boolean sendMessage(Message message, SessionID sessionID) {

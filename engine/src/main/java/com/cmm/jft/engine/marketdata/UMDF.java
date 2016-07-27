@@ -4,6 +4,7 @@
 package com.cmm.jft.engine.marketdata;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
@@ -13,6 +14,7 @@ import com.cmm.jft.engine.enums.StreamTypes;
 import com.cmm.jft.messaging.MarketDataMessageEncoder;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.MessageSender;
+import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
@@ -28,7 +30,6 @@ import quickfix.field.MDEntrySeller;
 import quickfix.field.MDEntrySize;
 import quickfix.field.MDEntryTime;
 import quickfix.field.MDEntryType;
-import quickfix.field.MDStreamID;
 import quickfix.field.MDUpdateAction;
 import quickfix.field.NetChgPrevDay;
 import quickfix.field.RptSeq;
@@ -42,8 +43,8 @@ import quickfix.field.TradeID;
 import quickfix.field.TradeVolume;
 import quickfix.field.TradingSessionID;
 import quickfix.fix44.SecurityList;
-import quickfix.fix50sp2.MarketDataIncrementalRefresh;
-import quickfix.fix50sp2.MarketDataIncrementalRefresh.NoMDEntries;
+import quickfix.fix44.MarketDataIncrementalRefresh;
+import quickfix.fix44.MarketDataIncrementalRefresh.NoMDEntries;
 
 /**
  * <p><code>UMDF.java</code></p>
@@ -53,26 +54,32 @@ import quickfix.fix50sp2.MarketDataIncrementalRefresh.NoMDEntries;
  */
 public class UMDF implements MessageSender {
 	
-	private static UMDF instance;
+	
+	private int sequence;
+	private SecurityID securityID;
+	private SecurityIDSource securityIDSrc;
+	private SecurityExchange exchangeID;
+	
+	private static String stream ="E";
+	private static MDUpdateAction newUA = new MDUpdateAction(MDUpdateAction.NEW);
+	private static MDEntryType tradeET = new MDEntryType(MDEntryType.TRADE);
+	private static MDEntryType vwapET = new MDEntryType(MDEntryType.TRADING_SESSION_VWAP_PRICE);
+	
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	private static SimpleDateFormat stf = new SimpleDateFormat("HH:mm:ss");
 	
 	private MarketDataMessageEncoder encoder;
-
 	
 	
-	private UMDF(){
+	public UMDF(String  secID, String secIDSrc, String exchID){
 		encoder = Fix50SP2MDMessageEncoder.getInstance();
+		
+		securityID = new SecurityID(secID);
+		securityIDSrc = new SecurityIDSource(secIDSrc);
+		exchangeID = new SecurityExchange(exchID);
+				
 	}
-	
-	/**
-	 * @return the instance
-	 */
-	public static synchronized UMDF getInstance() {
-		if (instance == null) {
-			instance = new UMDF();
-		}
-		return instance;
-	}
-	
+		
 	
 	/**
 	 * @param order
@@ -87,50 +94,60 @@ public class UMDF implements MessageSender {
 		
 	}
 	
-	public void informTrade(OrderEvent orderFill){
+	public void informTrade(OrderEvent orderFill, OrderEvent bookFill, double vwap, double totalVolume){
 		
 		//Trade - 2
+		MarketDataIncrementalRefresh.NoMDEntries tradeMD = new NoMDEntries();
+		MarketDataIncrementalRefresh.NoMDEntries vwapMD = new NoMDEntries();
 		
+		Date dt = new Date();
+		MDEntryDate date = new MDEntryDate(dt);
+		MDEntryDate time = new MDEntryDate(dt);
 		
+		tradeMD.set(newUA);
+		tradeMD.set(tradeET);
+		tradeMD.setInt(83, sequence++);
+		tradeMD.set(securityID);
+		tradeMD.set(securityIDSrc);
+		tradeMD.set(exchangeID);
+		tradeMD.setString(1500, stream);
 		
-		MarketDataIncrementalRefresh.NoMDEntries entry = new NoMDEntries();
-		entry.setChar(279, MDUpdateAction.NEW);
-		entry.setChar(269, MDEntryType.TRADE);
-		
-		entry.set(new RptSeq(1));
-		
-		entry.set(new SecurityID(orderFill.getOrderID().getSecurityID().getSecurityID().toString()));
-		entry.set(new SecurityIDSource(""+orderFill.getOrderID().getSecurityID().getSecurityIDSrc()));
-		entry.set(new SecurityExchange(orderFill.getOrderID().getSecurityID().getStockExchangeID().getStockExchangeID()));
-		
-		entry.setChar(1500, 'E');
-		entry.set(new MDEntryPx());
-		entry.set(new MDEntrySize() );
+		tradeMD.set(new MDEntryPx(orderFill.getPrice()));
+		tradeMD.set(new MDEntrySize(orderFill.getVolume()));
 		//(37014, MDEntryType.TRADE);
-		entry.set(new MDEntryDate());
-		entry.set(new MDEntryTime());
+		tradeMD.set(date);
+		tradeMD.set(time);
 		//37016=2014061037017=61:60:23
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		SimpleDateFormat stf = new SimpleDateFormat("HH:mm:ss");
+		tradeMD.setString(37016, sdf.format(orderFill.getOrderID().getOrderDateTime()));
+		tradeMD.setString(37017, stf.format(orderFill.getOrderID().getOrderDateTime()));
 		
-		entry.setString(37016, sdf.format(orderFill.getOrderID().getOrderDateTime()));
-		entry.setString(37017, stf.format(orderFill.getOrderID().getOrderDateTime()));
-		
-		entry.set(new TickDirection());
-		entry.set(new TradeCondition());
-		entry.set(new TradingSessionID() );
-		entry.set(new MDEntryBuyer() );
-		entry.set(new MDEntrySeller());
-		entry.set(new NetChgPrevDay());
-		entry.set(new SellerDays());
-		entry.set(new TradeVolume());
-		entry.set(new TradeID());
+		tradeMD.set(new TickDirection());
+		tradeMD.set(new TradeCondition());
+		tradeMD.set(new TradingSessionID("1") );
+		tradeMD.set(new MDEntryBuyer(orderFill.getContraBroker()));
+		tradeMD.set(new MDEntrySeller(bookFill.getContraBroker()));
+		//tradeMD.set(new NetChgPrevDay());
+		//tradeMD.set(new SellerDays());
+		tradeMD.setDouble(1020, totalVolume);//new TradeVolume()
+		tradeMD.setString(1003, orderFill.getTradeID());//new TradeID()
 		
 		
+		
+		
+		//----------------------------------------------------------
+		vwapMD.set(newUA);
+		vwapMD.set(vwapET);
+		vwapMD.setInt(83, sequence++);
+		vwapMD.set(securityID);
+		vwapMD.set(securityIDSrc);
+		vwapMD.set(exchangeID);
+		vwapMD.setString(1500, stream);
+		vwapMD.set(new MDEntryPx(vwap));
+		vwapMD.set(date);
+		vwapMD.set(time);
 		
 		//encoder.mdIncrementalRefresh();
-		
 		
 		
 		//Trade Volume - B
@@ -141,10 +158,12 @@ public class UMDF implements MessageSender {
 		
 		//Closing Price - 5
 		
-		
 	}
 	
 	public void informNews(String news){
+		
+		//Fix50SP2MDMessageEncoder.getInstance().
+		
 		
 	}
 	

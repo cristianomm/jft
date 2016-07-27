@@ -21,14 +21,9 @@ import quickfix.IncorrectTagValue;
 import quickfix.Message;
 import quickfix.MessageCracker;
 import quickfix.RejectLogon;
-import quickfix.Session;
 import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
-import quickfix.field.NewSeqNo;
-import quickfix.fix44.Heartbeat;
-import quickfix.fix50sp2.MarketDataIncrementalRefresh;
-import quickfix.fix50sp2.SecurityList;
-import quickfix.fix44.SequenceReset;
+import quickfix.fix44.SecurityList;
 
 /**
  * <p><code>InstrumentDefinition.java</code></p>
