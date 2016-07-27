@@ -3,24 +3,27 @@
  */
 package com.cmm.jft.messaging.fix50sp2;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
 import com.cmm.jft.messaging.MarketDataMessageEncoder;
 import com.cmm.jft.security.Security;
 
-import quickfix.Field;
-import quickfix.FieldMap;
 import quickfix.Message;
+import quickfix.field.Headline;
 import quickfix.field.NewSeqNo;
+import quickfix.field.OrigTime;
 import quickfix.field.SecurityReqID;
 import quickfix.field.SecurityRequestResult;
 import quickfix.field.SecurityResponseID;
-import quickfix.fix50sp2.MarketDataIncrementalRefresh;
-import quickfix.fix50sp2.MarketDataIncrementalRefresh.NoMDEntries;
-import quickfix.fix50sp2.MarketDataSnapshotFullRefresh;
-import quickfix.fix50sp2.SecurityList;
-import quickfix.fix50sp2.SecurityStatus;
+import quickfix.field.Text;
+import quickfix.fix44.MarketDataIncrementalRefresh;
+import quickfix.fix44.MarketDataIncrementalRefresh.NoMDEntries;
+import quickfix.fix44.MarketDataSnapshotFullRefresh;
+import quickfix.fix44.News;
+import quickfix.fix44.SecurityList;
+import quickfix.fix44.SecurityStatus;
 import quickfix.fix44.SequenceReset;
 
 /**
@@ -149,6 +152,23 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	public Message heartbeat() {
 		
 		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#news(java.lang.String)
+	 */
+	@Override
+	public Message news(String title, String message) {
+		News news = new News(new Headline(title));
+		news.set(new OrigTime(new Date()));
+		news.setString(6940, "18");
+		news.setString(1474, "pt");
+		
+		News.LinesOfText lines = new News.LinesOfText();
+		lines.set(new Text(message));
+		news.addGroup(lines);
+		
+		return news;
 	}
 
 	

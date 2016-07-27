@@ -28,6 +28,8 @@ public interface MarketDataMessageEncoder extends MessageEncoder {
 	
 	Message securityStatus();
 	
+	Message news(String title, String message);
+	
 	Message nonFixData();
 	
 }

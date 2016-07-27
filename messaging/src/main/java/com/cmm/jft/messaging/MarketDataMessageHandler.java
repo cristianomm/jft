@@ -6,11 +6,11 @@ import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
 import quickfix.fix44.Heartbeat;
 import quickfix.fix44.SequenceReset;
-import quickfix.fix50sp2.MarketDataIncrementalRefresh;
-import quickfix.fix50sp2.MarketDataSnapshotFullRefresh;
-import quickfix.fix50sp2.News;
-import quickfix.fix50sp2.SecurityList;
-import quickfix.fix50sp2.SecurityStatus;
+import quickfix.fix44.MarketDataIncrementalRefresh;
+import quickfix.fix44.MarketDataSnapshotFullRefresh;
+import quickfix.fix44.News;
+import quickfix.fix44.SecurityList;
+import quickfix.fix44.SecurityStatus;
 
 public interface MarketDataMessageHandler extends MessageHandler {
 

@@ -5,10 +5,12 @@ package com.cmm.jft.messaging.fix44;
 
 import java.util.Date;
 
+import quickfix.Group;
 import quickfix.Message;
 import quickfix.field.AvgPx;
 import quickfix.field.BeginSeqNo;
 import quickfix.field.ClOrdID;
+import quickfix.field.ContraBroker;
 import quickfix.field.CumQty;
 import quickfix.field.CxlRejResponseTo;
 import quickfix.field.EncryptMethod;
@@ -20,8 +22,6 @@ import quickfix.field.HeartBtInt;
 import quickfix.field.LeavesQty;
 import quickfix.field.NewPassword;
 import quickfix.field.NewSeqNo;
-import quickfix.field.NoContraBrokers;
-import quickfix.field.NoPartyIDs;
 import quickfix.field.OrdStatus;
 import quickfix.field.OrdType;
 import quickfix.field.OrderID;
@@ -91,8 +91,30 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	private static Fix44EngineMessageEncoder instance;
 	
 	
+	private PartyIDSource partyIDSrc;
+	
+	private PartyID partyIDSL;
+	private PartyRole partyRoleSL;
+	
+	private PartyID partyIDEF;
+	private PartyRole partyRoleEF;
+	
+	private PartyID partyIDET;
+	private PartyRole partyRoleET;
+	
+	
 	private Fix44EngineMessageEncoder() {
 		
+		this. partyIDSrc = new PartyIDSource('D');
+		
+		this.partyIDSL = new PartyID(Configuration.getInstance().getConfiguration("senderLocation").toString());
+		this.partyRoleSL = new PartyRole(54);
+		
+		this.partyIDEF = new PartyID(Configuration.getInstance().getConfiguration("brokerID").toString());
+		this.partyRoleEF = new PartyRole(7);
+		
+		this.partyIDET = new PartyID(Configuration.getInstance().getConfiguration("traderID").toString());
+		this.partyRoleET = new PartyRole(36);
 	}
 	
 	
@@ -106,9 +128,7 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	
 	public static void main(String[] args){
 		
-		
-		
-		System.out.println(new Fix44EngineMessageEncoder().testRequest());
+		System.out.println(new Fix44EngineMessageEncoder().allocationInstruction());
 	}
 	
 	
@@ -117,10 +137,23 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	 */
 	public void addIdFields(Message message) {
 		
-		message.setField(new NoPartyIDs(1));
-		message.setField(new PartyID(Configuration.getInstance().getConfiguration("UserID").toString()));
-		message.setField(new PartyIDSource('D'));
-		message.setField(new PartyRole(0));
+		Group ids = new Group(453,453);
+		ids.setString(448, partyIDSL.getValue());
+		ids.setChar(447, partyIDSrc.getValue());
+		ids.setInt(452, partyRoleSL.getValue());
+		message.addGroup(ids);
+		
+		ids = new AllocationInstruction.NoPartyIDs();
+		ids.setString(448, partyIDEF.getValue());
+		ids.setChar(447, partyIDSrc.getValue());
+		ids.setInt(452, partyRoleEF.getValue());
+		message.addGroup(ids);
+		
+		ids = new AllocationInstruction.NoPartyIDs();
+		ids.setString(448, partyIDET.getValue());
+		ids.setChar(447, partyIDSrc.getValue());
+		ids.setInt(452, partyRoleET.getValue());
+		message.addGroup(ids);
 		
 	}
 	
@@ -190,7 +223,8 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	 */
 	public SequenceReset sequenceReset(){
 		MessageCounter.getInstance().reset();
-		SequenceReset reset = new SequenceReset(new NewSeqNo(MessageCounter.getInstance().getMessageCount()));
+		SequenceReset reset = new SequenceReset(new NewSeqNo(1));
+		
 		return reset;
 	}
 	
@@ -271,9 +305,7 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	 */
 	public ExecutionReport executionReport(OrderEvent execution){
 		
-		ExecutionReport executionReport = new ExecutionReport();
-				
-		executionReport = new ExecutionReport(
+		ExecutionReport executionReport = new ExecutionReport(
 				new OrderID(execution.getOrderID().getClOrdID()), 
 				new ExecID(execution.getOrderEventID()+""),
 				new ExecType(execution.getExecutionType().getValue()), 
@@ -288,11 +320,12 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 		executionReport.set(new OrderQty(execution.getOrderID().getVolume()));
 		
 		if(!execution.getContraBroker().isEmpty()) {
-			executionReport.set(new NoContraBrokers(1));
-			executionReport.setString(375, execution.getContraBroker());
+			ExecutionReport.NoContraBrokers cb = new ExecutionReport.NoContraBrokers();
+			cb.set(new ContraBroker(execution.getContraBroker()));
 		}
 		
 		addIdFields(executionReport);
+		
 		
 		return executionReport;
 	}
@@ -313,24 +346,22 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	 */
 	public NewOrderSingle newOrderSingle(Orders order){
 		
-		NewOrderSingle orderSingle = new NewOrderSingle();
+		NewOrderSingle orderSingle = new NewOrderSingle(
+				new ClOrdID(order.getClOrdID()), new Side(order.getSide().getValue()), 
+				new TransactTime(), new OrdType(order.getOrderType().getValue())
+				);
 		
-		orderSingle.set(new ClOrdID(order.getClOrdID()));
+		addIdFields(orderSingle);
 		
 		orderSingle.set(new Symbol(order.getSecurityID().getSymbol()));
 		orderSingle.set(new SecurityExchange("BVMF"));
-		orderSingle.set(new Side(order.getSide().getValue())); 
-		orderSingle.set(new TransactTime());
 		
 		orderSingle.set(new OrderQty(order.getVolume()));
-		orderSingle.set(new OrdType(order.getOrderType().getValue()));
 		orderSingle.set(new Price(order.getPrice()));
 		orderSingle.set(new TimeInForce(order.getValidityType().getValue()));
 		
 		orderSingle.set(new ExpireDate(((DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).format(order.getDuration())));
 		orderSingle.setString(5149, order.getComment());
-		
-		addIdFields(orderSingle);
 		
 		return orderSingle;
 	}
@@ -341,6 +372,7 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	public OrderCancelReject orderCancelReject(Orders order, RejectTypes reject){
 		
 		OrderCancelReject cancelReject = new OrderCancelReject();
+		
 		if(order!=null) {
 			cancelReject.set(new OrderID(order.getOrderID().toString()));
 			cancelReject.set(new ClOrdID(order.getClOrdID()));
@@ -350,8 +382,6 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 			cancelReject.setInt(453, 0);
 			cancelReject.setString(5149, order.getComment());
 		}
-		
-		addIdFields(cancelReject);
 		
 		return cancelReject;
 	}
@@ -363,8 +393,9 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 		
 		OrderCancelReplaceRequest replaceRequest = new OrderCancelReplaceRequest();
 		
+		addIdFields(replaceRequest);
+		
 		if(order != null) {
-			replaceRequest.set(new NoPartyIDs(0));
 			replaceRequest.set(new OrigClOrdID(order.getOrigClOrdID()));
 			replaceRequest.set(new ClOrdID(order.getClOrdID()));
 			replaceRequest.set(new Symbol(order.getSecurityID().getSymbol()));
@@ -374,8 +405,6 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 			replaceRequest.set(new OrdType(order.getOrderType().getValue()));
 			replaceRequest.setString(5149, order.getComment());
 		}
-		
-		addIdFields(replaceRequest);
 		
 		return replaceRequest;
 	}
@@ -387,16 +416,15 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 		
 		OrderCancelRequest cancelRequest = new OrderCancelRequest();
 		
+		addIdFields(cancelRequest);
+		
 		cancelRequest.set(new OrigClOrdID(order.getOrigClOrdID()));
 		cancelRequest.set(new ClOrdID(order.getClOrdID()));
-		cancelRequest.set(new NoPartyIDs(0));
 		cancelRequest.set(new Symbol(order.getSecurityID().getSymbol()));
 		cancelRequest.set(new Side(order.getSide().getValue()));
 		cancelRequest.set(new TransactTime(new Date()));
 		cancelRequest.set(new OrderQty(order.getVolume()));
 		cancelRequest.setString(5149, order.getComment());
-		
-		addIdFields(cancelRequest);
 		
 		return cancelRequest;
 	}
@@ -461,7 +489,6 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	 */
 	public QuoteRequestReject quoteRequestReject(){
 		QuoteRequestReject requestReject = new QuoteRequestReject();
-
 		
 		addIdFields(requestReject);
 		
@@ -483,7 +510,6 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	 * @see com.cmm.jft.engine.message.MessageEncoder#securityDefinition()
 	 */
 	public SecurityDefinition securityDefinition(){
-		
 		SecurityDefinition securityDefinition = new SecurityDefinition();
 		
 		addIdFields(securityDefinition);
