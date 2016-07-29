@@ -55,6 +55,8 @@ public class FormatterFactory {
 			return new DateTimeFormatter(FormatterTypes.TIME_F2.getFormat());
 		case TIME_F3:
 			return new DateTimeFormatter(FormatterTypes.TIME_F3.getFormat());
+		case TIME_F4:
+			return new DateTimeFormatter(FormatterTypes.TIME_F4.getFormat());
 
 		case DATE_TIME_F1:
 			return new DateTimeFormatter(

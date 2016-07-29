@@ -71,74 +71,79 @@ public enum FormatterTypes {
 	DATE_F10("dd/MM/yyyy", Date.class),
 
 	/**
-	 * hh:mm
+	 * HH:mm
 	 */
-	TIME_F1("hh:mm", Date.class),
+	TIME_F1("HH:mm", Date.class),
 
 	/**
-	 * hh:mm:ss
+	 * HH:mm:ss
 	 */
-	TIME_F2("hh:mm:ss", Date.class),
+	TIME_F2("HH:mm:ss", Date.class),
 
 	/**
-	 * hh:mm:ss,S
+	 * HH:mm:ss,S
 	 */
-	TIME_F3("hh:mm:ss,S", Date.class),
+	TIME_F3("HH:mm:ss,S", Date.class),
 
 	/**
-	 * dd-MM-yy hh:mm
+	 * HH:mm:ss.SSS
 	 */
-	DATE_TIME_F1("dd-MM-yy hh:mm", Date.class),
-
-	/**
-	 * dd-MM-yy hh:mm:ss
-	 */
-	DATE_TIME_F2("dd-MM-yy hh:mm:ss", Date.class),
-
-	/**
-	 * dd-MM-yy hh:mm:ss,S
-	 */
-	DATE_TIME_F3("dd-MM-yy hh:mm:ss,S", Date.class),
-
-	/**
-	 * dd-MM-yyyy hh:mm
-	 */
-	DATE_TIME_F4("dd-MM-yyyy hh:mm", Date.class),
-
-	/**
-	 * dd-MM-yyyy hh:mm:ss
-	 */
-	DATE_TIME_F5("dd-MM-yyyy hh:mm:ss", Date.class),
-
-	/**
-	 * dd-MM-yyyy hh:mm:ss,S
-	 */
-	DATE_TIME_F6("dd-MM-yyyy hh:mm:ss,S", Date.class),
-
-	/**
-	 * yyyy-MM-dd hh:mm
-	 */
-	DATE_TIME_F7("yyyy-MM-dd hh:mm", Date.class),
-
-	/**
-	 * yyyy-MM-dd hh:mm:ss
-	 */
-	DATE_TIME_F8("yyyy-MM-dd hh:mm:ss", Date.class),
-
-	/**
-	 * yyyy-MM-dd hh:mm:ss,S
-	 */
-	DATE_TIME_F9("yyyy-MM-dd hh:mm:ss,S", Date.class),
+	TIME_F4("HH:mm:ss.SSS", Date.class),
 	
 	/**
-	 * yyyy.MM.dd hh:mm
+	 * dd-MM-yy HH:mm
 	 */
-	DATE_TIME_F10("yyyy.MM.dd hh:mm", Date.class),
+	DATE_TIME_F1("dd-MM-yy HH:mm", Date.class),
+
+	/**
+	 * dd-MM-yy HH:mm:ss
+	 */
+	DATE_TIME_F2("dd-MM-yy HH:mm:ss", Date.class),
+
+	/**
+	 * dd-MM-yy HH:mm:ss,SSS
+	 */
+	DATE_TIME_F3("dd-MM-yy HH:mm:ss,SSS", Date.class),
+
+	/**
+	 * dd-MM-yyyy HH:mm
+	 */
+	DATE_TIME_F4("dd-MM-yyyy HH:mm", Date.class),
+
+	/**
+	 * dd-MM-yyyy HH:mm:ss
+	 */
+	DATE_TIME_F5("dd-MM-yyyy HH:mm:ss", Date.class),
+
+	/**
+	 * dd-MM-yyyy HH:mm:ss,SSS
+	 */
+	DATE_TIME_F6("dd-MM-yyyy HH:mm:ss,SSS", Date.class),
+
+	/**
+	 * yyyy-MM-dd HH:mm
+	 */
+	DATE_TIME_F7("yyyy-MM-dd HH:mm", Date.class),
+
+	/**
+	 * yyyy-MM-dd HH:mm:ss
+	 */
+	DATE_TIME_F8("yyyy-MM-dd HH:mm:ss", Date.class),
+
+	/**
+	 * yyyy-MM-dd HH:mm:ss,SSS
+	 */
+	DATE_TIME_F9("yyyy-MM-dd HH:mm:ss,SSS", Date.class),
 	
 	/**
-	 * dd/MM/yyyy hh:mm:ss
+	 * yyyy.MM.dd HH:mm
 	 */
-	DATE_TIME_F11("dd/MM/yyyy hh:mm:ss", Date.class);
+	DATE_TIME_F10("yyyy.MM.dd HH:mm", Date.class),
+	
+	/**
+	 * dd/MM/yyyy HH:mm:ss
+	 */
+	DATE_TIME_F11("dd/MM/yyyy HH:mm:ss", Date.class);
 	
 	
 	
