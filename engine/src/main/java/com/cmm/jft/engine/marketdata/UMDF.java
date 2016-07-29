@@ -99,7 +99,7 @@ public class UMDF implements MessageSender {
 		//Trade - 2
 		MarketDataIncrementalRefresh.NoMDEntries tradeMD = new NoMDEntries();
 		MarketDataIncrementalRefresh.NoMDEntries vwapMD = new NoMDEntries();
-		
+		MarketDataIncrementalRefresh.NoMDEntries[] entries = new NoMDEntries[2];
 		Date dt = new Date();
 		MDEntryDate date = new MDEntryDate(dt);
 		MDEntryDate time = new MDEntryDate(dt);
@@ -147,7 +147,9 @@ public class UMDF implements MessageSender {
 		vwapMD.set(date);
 		vwapMD.set(time);
 		
-		//encoder.mdIncrementalRefresh();
+		
+		
+		encoder.mdIncrementalRefresh(entries);
 		
 		
 		//Trade Volume - B
