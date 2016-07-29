@@ -95,12 +95,12 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#mdIncrementalRefresh()
 	 */
 	@Override
-	public MarketDataIncrementalRefresh mdIncrementalRefresh(HashMap<Integer, Object> values[]) {
+	public MarketDataIncrementalRefresh mdIncrementalRefresh(MarketDataIncrementalRefresh.NoMDEntries entries[]) {
 		
 		MarketDataIncrementalRefresh refresh = new MarketDataIncrementalRefresh();
 		
-		for (int i = 0; i < values.length; i++) {
-			MarketDataIncrementalRefresh.NoMDEntries entry = new NoMDEntries();
+		/*for (int i = 0; i < values.length; i++) {
+			MarketDataIncrementalRefresh.NoMDEntries entry = new MarketDataIncrementalRefresh.NoMDEntries();
 			for(Entry<Integer, Object> e : values[i].entrySet()){
 				/*
 				new int[]{
@@ -108,12 +108,12 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 						1500, 37014, 272, 273, 37016, 37017, 274, 
 						277, 336, 288, 289, 451, 287, 1020, 1003
 						}
-				*/
-			}
-			
-			refresh.addGroup(entry);
-		}
+				
+			}*/
 		
+		for (int i = 0; i < entries.length; i++) {
+			refresh.addGroup(entries[i]);
+		}
 		
 		return refresh;
 	}

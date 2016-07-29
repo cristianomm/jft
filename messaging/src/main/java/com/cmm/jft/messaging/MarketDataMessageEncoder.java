@@ -9,6 +9,7 @@ import com.cmm.jft.security.Security;
 
 import quickfix.Field;
 import quickfix.Message;
+import quickfix.fix44.MarketDataIncrementalRefresh;
 
 /**
  * <p><code>MarketDataMessageEncoder.java</code></p>
@@ -22,7 +23,7 @@ public interface MarketDataMessageEncoder extends MessageEncoder {
 	
 	Message securityList(Security[] securities);
 	
-	Message mdIncrementalRefresh(HashMap<Integer, Object> values[]);
+	Message mdIncrementalRefresh(MarketDataIncrementalRefresh.NoMDEntries entries[]);
 	
 	Message mdSnapShotFullRefresh();
 	
