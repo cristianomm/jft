@@ -71,6 +71,10 @@ public class OrderEvent implements DBObject<OrderEvent> {
 	@Column(name="OrdRejReason")
 	private int ordRejReason;
 	
+	@Column(name="tradeID", length=32)
+	private String tradeID;
+	
+	
 	@Column(name="ContraBroker", length=5)
 	private String contraBroker;
 
@@ -213,6 +217,20 @@ public class OrderEvent implements DBObject<OrderEvent> {
 	
 	public void setExecutionType(ExecutionTypes executionType) {
 		this.executionType = executionType;
+	}
+	
+	/**
+	 * @return the tradeID
+	 */
+	public String getTradeID() {
+		return this.tradeID;
+	}
+	
+	/**
+	 * @param tradeID the tradeID to set
+	 */
+	public void setTradeID(String tradeID) {
+		this.tradeID = tradeID;
 	}
 
 }

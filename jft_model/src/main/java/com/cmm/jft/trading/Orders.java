@@ -127,15 +127,17 @@ public class Orders implements DBObject<Orders> {
 	
 	@Column(name="OrigClOrdID", length=50, updatable=false, nullable=false)
 	private String origClOrdID;
-
-	@Column(name="PartyID", length=50, updatable=false)
-	private String partyID;
 	
-	@Column(name="PartyIdSource", updatable=false, length=50)
-	private char partyIdSource;
 	
-	@Column(name="PartyRole", length=5, updatable=false)
-	private String partyRole;	
+	@Column(name="senderLocation", length=50, updatable=false)
+	private String senderLocation;
+	
+	@Column(name="traderID", updatable=false, length=50)
+	private String traderID;
+	
+	@Column(name="brokerID", length=5, updatable=false)
+	private String brokerID;
+	
 
 	@JoinColumn(name = "securityID", referencedColumnName = "securityID", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -460,28 +462,46 @@ public class Orders implements DBObject<Orders> {
 		return origClOrdID;
 	}
 	
-	public String getPartyID() {
-		return partyID;
+	/**
+	 * @return the brokerID
+	 */
+	public String getBrokerID() {
+		return this.brokerID;
 	}
 	
-	public void setPartyID(String partyID) {
-		this.partyID = partyID;
+	/**
+	 * @return the senderLocation
+	 */
+	public String getSenderLocation() {
+		return this.senderLocation;
 	}
 	
-	public char getPartyIdSource() {
-		return partyIdSource;
+	/**
+	 * @return the traderID
+	 */
+	public String getTraderID() {
+		return this.traderID;
 	}
 	
-	public void setPartyIdSource(char partyIdSource) {
-		this.partyIdSource = partyIdSource;
+	/**
+	 * @param brokerID the brokerID to set
+	 */
+	public void setBrokerID(String brokerID) {
+		this.brokerID = brokerID;
 	}
 	
-	public String getPartyRole() {
-		return partyRole;
+	/**
+	 * @param senderLocation the senderLocation to set
+	 */
+	public void setSenderLocation(String senderLocation) {
+		this.senderLocation = senderLocation;
 	}
 	
-	public void setPartyRole(String partyRole) {
-		this.partyRole = partyRole;
+	/**
+	 * @param traderID the traderID to set
+	 */
+	public void setTraderID(String traderID) {
+		this.traderID = traderID;
 	}
 	
 	/**
@@ -563,16 +583,9 @@ public class Orders implements DBObject<Orders> {
 				+ (side != null ? "side=" + side + ", " : "")
 				+ (comment != null ? "comment=" + comment + ", " : "")
 				+ (clOrdID != null ? "clOrdID=" + clOrdID + ", " : "")
-				+ (origClOrdID != null ? "origClOrdID=" + origClOrdID + ", "
-						: "")
-				+ (partyID != null ? "partyID=" + partyID + ", " : "")
-				+ "partyIdSource="
-				+ partyIdSource
-				+ ", "
-				+ (partyRole != null ? "partyRole=" + partyRole + ", " : "")
+				+ (origClOrdID != null ? "origClOrdID=" + origClOrdID + ", " : "")
 				+ (securityID != null ? "securityID=" + securityID + ", " : "")
-				+ (eventsList != null ? "eventsList=" + eventsList
-						: "") + "]";
+				+ (eventsList != null ? "eventsList=" + eventsList : "") + "]";
 	}
 	
 	/**
