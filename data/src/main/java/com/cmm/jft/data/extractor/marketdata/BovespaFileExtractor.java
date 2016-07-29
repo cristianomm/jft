@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
 
@@ -25,7 +27,10 @@ public abstract class BovespaFileExtractor implements Extractor {
 
 	protected String fileName;
 	protected Scanner scanner;
-
+	
+	protected Pattern pTime = Pattern.compile("[\\d\\d|:]+[.|:|,][\\d]{3}");
+	protected Matcher matcher = pTime.matcher("");
+	
 	public static void main(String[] args) {
 
 		Properties p = new Properties();

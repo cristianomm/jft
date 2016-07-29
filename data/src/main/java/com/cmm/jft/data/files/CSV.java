@@ -9,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
 
@@ -33,6 +35,8 @@ public class CSV {
 	private Scanner scanner;
 	private String fileName;
 	private String encoding;
+	Pattern pattern = Pattern.compile("(.+[^\\s]+)");
+	Matcher matcher;
 	private HashMap<String, ArrayList<String[]>> columns;
 
 	public CSV(String fileName, String delimiter) {
@@ -75,6 +79,7 @@ public class CSV {
 
 	private void startScanner(String encoding) {
 		try {
+			matcher = pattern.matcher("");
 			this.scanner = new Scanner(new FileInputStream(fileName), encoding);
 			this.scanner.useDelimiter(lineDelimiter);
 		} catch (FileNotFoundException e) {
@@ -252,9 +257,15 @@ public class CSV {
 
 	private String removeWhite(String txt) {
 		try {
+			matcher = matcher.reset(txt);
+			if(matcher.find()){
+				txt = matcher.group();
+			}
+			/*
 			while (txt.charAt(txt.length() - 1) == ' ') {
 				txt = txt.substring(0, txt.length() - 1);
-			}
+			}*/
+			
 		} catch (StringIndexOutOfBoundsException e) {
 			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
 		}
