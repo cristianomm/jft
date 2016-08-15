@@ -48,7 +48,7 @@ public class Security implements DBObject<Security> {
 	@Column(name = "securityID", nullable = false)
 	private Integer securityID;
 	
-	@Column(name = "SecurityIDSrc", nullable = false, length = 1)
+	@Column(name = "SecurityIDSrc", nullable = true, length = 1)
 	private char securityIDSrc;
 
 	@Basic(optional = false)
@@ -68,7 +68,7 @@ public class Security implements DBObject<Security> {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "securityID", fetch = FetchType.LAZY)
 	private Set<HistoricalQuote> historicalQuoteSet;
 
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private SecurityInfo securityInfoID;
 	
 	@JoinColumn(name = "stockExchangeID", referencedColumnName = "stockExchangeID", nullable = false)
@@ -76,6 +76,7 @@ public class Security implements DBObject<Security> {
 	private StockExchange stockExchangeID;
 
 	public Security() {
+		this.securityIDSrc = '0';
 		this.ordersSet = new HashSet<Orders>();
 		this.marketOrderSet = new HashSet<MarketOrder>();
 		this.historicalQuoteSet = new HashSet<HistoricalQuote>();
@@ -83,6 +84,7 @@ public class Security implements DBObject<Security> {
 
 	public Security(String symbol) {
 		this.symbol = symbol;
+		this.securityIDSrc = '0';
 		this.ordersSet = new HashSet<Orders>();
 		this.marketOrderSet = new HashSet<MarketOrder>();
 		this.historicalQuoteSet = new HashSet<HistoricalQuote>();

@@ -107,7 +107,7 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 	private int stepVolume;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "ObjectAsset", length = 1)
+	@Column(name = "ObjectAsset", length = 30)
 	private AssetTypes objectAsset;	
 
 	@Enumerated(EnumType.STRING)

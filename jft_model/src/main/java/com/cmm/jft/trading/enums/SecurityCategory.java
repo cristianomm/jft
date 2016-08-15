@@ -75,7 +75,7 @@ public enum SecurityCategory {
 	}
 	
 	public static SecurityCategory getByISIN(String isin){
-		SecurityCategory category =  null;
+		SecurityCategory category = null;
 		
 		//BRVALEACNPA3
 		//BR
