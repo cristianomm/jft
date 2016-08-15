@@ -478,7 +478,7 @@ public class DBFacade {
 		return _listResults(namedQuery, params);
 	}
 
-	public void _trucateTable(String table) throws DataBaseException {
+	public void _truncateTable(String table) throws DataBaseException {
 		int ret=0;
 		Session session = null;
 		try {
