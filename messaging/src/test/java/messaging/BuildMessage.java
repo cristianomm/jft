@@ -3,12 +3,17 @@
  */
 package messaging;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import quickfix.ConfigError;
 import quickfix.DataDictionary;
 import quickfix.DefaultMessageFactory;
 import quickfix.InvalidMessage;
 import quickfix.Message;
 import quickfix.MessageUtils;
+import quickfix.field.CheckSum;
 
 /**
  * <p><code>BuildMessage.java</code></p>
@@ -23,13 +28,19 @@ public class BuildMessage {
 	 */
 	public static void main(String[] args) {
 		
-		String msg = "8=FIX.4.49=10535=A34=149=FIXGatewayDerivatives_MD52=20071106-19:12:37.79856=TradingEngineDerivativesA98=0108=12010=129";
-		Message m;
 		try {
 			String p = "C:\\Disco\\Workspaces\\JFT\\jft_modules\\doc\\process\\bmfbovespa\\EntryPoint\\FIX44EntrypointGatewayDerivatives.xml";
-			m = MessageUtils.parse(new DefaultMessageFactory(), new DataDictionary(p), msg);
-			System.out.println(MessageUtils.getMessageType(msg));
-		} catch (InvalidMessage | ConfigError e) {
+			DefaultMessageFactory dmf =  new DefaultMessageFactory();
+			DataDictionary dd = new DataDictionary(p);
+			Scanner sc = new Scanner(new File("C:\\Disco\\Bancos\\BM&FBovespa\\MarketData\\BMF\\apphmb\\intraday\\OFFERS.TXT"));
+			String msg = "";
+			while(sc.hasNextLine()){
+				msg = sc.nextLine();
+				Message m = MessageUtils.parse(dmf, dd, msg);
+				System.out.println(MessageUtils.getMessageType(msg));
+				//System.out.println(m);
+			}
+		} catch (InvalidMessage | ConfigError | FileNotFoundException e) {
 			e.printStackTrace();
 		}
 
