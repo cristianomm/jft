@@ -21,5 +21,6 @@
     <module>searchbox</module>
     <module>marketdata_connector</module>
     <module>services</module>
+    <module>market_data</module>
   </modules>
 </project>
