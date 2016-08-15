@@ -44,6 +44,6 @@
       <Label layoutX="234.0" layoutY="190.0" text="Loss" />
       <Spinner fx:id="spnProfit" layoutX="81.0" layoutY="188.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
       <Label layoutX="15.0" layoutY="190.0" text="Profit" />
-      <Button fx:id="btnSrchSymbol" layoutX="192.0" layoutY="23.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="30.0" />
+      <Button fx:id="btnSrchSymbol" layoutX="192.0" layoutY="26.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" />
    </children>
 </Pane>
