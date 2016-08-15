@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Properties;
 import java.util.Queue;
@@ -19,10 +20,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
+import com.cmm.jft.data.connection.Events;
 import com.cmm.jft.data.extractor.marketdata.BovespaOfferFileExtractor;
 import com.cmm.jft.data.extractor.marketdata.BovespaTradeFileExtractor;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
@@ -131,7 +135,7 @@ public class FIXLogCreator {
 		String sellFileName = path + "OFER_VDA_BMF_20160118_WDOG16 - 100.TXT";
 		String tradeFileName = path + "NEG_BMF_20160118_WDOG16 - 100.TXT";
 		String symbol = "WDOG16";
-		new FIXLogCreator().fromMDFile(buyFileName, sellFileName, tradeFileName, symbol);
+		new FIXLogCreator().logFromClient(buyFileName, sellFileName, tradeFileName, symbol);
 	}
 	
 	
@@ -223,7 +227,30 @@ public class FIXLogCreator {
 		// sao ordens do tipo Fill Or Kill
 		TreeMap<Date, EventsEntry> mapentries = loadMDFiles(buyFileName, sellFileName, tradeFileName, symbol);
 		
-		//Fix44EngineMessageEncoder.getInstance().
+		
+		for(EventsEntry ee : mapentries.values()){
+			//agrupa por tipo de evento
+			Map<String, List<OrderEventVO>> resB = ee.buy.stream().collect(
+					Collectors.groupingBy(OrderEventVO::getOrderEvent)
+					);
+			
+			Map<String, List<OrderEventVO>> resS = ee.sell.stream().collect(
+					Collectors.groupingBy(OrderEventVO::getOrderEvent)
+					);
+			
+			if(resB.size() > 0){
+				resB.values().stream().count();
+			}
+			
+			if(resS.size() > 0){
+				
+			}
+			
+			
+			
+			
+		}
+		
 		
 	}
 
@@ -238,6 +265,8 @@ public class FIXLogCreator {
 	 */
 	public void fromMDFile(String buyFileName, String sellFileName, String tradeFileName, String symbol){
 		TreeMap<Date, EventsEntry> mapentries = loadMDFiles(buyFileName, sellFileName, tradeFileName, symbol);
+		
+		
 		
 	}
 	

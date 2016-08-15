@@ -47,7 +47,7 @@ public class CSV {
 		this.fileName = fileName;
 		startScanner("UTF8");
 	}
-	
+
 	public CSV(String fileName, String delimiter, String headerPrefix) {
 		this.footerPrefix = "";
 		this.headerPrefix = headerPrefix;
@@ -57,8 +57,7 @@ public class CSV {
 		startScanner("UTF8");
 	}
 
-	public CSV(String fileName, String delimiter, String headerPrefix,
-			String footerPrefix) {
+	public CSV(String fileName, String delimiter, String headerPrefix, String footerPrefix) {
 		this.headerPrefix = headerPrefix;
 		this.footerPrefix = footerPrefix;
 		this.lineDelimiter = "\n";
@@ -67,8 +66,7 @@ public class CSV {
 		startScanner("UTF8");
 	}
 
-	public CSV(String fileName, String delimiter, String headerPrefix,
-			String footerPrefix, String lineDelimiter) {
+	public CSV(String fileName, String delimiter, String headerPrefix, String footerPrefix, String lineDelimiter) {
 		this.headerPrefix = headerPrefix;
 		this.footerPrefix = footerPrefix;
 		this.lineDelimiter = lineDelimiter;
@@ -147,20 +145,34 @@ public class CSV {
 	public void setFooterPrefix(String footerPrefix) {
 		this.footerPrefix = footerPrefix;
 	}
-	
+
 	/**
 	 * @return the encoding
 	 */
 	public String getEncoding() {
 		return this.encoding;
 	}
-	
+
 	/**
-	 * @param encoding the encoding to set
+	 * @param encoding
+	 *            the encoding to set
 	 */
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
 		startScanner(encoding);
+	}
+	
+	private String removeNullChars(String line){
+		line = line.replaceAll("\0", "");
+		/*int i=0;
+		byte nb = 0;//"".getBytes()[0];
+		byte lineByte[] = new byte[line.getBytes().length];
+		for(byte b : line.getBytes()){
+			lineByte[i++] = b == 0x00? nb: b; 
+			
+		}
+		line = new String(lineByte);*/
+		return line;
 	}
 
 	/**
@@ -179,18 +191,15 @@ public class CSV {
 
 			while (scanner.hasNext()) {
 				String line = scanner.next();
-
-				if (line.startsWith(headerPrefix) && headerPrefix != null
-						&& !headerPrefix.equalsIgnoreCase("")) {
+				
+				if (line.startsWith(headerPrefix) && headerPrefix != null && !headerPrefix.equalsIgnoreCase("")) {
 					line = scanner.next();
 				}
-				if (line.startsWith(footerPrefix) && footerPrefix != null
-						&& !footerPrefix.equalsIgnoreCase("")) {
+				if (line.startsWith(footerPrefix) && footerPrefix != null && !footerPrefix.equalsIgnoreCase("")) {
 					line = scanner.next();
 				}
 
-				line = line.replaceAll("\r", "").replaceAll("\n", "")
-						.replaceAll(";", "; ");
+				line = line.replaceAll("\r", "").replaceAll("\n", "").replaceAll(";", "; ");
 				String[] l = line.split(delimiter);
 				for (int i = 0; i < l.length; i++) {
 					l[i] = removeWhite(l[i]);
@@ -224,12 +233,10 @@ public class CSV {
 			if (scanner.hasNext()) {
 				String line = scanner.next();
 
-				if (line.startsWith(headerPrefix) && headerPrefix != null
-						&& !headerPrefix.equalsIgnoreCase("")) {
+				if (line.startsWith(headerPrefix) && headerPrefix != null && !headerPrefix.equalsIgnoreCase("")) {
 					line = scanner.next();
 				}
-				if (line.startsWith(footerPrefix) && footerPrefix != null
-						&& !footerPrefix.equalsIgnoreCase("")) {
+				if (line.startsWith(footerPrefix) && footerPrefix != null && !footerPrefix.equalsIgnoreCase("")) {
 					line = scanner.next();
 				}
 
@@ -257,15 +264,20 @@ public class CSV {
 
 	private String removeWhite(String txt) {
 		try {
-			matcher = matcher.reset(txt);
-			if(matcher.find()){
-				txt = matcher.group();
+
+			if (txt == null) {
+				txt = "";
+			} else {
+				matcher = matcher.reset(txt);
+				if (matcher.find()) {
+					txt = matcher.group();
+				}
 			}
 			/*
-			while (txt.charAt(txt.length() - 1) == ' ') {
-				txt = txt.substring(0, txt.length() - 1);
-			}*/
-			
+			 * while (txt.charAt(txt.length() - 1) == ' ') { txt =
+			 * txt.substring(0, txt.length() - 1); }
+			 */
+
 		} catch (StringIndexOutOfBoundsException e) {
 			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
 		}
