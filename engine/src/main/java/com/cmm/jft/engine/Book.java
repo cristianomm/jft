@@ -3,16 +3,20 @@
  */
 package com.cmm.jft.engine;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Level;
 
 import com.cmm.jft.engine.enums.MatchTypes;
 import com.cmm.jft.engine.marketdata.UMDF;
 import com.cmm.jft.engine.match.OrderMatcher;
+import com.cmm.jft.engine.match.PriceTimeComparator;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.MessageSender;
@@ -29,6 +33,9 @@ import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
 
+import java.util.Map;
+import java.util.SortedMap;
+
 import quickfix.Message;
 import quickfix.SessionID;
 import quickfix.field.SecurityExchange;
@@ -43,14 +50,16 @@ import quickfix.field.SecurityIDSource;
  */
 public class Book implements MessageSender {
 	
-	
+		
 	private int orderCount;
 	private double protectionLevel;
 	private Security security;
 	private OrderMatcher orderMatcher;
 	private HashSet<String> validOrderTypes;
-	private PriorityBlockingQueue<Orders> buyQueue;
-	private PriorityBlockingQueue<Orders> sellQueue;
+	private SortedMap<Double, SortedMap<String, Orders>> buyQueue;
+	private SortedMap<Double, SortedMap<String, Orders>> sellQueue;
+	
+	
 	
 	/**
 	 * Stop orders will remain in this queue while stop price
@@ -71,8 +80,8 @@ public class Book implements MessageSender {
 				security.getStockExchangeID().getStockExchangeID());
 		
 		this.orderMatcher = new OrderMatcher(matchType, this.protectionLevel, umdf);
-		this.buyQueue = orderMatcher.getBuyQueue();
-		this.sellQueue = orderMatcher.getSellQueue();
+		this.buyQueue = orderMatcher.getBuyOrders();
+		this.sellQueue = orderMatcher.getSellOrders();
 	}
 
 	public Security getSecurity() {
@@ -146,7 +155,16 @@ public class Book implements MessageSender {
 		return isValid;
 	}
 
-
+	
+	
+	/**
+	 * Salva o estado do book para poder informar
+	 */
+	private void takeSnapshot(){
+		
+		
+		
+	}
 
 	public boolean addOrder(Orders order, SessionID sessionID) {
 		boolean added = false;
@@ -157,13 +175,14 @@ public class Book implements MessageSender {
 				order.setOrderStatus(OrderStatus.SUSPENDED);
 			}
 			
-			//ainda nao adicionou no book, deve primeiro verificar se pode executar 
-			//antes de inserir no book
+			//ainda nao adicionou no book, deve primeiro verificar 
+			//se a ordem poderá ser executada antes de inserir no book
 			if(added) {
-				//envia mensagem informando que a ordem foi aceita
+				//envia mensagem informando que a ordem foi aceita pelo book
 				OrderEvent oe = new OrderEvent(ExecutionTypes.NEW, new Date(), order.getVolume(), order.getPrice());
 				oe.setMessage("Order received");
 				oe.setOrderID(order);
+				
 				order.addExecution(oe);
 				
 				sendMessage(((Fix44EngineMessageEncoder)MessageEncoder.getEncoder(sessionID)).executionReport(oe), sessionID);
@@ -190,19 +209,23 @@ public class Book implements MessageSender {
 	
 	public void cancelOrder(Orders ordr) {
 		
+		
+		try {
+			orderMatcher.cancelOrder(ordr, false);
+		} catch (OrderException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	public void replaceOrder(Orders ordr){
 		if(ordr.getSide() == Side.BUY){
-			buyQueue.forEach(o -> o.getClOrdID().equals(ordr.getClOrdID()));
-			
+			//buyQueue.forEach(o -> o.getClOrdID().equals(ordr.getClOrdID()));
 		}
 		else{
-			sellQueue.forEach(o -> o.getClOrdID().equals(ordr.getClOrdID()));
+			//sellQueue.forEach(o -> o.getClOrdID().equals(ordr.getClOrdID()));
 		}
-		
-		
-		
 		
 		
 		//TERMINAR:
@@ -215,12 +238,61 @@ public class Book implements MessageSender {
 	
 	public void closeBook() {
 		
-		buyQueue.forEach(o -> cancelOrder(o));
-		sellQueue.forEach(o -> cancelOrder(o));
+		//buyQueue.forEach(o -> cancelOrder(o));
+		//sellQueue.forEach(o -> cancelOrder(o));
 		
 	}	
 	
-
+	
+	/**
+	 * 
+	 */
+	private void MBO(){
+		
+	}
+	
+	
+	/**
+	 * Agrupa as ordens por niveis de preco
+	 */
+	private void MBP(){
+		
+		//preco | volume | qt ordens
+		List<Double[]> buy = new ArrayList<>();
+		buyQueue.values()
+		.forEach(
+				tm -> buy.add(
+						new Double[]{
+								tm.values().iterator().next().getPrice(), 
+								tm.values().stream().collect(Collectors.summingDouble(Orders::getLeavesVolume)),
+								tm.size() + .0
+						})
+				);
+		
+		List<Double[]> sell = new ArrayList<>();
+		sellQueue.values()
+		.forEach(
+				tm -> sell.add(
+						new Double[]{
+								tm.values().iterator().next().getPrice(), 
+								tm.values().stream().collect(Collectors.summingDouble(Orders::getLeavesVolume)),
+								tm.size() + .0
+						})
+				);
+		
+		
+		
+	}
+	
+	/**
+	 * Recupera as 10 primeiras ordens de cada lado
+	 */
+	private void  TOB(){
+		
+		
+		
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.engine.message.MessageSender#sendMessage(quickfix.Message, quickfix.SessionID)

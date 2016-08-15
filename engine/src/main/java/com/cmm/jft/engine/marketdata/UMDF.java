@@ -96,6 +96,8 @@ public class UMDF implements MessageSender {
 	
 	public void informTrade(OrderEvent orderFill, OrderEvent bookFill, double vwap, double totalVolume){
 		
+		
+		//----------------------------------------------------------
 		//Trade - 2
 		MarketDataIncrementalRefresh.NoMDEntries tradeMD = new NoMDEntries();
 		MarketDataIncrementalRefresh.NoMDEntries vwapMD = new NoMDEntries();
@@ -136,6 +138,7 @@ public class UMDF implements MessageSender {
 		
 		
 		//----------------------------------------------------------
+		//Trading session High/Low/VWAP Price - 7/8/9
 		vwapMD.set(newUA);
 		vwapMD.set(vwapET);
 		vwapMD.setInt(83, sequence++);
@@ -153,8 +156,6 @@ public class UMDF implements MessageSender {
 		
 		
 		//Trade Volume - B
-		
-		//Trading session High/Low/VWAP Price - 7/8/9
 		
 		//Opening Price - 4
 		

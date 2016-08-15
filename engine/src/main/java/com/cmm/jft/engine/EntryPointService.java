@@ -35,6 +35,7 @@ public class EntryPointService extends EngineService {
 	public static void main(String[] args) {
 		EntryPointService listener = new EntryPointService();
 		listener.start();
+			
 	}
 	
 

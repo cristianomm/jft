@@ -4,8 +4,11 @@
 package com.cmm.jft.engine.match;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -39,9 +42,9 @@ public class OrderMatcher implements MessageSender {
 
 	private class StopOrderReleaser implements Runnable {
 
-		private PriorityBlockingQueue<Orders> queue;
+		private SortedMap<Double, SortedMap<String,Orders>> queue;
 
-		public StopOrderReleaser(PriorityBlockingQueue<Orders> queue) {
+		public StopOrderReleaser(SortedMap<Double, SortedMap<String,Orders>> queue) {
 			this.queue = queue;
 		}
 
@@ -49,12 +52,12 @@ public class OrderMatcher implements MessageSender {
 		public void run() {
 
 			while(verifyStopOrders) {
-				queue.stream().filter(
+				queue.values().parallelStream()
+				.forEach(m -> m.values().stream().filter(
 						o -> o.getWorkingIndicator() == WorkingIndicator.No_Working && 
 						o.getStopPrice() == lastPrice)
 				.forEach(o -> o.setWorkingIndicator(WorkingIndicator.Working)
-						);
-
+						));
 			}
 		}
 
@@ -77,24 +80,30 @@ public class OrderMatcher implements MessageSender {
 	private UMDF umdf;
 	
 	private double protectionLevel;
-	private PriorityBlockingQueue<Orders> buyQueue;
-	private PriorityBlockingQueue<Orders> sellQueue;
-	private ConcurrentHashMap<String, Orders> orders;
+	//private PriorityBlockingQueue<Orders> buyQueue;
+	//private PriorityBlockingQueue<Orders> sellQueue;
+	//private ConcurrentHashMap<String, Orders> orders;
 	
+	
+	private SortedMap<Double, SortedMap<String, Orders>> buyOrders;
+	private SortedMap<Double, SortedMap<String, Orders>> sellOrders;
 
 	public OrderMatcher(MatchTypes matchTypes, double protectionLevel, UMDF umdf) {
 		this.umdf = umdf;
 		this.verifyStopOrders = true;
 		this.protectionLevel = protectionLevel;
 		if(matchTypes == MatchTypes.FIFO) {
-			this.orders = new ConcurrentHashMap<>(1000000);
-			this.buyQueue = new PriorityBlockingQueue<>(1000000, new PriceTimeComparator());
-			this.sellQueue = new PriorityBlockingQueue<>(1000000, new PriceTimeComparator());
+			//this.orders = new ConcurrentHashMap<>(1000000);
+			//this.buyQueue = new PriorityBlockingQueue<>(1000000, new PriceTimeComparator());
+			//this.sellQueue = new PriorityBlockingQueue<>(1000000, new PriceTimeComparator());
+			buyOrders = Collections.synchronizedSortedMap(new TreeMap<Double, SortedMap<String, Orders>>());
+			sellOrders = Collections.synchronizedSortedMap(new TreeMap<Double, SortedMap<String, Orders>>());
+			
 		}
 
 		//inicializa os verificadores de ordens stop
-		new Thread(new StopOrderReleaser(buyQueue)).start();
-		new Thread(new StopOrderReleaser(sellQueue)).start();
+		new Thread(new StopOrderReleaser(buyOrders)).start();
+		new Thread(new StopOrderReleaser(sellOrders)).start();
 
 	}
 
@@ -144,18 +153,19 @@ public class OrderMatcher implements MessageSender {
 	
 
 	/**
-	 * @return the buyQueue
+	 * @return the buyOrders
 	 */
-	public PriorityBlockingQueue<Orders> getBuyQueue() {
-		return this.buyQueue;
+	public SortedMap<Double, SortedMap<String, Orders>> getBuyOrders() {
+		return this.buyOrders;
 	}
 
 	/**
-	 * @return the sellQueue
+	 * @return the sellOrders
 	 */
-	public PriorityBlockingQueue<Orders> getSellQueue() {
-		return this.sellQueue;
+	public SortedMap<Double, SortedMap<String, Orders>> getSellOrders() {
+		return this.sellOrders;
 	}
+	
 
 	public boolean addOrder(Orders order) throws OrderException {
 		boolean add = false;
@@ -169,13 +179,19 @@ public class OrderMatcher implements MessageSender {
 		boolean add = false;
 
 		if(ordr.getSide() == Side.BUY) {
-			add = buyQueue.offer(ordr);
+			if(!buyOrders.containsKey(ordr.getPrice())){
+				buyOrders.put(ordr.getPrice(), 
+						Collections.synchronizedSortedMap(new TreeMap<String, Orders>()));
+			}
+			add = buyOrders.get(ordr.getPrice()).put(ordr.getClOrdID(), ordr) != null;
 		}
 		else {
-			add = sellQueue.offer(ordr);
+			if(!sellOrders.containsKey(ordr.getPrice())){
+				sellOrders.put(ordr.getPrice(), 
+						Collections.synchronizedSortedMap(new TreeMap<String, Orders>()));
+			}
+			add = sellOrders.get(ordr.getPrice()).put(ordr.getClOrdID(), ordr) != null;
 		}
-
-		orders.put(ordr.getClOrdID(), ordr);
 
 		return add;
 	}
@@ -225,6 +241,7 @@ public class OrderMatcher implements MessageSender {
 				sumPriceVolume += lastPrice * lastVolume;
 				vwapPrice = sumPriceVolume/totalVolume;
 
+				//envia os  executionReport para os participantes
 				//recupera a sessao da ordem recebida
 				SessionID orderSession = SessionRepository.getInstance().getSession(StreamTypes.ENTRYPOINT, newOrder.getTraderID());
 				Fix44EngineMessageEncoder encoder = (Fix44EngineMessageEncoder) MessageEncoder.getEncoder(orderSession); 
@@ -236,6 +253,9 @@ public class OrderMatcher implements MessageSender {
 				
 				//cria um evento de trade e um de vwap para enviar o MD
 				umdf.informTrade(orderFill, bookFill, vwapPrice, totalVolume);
+				
+				//informa ao mercado a alteracao na ordem que estava no book
+				umdf.informUpdateOrder(bookOrder);
 				
 			}else {
 				throw new OrderException("Error on add executions.");
@@ -249,13 +269,8 @@ public class OrderMatcher implements MessageSender {
 		return send;
 	}
 
-	private PriorityBlockingQueue<Orders> getCounterpartyBookOrders(Side side) {
-
-		if(side == Side.BUY) {
-			return sellQueue;
-		}
-
-		return buyQueue;
+	private SortedMap<Double, SortedMap<String, Orders>> getCounterpartyBookOrders(Side side) {
+		return (side == Side.BUY)? sellOrders : buyOrders;
 	}
 
 	private void adjustProtectionPrice(Orders ordr) {
@@ -303,7 +318,7 @@ public class OrderMatcher implements MessageSender {
 	private boolean generalExecute(Orders ordr, double orderPrice, double orderVolume) {
 		boolean exec = false;
 
-		PriorityBlockingQueue<Orders> bookOrders = getCounterpartyBookOrders(ordr.getSide());
+		//SortedMap<Double, SortedMap<String, Orders>> bookOrders = getCounterpartyBookOrders(ordr.getSide());
 		List<OrderEvent> execs = createExecutions(ordr.getSide(), orderPrice, orderVolume);
 		try {
 			//verifica se pode executar a ordem 
@@ -312,14 +327,19 @@ public class OrderMatcher implements MessageSender {
 				for(OrderEvent ex:execs) {
 
 					//recupera a ordem
-					Orders bookOrdr = orders.get(ex.getOrderID().getClOrdID());
-
+					Orders bookOrdr = null;
+					if(ordr.getSide() == Side.BUY){
+						bookOrdr = buyOrders.get(ordr.getPrice()).get(ordr.getClOrdID());
+					}else{
+						bookOrdr = sellOrders.get(ordr.getPrice()).get(ordr.getClOrdID());
+					}
+					
 					//adiciona as execucoes e as informa para os participantes
 					exec = fillOrders(ordr, bookOrdr, ex.getVolume(), ex.getPrice());
 
 					//remove the filled order from book
 					if(bookOrdr.getOrderStatus() != OrderStatus.PARTIALLY_FILLED) {
-						orders.remove(ex.getOrderID());
+						cancelOrder(ordr, false);
 					}
 					else {//
 						bookOrdr.setWorkingIndicator(WorkingIndicator.Working);
@@ -348,7 +368,7 @@ public class OrderMatcher implements MessageSender {
 			}
 
 		}catch(OrderException e) {
-
+			e.printStackTrace();
 		}
 
 
@@ -366,29 +386,32 @@ public class OrderMatcher implements MessageSender {
 	private ArrayList<OrderEvent> createExecutions(Side side, double price, double volume) {
 
 		ArrayList<OrderEvent> lst = new ArrayList<OrderEvent>();
-		PriorityBlockingQueue<Orders> ordrs = getCounterpartyBookOrders(side);
-
+		SortedMap<Double, SortedMap<String, Orders>> ordrs = getCounterpartyBookOrders(side);	
+		
 		double cumVolume = 0;
-		while(ordrs.iterator().hasNext() && cumVolume < volume) {
-
-			Orders bookOrder = ordrs.iterator().next(); 
-			if(bookOrder.getWorkingIndicator() == WorkingIndicator.Working) {
-				bookOrder.setWorkingIndicator(WorkingIndicator.No_Working);
-				double qtyToFill = 0;
-				double priceToFill = bookOrder.getPrice();
-
-				if(volume >= bookOrder.getLeavesVolume()) {
-					qtyToFill = bookOrder.getLeavesVolume();
-				}
-				else {
-					qtyToFill = volume;
-				}
-
-				if(cumVolume < volume && priceToFill <= price) {
-					cumVolume += qtyToFill;
-					OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, qtyToFill, priceToFill);
-					fill.setOrderID(bookOrder);
-					lst.add(fill);
+		
+		for(SortedMap<String, Orders> tm : ordrs.values()) {
+			while(tm.values().iterator().hasNext() && cumVolume < volume) {
+	
+				Orders bookOrder = tm.values().iterator().next(); 
+				if(bookOrder.getWorkingIndicator() == WorkingIndicator.Working) {
+					bookOrder.setWorkingIndicator(WorkingIndicator.No_Working);
+					double qtyToFill = 0;
+					double priceToFill = bookOrder.getPrice();
+	
+					if(volume >= bookOrder.getLeavesVolume()) {
+						qtyToFill = bookOrder.getLeavesVolume();
+					}
+					else {
+						qtyToFill = volume;
+					}
+	
+					if(cumVolume < volume && priceToFill <= price) {
+						cumVolume += qtyToFill;
+						OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, qtyToFill, priceToFill);
+						fill.setOrderID(bookOrder);
+						lst.add(fill);
+					}
 				}
 			}
 		}
@@ -431,8 +454,14 @@ public class OrderMatcher implements MessageSender {
 	}
 
 
-	private void cancelOrder(Orders ordr, boolean expire) throws OrderException {
-
+	public void cancelOrder(Orders ordr, boolean expire) throws OrderException {
+		
+		if(ordr.getSide() == Side.BUY){
+			buyOrders.get(ordr.getPrice()).remove(ordr.getClOrdID());
+		}else{
+			sellOrders.get(ordr.getPrice()).remove(ordr.getClOrdID());
+		}
+		
 		OrderEvent oe = new OrderEvent(ExecutionTypes.CANCELED, ordr.getVolume(), ordr.getPrice());
 		oe.setMessage("Order Canceled due to invalid execution.");
 		if(expire) {
