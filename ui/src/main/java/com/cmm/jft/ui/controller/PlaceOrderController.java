@@ -169,7 +169,7 @@ public class PlaceOrderController extends AbstractController {
 				double stopLoss = spnLoss.getValue();
 				double stopGain = spnProfit.getValue();
 				Date duration = Date.from(dtDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-				TradeTypes tradeType =TradeTypes.DAY_TRADE;
+				TradeTypes tradeType = TradeTypes.DAY_TRADE;
 				
 				TradingService.getInstance().newOrder(
 						orderType, Side.SELL, symbol, 

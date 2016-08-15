@@ -86,7 +86,7 @@ public class BookTableModel extends AbstractTableModel {
 			break;
 			
 		case BROKER:
-			value = ordr.getPartyID();
+			value = ordr.getBrokerID();
 			break;
 			
 		case TIME:
