@@ -17,33 +17,34 @@
             <Font size="11.0" />
          </font></Button>
       <DatePicker fx:id="dtDate" layoutX="286.0" layoutY="128.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <ComboBox fx:id="cmbOrderTypes" layoutX="82.0" layoutY="68.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <Spinner fx:id="spnStop" layoutX="82.0" layoutY="158.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <Spinner fx:id="spnVolume" layoutX="286.0" layoutY="68.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <Spinner fx:id="spnPrice" layoutX="81.0" layoutY="98.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <Label layoutX="15.0" layoutY="70.0" text="Order Type" />
-      <Label layoutX="234.0" layoutY="70.0" text="Volume" />
-      <Label layoutX="15.0" layoutY="100.0" text="Price" />
-      <Label layoutX="15.0" layoutY="160.0" text="Stop" />
-      <Label layoutX="234.0" layoutY="130.0" text="Date" />
-      <Label layoutX="15.0" layoutY="219.0" text="Comment" />
-      <TextField fx:id="txtComment" layoutX="81.0" layoutY="218.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="305.0" />
-      <ComboBox fx:id="cmbValidityTypes" layoutX="286.0" layoutY="98.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0">
+      <ComboBox fx:id="cmbOrderTypes" layoutX="82.0" layoutY="68.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0">
          <padding>
             <Insets bottom="-4.0" />
          </padding></ComboBox>
-      <Label layoutX="234.0" layoutY="100.0" text="Validity" />
+      <Spinner fx:id="spnStop" layoutX="82.0" layoutY="128.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
+      <Spinner fx:id="spnVolume" layoutX="286.0" layoutY="98.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
+      <Spinner fx:id="spnPrice" layoutX="81.0" layoutY="98.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
+      <Label layoutX="15.0" layoutY="70.0" text="Order Type" />
+      <Label layoutX="236.0" layoutY="100.0" text="Volume" />
+      <Label layoutX="15.0" layoutY="100.0" text="Price" />
+      <Label layoutX="15.0" layoutY="130.0" text="Stop" />
+      <Label layoutX="236.0" layoutY="130.0" text="Date" />
+      <Label layoutX="15.0" layoutY="219.0" text="Comment" />
+      <TextField fx:id="txtComment" layoutX="81.0" layoutY="218.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="305.0" />
+      <ComboBox fx:id="cmbValidityTypes" layoutX="286.0" layoutY="68.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0">
+         <padding>
+            <Insets bottom="-4.0" />
+         </padding></ComboBox>
+      <Label layoutX="236.0" layoutY="70.0" text="Validity" />
       <Label layoutX="15.0" layoutY="27.0" text="Security" />
-      <Spinner fx:id="spnLimit" layoutX="82.0" layoutY="128.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <Label layoutX="15.0" layoutY="130.0" text="Limit" />
-      <TextField fx:id="txtSecurity" layoutX="82.0" layoutY="26.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0">
+      <TextField fx:id="txtSecurity" layoutX="82.0" layoutY="26.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="262.0">
          <font>
             <Font size="11.0" />
          </font></TextField>
-      <Spinner fx:id="spnLoss" layoutX="286.0" layoutY="188.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <Label layoutX="234.0" layoutY="190.0" text="Loss" />
-      <Spinner fx:id="spnProfit" layoutX="81.0" layoutY="188.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
-      <Label layoutX="15.0" layoutY="190.0" text="Profit" />
-      <Button fx:id="btnSrchSymbol" layoutX="192.0" layoutY="26.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" />
+      <Spinner fx:id="spnLoss" layoutX="286.0" layoutY="158.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
+      <Label layoutX="236.0" layoutY="160.0" text="Loss" />
+      <Spinner fx:id="spnProfit" layoutX="81.0" layoutY="158.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0" />
+      <Label layoutX="15.0" layoutY="160.0" text="Profit" />
+      <Button fx:id="btnSrchSymbol" layoutX="354.0" layoutY="26.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" />
    </children>
 </Pane>

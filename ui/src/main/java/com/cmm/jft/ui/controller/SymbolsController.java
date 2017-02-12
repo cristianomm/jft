@@ -21,9 +21,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
@@ -36,26 +39,24 @@ public class SymbolsController extends AbstractController {
 
 	@FXML
 	private Button btnOK;
-	
+
 	@FXML
 	private Button btnCancel;
-	
+
 	@FXML
 	private TextField txtSymbol;
-	
+
 	@FXML
 	private TableView<SecurityVO> tblSymbols;
-	
+
 	@FXML
 	private TableColumn<SecurityVO, String> colSymbol;
-	
+
 	@FXML
 	private TableColumn<SecurityVO, String> colDescription;
-	
-	
+
+
 	private ObservableList<SecurityVO> data;
-	
-	private SecurityVO selected;
 	
 	/**
 	 * 
@@ -63,18 +64,18 @@ public class SymbolsController extends AbstractController {
 	public SymbolsController() {
 		this.data = FXCollections.observableArrayList();
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		colSymbol.setCellValueFactory(new PropertyValueFactory<>("symbol"));
 		colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-		
-		txtSymbol.setOnKeyPressed(new EventHandler<Event>() {
+
+		/*txtSymbol.setOnKeyPressed(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
 				if(txtSymbol.getText().length()>1){
@@ -83,23 +84,28 @@ public class SymbolsController extends AbstractController {
 					filterResults(null);
 				}
 			}
-		});
-		
-		
-		
+		});*/
+
+		txtSymbol.textProperty().addListener(
+				(observable, oldValue, newValue) -> {
+					if(!newValue.equalsIgnoreCase(oldValue)){
+						filterResults(newValue);
+					}else{
+						filterResults(null);
+					}
+				});
+
+
+
 		btnOK.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				if(tblSymbols.getSelectionModel().getSelectedIndex()>=0){
-					selected = tblSymbols.getSelectionModel().getSelectedItem();
-					Memory.getInstance().getTextField().setText(selected.getSymbol());
-					Memory.getInstance().setSecurityVO(selected);
-					Stage s = (Stage) btnOK.getScene().getWindow();
-					s.close();
+					selectSecurity(tblSymbols.getSelectionModel().getSelectedItem());
 				}
 			}
 		});
-		
+
 		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
 			/* (non-Javadoc)
 			 * @see javafx.event.EventHandler#handle(javafx.event.Event)
@@ -110,27 +116,61 @@ public class SymbolsController extends AbstractController {
 				s.close();
 			}
 		});
-		
+
+		tblSymbols.setRowFactory(call -> {
+			TableRow<SecurityVO> row = new TableRow<>();
+			row.setOnMouseClicked(event -> {
+				if((event.getClickCount() == 1) && !row.isEmpty()){
+					Memory.getInstance().setSecurityVO(row.getItem());
+				}
+				else if((event.getClickCount() == 2) && !row.isEmpty()){
+					selectSecurity(row.getItem());
+				}
+			});
+			
+			row.setOnKeyTyped(new EventHandler<KeyEvent>() {
+				@Override
+				public void handle(KeyEvent event) {
+					if((event.getCode() == KeyCode.ENTER) && !row.isEmpty()){
+						selectSecurity(row.getItem());
+					}
+				}
+			});
+			
+			return row;
+		});
+
 		tblSymbols.setItems(data);
 		
+		txtSymbol.requestFocus();
+
 		addData();
 
 	}
-	
-	
+
+
+	private void selectSecurity(SecurityVO securityVO){
+		if(securityVO != null){
+			Memory.getInstance().getTextField().setText(securityVO.getSymbol() + " - " + securityVO.getDescription());
+			Memory.getInstance().setSecurityVO(securityVO);
+			Stage s = (Stage) btnOK.getScene().getWindow();
+			s.close();
+		}
+	}
+
 	private void addData(){
 		data.clear();
 		List<Security> lst = SecurityService.getInstance().getSecurityList();
 		lst.forEach(
-			sec -> data.add(new SecurityVO(sec.getSymbol(), sec.getDescription()))
-		);
-		
+				sec -> data.add(new SecurityVO(sec.getSymbol(), sec.getDescription()))
+				);
+
 	}
-	
+
 	private void filterResults(String filter){
 		addData();
 		if(filter!=null){
-			data.removeIf( s -> !s.getSymbol().startsWith(filter));
+			data.removeIf( s -> !s.getSymbol().startsWith(filter.toUpperCase()));
 		}
 	}
 
@@ -138,14 +178,14 @@ public class SymbolsController extends AbstractController {
 	@Override
 	public void addData(Object data) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
 	@Override
 	public void updateData(Object data) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

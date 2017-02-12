@@ -13,6 +13,7 @@
             <Button fx:id="btnBook" mnemonicParsing="false" text="Button" />
             <Button fx:id="btnDOM" mnemonicParsing="false" text="Button" />
             <Button fx:id="btnTimeSales" mnemonicParsing="false" text="Button" />
+            <Button fx:id="btnChart" mnemonicParsing="false" text="Button" />
         </items>
       </ToolBar>
    </children>

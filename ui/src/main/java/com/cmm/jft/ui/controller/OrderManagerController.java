@@ -25,6 +25,8 @@ import javafx.scene.image.ImageView;
 import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
+import com.cmm.jft.services.trading.TradingService;
+import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.vo.OrdersVO;
@@ -64,44 +66,44 @@ public class OrderManagerController extends AbstractController {
 	
 	
 	@FXML
-	private TableColumn<OrdersVO, String> colSymbol;
+	private TableColumn<Orders, String> colSymbol;
 
 	@FXML
-	private TableColumn<OrdersVO, OrderStatus> colStatus;
+	private TableColumn<Orders, OrderStatus> colStatus;
 
 	@FXML
-	private TableColumn<OrdersVO, Side> colSide;
+	private TableColumn<Orders, Side> colSide;
 
 	@FXML
-	private TableColumn<OrdersVO, Date> colDate;
+	private TableColumn<Orders, Date> colDate;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colVolume;
+	private TableColumn<Orders, Double> colVolume;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colExecVolume;
+	private TableColumn<Orders, Integer> colExecVolume;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colPrice;
+	private TableColumn<Orders, Double> colPrice;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colAvgPrice;
+	private TableColumn<Orders, Double> colAvgPrice;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colStopLoss;
+	private TableColumn<Orders, Double> colStopLoss;
 
 	@FXML
-	private TableColumn<OrdersVO, Double> colStopGain;
+	private TableColumn<Orders, Double> colStopGain;
 
 	@FXML
-	private TableView<OrdersVO> tblOrders;
+	private TableView<Orders> tblOrders;
 
 
-	private ObservableList<OrdersVO> data;
+	private ObservableList<Orders> data;
 	
 	
 	public OrderManagerController() {
-		data = FXCollections.observableArrayList();
+		data = TradingService.getInstance().getOrdersData();
 	}
 
 
@@ -133,17 +135,17 @@ public class OrderManagerController extends AbstractController {
 		});
 		
 		colSymbol.setCellValueFactory(
-				(TableColumn.CellDataFeatures<OrdersVO, String> val) ->
-				new ReadOnlyStringWrapper(val.getValue().getSecurityID())
+				(TableColumn.CellDataFeatures<Orders, String> val) ->
+				new ReadOnlyStringWrapper(val.getValue().getSecurityID().getSymbol())
 				);
 		
 		colDate.setCellValueFactory(
-				(TableColumn.CellDataFeatures<OrdersVO, Date> val) ->
+				(TableColumn.CellDataFeatures<Orders, Date> val) ->
 				new ReadOnlyObjectWrapper<Date>(val.getValue().getOrderDateTime())
 				);
 		
 		colDate.setCellFactory(column -> {
-			return new TableCell<OrdersVO, Date>(){
+			return new TableCell<Orders, Date>(){
 				@Override
 				protected void updateItem(Date item, boolean empty){
 					super.updateItem(item, empty);
@@ -159,17 +161,17 @@ public class OrderManagerController extends AbstractController {
 		});
 		
 		colSide.setCellValueFactory(
-				(TableColumn.CellDataFeatures<OrdersVO, Side> val) ->
+				(TableColumn.CellDataFeatures<Orders, Side> val) ->
 				new ReadOnlyObjectWrapper<Side>(val.getValue().getSide())
 				);
 		
 		colStatus.setCellValueFactory(
-				(TableColumn.CellDataFeatures<OrdersVO, OrderStatus> val) ->
+				(TableColumn.CellDataFeatures<Orders, OrderStatus> val) ->
 				new ReadOnlyObjectWrapper<OrderStatus>(val.getValue().getOrderStatus())
 				);
 		
 		colStatus.setCellFactory(column -> {
-			return new TableCell<OrdersVO, OrderStatus>(){
+			return new TableCell<Orders, OrderStatus>(){
 				@Override
 				protected void updateItem(OrderStatus status, boolean empty){
 					super.updateItem(status, empty);
@@ -220,24 +222,22 @@ public class OrderManagerController extends AbstractController {
 		});
 		
 		colVolume.setCellValueFactory(
-				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				(TableColumn.CellDataFeatures<Orders, Double> val) ->
 				new ReadOnlyObjectWrapper<Double>(val.getValue().getVolume())
 				);
 		
 		colExecVolume.setCellValueFactory(
-				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
-				new ReadOnlyObjectWrapper<Double>(val.getValue().getExecutedVolume())
+				(TableColumn.CellDataFeatures<Orders, Integer> val) ->
+				new ReadOnlyObjectWrapper<Integer>(val.getValue().getExecutedVolume())
 				);
 		
 		colExecVolume.setCellFactory(column -> {
-			return new TableCell<OrdersVO, Double>(){
+			return new TableCell<Orders, Integer>(){
 				@Override
-				protected void updateItem(Double item, boolean empty){
-					super.updateItem(item, empty);
-					if(item != null || !empty){
+				protected void updateItem(Integer item, boolean empty){
+					if(item != null && !empty){
+						super.updateItem(item, empty);
 						setText(item.toString());
-						//getTableColumn().
-						//getTableRow().get getStyleClass().add("order_rejected");
 					}
 				}
 			};
@@ -245,31 +245,39 @@ public class OrderManagerController extends AbstractController {
 		
 		
 		colPrice.setCellValueFactory(
-				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				(TableColumn.CellDataFeatures<Orders, Double> val) ->
 				new ReadOnlyObjectWrapper<Double>(val.getValue().getPrice())
 				);
 		
 		colStopGain.setCellValueFactory(
-				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				(TableColumn.CellDataFeatures<Orders, Double> val) ->
 				new ReadOnlyObjectWrapper<Double>(val.getValue().getStopPrice())
 				);
 		
 		colStopLoss.setCellValueFactory(
-				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				(TableColumn.CellDataFeatures<Orders, Double> val) ->
 				new ReadOnlyObjectWrapper<Double>(val.getValue().getStopPrice())
 				);
 		
 		colAvgPrice.setCellValueFactory(
-				(TableColumn.CellDataFeatures<OrdersVO, Double> val) ->
+				(TableColumn.CellDataFeatures<Orders, Double> val) ->
 				new ReadOnlyObjectWrapper<Double>(val.getValue().getAvgPrice())
 				);
 		
-		 
+		
+		
 		tblOrders.setItems(data);
 		
+		/*
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
+				try{
+					Thread.sleep(5000);
+				}catch(InterruptedException e){
+					
+				}
+				
 				for(int i=0;i<4;i++){
 					OrdersVO vo = new OrdersVO();
 					vo.setClOrdID(""+i);
@@ -299,15 +307,15 @@ public class OrderManagerController extends AbstractController {
 				}
 			}
 		}).start();
-
+	*/
 	}
 	
 
 	@Override
 	public void addData(Object ordr) {
 		Platform.runLater(() -> {
-			if(ordr!=null && ordr instanceof OrdersVO){
-				this.data.add(((OrdersVO)ordr));
+			if(ordr!=null && ordr instanceof Orders){
+				this.data.add(((Orders)ordr));
 			}
 		});
 	}
@@ -316,11 +324,11 @@ public class OrderManagerController extends AbstractController {
 	@Override
 	public void updateData(Object ordr) {
 		Platform.runLater(()->{
-			if(ordr != null && ordr instanceof OrdersVO){
+			if(ordr != null && ordr instanceof Orders){
 				int idx = data.indexOf(ordr);
-				if(idx >=0){
+				if(idx >=0 ){
 					//data.remove(idx);
-					data.set(idx, (OrdersVO) ordr);
+					data.set(idx, (Orders) ordr);
 				}
 			}
 		});

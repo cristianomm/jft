@@ -4,6 +4,7 @@
 package com.cmm.jft.ui.utils;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,5 +103,28 @@ public class FormUtils {
           }
 		return controller;
 	}
+	
+	public AbstractController openForm(String form, String title, String cssLocation){
+		AbstractController controller = null;
+		try{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(form));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.NONE);
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setTitle(title);
+            stage.setResizable(false);
+            stage.setScene(new Scene(root));
+            stage.getScene().getStylesheets().add(cssLocation);
+            
+            stage.show();
+            controller = fxmlLoader.getController();
+            
+          }catch(IOException e){
+        	  e.printStackTrace();
+          }
+		return controller;
+	}
+	
 
 }

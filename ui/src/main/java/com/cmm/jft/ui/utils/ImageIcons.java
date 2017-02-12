@@ -22,7 +22,7 @@ public class ImageIcons {
 	private static ImageView imgTimeSales;
 	private static ImageView imgProgram;
 	private static ImageView imgSecurity;
-	
+	private static ImageView imgChart;
 	
 	public static ImageView getDOMImage(){
 		if(imgDOM==null){
@@ -87,6 +87,14 @@ public class ImageIcons {
 			imgSecurity = new ImageView(img);
 		}
 		return imgSecurity;
+	}
+	
+	public static ImageView getChartImage(){
+		if (imgChart == null) {
+			Image img = new Image(ImageIcons.class.getResourceAsStream("../../../../../image/icons/chart-up.png"));
+			imgChart = new ImageView(img);
+		}
+		return imgChart;
 	}
 	
 }

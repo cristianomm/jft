@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cmm.jft.ui.controller.ChartController">
+   <children>
+      <LineChart fx:id="chart" prefHeight="350.0" prefWidth="600.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </LineChart>
+      <Label fx:id="lblCoords" alignment="CENTER" layoutX="526.0" layoutY="378.0" prefHeight="17.0" prefWidth="60.0" text="0:0" />
+      <Label fx:id="lblPrice" alignment="CENTER" layoutX="466.0" layoutY="378.0" prefHeight="17.0" prefWidth="60.0" text="0" />
+      <Label alignment="CENTER" layoutX="406.0" layoutY="378.0" prefHeight="17.0" prefWidth="60.0" text="Label" />
+      <Label alignment="CENTER" layoutX="346.0" layoutY="378.0" prefHeight="17.0" prefWidth="60.0" text="Label" />
+   </children>
+</Pane>

@@ -458,10 +458,10 @@ public class PlaceOrderForm extends AbstractForm {
 				boolean day = duration.toInstant().isAfter(new Date().toInstant());
 				TradeTypes tradeType = day?TradeTypes.DAY_TRADE:TradeTypes.NORMAL;
 
-				TradingService.getInstance().newOrder(
-						orderType, side, symbol, volume, 
-						price, limitPrice, stopPrice, stopGain, 
-						duration, tradeType);
+//				TradingService.getInstance().newOrder(
+//						orderType, side, symbol, volume, 
+//						price, limitPrice, stopPrice, stopGain, 
+//						duration, tradeType);
 
 			}catch(Exception ex){
 

@@ -40,6 +40,8 @@ public class ProgramController implements Initializable {
 	@FXML
 	private Button btnTimeSales;
 	
+	@FXML 
+	private Button btnChart;
 	
 	private LinkedHashMap<String, AbstractController> forms;
 	
@@ -56,12 +58,22 @@ public class ProgramController implements Initializable {
 		btnOrderManager.setGraphic(ImageIcons.getOrderManagerImage());
 		btnPlaceOrder.setGraphic(ImageIcons.getPlaceOrderImage());
 		btnTimeSales.setGraphic(ImageIcons.getTimeSalesImage());
+		btnChart.setGraphic(ImageIcons.getChartImage());
 		
 		btnBook.setTooltip(new Tooltip("Book"));
 		btnDOM.setTooltip(new Tooltip("DOM"));
 		btnOrderManager.setTooltip(new Tooltip("Order Manager"));
 		btnPlaceOrder.setTooltip(new Tooltip("Place Order"));
 		btnTimeSales.setTooltip(new Tooltip("Time & Sales"));
+		btnChart.setTooltip(new Tooltip("Chart"));
+		
+		btnBook.setText("Book");
+		btnDOM.setText("DOM");
+		btnOrderManager.setText("Order Manager");
+		btnPlaceOrder.setText("Place Order");
+		btnTimeSales.setText("Time & Sales");
+		btnChart.setText("Chart");
+		
 		
 		btnBook.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -104,6 +116,15 @@ public class ProgramController implements Initializable {
 			public void handle(ActionEvent event) {
 				Forms.getInstance().addForm("TimeSales", 
 						FormUtils.getInstance().openForm("../../../../../forms/TimeSalesForm.fxml", "Time & Sales"));
+			}
+		});
+		
+		btnChart.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Forms.getInstance().addForm("Chart", 
+						FormUtils.getInstance().openForm("../../../../../forms/ChartForm.fxml", "Chart", 
+								"file://" + getClass().getResource("../../../../../forms/CandleStickChartStyles.css").getFile()));
 			}
 		});
 		

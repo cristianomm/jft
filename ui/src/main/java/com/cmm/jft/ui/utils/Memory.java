@@ -21,6 +21,8 @@ public class Memory {
 	private TextField textField;
 	
 	
+	//adicionar hashtable para poder referenciar objetos e poder trabalhar com mais de um mesmo objeto na memoria
+	
 	
 	/**
 	 * @return the instance

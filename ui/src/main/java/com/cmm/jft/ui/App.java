@@ -53,7 +53,7 @@ public class App extends Application {
 			OrderService.getInstance();
 
 			System.out.println("Initializing Trading Service");
-			TradingService.getInstance();
+			//TradingService.getInstance();
 		}catch(Exception e) {
 			
 		}
