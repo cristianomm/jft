@@ -247,8 +247,6 @@ public class FIXLogCreator {
 			}
 			
 			
-			
-			
 		}
 		
 		

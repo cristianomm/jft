@@ -81,6 +81,9 @@ public class MessageRepository {
 	private void deliverMessage(Message message, SessionID sessionID){
 	
 		try {
+			
+			System.out.println(message.toString());
+			
             Session session = Session.lookupSession(sessionID);
             if (session == null) {
                 throw new SessionNotFound(sessionID.toString());
@@ -101,6 +104,9 @@ public class MessageRepository {
             session.send(message);
 			//Session.sendToTarget(message, sessionID);
 		} catch (SessionNotFound e) {
+			Logging.getInstance().log(getClass(), e, Level.ERROR);
+		} catch(Exception e){
+			//e.printStackTrace();
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
 	}

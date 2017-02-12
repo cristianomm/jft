@@ -403,13 +403,16 @@ public class DBInitialization {
 				String ISIN = vs[2].trim();
 				String assetType = vs[3];
 				String currency = vs[4];
-				int contractSize = ((int) FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[5]));
-				double tickSize = ((double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[6]));
-				double tickValue = ((double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[7]));
-				int digits = ((int) FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[8]));
-				int minVolume = ((int) FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[9]));
-				int maxVolume = ((int) FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[10]));
-				int stepVolume = ((int) FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[11]));
+				
+				
+				
+				int contractSize = (int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[5]);
+				double tickSize = (double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[6]);
+				double tickValue = (double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[7]);
+				int digits = (int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[8]);
+				int minVolume = (int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[9]);
+				int maxVolume = (int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[10]);
+				int stepVolume = (int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[11]);
 				
 				// String category = vs[12];
 				Date emissionDate = ((Date) FormatterFactory.getFormatter(FormatterTypes.DATE_TIME_F10).parse(vs[12]));

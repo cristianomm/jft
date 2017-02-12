@@ -21,6 +21,7 @@ import com.cmm.jft.trading.exceptions.InvalidOrderException;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
 
+
 /**
  * <p>
  * <code>OrderService.java</code>
@@ -33,10 +34,18 @@ import com.cmm.logging.Logging;
 public class OrderService {
 	
 	
+	private long orderID;
+	private String brokerID;
+	private String traderID;
+	private String clOrderIDPrefix;
+	
 	private static OrderService instance;
 	
 
 	private OrderService() {
+		this.brokerID = Configuration.getInstance().getConfiguration("brokerID").toString();
+		this.traderID = Configuration.getInstance().getConfiguration("traderID").toString();
+		this.clOrderIDPrefix = Configuration.getInstance().getConfiguration("clOrderIDPrefix").toString();
 		
 	}
 
@@ -46,12 +55,40 @@ public class OrderService {
 		}
 		return instance;
 	}
+	
+	/**
+	 * Cria uma ordem 
+	 * @param security
+	 * @param side
+	 * @param price
+	 * @param volume
+	 * @param orderType
+	 * @param tradeType
+	 * @return
+	 * @throws OrderException 
+	 */
+	private Orders createOrder(Security security,  Side side, double price, double volume, 
+			OrderTypes orderType, TradeTypes tradeType) throws OrderException{
+		
+		Orders ordr = null;
+		
+		String clOrdID = String.format("%1$s.%2$s-%3$06d", clOrderIDPrefix, brokerID, orderID++);
+		ordr = new Orders(clOrdID, security, side, price, volume, orderType, tradeType);	
+		
+		ordr.setBrokerID(brokerID);
+		ordr.setTraderID(traderID);
+		
+		return ordr;
+	}
 
 	
 	public List<Orders> newOrder(OrderTypes orderType, Security security, Side side, double volume,
-			double price, double limitPrice, double stopLoss, double stopGain){
+			double price, double stopLoss, double stopGain){
 		
 		List<Orders> ordrs = new ArrayList<Orders>();
+		
+		boolean createLA = false;
+		
 		switch (orderType) {
 		case CounterOrderSelection:
 			break;
@@ -64,6 +101,7 @@ public class OrderService {
 			
 		case Limit:
 			ordrs.add(newLimitOrder(security, side, volume, price));
+			createLA = true;
 			break;
 			
 		case LimitOrBetter:
@@ -74,6 +112,7 @@ public class OrderService {
 			
 		case Market:
 			ordrs.add(newMarketOrder(security, side, volume));
+			createLA = true;
 			break;
 			
 		case MarketIfTouched:
@@ -102,10 +141,12 @@ public class OrderService {
 			
 		case Stop:
 			ordrs.add(newStopOrder(security, side, volume, stopLoss));
+			createLA = false;
 			break;
 			
 		case StopLimit:
 			ordrs.add(newLimitOrder(security, side, volume, price));
+			createLA = false;
 			break;
 			
 		case WithOrWithout:
@@ -115,18 +156,29 @@ public class OrderService {
 			break;
 		}
 		
-		Side sideExit = side == Side.BUY?Side.SELL:Side.BUY;
-		for(Orders ordr:createLossAndGain(security, sideExit, volume, price, stopLoss, stopGain)){
-			ordrs.add(ordr);
+		
+		if(createLA){
+			Side sideExit = side == Side.BUY?Side.SELL:Side.BUY;
+			for(Orders ordr:createLossAndGain(security, sideExit, volume, price, stopLoss, stopGain)){
+				if(ordr != null){
+					ordrs.add(ordr);
+				}
+			}
+		}
+		
+		for (int i = 0; i < ordrs.size(); i++) {
+			if(ordrs.get(i) == null){
+				ordrs.remove(i);
+			}
 		}
 		
 		return ordrs;
 	}
 	
-	public Orders newLimitOrder(Security security, Side side, double volume, double limitPrice){
+	private Orders newLimitOrder(Security security, Side side, double volume, double limitPrice){
 		Orders ordr = null;
 		try {
-			ordr = new Orders(security, side, limitPrice, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE);			
+			ordr = createOrder(security, side, limitPrice, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE);			
 		} catch (OrderException e) {
 			e.printStackTrace();
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
@@ -135,27 +187,27 @@ public class OrderService {
 		return ordr;
 	}
 	
-	public Orders newStopOrder(Security security, Side side, double volume, double stopPrice){
+	private Orders newStopOrder(Security security, Side side, double volume, double stopPrice){
 		Orders ordr = null;
 		try {
 			//calcula o valor maximo limite que a ordem podera ser executada
 			Object obj = Configuration.getInstance().getConfiguration("MarketDiscount");
-			double discount = (stopPrice * (obj == null?0: (Double)obj));
+			double discount = (stopPrice * (obj == null?0: Double.parseDouble(obj.toString())));
 			discount = side == Side.BUY?discount:-discount;
-			discount = stopPrice + discount;
-			ordr = new Orders(security, side, stopPrice, volume, OrderTypes.Stop, TradeTypes.DAY_TRADE);
+			stopPrice = stopPrice + discount;
+			ordr = createOrder(security, side, stopPrice, volume, OrderTypes.Stop, TradeTypes.DAY_TRADE);
 		} catch (OrderException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
 		
 		return ordr;
 	}
 			
-	public Orders newMarketOrder(Security security, Side side, double volume){
+	private Orders newMarketOrder(Security security, Side side, double volume){
 		Orders ordrs = null;
 		try {
-			ordrs = new Orders(security, side, 0, volume, OrderTypes.Market, TradeTypes.DAY_TRADE);
+			ordrs = createOrder(security, side, 0, volume, OrderTypes.Market, TradeTypes.DAY_TRADE);
 		} catch (OrderException e) {
 			e.printStackTrace();
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
@@ -165,7 +217,7 @@ public class OrderService {
 	}
 	
 	
-	public Orders newTrailingStopOrder(Security security, Side side, int volume, double stopPrice){
+	private Orders newTrailingStopOrder(Security security, Side side, int volume, double stopPrice){
 		
 		return null;
 	}	
@@ -178,12 +230,12 @@ public class OrderService {
 		try{
 			//StopLoss
 			if(stopLoss!= price && stopLoss != stopGain && stopLoss > 0){
-				ordrs[0] = (new Orders(security, sideExit, stopLoss, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+				ordrs[0] = (createOrder(security, sideExit, stopLoss, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE));
 			}
 			
 			//StopGain
 			if(stopGain != price && stopGain != stopLoss && stopGain > 0){
-				ordrs[1] = (new Orders(security, sideExit, stopGain, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+				ordrs[1] = (createOrder(security, sideExit, stopGain, volume, OrderTypes.Limit, TradeTypes.DAY_TRADE));
 			}
 		} catch(OrderException e){
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
@@ -209,7 +261,7 @@ public class OrderService {
 			}
 			
 			Security exItem = l.get(0);
-			ordr = new Orders(exItem , side, price, volume, orderType, TradeTypes.DAY_TRADE);
+			ordr = createOrder(exItem , side, price, volume, orderType, TradeTypes.DAY_TRADE);
 			
 			//ordr.changePrice(price);
 			//ordr.changeVolume(volume);

@@ -173,7 +173,7 @@ public class JournalService {
 		
 
 	public void registerEntry(JournalEntry journalEntry, Account creditAccount,
-			Account debitAccount, BigDecimal value, String descr)
+			Account debitAccount, double value, String descr)
 			throws RegistrationException, DataBaseException {
 
 		// verificar se o proprio je esta aberto
@@ -182,8 +182,8 @@ public class JournalService {
 					+ journalEntry.getJournalStatus());
 		}
 
-		BigDecimal crv = new BigDecimal(value.toString());
-		BigDecimal dbtv = new BigDecimal(0);
+		double crv = value;
+		double dbtv = 0;
 		Currency defCurr = null;// Configuration.getInstance().getDefaultCurrency();
 
 		EntryRegister creditReg = new EntryRegister(EntryType.CREDIT, crv,
@@ -289,8 +289,8 @@ public class JournalService {
 					+ journalEntry.getJournalStatus());
 		}
 		
-		BigDecimal crv = new BigDecimal(value+"");
-		BigDecimal dbtv = new BigDecimal(0);
+		double crv = value;
+		double dbtv = 0;
 		Currency defCurr = null;// Configuration.getInstance().getDefaultCurrency();
 
 		EntryRegister creditReg = new EntryRegister(EntryType.CREDIT, crv,

@@ -90,12 +90,7 @@ public class FTPBMFBovespa {
 		
 		System.out.println("done!");
 		
-		
-		
 		System.exit(0);
-		
-		
-		
 		
 		
 		final String saveDir = "C:/Disco/Bancos/Bolsa/BM&FBovespa";

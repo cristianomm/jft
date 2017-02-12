@@ -34,9 +34,14 @@ public class Cleaner {
 		// txt = txt.replace("inf", "POSITIVE_INFINITY");
 		txt = txt.trim();
 		txt = txt.isEmpty() ? "0" : txt;
-
-		if (txt.contains(".") && !txt.contains(","))
-			txt = txt.replace(".", ",");
+		
+		if (txt.contains(",") && !txt.contains(".")){
+			txt = txt.replace(",", ".");
+		}
+		else if(txt.contains(",") && txt.contains(".")){
+			txt = txt.replace(".", "");
+			txt = txt.replace(",", ".");
+		}
 
 		txt = formatNumberAsDouble(txt, "###,##0.0000", null).toString();
 

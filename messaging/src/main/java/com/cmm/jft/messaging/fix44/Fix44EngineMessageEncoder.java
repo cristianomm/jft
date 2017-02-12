@@ -90,6 +90,7 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	
 	private static Fix44EngineMessageEncoder instance;
 	
+	private SecurityExchange exchange;
 	
 	private PartyIDSource partyIDSrc;
 	
@@ -104,6 +105,8 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	
 	
 	private Fix44EngineMessageEncoder() {
+		
+		this.exchange = new SecurityExchange(Configuration.getInstance().getConfiguration("exchange").toString());
 		
 		this. partyIDSrc = new PartyIDSource('D');
 		
@@ -354,7 +357,7 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 		addIdFields(orderSingle);
 		
 		orderSingle.set(new Symbol(order.getSecurityID().getSymbol()));
-		orderSingle.set(new SecurityExchange("BVMF"));
+		orderSingle.set(exchange);
 		
 		orderSingle.set(new OrderQty(order.getVolume()));
 		orderSingle.set(new Price(order.getPrice()));

@@ -152,14 +152,14 @@ public class UMDF implements MessageSender {
 		
 		
 		
-		encoder.mdIncrementalRefresh(entries);
-		
-		
 		//Trade Volume - B
 		
 		//Opening Price - 4
 		
 		//Closing Price - 5
+		
+		
+		encoder.mdIncrementalRefresh(entries);
 		
 	}
 	

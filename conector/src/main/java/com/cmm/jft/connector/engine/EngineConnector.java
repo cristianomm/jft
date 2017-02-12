@@ -53,7 +53,6 @@ import sun.util.resources.cldr.kk.CalendarData_kk_Cyrl_KZ;
 public class EngineConnector extends ClientEngineMessageHandler {
 	
 	private SessionID sessionID;
-	private ConcurrentLinkedQueue<Message> messages;
 	
 	private static EngineConnector instance;
 	

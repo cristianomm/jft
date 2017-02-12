@@ -41,7 +41,7 @@ public class Position implements DBObject<Position> {
 
 	private Date closeDate;
 
-	private BigDecimal profit;
+	private double profit;
 
 	private List<Orders> ordersList;
 	
@@ -63,20 +63,20 @@ public class Position implements DBObject<Position> {
 
 	}
 
-	public BigDecimal getProfit() {
-		BigDecimal buy = new BigDecimal(0);
-		BigDecimal sell = new BigDecimal(0);
+	public double getProfit() {
+		double buy = 0;
+		double sell = 0;
 
 		Iterator<Orders> itOrd = ordersList.iterator();
 		while (itOrd.hasNext()) {
 			Orders o = itOrd.next();
 			if (o.getOrderStatus() == OrderStatus.FILLED) {
 				if (o.getSide() == Side.BUY) {
-					buy = buy.add(o.getExecutedOrderValue());
+					buy = buy + o.getExecutedOrderValue();
 				} else {
-					sell = sell.add(o.getExecutedOrderValue());
+					sell = sell + o.getExecutedOrderValue();
 				}
-				profit = sell.subtract(buy);
+				profit = sell - buy;
 			}
 		}
 		return profit;
@@ -155,15 +155,15 @@ public class Position implements DBObject<Position> {
 	 * 
 	 * @return Valor das vendas para o trade.
 	 */
-	public BigDecimal getTradeValue() {
-		BigDecimal val = new BigDecimal(0);
+	public double getTradeValue() {
+		double val = 0;
 
 		Iterator<Orders> itOrd = ordersList.iterator();
 		while (itOrd.hasNext()) {
 			Orders o = itOrd.next();
 			if (o.getOrderStatus() == OrderStatus.FILLED) {
 				if (o.getSide() == Side.SELL) {
-					val = val.add(o.getExecutedOrderValue());
+					val = val + o.getExecutedOrderValue();
 				}
 			}
 		}

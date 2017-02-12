@@ -1,4 +1,4 @@
-<!--  FIX44 Master XML Version: 1.0.19.99 -->
+<!--  FIX44 Master XML Version: 1.0.26 -->
 <fix major="4" minor="4">
   <header>
     <field name="BeginString" required="Y" />
@@ -724,6 +724,7 @@
       <field name="ContraryInstructionIndicator" required="N" />
       <field name="PriorSpreadIndicator" required="N" />
       <field name="ThresholdAmount" required="N" />
+      <field name="ThresholdPercent" required="N" />
       <field name="Text" required="N" />
       <field name="EncodedTextLen" required="N" />
       <field name="EncodedText" required="N" />
@@ -763,6 +764,7 @@
       <component name="PositionAmountData" required="N" />
       <field name="AdjustmentType" required="N" />
       <field name="ThresholdAmount" required="N" />
+      <field name="ThresholdPercent" required="N" />
       <field name="Text" required="N" />
       <field name="EncodedTextLen" required="N" />
       <field name="EncodedText" required="N" />
@@ -1485,6 +1487,7 @@
       <field name="SecurityExchange" required="N" />
       <field name="InstrumentID" required="N" />
       <field name="PutOrCall" required="N" />
+      <field name="StrategyType" required="N" />
       <group name="NoSecurityAltID" required="N">
         <field name="SecurityAltID" required="N" />
         <field name="SecurityAltIDSource" required="N" />
@@ -2624,6 +2627,8 @@
       <value enum="76" description="DESK_ID" />
       <value enum="99" description="ORIGINATING_MARKET" />
       <value enum="1001" description="ORDER_ORIGINATION_SESSION" />
+      <value enum="1003" description="CUSTODY_ACCOUNT" />
+      <value enum="1004" description="CUSTODY_ALLOCATION_TYPE" />
     </field>
     <field number="453" name="NoPartyIDs" type="NUMINGROUP" />
     <field number="454" name="NoSecurityAltID" type="NUMINGROUP" />
@@ -3040,6 +3045,7 @@
       <value enum="5" description="PLEDGE" />
       <value enum="100" description="EXERCISE_WHOLE_POSITION" />
       <value enum="101" description="AUTO_BLOCKING_OF_SHORT_OPTION_POSITION" />
+      <value enum="102" description="SCHEDULED_EXERCISE" />
     </field>
     <field number="710" name="PosReqID" type="STRING" />
     <field number="711" name="NoUnderlyings" type="NUMINGROUP" />
@@ -3068,6 +3074,7 @@
       <value enum="2" description="REJECTED" />
       <value enum="3" description="COMPLETED" />
       <value enum="4" description="COMPLETED_WITH_WARNINGS" />
+      <value enum="9" description="NOT_EXECUTED" />
     </field>
     <field number="723" name="PosMaintResult" type="INT" />
     <field number="735" name="NoQuoteQualifiers" type="NUMINGROUP" />
@@ -3325,6 +3332,7 @@
       <value enum="8" description="CROSS_ORDER" />
       <value enum="B" description="RESULT_OF_OPTIONS_EXERCISE" />
       <value enum="C" description="RESULT_OF_ASSIGNMENT_FROM_AN_OPTIONS_EXERCISE" />
+      <value enum="D" description="RESULT_OF_SCHEDULED_OPTIONS_EXERCISE" />
     </field>
     <field number="1128" name="ApplVerID" type="STRING" />
     <field number="1151" name="SecurityGroupTMR" type="STRING" />
@@ -3411,12 +3419,13 @@
     <field number="1462" name="TargetPartyID" type="STRING" />
     <field number="1463" name="TargetPartyIDSource" type="CHAR" />
     <field number="1464" name="TargetPartyRole" type="INT" />
+    <field number="2141" name="StrategyType" type="STRING" />
     <field number="5001" name="ExchangeQuoteID" type="STRING" />
     <field number="5024" name="InternalSeqNo" type="SEQNUM" />
-    <field number="5975" name="OrderLinkID" type="STRING" />
     <field number="5149" name="Memo" type="STRING" />
     <field number="5497" name="DaysToSettlement" type="STRING" />
     <field number="5706" name="FixedRate" type="PERCENTAGE" />
+    <field number="5975" name="OrderLinkID" type="STRING" />
     <field number="6032" name="UniqueTradeID" type="STRING" />
     <field number="6392" name="SecurityTradingStatusID" type="STRING">
       <value enum="2" description="PAUSE" />
@@ -3501,5 +3510,6 @@
     <field number="35033" name="PossMissingApplMsg" type="BOOLEAN" />
     <field number="35035" name="InternalSeqNoVerID" type="STRING" />
     <field number="35036" name="ProducerID" type="STRING" />
+    <field number="35048" name="ThresholdPercent" type="PERCENTAGE" />
   </fields>
 </fix>

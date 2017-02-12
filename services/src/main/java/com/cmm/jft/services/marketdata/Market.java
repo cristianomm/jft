@@ -96,10 +96,9 @@ public class Market {
 		this.security = SecurityService.getInstance().provideSecurity(symbol);
 		resetMarketData(msgSeqNum);
 	}
-
-
+	
 	public void resetMarketData(int newSeqNum){
-		this.msgSeqNum = newSeqNum;
+		this.msgSeqNum = newSeqNum>=1 ? newSeqNum : 1;
 		this.buyOrders = new ConcurrentHashMap<String, OrdersVO>();
 		this.sellOrders = new ConcurrentHashMap<String, OrdersVO>();
 		this.timeSales = new ConcurrentHashMap<String, TimeSalesVO>();
@@ -241,9 +240,8 @@ public class Market {
 
 
 	private void overlay(Side side) {
-
-
-
+		
+		
 	}
 
 
@@ -262,8 +260,7 @@ public class Market {
 	private void treatOrder(Group message) {
 		try {
 			OrdersVO order = new OrdersVO();
-			//verifica se eh MBP ou MBO			
-			
+			//verifica se eh MBP ou MBO
 			
 			
 			//agregado por preco(270, 271, 272, 273, 346 )
@@ -384,7 +381,9 @@ public class Market {
 
 					String date = message.getString(272);
 					String time = message.getString(273);
-					Instant i = Instant.from(DateTimeFormatter.ofPattern("yyyyMMdd hh:mm:ss").parse(date + " " + time));
+					Instant i = Instant.from(
+							DateTimeFormatter.ofPattern("yyyyMMdd hh:mm:ss").parse(date + " " + time)
+							);
 					ts.setDateTime(Date.from(i));
 
 					ts.setBuyer(message.getString(288));
@@ -443,7 +442,7 @@ public class Market {
 				//String security = message.getString(48);
 				//String secIdSource = message.getString(22);
 				//String securityExchange = message.getString(207);
-
+				
 				//sempre sobrescreve
 				closePrice = message.getDouble(270);
 			}

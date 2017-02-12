@@ -55,6 +55,19 @@ public class Orders implements DBObject<Orders> {
 	@Basic(optional = false)
 	@Column(name = "orderID", nullable = false)
 	private Long orderID;
+	
+	/**
+	 * Unique identifier of the order as assigned by the market participant
+	 */
+	@Column(name="ClOrdID", length=50, updatable=false, nullable=false)
+	private String clOrdID;
+	
+	/**
+	 * Contains the ClOrdID of the replacement order. 
+	 * Conditionally required when ExecType = 5 (Replace).
+	 */
+	@Column(name="OrigClOrdID", length=50, updatable=false)
+	private String origClOrdID;
 
 	@Column(name = "Price", precision = 19, scale = 6)
 	private double price;
@@ -73,7 +86,7 @@ public class Orders implements DBObject<Orders> {
 	// @Max(value=?) @Min(value=?)//if you know range of your decimal fields
 	// consider using these annotations to enforce field validation
 	@Column(name = "AvgPrice", precision = 19, scale = 6)
-	private BigDecimal avgPrice;
+	private double avgPrice;
 	
 	@Column(name = "ProtectionPrice", precision = 19, scale = 6)
 	private double protectionPrice;
@@ -121,19 +134,14 @@ public class Orders implements DBObject<Orders> {
 
 	@Column(name="Comment", length=250)
 	private String comment;
-
-	@Column(name="ClOrdID", length=50, updatable=false, nullable=false)
-	private String clOrdID;
-	
-	@Column(name="OrigClOrdID", length=50, updatable=false, nullable=false)
-	private String origClOrdID;
-	
 	
 	@Column(name="senderLocation", length=50, updatable=false)
 	private String senderLocation;
 	
+	
 	@Column(name="traderID", updatable=false, length=50)
 	private String traderID;
+	
 	
 	@Column(name="brokerID", length=5, updatable=false)
 	private String brokerID;
@@ -163,10 +171,36 @@ public class Orders implements DBObject<Orders> {
 	 * @param side
 	 * @throws OrderException 
 	 */
-	public Orders(Security security,  Side side, double price, double volume, 
+	public Orders(String clOrdID, Security security,  Side side, double price, double volume, 
 			OrderTypes orderType, TradeTypes tradeType) throws OrderException {
 		super();
-		this.price = price;
+		
+		if(clOrdID == null || security == null || side == null){
+			throw new OrderException(
+					String.format("Invalid field value: clOrdID: %1$s, security: %2$s, side: %3$s", clOrdID, security, side));
+		}
+		
+		this.clOrdID = clOrdID;
+		
+		switch(orderType){
+		case Limit:
+			this.price = price;
+			if(price <=0){
+				throw new OrderException(
+						String.format("Invalid price for type: %1$f %2$s", price, orderType));
+			}
+			break;
+		case Market:
+			break;
+		case Stop:
+		case StopLimit:
+			if(price <=0){
+				throw new OrderException(
+						String.format("Invalid price for type: %1$f %2$s", price, orderType));
+			}
+			this.stopPrice = price;
+		}
+		
 		this.securityID = security;
 		this.volume = volume;
 		this.orderType = orderType;
@@ -177,6 +211,12 @@ public class Orders implements DBObject<Orders> {
 
 
 	private void init(){
+		
+		this.avgPrice = 0;
+		this.executedVolume = 0;
+		this.leavesVolume = 0;
+		
+		this.comment = "";
 		this.workingIndicator = WorkingIndicator.No_Working;
 		this.orderDateTime = new Date();
 		this.orderStatus = OrderStatus.CREATED;
@@ -210,7 +250,7 @@ public class Orders implements DBObject<Orders> {
 
 	}
 
-	public BigDecimal calculateOrderValues() {
+	public double calculateOrderValues() {
 		int sumVolume = 0;
 		double sumTotal = 0d;
 		for (OrderEvent oe : eventsList) {
@@ -227,7 +267,7 @@ public class Orders implements DBObject<Orders> {
 		//only TRADE events are relevant
 		long execs = eventsList.stream().filter(e -> e.getExecutionType() == ExecutionTypes.TRADE).count();
 		execs = execs > 0 ? execs : 1;
-		avgPrice = new BigDecimal(sumTotal/execs);
+		avgPrice = (sumTotal/execs);
 
 		return avgPrice;
 	}	
@@ -311,8 +351,8 @@ public class Orders implements DBObject<Orders> {
 		return price * volume;
 	}
 
-	public BigDecimal getExecutedOrderValue() {
-		return avgPrice.multiply(new BigDecimal(executedVolume));
+	public double getExecutedOrderValue() {
+		return avgPrice * executedVolume;
 	}
 
 	public Long getOrderID() {
@@ -334,7 +374,7 @@ public class Orders implements DBObject<Orders> {
 		return volume;
 	}
 
-	public BigDecimal getAvgPrice() {
+	public double getAvgPrice() {
 		return avgPrice;
 	}
 	
@@ -450,6 +490,9 @@ public class Orders implements DBObject<Orders> {
 		return clOrdID;
 	}
 	
+	/**
+	 * @param clOrdID the clOrdID to set
+	 */
 	public void setClOrdID(String clOrdID) {
 		this.clOrdID = clOrdID;
 	}
@@ -563,7 +606,7 @@ public class Orders implements DBObject<Orders> {
 				+ "leavesVolume="
 				+ leavesVolume
 				+ ", "
-				+ (avgPrice != null ? "avgPrice=" + avgPrice + ", " : "")
+				+ "avgPrice=" + avgPrice + ", "
 				+ "protectionPrice="
 				+ protectionPrice
 				+ ", maxFloor="

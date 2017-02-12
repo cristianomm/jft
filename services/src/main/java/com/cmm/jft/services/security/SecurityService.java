@@ -4,7 +4,6 @@
 package com.cmm.jft.services.security;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +28,6 @@ public class SecurityService {
 
 	private HashMap<String, Security> securities;
 	private static SecurityService instance;
-	
 	
 	
 	/**
@@ -93,7 +91,7 @@ public class SecurityService {
 		Security s = null;
 		s = loadSecurity(symbol);
 		try {
-			if (s == null && !DBFacade.getInstance().getConnection().isClosed()) {
+			if (s == null && !DBFacade.getInstance().getConnection().isClosed() && symbol != "") {
 				s = new Security(symbol);
 				s = (Security) DBFacade.getInstance()._persist(s);
 			}

@@ -53,10 +53,10 @@ public class EntryRegister implements Serializable, DBObject<EntryRegister> {
 	// consider using these annotations to enforce field validation
 	@Basic(optional = false)
 	@Column(name = "Credit", nullable = false, precision = 19, scale = 6)
-	private BigDecimal credit;
+	private double credit;
 	@Basic(optional = false)
 	@Column(name = "Debit", nullable = false, precision = 19, scale = 6)
-	private BigDecimal debit;
+	private double debit;
 	@Column(name = "Description", length = 255)
 	private String description;
 	@Column(name = "OperationID", length = 20)
@@ -86,8 +86,8 @@ public class EntryRegister implements Serializable, DBObject<EntryRegister> {
 	 * @param debitAccountID
 	 * @param creditAccountID
 	 */
-	public EntryRegister(EntryType entryType, BigDecimal credit,
-			BigDecimal debit, String description, Currency currencyID,
+	public EntryRegister(EntryType entryType, double credit,
+			double debit, String description, Currency currencyID,
 			Account creditAccountID, Account debitAccountID) {
 		super();
 		this.entryType = entryType;
@@ -117,7 +117,7 @@ public class EntryRegister implements Serializable, DBObject<EntryRegister> {
 	/**
 	 * @return the credit
 	 */
-	public BigDecimal getCredit() {
+	public double getCredit() {
 		return this.credit;
 	}
 
@@ -125,14 +125,14 @@ public class EntryRegister implements Serializable, DBObject<EntryRegister> {
 	 * @param credit
 	 *            the credit to set
 	 */
-	public void setCredit(BigDecimal credit) {
+	public void setCredit(double credit) {
 		this.credit = credit;
 	}
 
 	/**
 	 * @return the debit
 	 */
-	public BigDecimal getDebit() {
+	public double getDebit() {
 		return this.debit;
 	}
 
@@ -140,7 +140,7 @@ public class EntryRegister implements Serializable, DBObject<EntryRegister> {
 	 * @param debit
 	 *            the debit to set
 	 */
-	public void setDebit(BigDecimal debit) {
+	public void setDebit(double debit) {
 		this.debit = debit;
 	}
 
@@ -260,8 +260,8 @@ public class EntryRegister implements Serializable, DBObject<EntryRegister> {
 						+ this.entryRegisterID + ", " : "")
 				+ (this.entryType != null ? "entryType=" + this.entryType
 						+ ", " : "")
-				+ (this.credit != null ? "credit=" + this.credit + ", " : "")
-				+ (this.debit != null ? "debit=" + this.debit + ", " : "")
+				+ "credit=" + this.credit + ", "
+				+ "debit=" + this.debit + ", " 
 				+ (this.description != null ? "description=" + this.description
 						+ ", " : "")
 				+ (this.operationID != null ? "operationID=" + this.operationID

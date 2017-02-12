@@ -1,4 +1,4 @@
-<!--  FIX44 Master XML Version: 1.0.19.99 -->
+<!--  FIX44 Master XML Version: 1.0.26 -->
 <fix major="4" minor="4">
   <header>
     <field name="BeginString" required="Y" />
@@ -724,6 +724,7 @@
       <field name="ContraryInstructionIndicator" required="N" />
       <field name="PriorSpreadIndicator" required="N" />
       <field name="ThresholdAmount" required="N" />
+      <field name="ThresholdPercent" required="N" />
       <field name="Text" required="N" />
       <field name="EncodedTextLen" required="N" />
       <field name="EncodedText" required="N" />
@@ -763,6 +764,7 @@
       <component name="PositionAmountData" required="N" />
       <field name="AdjustmentType" required="N" />
       <field name="ThresholdAmount" required="N" />
+      <field name="ThresholdPercent" required="N" />
       <field name="Text" required="N" />
       <field name="EncodedTextLen" required="N" />
       <field name="EncodedText" required="N" />
@@ -1485,6 +1487,7 @@
       <field name="SecurityExchange" required="N" />
       <field name="InstrumentID" required="N" />
       <field name="PutOrCall" required="N" />
+      <field name="StrategyType" required="N" />
       <group name="NoSecurityAltID" required="N">
         <field name="SecurityAltID" required="N" />
         <field name="SecurityAltIDSource" required="N" />
@@ -1711,7 +1714,7 @@
     </component>
     <component name="PositionQty">
       <group name="NoPositions" required="Y">
-        <field name="PosType" required="Y" />
+        <field name="PosType" required="N" />
         <field name="LongQty" required="N" />
         <field name="ShortQty" required="N" />
         <field name="PosQtyStatus" required="N" />
@@ -1997,6 +2000,7 @@
     <field number="70" name="AllocID" type="STRING" />
     <field number="71" name="AllocTransType" type="CHAR">
       <value enum="0" description="NEW" />
+      <value enum="1" description="REPLACE" />
       <value enum="2" description="CANCEL" />
     </field>
     <field number="72" name="RefAllocID" type="STRING" />
@@ -2628,7 +2632,38 @@
       <value enum="55" description="SESSION_ID" />
       <value enum="76" description="DESK_ID" />
       <value enum="99" description="ORIGINATING_MARKET" />
+      <value enum="100" description="SENDER_COMP_ID" />
+      <value enum="102" description="SENDER_LOCATION_ID" />
+      <value enum="103" description="CLIENT_ORDER_ID" />
+      <value enum="104" description="ORIGINAL_CLIENT_ORDER_ID" />
+      <value enum="105" description="ALLOC_ACCOUNT" />
+      <value enum="106" description="MANUAL_ORDER_INDICATOR" />
+      <value enum="107" description="CUST_ORDER_HANDLING_INST" />
+      <value enum="108" description="CUST_ORDER_HANDLING_INST_SOURCE" />
+      <value enum="109" description="CORRELATION_CLIENT_ORDER_ID" />
+      <value enum="110" description="TEXT" />
+      <value enum="111" description="AVG_PX_INDICATOR" />
+      <value enum="112" description="AVG_PX_GROUP_ID" />
+      <value enum="113" description="CLEARING_TRADE_PRICE_TYPE" />
       <value enum="1001" description="ORDER_ORIGINATION_SESSION" />
+      <value enum="1002" description="MARKET_SUPERVISOR_ID" />
+      <value enum="1003" description="CUSTODY_ACCOUNT" />
+      <value enum="1004" description="CUSTODY_ALLOCATION_TYPE" />
+      <value enum="10000" description="SUPERVISOR_COMP_ID" />
+      <value enum="20006" description="CORRELATION_MSG_ID" />
+      <value enum="20022" description="TIBCO_SESSION_ID" />
+      <value enum="20023" description="TIBCO_SUBSCRIBER_ALIAS" />
+      <value enum="20026" description="SUBJECT_KEY" />
+      <value enum="20035" description="TIMESTAMP" />
+      <value enum="20998" description="FUTURE_USE_1" />
+      <value enum="20999" description="FUTURE_USE_2" />
+      <value enum="32001" description="TIBCO_TRADER_ID" />
+      <value enum="32002" description="TRANSPORT_ID" />
+      <value enum="51001" description="EVENT_ID" />
+      <value enum="52053" description="TIBCO_SENT_TIMESTAMP_NANO" />
+      <value enum="52054" description="TIBCO_RECEIVED_TIMESTAMP_NANO" />
+      <value enum="60000" description="GLOBEX_SEC_INFO" />
+      <value enum="60001" description="ORDER_CORRELATION_ID" />
       <value enum="99000" description="TR_BELL_FIX_0" />
       <value enum="99001" description="TR_BELL_FIX_1" />
       <value enum="99002" description="TR_BELL_FIX_2" />
@@ -3050,6 +3085,7 @@
       <value enum="5" description="PLEDGE" />
       <value enum="100" description="EXERCISE_WHOLE_POSITION" />
       <value enum="101" description="AUTO_BLOCKING_OF_SHORT_OPTION_POSITION" />
+      <value enum="102" description="SCHEDULED_EXERCISE" />
     </field>
     <field number="710" name="PosReqID" type="STRING" />
     <field number="711" name="NoUnderlyings" type="NUMINGROUP" />
@@ -3078,6 +3114,7 @@
       <value enum="2" description="REJECTED" />
       <value enum="3" description="COMPLETED" />
       <value enum="4" description="COMPLETED_WITH_WARNINGS" />
+      <value enum="9" description="NOT_EXECUTED" />
     </field>
     <field number="723" name="PosMaintResult" type="INT" />
     <field number="735" name="NoQuoteQualifiers" type="NUMINGROUP" />
@@ -3335,6 +3372,7 @@
       <value enum="8" description="CROSS_ORDER" />
       <value enum="B" description="RESULT_OF_OPTIONS_EXERCISE" />
       <value enum="C" description="RESULT_OF_ASSIGNMENT_FROM_AN_OPTIONS_EXERCISE" />
+      <value enum="D" description="RESULT_OF_SCHEDULED_OPTIONS_EXERCISE" />
     </field>
     <field number="1128" name="ApplVerID" type="STRING" />
     <field number="1151" name="SecurityGroupTMR" type="STRING" />
@@ -3421,12 +3459,13 @@
     <field number="1462" name="TargetPartyID" type="STRING" />
     <field number="1463" name="TargetPartyIDSource" type="CHAR" />
     <field number="1464" name="TargetPartyRole" type="INT" />
+    <field number="2141" name="StrategyType" type="STRING" />
     <field number="5001" name="ExchangeQuoteID" type="STRING" />
     <field number="5024" name="InternalSeqNo" type="SEQNUM" />
-    <field number="5975" name="OrderLinkID" type="STRING" />
     <field number="5149" name="Memo" type="STRING" />
     <field number="5497" name="DaysToSettlement" type="STRING" />
     <field number="5706" name="FixedRate" type="PERCENTAGE" />
+    <field number="5975" name="OrderLinkID" type="STRING" />
     <field number="6032" name="UniqueTradeID" type="STRING" />
     <field number="6392" name="SecurityTradingStatusID" type="STRING">
       <value enum="2" description="PAUSE" />
@@ -3511,5 +3550,6 @@
     <field number="35033" name="PossMissingApplMsg" type="BOOLEAN" />
     <field number="35035" name="InternalSeqNoVerID" type="STRING" />
     <field number="35036" name="ProducerID" type="STRING" />
+    <field number="35048" name="ThresholdPercent" type="PERCENTAGE" />
   </fields>
 </fix>

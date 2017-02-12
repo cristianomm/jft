@@ -22,5 +22,8 @@
     <module>marketdata_connector</module>
     <module>services</module>
     <module>market_data</module>
+    <module>client</module>
+    <module>analisis</module>
+    <module>test</module>
   </modules>
 </project>

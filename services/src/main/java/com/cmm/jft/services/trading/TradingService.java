@@ -30,13 +30,19 @@ import com.cmm.jft.financial.exceptions.RegistrationException;
 import com.cmm.jft.financial.services.JournalService;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.services.security.SecurityService;
+import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.Position;
+import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * <p>
@@ -63,7 +69,10 @@ public class TradingService {
 	 */
 	private EngineConnector connection;
 	
-	private EngineHandler engineHandler;
+	/**
+	 * List for the interface...
+	 */
+	private ObservableList<Orders> ordersData;
 	
 	/**
 	 * Map to the existing orders, orders are referenced by Position,
@@ -86,10 +95,10 @@ public class TradingService {
 		brokerID = (Broker) DBFacade.getInstance().findObject(
 				"Broker.findByBrokerCode", "brokerCode", strBroker);
 
+		this.ordersData = FXCollections.observableArrayList();
 		this.orders = new ConcurrentHashMap<String, Orders>();
 		this.openPositions = new ConcurrentHashMap<String, Position>();
 		this.connection = EngineConnector.getInstance();
-		this.engineHandler = new EngineHandler();
 	}
 
 	/**
@@ -100,7 +109,14 @@ public class TradingService {
 			instance = new TradingService();
 		}
 		return instance;
-	}	
+	}
+	
+	/**
+	 * @return the ordersData
+	 */
+	public ObservableList<Orders> getOrdersData() {
+		return this.ordersData;
+	}
 
 	/**
 	 * Load trades with OPEN status from database;
@@ -122,20 +138,20 @@ public class TradingService {
 	}
 
 
-	/**
-	 * Cria as Ordens de compra e venda e registra suas respectivas execucoes
-	 * sem passar pelo mercado
-	 * 
-	 * @param symbol Simbolo do instrumento negociado.
-	 * @param orderTypes Tipo de ordem.
-	 * @param tradeTypes tipo de Negocio
-	 * @param volume Quantidade negociada
-	 * @param buyPrice preco executado na compra
-	 * @param sellPrice preco executado na venda
-	 * @param tradeDate Data da negociacao
-	 * @param brokerID corretora
-	 * @throws DataBaseException
-	 */
+//	/**
+//	 * Cria as Ordens de compra e venda e registra suas respectivas execucoes
+//	 * sem passar pelo mercado
+//	 * 
+//	 * @param symbol Simbolo do instrumento negociado.
+//	 * @param orderTypes Tipo de ordem.
+//	 * @param tradeTypes tipo de Negocio
+//	 * @param volume Quantidade negociada
+//	 * @param buyPrice preco executado na compra
+//	 * @param sellPrice preco executado na venda
+//	 * @param tradeDate Data da negociacao
+//	 * @param brokerID corretora
+//	 * @throws DataBaseException
+//	 */
 	//	public void addCompleteTrade(String symbol, OrderTypes orderTypes,
 	//			TradeTypes tradeType, int volume, OrdersPrices buyPrices,
 	//			OrdersPrices sellPrices, Date tradeDate, Broker brokerID) throws DataBaseException {
@@ -165,10 +181,10 @@ public class TradingService {
 	//		}
 	//
 	//	}
-
+	
 	public void newOrder(OrderTypes orderType, Side side, String symbol, double volume, 
-			double price, double limitPrice, double stopLoss, double stopGain, 
-			Date duration, TradeTypes tradeType) {
+			double price, double stopLoss, double stopGain, 
+			Date duration, TradeTypes tradeType, OrderValidityTypes validityType, String comment) {
 
 		try {
 			Position position = null;
@@ -182,13 +198,15 @@ public class TradingService {
 			Security securityID = SecurityService.getInstance().provideSecurity(symbol);
 			List<Orders> ordrs = OrderService.getInstance().newOrder(
 					orderType, securityID, side,volume, 
-					price, limitPrice, stopLoss, stopGain);
+					price, stopLoss, stopGain);
 			for(Orders ordr : ordrs){
 				ordr.setDuration(duration);
 				ordr.setTradeType(tradeType);
+				ordr.setValidityType(validityType);
+				ordr.setComment(comment);
 				
 				position.addOrder(ordr);
-				orders.put(ordr.getClOrdID(), ordr);
+				storeOrder(ordr);
 				
 				//Cria o evento e adiciona no mercado
 				sendNewOrderEvent(ordr);
@@ -227,7 +245,8 @@ public class TradingService {
 				Date duration = Date.from(ZonedDateTime.of(ldt, ZoneId.systemDefault()).toInstant());
 				
 				// lanca ordem inversa(a posicao) a mercado do mesmo tipo do Position
-				newOrder(OrderTypes.Market, side, position.getSymbol(), volume, 0, 0, 0, 0, duration, TradeTypes.DAY_TRADE);
+				newOrder(OrderTypes.Market, side, position.getSymbol(), 
+						volume, 0, 0, 0, duration, TradeTypes.DAY_TRADE, OrderValidityTypes.DAY, "Close position");
 				
 			}
 
@@ -242,7 +261,7 @@ public class TradingService {
 		try {
 			sendCancelOrderEvent(order);
 			//order.cancel();
-			orders.put(order.getClOrdID(), order);
+			storeOrder(order);
 		} catch (OrderException e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
@@ -255,7 +274,7 @@ public class TradingService {
 		try{
 			//if (order.changePrice(price)) {
 				sendChangeOrderEvent(order);
-				orders.put(order.getClOrdID(), order);
+				storeOrder(order);
 			//}
 		} catch(OrderException e){
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
@@ -268,7 +287,7 @@ public class TradingService {
 		try{
 			//if (order.changeVolume(volume)) {
 				sendChangeOrderEvent(order);
-				orders.put(order.getClOrdID(), order);
+				storeOrder(order);
 			//}
 		} catch(OrderException e){
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
@@ -276,7 +295,7 @@ public class TradingService {
 	}
 
 
-	private void sendNewOrderEvent(Orders ordr) throws OrderException{
+	private void sendNewOrderEvent(Orders ordr) throws OrderException {
 		connection.newOrderSingle(ordr);
 		//verifica o retorno
 //		if(retev.getValue(EventFields.EventType) == Events.ORDER_SEND){
@@ -287,7 +306,7 @@ public class TradingService {
 
 	}
 
-	private void sendCancelOrderEvent(Orders ordr) throws OrderException{
+	private void sendCancelOrderEvent(Orders ordr) throws OrderException {
 		connection.cancelRequest(ordr);
 //		Event ret = null;//connection.sendEvent(event);
 //		if(ret.getValue(EventFields.EventType) == Events.ORDER_CANCEL){
@@ -298,7 +317,7 @@ public class TradingService {
 
 	}
 
-	private void sendChangeOrderEvent(Orders ordr) throws OrderException{
+	private void sendChangeOrderEvent(Orders ordr) throws OrderException {
 		connection.cancelReplaceRequest(ordr);
 //		Event ret = null;//connection.sendEvent(event);
 //		if(ret.getValue(EventFields.EventType) == Events.ORDER_UPDATE){
@@ -322,7 +341,9 @@ public class TradingService {
 		boolean ret = false;
 		try {
 			if(orders.contains(orderSerial)){
-				//ret = orders.get(orderSerial). addExecution(executionDateTime, execVolume, execPrice);
+				ret = orders.get(orderSerial).addExecution(
+						new OrderEvent(ExecutionTypes.TRADE, executionDateTime, execVolume, execPrice)
+						);
 			}
 		} catch (Exception e) {
 			Logging.getInstance().log(getClass(),
@@ -347,7 +368,7 @@ public class TradingService {
 
 				Brokerage brokerage = position.getBrokerage();
 				int volume = position.getTradedVolume();
-				double value = position.getTradeValue().doubleValue();
+				double value = position.getTradeValue();
 
 				DistributionRule dRule = JournalService.getInstance().getDistributionRule(Objects.Trade);
 
@@ -370,7 +391,7 @@ public class TradingService {
 							}
 
 							if (valaux > comm.getValueMin() && valaux <= comm.getValueMax()) {
-								BigDecimal commValue = new BigDecimal(comm.getCommValue());
+								double commValue = comm.getCommValue();
 								JournalService.getInstance().registerEntry(je, 
 										rule.getCreditAccountID(), rule.getDebitAccountID(),
 										commValue, "Commission");
@@ -381,17 +402,17 @@ public class TradingService {
 
 					//-----------------------------------------------Registra Taxas
 					else if(rule.getObject() == Objects.ExchangeTax){
-						BigDecimal taxValue = null;
+						double taxValue = 0;
 						for (ExchangeTax et : brokerage.getExchangeTaxList()) {
 							switch (et.getCalcType()) {
 							case TAX:
-								taxValue = new BigDecimal(et.getTax() * value);
+								taxValue = (et.getTax() * value);
 								break;
 							case VALUE:
-								taxValue = new BigDecimal(et.getTax());
+								taxValue = (et.getTax());
 								break;
 							default:
-								taxValue = new BigDecimal(et.getTax() * value);
+								taxValue = (et.getTax() * value);
 								break;
 							}
 
@@ -403,20 +424,20 @@ public class TradingService {
 
 					else {
 						//-------------------------------------Registra lucro/prejuizo
-						BigDecimal buyPrice = new BigDecimal(0);
-						BigDecimal sellPrice = new BigDecimal(0);
+						double buyPrice = 0;
+						double sellPrice = 0;
 
 						for (Orders order : position.getOrdersList()) {
 							if (order.getSide() == Side.BUY) {
 								volume = order.getExecutedVolume();
-								buyPrice = buyPrice.add(order.getAvgPrice());
+								buyPrice = buyPrice + order.getAvgPrice();
 							} else if (order.getSide() == Side.SELL) {
-								sellPrice = sellPrice.add(order.getAvgPrice());
+								sellPrice = sellPrice + order.getAvgPrice();
 							}
 						}
 
 						String descr = "Profit register";
-						BigDecimal profit = buyPrice.subtract(sellPrice).multiply(new BigDecimal(volume));
+						double profit = (buyPrice - sellPrice) * volume;
 
 						JournalService.getInstance().registerEntry(je,
 								rule.getCreditAccountID(), rule.getDebitAccountID(), profit, descr);	
@@ -433,7 +454,11 @@ public class TradingService {
 		} 
 	}
 
-
+	
+	private void storeOrder(Orders order){
+		orders.put(order.getClOrdID(), order);
+		ordersData.add(order);
+	}
 
 
 	//-------------------------------------------------------------------------

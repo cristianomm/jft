@@ -1,6 +1,7 @@
 package com.cmm.jft.connector.message;
 
 
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -26,6 +27,15 @@ import quickfix.fix44.SecurityDefinition;
 
 public abstract class ClientEngineMessageHandler extends MessageCracker implements Application {
 	
+	protected ConcurrentLinkedQueue<Message> messages;
+	
+	
+	/**
+	 * @return the messages
+	 */
+	public ConcurrentLinkedQueue<Message> getMessages() {
+		return this.messages;
+	}
 	
 	public abstract void onMessage(BusinessMessageReject message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
