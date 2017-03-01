@@ -9,8 +9,8 @@
 
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">org.postgresql.Driver</property>
-		<property name="connection.url">jdbc:postgresql://localhost:5432/StockData</property>
-		<property name="connection.username">stockdata</property>
+		<property name="connection.url">jdbc:postgresql://localhost:5432/jft</property>
+		<property name="connection.username">jft</property>
 		<property name="connection.password">287463</property>
 
 		<!-- JDBC connection pool (use the built-in) -->
@@ -40,10 +40,12 @@
 		<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
 		<mapping resource="org/hibernate/tutorial/domain/Event.hbm.xml" />
 		-->
+		<!--  
 		<mapping class="com.cmm.jft.core.Configuration" />
-		
+		-->
 		
 		<!-- Financial -->
+		<!--
 		<mapping class="com.cmm.jft.financial.Account"/>
 		<mapping class="com.cmm.jft.financial.Broker"/>
 		<mapping class="com.cmm.jft.financial.Brokerage"/>
@@ -60,14 +62,18 @@
 		<mapping class="com.cmm.jft.financial.RuleFormula"/>		
 		<mapping class="com.cmm.jft.financial.Tax"/>
 		<mapping class="com.cmm.jft.financial.TaxSetup"/>
-		
+		-->
 		
 		<!-- DB -->
+		<!--
 		<mapping class="com.cmm.jft.db.DBObject"/>
+		-->
 		
 		<!-- Trading -->
+		<!--
 		<mapping class="com.cmm.jft.trading.OrderEvent"/>
 		<mapping class="com.cmm.jft.trading.Orders"/>
+		
 		
 		
 		<mapping class="com.cmm.jft.marketdata.HistoricalQuote"/>
@@ -78,6 +84,7 @@
 		<mapping class="com.cmm.jft.security.Security"/>
 		<mapping class="com.cmm.jft.security.SecurityInfo"/>
 		<mapping class="com.cmm.jft.security.StockExchange"/>
+		-->
 		<!--
 		
 		<mapping class="com.cmm.jft.trading.securities.Company"/>

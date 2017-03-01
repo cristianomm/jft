@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.engine.enums;
+package com.cmm.jft.trading.enums;
 
 /**
  * <p><code>StreamTypes.java</code></p>
@@ -11,8 +11,7 @@ package com.cmm.jft.engine.enums;
  */
 public enum StreamTypes {
 	
-	ENTRYPOINT, SNAPSHOT, INCREMENTAL, RECOVERY, INSTRUMENT
-	
+	ENTRYPOINT, MARKET_DATA, INSTRUMENT, NEWS, SNAPSHOT, RECOVERY
 	
 	
 }
