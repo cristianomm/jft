@@ -6,10 +6,9 @@ package com.cmm.jft.connector.engine;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.cmm.jft.connector.Connector;
-import com.cmm.jft.connector.message.ClientEngineMessageHandler;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
+import com.cmm.jft.messaging.handlers.RouterMessageHandler;
 import com.cmm.jft.trading.Orders;
 
 import quickfix.Application;
@@ -23,17 +22,9 @@ import quickfix.RejectLogon;
 import quickfix.Session;
 import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
-import quickfix.field.ClOrdID;
-import quickfix.field.NoPartyIDs;
-import quickfix.field.OrdType;
-import quickfix.field.OrderQty;
-import quickfix.field.Side;
-import quickfix.field.Symbol;
-import quickfix.field.TransactTime;
 import quickfix.fix44.AllocationReport;
 import quickfix.fix44.BusinessMessageReject;
 import quickfix.fix44.ExecutionReport;
-import quickfix.fix44.NewOrderSingle;
 import quickfix.fix44.OrderCancelReject;
 import quickfix.fix44.PositionMaintenanceReport;
 import quickfix.fix44.Quote;
@@ -42,7 +33,6 @@ import quickfix.fix44.QuoteRequest;
 import quickfix.fix44.QuoteRequestReject;
 import quickfix.fix44.QuoteStatusReport;
 import quickfix.fix44.SecurityDefinition;
-import sun.util.resources.cldr.kk.CalendarData_kk_Cyrl_KZ;
 
 /**
  * <p><code>EngineConnector.java</code></p>
@@ -50,10 +40,10 @@ import sun.util.resources.cldr.kk.CalendarData_kk_Cyrl_KZ;
  * @version 30-07-2015 23:54:28
  *
  */
-public class EngineConnector extends ClientEngineMessageHandler {
+public class EngineConnector extends MessageCracker implements Application, RouterMessageHandler{
 	
 	private SessionID sessionID;
-	
+	ConcurrentLinkedQueue<Message> messages;
 	private static EngineConnector instance;
 	
 	private EngineConnector() {
@@ -67,6 +57,8 @@ public class EngineConnector extends ClientEngineMessageHandler {
 		}
 		return instance;
 	}
+	
+	
 	
 	public void newOrderSingle(Orders ordr) {
 		Message m = Fix44EngineMessageEncoder.getInstance().newOrderSingle(ordr);
@@ -95,7 +87,8 @@ public class EngineConnector extends ClientEngineMessageHandler {
 	@Override
 	public void fromAdmin(Message message, SessionID sessionID)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, RejectLogon {
-		// TODO Auto-generated method stub
+		
+		
 		
 	}
 
