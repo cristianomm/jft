@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.omg.CORBA.portable.Streamable;
 
-import com.cmm.jft.engine.enums.StreamTypes;
+import com.cmm.jft.trading.enums.StreamTypes;
 
 import quickfix.Session;
 import quickfix.SessionID;

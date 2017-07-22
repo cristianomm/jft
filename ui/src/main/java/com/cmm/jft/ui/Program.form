@@ -178,6 +178,21 @@
                     <Property name="text" type="java.lang.String" value="Order Book"/>
                   </Properties>
                 </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMITradingTS">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Times &amp; Trades"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMITradingMarketResume">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Market Resume"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMITradingNews">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="News"/>
+                  </Properties>
+                </MenuItem>
               </SubComponents>
             </Menu>
             <Menu class="javax.swing.JMenu" name="jMenuSimulation">
@@ -335,7 +350,6 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/image/icons/database--exclamation.png"/>
                 </Property>
-                <Property name="label" type="java.lang.String" value=""/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="jButton2">

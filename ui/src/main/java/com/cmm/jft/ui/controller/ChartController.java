@@ -221,6 +221,14 @@ public class ChartController extends AbstractController {
 	}
 
 	/* (non-Javadoc)
+	* @see com.cmm.jft.ui.controller.AbstractController#getTitle()
+	*/
+	@Override
+	public String getTitle() {
+	return "Chart";
+	}
+	
+	/* (non-Javadoc)
 	 * @see com.cmm.jft.ui.controller.AbstractController#addData(java.lang.Object)
 	 */
 	@Override

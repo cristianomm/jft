@@ -5,7 +5,25 @@
  */
 package com.cmm.jft.ui.trading;
 
+import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+import java.util.TreeMap;
+
+import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
+
+import com.cmm.jft.data.extractor.marketdata.BovespaTradeFileExtractor;
+import com.cmm.jft.services.marketdata.Market;
 import com.cmm.jft.ui.forms.AbstractForm;
+import com.cmm.jft.ui.models.TimesTradesTableModel;
+import com.cmm.jft.ui.utils.FormatRenderer;
+import com.cmm.jft.ui.utils.NumberRenderer;
+import com.cmm.jft.vo.Extractable;
+import com.cmm.jft.vo.TradeVO;
 
 /**
  *
@@ -18,7 +36,65 @@ public class MarketTradesForm extends AbstractForm {
      */
     public MarketTradesForm() {
         initComponents();
+        tblMarketTrades.setModel(new TimesTradesTableModel());
+        
+        TableColumnModel tcm = tblMarketTrades.getColumnModel();
+        //tcm.getColumn(TimesTradesTableModel.ID).setCellRenderer(FormatRenderer.getTimeRenderer());
+        tcm.getColumn(TimesTradesTableModel.TIME).setCellRenderer(FormatRenderer.getTimeRenderer());
+        tcm.getColumn(TimesTradesTableModel.PRICE).setCellRenderer(NumberRenderer.getDouble3DRenderer());
+        //tcm.getColumn(TimesTradesTableModel.VOLUME).setCellRenderer(FormatRenderer.getTimeRenderer());
+        //tcm.getColumn(TimesTradesTableModel.BUY).setCellRenderer(FormatRenderer.getTimeRenderer());
+        //tcm.getColumn(TimesTradesTableModel.SELL).setCellRenderer(FormatRenderer.getTimeRenderer());
+        //tcm.getColumn(TimesTradesTableModel.AGRE).setCellRenderer(FormatRenderer.getTimeRenderer());
+        
+        //testData();
     }
+    
+    private void testData(){
+	new Thread(new Runnable() {
+
+	    @Override
+	    public void run() {
+
+		Properties p = new Properties();
+		p.put("filename", "D:\\Disco\\Users\\Cristiano\\Downloads\\BMF Files\\Copy_NEG_BMF_20170315.TXT");
+		p.put("columnFilter", "1;WDOJ17");
+
+
+		BovespaTradeFileExtractor be = new BovespaTradeFileExtractor();
+		be.config(p);
+
+		List<Extractable> l = be.extract();
+		System.out.println("negocios extraidos...");
+		TreeMap<Date, List<Extractable>> sales = new TreeMap<>();
+		for(Extractable et:l){
+		    TradeVO t = (TradeVO) et;
+		    if(!sales.containsKey(t.tradeTime)){
+			sales.put(t.tradeTime, new ArrayList<>());
+		    }
+		    sales.get(t.tradeTime).add(t);
+
+		}
+
+
+		for(List<Extractable> et:sales.values()){
+		    for(Extractable ex:et){
+			((TimesTradesTableModel)tblMarketTrades.getModel()).addTrade((TradeVO) ex);
+		    }
+
+		    try {
+			Thread.sleep(150);
+		    } catch (InterruptedException e) {
+			e.printStackTrace();
+		    }
+
+		}
+
+	    }
+
+	}).start();
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,8 +111,8 @@ public class MarketTradesForm extends AbstractForm {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Trades");
         setMaximumSize(new java.awt.Dimension(375, 500));
-        setResizable(false);
         setSize(new java.awt.Dimension(375, 300));
+        setType(java.awt.Window.Type.UTILITY);
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(375, 300));
         jScrollPane1.setMinimumSize(new java.awt.Dimension(375, 300));
@@ -44,23 +120,40 @@ public class MarketTradesForm extends AbstractForm {
 
         tblMarketTrades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Time", "Volume", "Price", "Buy Broker", "Sell Broker", "Aggressor"
+                "#", "Time", "Volume", "Price", "Buy", "Sell", "Agr"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblMarketTrades);
+        if (tblMarketTrades.getColumnModel().getColumnCount() > 0) {
+            tblMarketTrades.getColumnModel().getColumn(0).setHeaderValue("#");
+            tblMarketTrades.getColumnModel().getColumn(1).setHeaderValue("Time");
+            tblMarketTrades.getColumnModel().getColumn(2).setHeaderValue("Volume");
+            tblMarketTrades.getColumnModel().getColumn(3).setHeaderValue("Price");
+            tblMarketTrades.getColumnModel().getColumn(4).setHeaderValue("Buy");
+            tblMarketTrades.getColumnModel().getColumn(5).setHeaderValue("Sell");
+            tblMarketTrades.getColumnModel().getColumn(6).setHeaderValue("Agr");
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -81,12 +174,8 @@ public class MarketTradesForm extends AbstractForm {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
+           javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+            
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(MarketTradesForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -110,4 +199,23 @@ public class MarketTradesForm extends AbstractForm {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblMarketTrades;
     // End of variables declaration//GEN-END:variables
+    private Market market;
+
+
+    /* (non-Javadoc)
+     * @see com.cmm.jft.ui.forms.AbstractForm#setData(java.lang.Object)
+     */
+    @Override
+    public void setData(Object data) {
+	
+	if(data instanceof Market) {
+	    market = (Market) data;
+	}
+	
+	
+	
+    }   
+    
+    
+    
 }

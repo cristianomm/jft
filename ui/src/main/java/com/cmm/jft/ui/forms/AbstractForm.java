@@ -94,8 +94,13 @@ public abstract class AbstractForm extends JFrame implements Forms {
      */
     @Override
     public void addListeners() {
-	btnCancel.addActionListener(new GerEvents(this));
-	btnOK.addActionListener(new GerEvents(this));
+	if(btnCancel!=null){
+	    btnCancel.addActionListener(new GerEvents(this));
+	}
+	
+	if(btnOK != null){
+	    btnOK.addActionListener(new GerEvents(this));
+	}
     }
 
     /* (non-Javadoc)

@@ -4,12 +4,10 @@
 package com.cmm.jft.connector.engine;
 
 import java.io.InputStream;
-import java.util.concurrent.CountDownLatch;
 
 import org.apache.log4j.Level;
 import org.quickfixj.jmx.JmxExporter;
 
-import com.cmm.jft.connector.message.ClientEngineMessageHandler;
 import com.cmm.logging.Logging;
 
 import quickfix.DefaultMessageFactory;
@@ -19,17 +17,10 @@ import quickfix.Initiator;
 import quickfix.LogFactory;
 import quickfix.MessageFactory;
 import quickfix.MessageStoreFactory;
-import quickfix.ScreenLogFactory;
 import quickfix.Session;
 import quickfix.SessionID;
 import quickfix.SessionSettings;
 import quickfix.SocketInitiator;
-import quickfix.field.ClOrdID;
-import quickfix.field.OrdType;
-import quickfix.field.Side;
-import quickfix.field.TransactTime;
-import quickfix.fix44.Heartbeat;
-import quickfix.fix44.NewOrderSingle;
 
 /**
  * <p><code>EngineStarter.java</code></p>

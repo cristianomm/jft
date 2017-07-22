@@ -9,7 +9,7 @@
 
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">org.postgresql.Driver</property>
-		<property name="connection.url">jdbc:postgresql://localhost:5432/StockData</property>
+		<property name="connection.url">jdbc:postgresql://localhost:5432/jft</property>
 		<property name="connection.username">jft</property>
 		<property name="connection.password">287463</property>
 
@@ -31,9 +31,9 @@
 		<property name="show_sql">false</property>
 
 		<!-- Drop and re-create the database schema on startup -->
-		<property name="hbm2ddl.auto">update</property>
-
+		<property name="hbm2ddl.auto">none</property>
 		
+				
 		<!-- Core -->
 		<!-- 
 		<property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</property>
@@ -44,14 +44,17 @@
 		
 		
 		<!-- Financial -->
-		
 		<mapping class="com.cmm.jft.financial.Account"/>
+		<mapping class="com.cmm.jft.financial.Broker"/>
+		<mapping class="com.cmm.jft.financial.Brokerage"/>
+		<mapping class="com.cmm.jft.financial.Commission"/>
 		<mapping class="com.cmm.jft.financial.CostCenter"/>
 		<mapping class="com.cmm.jft.financial.Currency"/>
 		<mapping class="com.cmm.jft.financial.CurrencyQuote"/>
 		<mapping class="com.cmm.jft.financial.Deposit"/>
 		<mapping class="com.cmm.jft.financial.DistributionRule"/>
 		<mapping class="com.cmm.jft.financial.EntryRegister"/>
+		<mapping class="com.cmm.jft.financial.ExchangeTax"/>
 		<mapping class="com.cmm.jft.financial.JournalEntry"/>
 		<mapping class="com.cmm.jft.financial.Rule"/>
 		<mapping class="com.cmm.jft.financial.RuleFormula"/>		
@@ -63,33 +66,31 @@
 		<mapping class="com.cmm.jft.db.DBObject"/>
 		
 		<!-- Trading -->
-		
-		<mapping class="com.cmm.jft.trading.account.Broker"/>
-		<mapping class="com.cmm.jft.trading.account.Brokerage"/>
-		<mapping class="com.cmm.jft.trading.account.Commission"/>
-		<mapping class="com.cmm.jft.trading.account.ExchangeTax"/>
 		<mapping class="com.cmm.jft.trading.OrderEvent"/>
 		<mapping class="com.cmm.jft.trading.Orders"/>
 		
 		
-		<mapping class="com.cmm.jft.trading.marketdata.HistoricalQuote"/>
-		<mapping class="com.cmm.jft.trading.marketdata.MarketEvent"/>
-		<mapping class="com.cmm.jft.trading.marketdata.MarketOrder"/>
-		<mapping class="com.cmm.jft.trading.marketdata.MarketTrade"/>
+		<mapping class="com.cmm.jft.marketdata.HistoricalQuote"/>
+		<mapping class="com.cmm.jft.marketdata.MarketEvent"/>
+		<mapping class="com.cmm.jft.marketdata.MarketOrder"/>
+		<mapping class="com.cmm.jft.marketdata.MarketTrade"/>
+		<mapping class="com.cmm.jft.security.Country"/>
+		<mapping class="com.cmm.jft.security.Security"/>
+		<mapping class="com.cmm.jft.security.SecurityInfo"/>
+		<mapping class="com.cmm.jft.security.StockExchange"/>
+		<!--
+		
 		<mapping class="com.cmm.jft.trading.securities.Company"/>
-		<mapping class="com.cmm.jft.trading.securities.Country"/>
-		<mapping class="com.cmm.jft.trading.securities.Earning"/>
-		<mapping class="com.cmm.jft.trading.securities.StockExchange"/>
+		<mapping class="com.cmm.jft.securities.Earning"/>
 		<mapping class="com.cmm.jft.trading.securities.Sector"/>
 		<mapping class="com.cmm.jft.trading.securities.Segment"/>
 		<mapping class="com.cmm.jft.trading.securities.Subsector"/>
 		<mapping class="com.cmm.jft.trading.securities.Isin"/>
 		<mapping class="com.cmm.jft.trading.securities.Index"/>
 		<mapping class="com.cmm.jft.trading.securities.IndexComposition"/>
-		<mapping class="com.cmm.jft.trading.securities.Security"/>
-		<mapping class="com.cmm.jft.trading.securities.SecurityInfo"/>
 		
-		<!--
+		
+		<mapping class="com.cmm.jft.trading.OrderExecution"/>
 		<mapping class="com.cmm.jft_core.MapRegister"/>
 		<mapping class="com.cmm.jft_core.Registrable"/>
 		<mapping class="com.cmm.jft_trading.OrderEvent"/>

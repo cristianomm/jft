@@ -71,9 +71,9 @@ public class Security implements DBObject<Security> {
 	@OneToOne(cascade=CascadeType.ALL)
 	private SecurityInfo securityInfoID;
 	
-	@JoinColumn(name = "stockExchangeID", referencedColumnName = "stockExchangeID", nullable = false)
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	private StockExchange stockExchangeID;
+	//@JoinColumn(name = "stockExchangeID", referencedColumnName = "stockExchangeID", nullable = false)
+	//@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private String securityExchange;//stockExchangeID;
 
 	public Security() {
 		this.securityIDSrc = '0';
@@ -167,17 +167,12 @@ public class Security implements DBObject<Security> {
 		return this.securityInfoID;
 	}
 	
-	/**
-	 * @return the stockExchangeID
-	 */
-	public StockExchange getStockExchangeID() {
-		return this.stockExchangeID;
+	public void setSecurityExchange(String securityExchange) {
+		this.securityExchange = securityExchange;
 	}
-	/**
-	 * @param stockExchangeID the stockExchangeID to set
-	 */
-	public void setStockExchangeID(StockExchange stockExchangeID) {
-		this.stockExchangeID = stockExchangeID;
+	
+	public String getSecurityExchange() {
+		return securityExchange;
 	}
 	
 	/**

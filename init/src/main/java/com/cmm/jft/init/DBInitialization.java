@@ -139,7 +139,7 @@ public class DBInitialization {
 		addCountries("../file/Country.csv");
 		addCurrencies("../file/Currencies.csv");
 		addAccounts("../file/Accounts.csv");
-		addExchanges("../file/Exchanges.csv");
+		//addExchanges("../file/Exchanges.csv");
 
 		addBrokers("../file/Brokers.csv");
 		addBrokerage("../file/Brokerage.csv");
@@ -258,7 +258,7 @@ public class DBInitialization {
 				String[] vs = csv.readLine();
 				String account = vs[0];
 				String accountName = vs[1];
-				double credit = (Double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[2]);
+				double credit = Double.parseDouble(vs[2]);
 				String currency = vs[3];
 				String type = vs[4];
 				String category = vs[5];
@@ -323,7 +323,7 @@ public class DBInitialization {
 
 						if (vs != null && vs[0].equals("02")) {
 							String taxName = vs[1];
-							double tax = (Double) dblFrt.parse(vs[2]);
+							double tax = Double.parseDouble(vs[2]);
 							ValueTypes calcType = ValueTypes.valueOf(vs[3]);
 							// Account crdAccount = (Account)
 							// DBFacade.getInstance().findObject("Account.findByAccountID",
@@ -337,9 +337,9 @@ public class DBInitialization {
 						}
 
 						if (vs != null && vs[0].equals("03")) {
-							double valueMin = (Double) dblFrt.parse(vs[1]);
-							double valueMax = (Double) dblFrt.parse(vs[2]);
-							double commValue = (Double) dblFrt.parse(vs[3]);
+							double valueMin = Double.parseDouble(vs[1]);
+							double valueMax = Double.parseDouble(vs[2]);
+							double commValue = Double.parseDouble(vs[3]);
 							ValueTypes calcType = ValueTypes.valueOf(vs[4]);
 							// Account crdAccount = (Account)
 							// DBFacade.getInstance().findObject("Account.findByAccountID",
@@ -369,7 +369,7 @@ public class DBInitialization {
 		String repName = "Securities";
 		try {
 			report.startReport(repName);
-
+			
 			HashMap<String, Currency> currencies = new HashMap<String, Currency>();
 			DBFacade.getInstance().queryAsMap("Currency.findAll", currencies, Currency.class, "getCurrencyID");
 
@@ -390,6 +390,13 @@ public class DBInitialization {
 			csv.setEncoding("UTF-8");
 			csv.readLine();
 			
+			
+			DBFacade.getInstance().beginTransaction();
+			
+//			StockExchange exchange = (StockExchange) DBFacade.getInstance()
+//					.findObject("StockExchange.findByStockExchangeID", "stockExchangeID", "BVMF");
+			String exchange = "BVMF";
+			
 			Date defDate = new Date();
 			while (csv.hasNext()) {
 				String[] vs = csv.readLine();
@@ -406,13 +413,13 @@ public class DBInitialization {
 				
 				
 				
-				int contractSize = (int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[5]);
-				double tickSize = (double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[6]);
-				double tickValue = (double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[7]);
-				int digits = (int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[8]);
-				int minVolume = (int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[9]);
-				int maxVolume = (int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[10]);
-				int stepVolume = (int)FormatterFactory.getFormatter(FormatterTypes.INT).parse(vs[11]);
+				int contractSize = (int) Double.parseDouble(vs[5]);
+				double tickSize = Double.parseDouble(vs[6]);
+				double tickValue = Double.parseDouble(vs[7]);
+				int digits = (int) Double.parseDouble(vs[8]);
+				int minVolume = (int) Double.parseDouble(vs[9]);
+				int maxVolume = (int) Double.parseDouble(vs[10]);
+				int stepVolume = (int) Double.parseDouble(vs[11]);
 				
 				// String category = vs[12];
 				Date emissionDate = ((Date) FormatterFactory.getFormatter(FormatterTypes.DATE_TIME_F10).parse(vs[12]));
@@ -420,7 +427,7 @@ public class DBInitialization {
 						.parse(vs[13]));
 				OptionStyles style = OptionStyles.getByValue(vs[14]);
 				OptionRights optionRight = OptionRights.getByValue(vs[15]);
-				double strikePrice = (Double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(vs[16]);
+				double strikePrice = Double.parseDouble(vs[16]);
 
 				SecurityCategory secCat = SecurityCategory.getByISIN(ISIN);
 				AssetTypes objAsset = null;//AssetTypes.getByValue(tipoAtivoObjeto);
@@ -440,8 +447,9 @@ public class DBInitialization {
 				
 				Security security = new Security(symbol);
 				security.setDescription(description);
-				security.setStockExchangeID((StockExchange) DBFacade.getInstance()
-						.findObject("StockExchange.findByStockExchangeID", "stockExchangeID", "BVMF"));
+				
+				
+				security.setSecurityExchange(exchange);
 
 				SecurityInfo info = new SecurityInfo(security, secCat);
 				info.setIsin(ISIN);
@@ -470,7 +478,8 @@ public class DBInitialization {
 				report.count(repName);
 			}
 
-			DBFacade.getInstance().finalizeBatch();
+			//DBFacade.getInstance().finalizeBatch();
+			DBFacade.getInstance().commit();
 
 		} catch (DataBaseException e) {
 			e.printStackTrace();

@@ -7,13 +7,13 @@ import java.util.HashMap;
 
 import com.cmm.jft.engine.BookRepository;
 import com.cmm.jft.engine.SessionRepository;
-import com.cmm.jft.engine.enums.StreamTypes;
 import com.cmm.jft.engine.message.EngineHandler;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.enums.FIXProtocols;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.messaging.handlers.MessageHandler;
+import com.cmm.jft.trading.enums.StreamTypes;
 
 import quickfix.Application;
 import quickfix.ConfigError;

@@ -11,8 +11,10 @@ import java.awt.event.KeyEvent;
 
 import com.cmm.jft.services.marketdata.Market;
 import com.cmm.jft.services.marketdata.MarketDataService;
+import com.cmm.jft.ui.ObjectForms;
 import com.cmm.jft.ui.forms.AbstractForm;
 import com.cmm.jft.ui.forms.Events;
+import com.cmm.jft.ui.forms.FormsFactory;
 import com.cmm.jft.ui.models.MarketResumeTableModel;
 
 /**
@@ -26,8 +28,8 @@ public class MarketResumeForm extends AbstractForm {
      */
     public MarketResumeForm() {
 	initComponents();
-	tblMarkets.setModel(new MarketResumeTableModel());
-	tblMarkets.setFillsViewportHeight(true);
+	tblResume.setModel(new MarketResumeTableModel());
+	tblResume.setFillsViewportHeight(true);
 
     }
 
@@ -162,7 +164,9 @@ public class MarketResumeForm extends AbstractForm {
 
     @Override
     public void addListeners() {
-	tblMarkets.addKeyListener(new GerEvents(this));
+	tblResume.addKeyListener(new GerEvents(this));
+	btnBook.addActionListener(new GerEvents(this));
+	btnTrades.addActionListener(new GerEvents(this));
 	super.addListeners();
     }
 
@@ -189,7 +193,19 @@ public class MarketResumeForm extends AbstractForm {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-	    super.actionPerformed(e);
+	    int selected = tblResume.getSelectedRow();
+	    
+	    if(selected >= 0) {
+		
+		Market mkt = ((MarketResumeTableModel)tblResume.getModel()).getMarket(selected);
+		
+		if (e.getSource() == btnBook) {
+		    FormsFactory.openForm(ObjectForms.BOOK, mkt);
+		}
+		else if (e.getSource() == btnTrades) {
+		    FormsFactory.openForm(ObjectForms.TIME_SALES, mkt);
+		}
+	    }
 	}
 
 
@@ -218,14 +234,14 @@ public class MarketResumeForm extends AbstractForm {
 	@Override
 	public void keyTyped(KeyEvent ke) {
 	    if(ke.getKeyCode()==10) {
-		int row = tblMarkets.getSelectedRow();
+		int row = tblResume.getSelectedRow();
 		if(row > 0) {
-		    String symbol = (String) tblMarkets.getModel().getValueAt(row, 0);
+		    String symbol = (String) tblResume.getModel().getValueAt(row, 0);
 		    if(symbol!=null && symbol.length()>4) {		    
 			Market m = MarketDataService.getInstance().hasMarketSymbol(symbol);
 			if(m!=null) {
-			    ((MarketResumeTableModel)tblMarkets.getModel()).addMarket(m);
-			    ((MarketResumeTableModel)tblMarkets.getModel()).addMarket(null);
+			    ((MarketResumeTableModel)tblResume.getModel()).addMarket(m);
+			    ((MarketResumeTableModel)tblResume.getModel()).addMarket(null);
 			}
 		    }
 		}

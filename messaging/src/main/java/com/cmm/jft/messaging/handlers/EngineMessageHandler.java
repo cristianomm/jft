@@ -1,4 +1,4 @@
-package com.cmm.jft.messaging;
+package com.cmm.jft.messaging.handlers;
 
 import quickfix.FieldNotFound;
 import quickfix.IncorrectTagValue;
@@ -30,116 +30,50 @@ import quickfix.fix44.SecurityDefinitionRequest;
  * @version 30-10-2015 14:43:27
  *
  */
-public abstract class EngineMessageHandler implements MessageHandler {
-
-	public void onMessage(BusinessMessageReject message,
-			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
+public interface EngineMessageHandler extends MessageHandler {
 
 	public void onMessage(NewOrderSingle message,
 			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
+			IncorrectTagValue;
 	
-	public void onMessage(ExecutionReport message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
-
 	public void onMessage(OrderCancelReplaceRequest message,
 			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
+			IncorrectTagValue;
 	
 	public void onMessage(OrderCancelRequest message,
 			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(OrderCancelReject message,
-			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
+			IncorrectTagValue;
 	
 	public void onMessage(NewOrderCross message,
 			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
+			IncorrectTagValue;
 	
 	public void onMessage(SecurityDefinitionRequest message,
 			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(SecurityDefinition message,
-			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
+			IncorrectTagValue;
 
 	public void onMessage(QuoteRequest message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
-
-	public void onMessage(QuoteStatusReport message,
-			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
 
 	public void onMessage(Quote message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-	}
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
 
 	public void onMessage(QuoteCancel message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
 
 	public void onMessage(QuoteRequestReject message,
 			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
+			IncorrectTagValue;
 
 	public void onMessage(PositionMaintenanceRequest message,
 			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
-	
-	public void onMessage(PositionMaintenanceReport message,
-			SessionID sessionID) throws FieldNotFound, UnsupportedMessageType,
-			IncorrectTagValue {
-		
-	}
+			IncorrectTagValue;
 
 	public void onMessage(AllocationInstruction message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
 	
-	public void onMessage(AllocationReport message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-		
-	}
 	/*
 	public void onMessage(ApplicationMessageRequest message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
-	
-	public void onMessage(ApplicationMessageRequestAck message, SessionID sessionID)
-			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
-	
-	public void onMessage(ApplicationMessageReport message, SessionID sessionID)
 			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue;
 	*/
 	

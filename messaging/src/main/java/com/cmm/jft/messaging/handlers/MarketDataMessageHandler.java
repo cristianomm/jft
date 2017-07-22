@@ -1,4 +1,4 @@
-package com.cmm.jft.messaging;
+package com.cmm.jft.messaging.handlers;
 
 import quickfix.FieldNotFound;
 import quickfix.IncorrectTagValue;

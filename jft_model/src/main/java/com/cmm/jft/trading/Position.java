@@ -43,6 +43,8 @@ public class Position implements DBObject<Position> {
 
 	private double profit;
 
+	private boolean open;
+	
 	private List<Orders> ordersList;
 	
 
@@ -50,6 +52,7 @@ public class Position implements DBObject<Position> {
 	 * @param symbol
 	 */
 	public Position(String symbol) {
+		this.open = false;
 		this.symbol = symbol;
 		this.openDate = new Date();
 		this.positionSerial = UUID.randomUUID().toString();
@@ -181,6 +184,7 @@ public class Position implements DBObject<Position> {
 		if (symbol.isEmpty()) {
 			symbol = orders.getSecurityID().getSymbol();
 		}
+		open = true;
 		ordersList.add(orders);
 	}
 
@@ -195,13 +199,13 @@ public class Position implements DBObject<Position> {
 	
 	
 	/**
-	 * A partir das ordens totalmente executadas, calcula a posicao atual do trade
-	 * @return Posicao atual calculado a partir das ordens totalmente executadas
+	 * Calcula a posicao atual do volume executado para as ordens ativas
+	 * @return Posicao atual do volume executado
 	 */
 	public int getPosition() {
 		int buy = 0, sell = 0;
 		for (Orders o : ordersList) {
-			if (o.getOrderStatus() == OrderStatus.FILLED) {
+			if (o.getOrderStatus() == OrderStatus.NEW || o.getOrderStatus() == OrderStatus.FILLED || o.getOrderStatus() == OrderStatus.PARTIALLY_FILLED) {
 				buy += o.getSide() == Side.BUY ? o.getExecutedVolume() : 0;
 				sell += o.getSide() == Side.SELL ? o.getExecutedVolume() : 0;
 			}
@@ -211,21 +215,21 @@ public class Position implements DBObject<Position> {
 	}
 
 	
-	/**
-	 * Calcula a posicao atual das ordens que ainda nao foram totalmente executadas
-	 * @return
-	 */
-	public int getOpenPosition() {
-		int buy = 0, sell = 0;
-		for (Orders o : ordersList) {
-			if (o.getOrderStatus() == OrderStatus.NEW || o.getOrderStatus() == OrderStatus.PARTIALLY_FILLED) {
-				buy += o.getSide() == Side.BUY ? o.getExecutedVolume() : 0;
-				sell += o.getSide() == Side.SELL ? o.getExecutedVolume() : 0;
-			}
-		}
-
-		return buy - sell;
-	}
+//	/**
+//	 * Calcula a posicao atual das ordens que ainda nao foram totalmente executadas
+//	 * @return
+//	 */
+//	public int getOpenPosition() {
+//		int buy = 0, sell = 0;
+//		for (Orders o : ordersList) {
+//			if (o.getOrderStatus() == OrderStatus.NEW || o.getOrderStatus() == OrderStatus.PARTIALLY_FILLED) {
+//				buy += o.getSide() == Side.BUY ? o.getExecutedVolume() : 0;
+//				sell += o.getSide() == Side.SELL ? o.getExecutedVolume() : 0;
+//			}
+//		}
+//
+//		return buy - sell;
+//	}
 	
 	public Brokerage getBrokerage() {
 
@@ -280,6 +284,9 @@ public class Position implements DBObject<Position> {
 		return this.ordersList;
 	}
 	
+	public boolean isOpen() {
+		return open;
+	}
 	
 
 	/*

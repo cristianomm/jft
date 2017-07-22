@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.messaging;
+package com.cmm.jft.messaging.handlers;
 
 /**
  * <p><code>MessageHandler.java</code></p>

@@ -11,11 +11,10 @@ import javafx.fxml.Initializable;
  */
 public abstract class AbstractController implements Initializable {
 	
+	public abstract String getTitle();
 	
 	public abstract void addData(Object data);
 	
 	public abstract void updateData(Object data);
-	
-	
 	
 }

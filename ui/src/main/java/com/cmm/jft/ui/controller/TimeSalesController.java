@@ -3,10 +3,13 @@
  */
 package com.cmm.jft.ui.controller;
 
-
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -25,10 +28,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
+import com.cmm.jft.data.extractor.marketdata.BovespaTradeFileExtractor;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.ui.utils.ImageIcons;
+import com.cmm.jft.vo.Extractable;
 import com.cmm.jft.vo.TimeSalesVO;
+import com.cmm.jft.vo.TradeVO;
 
 /**
  * @author Cristiano M Martins
@@ -37,177 +43,200 @@ import com.cmm.jft.vo.TimeSalesVO;
  */
 public class TimeSalesController extends AbstractController {
 
-	@FXML
-	private TextField txtSymbol;
+    @FXML
+    private TextField txtSymbol;
 
-	@FXML
-	private Button btnSrchSymbol;
+    @FXML
+    private Button btnSrchSymbol;
+
+    @FXML
+    private Label lblTradeCount;
+
+    @FXML
+    private Label lblLstVolume;
+
+    @FXML
+    private Label lblLstPrice;
+
+    @FXML
+    private TableView<TradeVO> tblTimesSales;
+
+    @FXML
+    private TableColumn<TradeVO, String> colID;
+
+    @FXML
+    private TableColumn<TradeVO, Date> colDate;
+
+    @FXML
+    private TableColumn<TradeVO, Double> colPrice;
+
+    @FXML
+    private TableColumn<TradeVO, Integer> colVolume;
+
+    @FXML
+    private TableColumn<TradeVO, String> colSell;
+
+    @FXML
+    private TableColumn<TradeVO, String> colBuy;
+
+    @FXML
+    private TableColumn<TradeVO, Character> colAgressor;
+
+    private ObservableList<TradeVO> data;
+
+    private Security security;
+
+    public TimeSalesController() {
+	data = FXCollections.observableArrayList();
+    }
+
+    @Override
+    public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+
+	btnSrchSymbol.setGraphic(ImageIcons.getSecurityImage());
+
+	btnSrchSymbol.setOnAction(new EventHandler<ActionEvent>() {
+
+	    @Override
+	    public void handle(ActionEvent event) {
+		String symbol = txtSymbol.getText();
+		if (symbol != null && symbol.length() > 3) {
+		    security = SecurityService.getInstance().provideSecurity(symbol);
+		}
+	    }
+	});
+
+	colID.setCellValueFactory(new PropertyValueFactory<>("tradeID"));
 	
-	@FXML
-	private Label lblTradeCount;
+	DateTimeFormatter formatter = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.TIME_F4);
+	colDate.setCellValueFactory(new PropertyValueFactory<>("tradeTime"));
+//	colDate.setCellFactory(column -> {
+//	    return new TableCell<TradeVO, Date>() {
+//		protected void updateItem(Date item, boolean empty) {
+//		    super.updateItem(item, empty);
+//		    if (item != null) {
+//			setText(formatter.format(item));
+//		    }
+//		}
+//	    };
+//	});
+
+	colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+//	colPrice.setCellFactory(column -> {
+//	    return new TableCell<TradeVO, Double>(){
+//		protected void updateItem(Double item, boolean empty){
+//		    super.updateItem(item, empty);
+//		    if(item != null){
+//			setText(String.format("%1$.3f", item));
+//		    }
+//		}
+//	    };
+//	});
 	
-	@FXML
-	private Label lblLstVolume;
+	colVolume.setCellValueFactory(new PropertyValueFactory<>("volume"));
 	
-	@FXML
-	private Label lblLstPrice;
+	colBuy.setCellValueFactory(new PropertyValueFactory<>("buyBroker"));
+	colSell.setCellValueFactory(new PropertyValueFactory<>("sellBroker"));
 	
+	colAgressor.setCellValueFactory(new PropertyValueFactory<>("agressor"));
+	colAgressor.setCellFactory(column -> {
+	    return new TableCell<TradeVO, Character>() {
+		protected void updateItem(Character item, boolean empty) {
+		    super.updateItem(item, empty);
+		    if (item != null) {
+			//long t0 = System.currentTimeMillis();
+			tblTimesSales.getSelectionModel().selectLast();
+			tblTimesSales.scrollTo(tblTimesSales.getItems().size());
+			switch (item.charValue()) {
+			case 'B':
+			    getTableRow().getStyleClass().add("time_sales_buy");
+			    break;
 
-
-	@FXML
-	private TableView<TimeSalesVO> tblTimesSales;
-
-	@FXML
-	private TableColumn<TimeSalesVO, Date> colDate;
-
-	@FXML
-	private TableColumn<TimeSalesVO, Double> colPrice;
-
-	@FXML
-	private TableColumn<TimeSalesVO, Double> colVolume;
-
-	@FXML
-	private TableColumn<TimeSalesVO, String> colSell;
-
-	@FXML
-	private TableColumn<TimeSalesVO, String> colBuy;
-
-	@FXML
-	private TableColumn<TimeSalesVO, Character> colAgressor;
-
-	private ObservableList<TimeSalesVO> data;
-
-	private Security security;
-
-
-
-	public TimeSalesController() {
-		data = FXCollections.observableArrayList();
-	}
-
-
-	@Override
-	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-
-		btnSrchSymbol.setGraphic(ImageIcons.getSecurityImage());
-		
-		btnSrchSymbol.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				String symbol = txtSymbol.getText();
-				if(symbol != null && symbol.length()>3){
-					security = SecurityService.getInstance().provideSecurity(symbol);
-				}
+			case 'S':
+			    getTableRow().getStyleClass().add("time_sales_sell");
+			    break;
 			}
-		});
-		
-		DateTimeFormatter formatter = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.TIME_F3);
-		colDate.setCellValueFactory(new PropertyValueFactory<>("dateTime"));
-		colDate.setCellFactory(column -> {
-			return new TableCell<TimeSalesVO, Date>(){
-				protected void updateItem(Date item, boolean empty){
-					super.updateItem(item, empty);
-					if(item != null){
-						setText(formatter.format(item));
-					}
-				}
-			};
-		});
-		
-		colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-		colVolume.setCellValueFactory(new PropertyValueFactory<>("volume"));
-		colBuy.setCellValueFactory(new PropertyValueFactory<>("buyer"));
-		colSell.setCellValueFactory(new PropertyValueFactory<>("seller"));
-		colAgressor.setCellValueFactory(new PropertyValueFactory<>("side"));
-		colAgressor.setCellFactory(column ->{
-			return new TableCell<TimeSalesVO, Character>(){
-				protected void updateItem(Character item, boolean empty){
-					super.updateItem(item, empty);
-					if(item != null){
-						long t0 = System.currentTimeMillis();
-						tblTimesSales.getSelectionModel().selectLast();
-						tblTimesSales.scrollTo(tblTimesSales.getItems().size());
-						switch(item){
-						case 'B':
-							getTableRow().getStyleClass().add("time_sales_buy");
-							break;
-							
-						case 'S':
-							getTableRow().getStyleClass().add("time_sales_sell");
-							break;
-						}
-						
-						System.out.println(System.currentTimeMillis() - t0);
-						
-					}
-				}
-			};
-		});
-		
-		
-		tblTimesSales.setItems(data);
-		
-		new Thread(new Runnable(){
 
-			@Override
-			public void run() {
-				for(int i=0;i<20;i++){
-					TimeSalesVO vo = new TimeSalesVO();
-					vo.dateTime = new Date();
-					vo.price = 3988;
-					vo.volume = 3+i;
-					vo.buyer = "";
-					vo.seller = "";
-					vo.side = 'B';
-					addData(vo);
-					
-					try {
-						Thread.sleep(150);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					
-					TimeSalesVO vo2 = new TimeSalesVO();
-					vo2.dateTime = new Date();
-					vo2.price = 3982;
-					vo2.volume = 2+i;
-					vo2.buyer = "";
-					vo2.seller = "";
-					vo2.side = 'S';
-					addData(vo2);
-					try {
-						Thread.sleep(150 );
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-			
-		}).start();
+		    }
+		}
+	    };
+	});
 
-	}
+	tblTimesSales.setItems(data);
 
-	@Override
-	public void addData(Object data) {
-		Platform.runLater(() -> {
-			TimeSalesVO timeSalesVO = (TimeSalesVO) data;
-			if(timeSalesVO!=null) {
-				this.data.add(timeSalesVO);
-				lblLstPrice.setText(timeSalesVO.getPrice() + "");
-				lblLstVolume.setText(timeSalesVO.getVolume() + "");
-			}
-		});
-		
-	}
+	new Thread(new Runnable() {
+
+	    @Override
+	    public void run() {
+
+		Properties p = new Properties();
+		p.put("filename", "D:\\Disco\\Users\\Cristiano\\Downloads\\BMF Files\\Copy_NEG_BMF_20170315.TXT");
+		p.put("columnFilter", "1;WDOJ17");
 
 
-	@Override
-	public void updateData(Object data) {
-		// TODO Auto-generated method stub
-		
-	}
+		BovespaTradeFileExtractor be = new BovespaTradeFileExtractor();
+		be.config(p);
+
+		List<Extractable> l = be.extract();
+
+		TreeMap<Date, List<Extractable>> sales = new TreeMap<>();
+		for(Extractable et:l){
+		    TradeVO t = (TradeVO) et;
+		    if(!sales.containsKey(t.tradeTime)){
+			sales.put(t.tradeTime, new ArrayList<>());
+		    }
+		    sales.get(t.tradeTime).add(t);
+
+		}
 
 
+		for(List<Extractable> et:sales.values()){
+		    for(Extractable ex:et){
+			addData(ex);
+		    }
+
+		    try {
+			Thread.sleep(150);
+		    } catch (InterruptedException e) {
+			e.printStackTrace();
+		    }
+
+		}
+
+	    }
+
+	}).start();
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.cmm.jft.ui.controller.AbstractController#getTitle()
+     */
+    @Override
+    public String getTitle() {
+	return "Time & Sales";
+    }
+
+    @Override
+    public void addData(Object data) {
+	Platform.runLater(() -> {
+	    TradeVO timeSalesVO = (TradeVO) data;
+	    if (timeSalesVO != null) {
+		this.data.add(timeSalesVO);
+		lblLstPrice.setText(timeSalesVO.price + "");
+		lblLstVolume.setText(timeSalesVO.volume + "");
+		lblTradeCount.setText(this.data.size() + "");
+	    }
+	});
+
+    }
+
+    @Override
+    public void updateData(Object data) {
+	// TODO Auto-generated method stub
+
+    }
 
 }

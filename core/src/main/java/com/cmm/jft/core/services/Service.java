@@ -17,7 +17,7 @@ public interface Service {
 	
 	boolean stop();
 	
-	
+	boolean isStarted();
 	
 	
 	

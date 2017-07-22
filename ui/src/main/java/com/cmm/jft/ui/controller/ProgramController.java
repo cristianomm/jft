@@ -78,14 +78,14 @@ public class ProgramController implements Initializable {
 		btnBook.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Forms.getInstance().addForm("Book", FormUtils.getInstance().openForm("../../../../../forms/BookForm.fxml", "Book"));
+				Forms.getInstance().addForm("Book", FormUtils.getInstance().openForm("../../../../../forms/BookForm.fxml"));
 			}
 		});
 		
 		btnDOM.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Forms.getInstance().addForm("DOM", FormUtils.getInstance().openForm("../../../../../forms/DOMForm.fxml", "DOM"));
+				Forms.getInstance().addForm("DOM", FormUtils.getInstance().openForm("../../../../../forms/DOMForm.fxml"));
 			}
 		});
 		
@@ -93,7 +93,7 @@ public class ProgramController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				Forms.getInstance().addForm("OrderManager", 
-						FormUtils.getInstance().openForm("../../../../../forms/OrderManagerForm.fxml", "Order Manager"));
+						FormUtils.getInstance().openForm("../../../../../forms/OrderManagerForm.fxml"));
 			}
 		});
 		
@@ -104,7 +104,7 @@ public class ProgramController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				Forms.getInstance().addForm("PlaceOrder", 
-						FormUtils.getInstance().openForm("../../../../../forms/PlaceOrderForm.fxml", "Place Order"));
+						FormUtils.getInstance().openForm("../../../../../forms/PlaceOrderForm.fxml"));
 			}
 		});
 		
@@ -115,7 +115,7 @@ public class ProgramController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				Forms.getInstance().addForm("TimeSales", 
-						FormUtils.getInstance().openForm("../../../../../forms/TimeSalesForm.fxml", "Time & Sales"));
+						FormUtils.getInstance().openForm("../../../../../forms/TimeSalesForm.fxml"));
 			}
 		});
 		
@@ -123,7 +123,7 @@ public class ProgramController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				Forms.getInstance().addForm("Chart", 
-						FormUtils.getInstance().openForm("../../../../../forms/ChartForm.fxml", "Chart", 
+						FormUtils.getInstance().openForm("../../../../../forms/ChartForm.fxml", 
 								"file://" + getClass().getResource("../../../../../forms/CandleStickChartStyles.css").getFile()));
 			}
 		});

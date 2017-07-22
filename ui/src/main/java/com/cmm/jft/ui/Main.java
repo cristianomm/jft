@@ -1,6 +1,7 @@
 package com.cmm.jft.ui;
 
-import com.cmm.jft.db.DBFacade;
+import com.cmm.jft.services.marketdata.MarketDataService;
+import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.ui.forms.FormsFactory;
 
 import javax.swing.UIManager;
@@ -16,29 +17,32 @@ import com.cmm.logging.Logging;
  */
 public class Main {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
 
-		try {
+	try {
 
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-			//inicializa a conexao
-			DBFacade.getInstance();
+	    //inicializa a conexao
+	    //DBFacade.getInstance();
+	    MarketDataService.getInstance().start();
+	    SecurityService.getInstance();
+	    
 
-			//ajusta o log para mostrar erros tambem na saida padrao 
-			Logging.getInstance().printStackTrace(true);
+	    //ajusta o log para mostrar erros tambem na saida padrao 
+	    Logging.getInstance().printStackTrace(true);
 
-			//chama a tela inicial do programa
-			FormsFactory.openForm(ObjectForms.PROGRAM);
+	    //chama a tela inicial do programa
+	    FormsFactory.openForm(ObjectForms.PROGRAM);
 
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-		}
-
+	} catch (ClassNotFoundException | InstantiationException
+		| IllegalAccessException | UnsupportedLookAndFeelException e) {
+	    e.printStackTrace();
 	}
+
+    }
 
 }

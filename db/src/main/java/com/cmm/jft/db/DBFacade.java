@@ -49,10 +49,10 @@ public class DBFacade {
 	private EntityManagerFactory emf;
 
 	private static Configuration configuration = new Configuration();
-	/* Constante de caminho do arquivo de configura��o do Hibernate */
+	/* Constante de caminho do arquivo de configuracao do Hibernate */
 	private static String DEFAULT_CONFIG_FILE_LOCATION = "./META-INF/hibernate.cfg.xml";
 
-	/* Threads que controlar�o a sess�o e a transa��o */
+	/* Threads que controlarao a sessao e a transacao */
 	private static final ThreadLocal<Session> threadSession = new ThreadLocal<Session>();
 	private static final ThreadLocal<Transaction> threadTransaction = new ThreadLocal<Transaction>();
 

@@ -71,12 +71,12 @@ public class Zimp {
 			OutputStream os = null;
 			byte[] buffer = new byte[4096];
 			try {
-				// cria diretorio informado, caso não exista
+				// cria diretorio informado, caso nï¿½o exista
 				if (!destDir.exists()) {
 					destDir.mkdirs();
 				}
 				if (!destDir.exists() || !destDir.isDirectory()) {
-					throw new IOException("Informe um diretório válido");
+					throw new IOException("Informe um diretorio valido");
 				}
 				zip = new ZipFile(zipFile);
 				Enumeration e = zip.entries();
@@ -84,18 +84,18 @@ public class Zimp {
 					ZipEntry entry = (ZipEntry) e.nextElement();
 					file = new File(destDir, entry.getName());
 					System.out.println("Extracting: " + entry.getName());
-					// se for diretório inexistente, cria a estrutura
-					// e pula pra próxima entrada
+					// se for diretï¿½rio inexistente, cria a estrutura
+					// e pula pra prï¿½xima entrada
 					if (entry.isDirectory() && !file.exists()) {
 						file.mkdirs();
 						continue;
 					}
-					// se a estrutura de diretórios não existe, cria
+					// se a estrutura de diretï¿½rios nï¿½o existe, cria
 					if (!file.getParentFile().exists()) {
 						file.getParentFile().mkdirs();
 					}
 					try {
-						// lê o arquivo do zip e grava em disco
+						// lï¿½ o arquivo do zip e grava em disco
 						is = zip.getInputStream(entry);
 						os = new FileOutputStream(file);
 						int bytesLidos = 0;
