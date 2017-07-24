@@ -30,7 +30,7 @@ public class Main {
 	    //DBFacade.getInstance();
 	    MarketDataService.getInstance().start();
 	    SecurityService.getInstance();
-	    
+
 
 	    //ajusta o log para mostrar erros tambem na saida padrao 
 	    Logging.getInstance().printStackTrace(true);

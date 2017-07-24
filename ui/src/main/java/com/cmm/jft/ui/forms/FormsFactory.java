@@ -2,7 +2,6 @@ package com.cmm.jft.ui.forms;
 
 import com.cmm.jft.ui.ObjectForms;
 import com.cmm.jft.ui.Program;
-import com.cmm.jft.ui.analysis.NeuralNetForm;
 import com.cmm.jft.ui.chart.ChartForm;
 import com.cmm.jft.ui.configuration.DBInitializationForm;
 import com.cmm.jft.ui.financial.DistributionRuleForm;
@@ -13,7 +12,6 @@ import com.cmm.jft.ui.masterdata.BrokerForm;
 import com.cmm.jft.ui.masterdata.CompanyForm;
 import com.cmm.jft.ui.masterdata.CurrencyForm;
 import com.cmm.jft.ui.masterdata.CurrencyQuoteForm;
-import com.cmm.jft.ui.simulation.BacktestForm;
 import com.cmm.jft.ui.trading.BookForm;
 import com.cmm.jft.ui.trading.MarketResumeForm;
 import com.cmm.jft.ui.trading.MarketTradesForm;
@@ -49,9 +47,7 @@ public class FormsFactory {
 	case ACCOUNT:
 
 	    break;
-	case BACKTEST:
-	    frm = new BacktestForm();
-	    break;
+	
 	case BROKER:
 	    frm = new BrokerForm();
 	    break;
@@ -91,9 +87,6 @@ public class FormsFactory {
 	    break;
 	case JOURNAL_ENTRY:
 	    frm = new JournalEntryForm();
-	    break;
-	case NEURAL_NETWORK:
-	    frm = new NeuralNetForm();
 	    break;
 	case ORDER:
 	    frm = new OrderForm();

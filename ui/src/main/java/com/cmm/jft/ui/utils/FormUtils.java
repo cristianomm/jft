@@ -3,8 +3,6 @@
  */
 package com.cmm.jft.ui.utils;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,14 +10,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
-import com.cmm.jft.ui.controller.AbstractController;
-
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * <p>
@@ -87,50 +77,50 @@ public class FormUtils {
 	return parameters.get(key);
     }
 
-    public AbstractController openForm(String form) {
-	AbstractController controller = null;
-	try {
-	    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(form));
-	    Parent root = (Parent) fxmlLoader.load();
-	    Stage stage = new Stage();
-	    stage.initModality(Modality.NONE);
-	    stage.initStyle(StageStyle.DECORATED);
-	    stage.setResizable(false);
-	    stage.setScene(new Scene(root));
-	    stage.getScene().getStylesheets()
-		    .add("file://" + getClass().getResource("../../../../../forms/forms.css").getFile());
-
-	    controller = fxmlLoader.getController();
-	    stage.setTitle(controller.getTitle());
-
-	    stage.show();
-
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-	return controller;
-    }
-
-    public AbstractController openForm(String form, String cssLocation) {
-	AbstractController controller = null;
-	try {
-	    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(form));
-	    Parent root = (Parent) fxmlLoader.load();
-	    Stage stage = new Stage();
-	    stage.initModality(Modality.NONE);
-	    stage.initStyle(StageStyle.DECORATED);
-	    stage.setResizable(false);
-	    stage.setScene(new Scene(root));
-	    stage.getScene().getStylesheets().add(cssLocation);
-
-	    controller = fxmlLoader.getController();
-	    stage.setTitle(controller.getTitle());
-	    stage.show();
-
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-	return controller;
-    }
+//    public AbstractController openForm(String form) {
+//	AbstractController controller = null;
+//	try {
+//	    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(form));
+//	    Parent root = (Parent) fxmlLoader.load();
+//	    Stage stage = new Stage();
+//	    stage.initModality(Modality.NONE);
+//	    stage.initStyle(StageStyle.DECORATED);
+//	    stage.setResizable(false);
+//	    stage.setScene(new Scene(root));
+//	    stage.getScene().getStylesheets()
+//		    .add("file://" + getClass().getResource("../../../../../forms/forms.css").getFile());
+//
+//	    controller = fxmlLoader.getController();
+//	    stage.setTitle(controller.getTitle());
+//
+//	    stage.show();
+//
+//	} catch (IOException e) {
+//	    e.printStackTrace();
+//	}
+//	return controller;
+//    }
+//
+//    public AbstractController openForm(String form, String cssLocation) {
+//	AbstractController controller = null;
+//	try {
+//	    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(form));
+//	    Parent root = (Parent) fxmlLoader.load();
+//	    Stage stage = new Stage();
+//	    stage.initModality(Modality.NONE);
+//	    stage.initStyle(StageStyle.DECORATED);
+//	    stage.setResizable(false);
+//	    stage.setScene(new Scene(root));
+//	    stage.getScene().getStylesheets().add(cssLocation);
+//
+//	    controller = fxmlLoader.getController();
+//	    stage.setTitle(controller.getTitle());
+//	    stage.show();
+//
+//	} catch (IOException e) {
+//	    e.printStackTrace();
+//	}
+//	return controller;
+//    }
 
 }
