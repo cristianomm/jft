@@ -1,0 +1,34 @@
+Layout do arquivo OFER_CPA (Ofertas de Compra)
+
+Cabeçalho/Rodapé
+-----------------------------------------------------------
+Coluna                 Posição Inicial  Tamanho   Descrição
+-----------------------------------------------------------
+Identificação                        1        2   RH Cabeçalho - RT Rodapé
+Nome Arquivo                         4       20   Nome do arquivo
+Data Inicial                        25       10   Data Inicial desse arquivo
+Data Final                          36       10   Data Final desse arquivo
+Total de Linhas                     47        9   No caso do rodapé apresenta o total de linhas do arquivo
+
+Detalhes
+-----------------------------------------------------------
+Coluna                 Posição Inicial  Tamanho   Descrição
+-----------------------------------------------------------
+Data Sessão                          1       10   Data da Sessão
+Símbolo do Instrumento              12       50   Símbolo do Instrumento
+Sentido Of.Compra                   63        1   Indicador de sentido da ordem: "1" - compra / "2" - venda
+Sequência                           65       15   Número de Sequência da Oferta
+GenerationID - Of.Compra            81       15   Número de geração (GenerationID) da Oferta de Compra. Quando um negócio for gerado por 2 ofertas com quantidade escondida e isso gerar "n" linhas será gravado aqui a maior geração.
+Cód do Evento da Of.Compra          97        3   Código do Evento da Ordem: 1 - New / 2 - Update / 3 - Cancel - Solicitado pelo participante / 4 - Trade / 5 - Reentry - Processo interno (quantidade escondida) / 6 - New Stop Price / 7 - Reject / 8 - Remove - Removida pelo Sistema (final de dia ou quando é totalmente fechada) / 9 - Stop Price Triggered / 11 - Expire - Oferta com validade expirada.
+Hora Prioridade                    101       15   Hora de registro da oferta no sistema (no formato, HH:MM:SS.NNN), utilizada como indicadora de prioridade
+Ind de Prioridade Of.Compra        117       10   Indicador de Prioridade. Além do preço é a ordem para aparecer no Order Book.
+Preço Of.Compra                    128       20   Preço da Oferta
+Qtd.Total Of.Compra                149       18   Quantidade Total da Oferta. Se tiver alteração ela reflete a nova quantidade.
+Qtd.Negociada Of.Compra            168       18   Quantidade Negociada
+Data Oferta Compra                 187       10   Data de Inclusão da Oferta. Pode ser uma data anterior à Data da Sessão, quando se tratar de uma Oferta com Validade.
+Data de Entrada Of.Compra          198       19   Data/Hora de Entrada da Oferta (formato: DD/MM/AAAA HH:MM:SS)
+Estado Of.Compra                   218        1   Indicador de estado da ordem: 0 - Novo / 1 - Negociada parcialmente / 2 - Totalmente executada / 4 - Cancelada / 5 - Modificada / 8  - Rejeitada / C - Expirada
+Condição Oferta                    220        1   Código que identifica a condição da oferta. Pode ser: 0 - Oferta Neutra - é aquela que entra no mercado e não fecha com oferta existente. / 1 - Oferta Agressora - é aquela que ingressa no mercado para fechar com uma oferta existente. / 2 - Oferta Agredida - é a oferta (existente) que é fechada com uma oferta agressora.
+Corretora                          222        8   Código que identifica univocamente a corretora - Disponível a partir de 03/2014
+
+Obs: Delimitador das colunas de detalhes ';'

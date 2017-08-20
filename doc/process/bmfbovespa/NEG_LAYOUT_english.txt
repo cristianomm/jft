@@ -1,0 +1,36 @@
+Layout of NEG file (Trades)
+
+Header/Trailer
+-------------------------------------------------------------
+Column                Initial Position   Lenght   Description
+-------------------------------------------------------------
+Identification                       1        2   RH Header - RT Trailer
+Name of file                         4       20   Name of file
+Initial date                        25       10   Initial date of file
+End date                            36       10   End date of file
+Total of lines                      47        9   Contain the total of lines when the file Trailer record
+
+Details
+-------------------------------------------------------------
+Column                Initial Position   Lenght   Description
+-------------------------------------------------------------
+Session Date                         1       10   Session date
+Instrument Symbol                   12       50   Instrument identifier
+Trade Number                        63       10   Trade number
+Trade Price                         74       20   Trade price
+Traded Quantity                     95       18   Traded quantity
+Trade Time                         114       15   Trade time (format HH:MM:SS.NNNNNN)
+Trade Indicator                    127        1   Trade indicador: 1 - Trade  / 2 - Trade cancelled
+Buy Order Date                     129       10   Buy order date
+Sequential Buy Order Number        140       15   Sequential buy order number
+Secondary Order ID - Buy Order     156       15   Secondary Order ID -  Buy Order.
+Aggressor Buy Order Indicator      172        1   0 - Neutral (Order was not executed) / 1 - Aggressor / 2 - Passive
+Sell Order Date                    174       10   Sell order sell date
+Sequential Sell Order Number       185       15   Sequential sell order number
+Secondary Order ID - Sell Order    201       15   Secondary Order ID -  Buy Order.
+Aggressor Sell Order Indicator     217        1   0 - Neutral (Order was not executed) / 1 - Aggressor / 2 - Passive
+Cross Trade Indicator              219        1   Define if the cross trade was intentional: 1 - Intentional / 0 - Not Intentional
+Buy Member                         221        8   Entering Firm (Buy Side) - Available from March/2014
+Sell Member                        230        8   Entering Firm (Sell Side) - Available from March/2014
+
+Obs: Delimiter of details columns ';' (semilocon)
