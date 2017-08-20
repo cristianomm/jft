@@ -29,7 +29,7 @@ public class NewsService extends EngineService {
 	    SessionSettings settings = new SessionSettings(Thread.currentThread().getContextClassLoader()
 		    .getResourceAsStream("NewsService.cfg"));
 	    log = LoggerFactory.getLogger(NewsService.class);
-	    init(settings, new News());
+	    init(settings, NewsChannel.getInstance());
 	} catch (ConfigError | FieldConvertError | JMException e) {
 	    log.error(e.getMessage());
 	    e.printStackTrace();

@@ -31,10 +31,10 @@ public class ExchangeApp extends Application {
     @Override
     public void start(Stage stage) {
 	try {
-	    Pane g = FXMLLoader.load(ExchangeApp.class.getResource("../../../../forms/EngineForm.fxml"));
+	    Pane g = FXMLLoader.load(ExchangeApp.class.getResource("../../../../../forms/EngineForm.fxml"));
 
 	    Scene scene = new Scene(g);
-	    scene.getStylesheets().add("file://" + ExchangeApp.class.getResource("../../../../forms/forms.css").getFile());
+	    scene.getStylesheets().add("file://" + ExchangeApp.class.getResource("../../../../../forms/forms.css").getFile());
 	    stage.setMaxWidth(g.getPrefWidth() + 15);
 	    stage.setScene(scene);
 	    //stage.getIcons().add(ImageIcons.getProgramImage().getImage());

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.engine.marketdata.instrument;
+package com.cmm.jft.engine.marketdata.recovery;
 
 import javax.management.JMException;
 
@@ -15,26 +15,25 @@ import com.cmm.jft.engine.EngineService;
 
 /**
  * <p>
- * <code>InstrumentDefinitionService.java</code>
+ * <code>SnapshotRecoveryService.java</code>
  * </p>
  * 
  * @author Cristiano M Martins
  * @version 13 de jul de 2015 00:05:40
  *
  */
-public class InstrumentDefinitionService extends EngineService {
+public class SnapshotRecoveryService extends EngineService {
     
+    private SnapshotRecoveryChannel channel;
     
-    private InstrumentChannel channel;
-    
-    public InstrumentDefinitionService() {
+    public SnapshotRecoveryService() {
 	try {
 	    
-	    this.channel = InstrumentChannel.getInstance();
+	    this.channel = SnapshotRecoveryChannel.getInstance();
 	    
 	    SessionSettings settings = new SessionSettings(Thread.currentThread().getContextClassLoader()
-		    .getResourceAsStream("InstrumentDefinitionService.cfg"));
-	    log = LoggerFactory.getLogger(InstrumentDefinitionService.class);
+		    .getResourceAsStream("SnapshotRecoveryService.cfg"));
+	    log = LoggerFactory.getLogger(SnapshotRecoveryService.class);
 	    init(settings, channel);
 	} catch (ConfigError | FieldConvertError | JMException e) {
 	    log.error(e.getMessage());
@@ -56,7 +55,7 @@ public class InstrumentDefinitionService extends EngineService {
 	    public void run() {
 		while (started) {
 		    //System.out.println("sending instruments...");
-		    channel.sendInstruments();
+		    channel.sendSnapshot();
 		    try {
 			Thread.sleep(1000);
 		    } catch (InterruptedException e) {
@@ -71,7 +70,7 @@ public class InstrumentDefinitionService extends EngineService {
 
     public static void main(String args[]) throws Exception {
 	try {
-	    InstrumentDefinitionService service = new InstrumentDefinitionService();
+	    SnapshotRecoveryService service = new SnapshotRecoveryService();
 	    service.start();
 
 	    System.out.println("press <enter> to quit");

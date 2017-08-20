@@ -7,10 +7,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.NavigableMap;
 import java.util.PriorityQueue;
+import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.PriorityBlockingQueue;
+
+import org.junit.runner.notification.RunNotifier;
 
 import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.security.Security;
@@ -45,6 +50,7 @@ public class BookTable {
 	 * 
 	 */
 	public Summary(double price, int numOrders, double volume) {
+	    this.price = price;
 	    this.orderCount = numOrders;
 	    this.orderVolume = volume;
 	}
@@ -76,12 +82,21 @@ public class BookTable {
 	protected Summary clone() throws CloneNotSupportedException {
 	    return new Summary(this.price, this.orderCount, this.orderVolume);
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+	    return "Summary [price=" + price + ", orderCount=" + orderCount + ", orderVolume=" + orderVolume + "]";
+	}
+
     }
 
     private Side side;
-    private PriorityBlockingQueue<Orders> orders;
-    private TreeMap<Double, Summary> ordersSummary;
-    private TreeMap<Double, TreeMap<Date, Orders>> stopQueue;
+    private SortedMap<Double, Summary> ordersSummary;
+    private OrdersTable orders;
+    private SortedMap<Double, SortedMap<Date, Orders>> stopQueue;
 
 
     /**
@@ -90,56 +105,58 @@ public class BookTable {
      */
     public BookTable(Side side) {
 	this.side = side;
-	this.stopQueue = new TreeMap<Double, TreeMap<Date, Orders>>();
-	this.ordersSummary = new TreeMap<>();
-	this.orders = new PriorityBlockingQueue<>(10000, new PriceTimeComparator());
+
+	this.orders = new OrdersTable();
+
+	this.stopQueue = Collections.synchronizedSortedMap(
+		new TreeMap<Double, SortedMap<Date, Orders>>());
+
+	this.ordersSummary = Collections.synchronizedSortedMap(
+		new TreeMap<Double, Summary>(new PriceComparator(side)));
+	//this.orders = new PriorityBlockingQueue<>(10000, new PriceTimeComparator(side));
     }
-    
+
     /**
      * @return the orders
      */
-    public PriorityBlockingQueue<Orders> getOrders() {
-	return orders;
-    }
-    
-
-    private void saveSnapshot(){
-
-
+    public SortedMap<Double, SortedMap<Date, Orders>> getOrders() {
+	return orders.getOrders();
     }
 
-    private void snapshotMBO(){
-	MDEntry entry = new MDEntry();
+    private MDEntry createMBOEntry(Orders order, UpdateActions updtAction){
+	MDEntry mboEntry = new MDEntry();
 
-    }
-
-    private void snapshotMBP(){
-
-    }
-    
-    private MDEntry createMBOEntry(Orders ordr){
-	MDEntry entry = new MDEntry();
+	mboEntry.setOrderID(order.getOrderID().toString());
+	if(side == Side.BUY){
+	    mboEntry.setMdEntryBuyer(order.getBrokerID());
+	}else{
+	    mboEntry.setMdEntrySeller(order.getBrokerID());
+	}
+	mboEntry.setMdEntryDate(order.getInsertDate());
+	mboEntry.setMdEntryTime(order.getInsertTime());
+	mboEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
 	
+	if(updtAction != null) {
+	    mboEntry.setMdUpdateAction(updtAction);
+	}
 	
-	return entry;
+	mboEntry.setMdEntryPx(order.getPrice());
+	mboEntry.setMdEntrySize((int) order.getVolume());
+	mboEntry.setMdEntryPosNo(getOrderPositionMBO(order));
+
+	return mboEntry;
     }
 
     private int getOrderPositionMBO(Orders order){
 	//calcula a posicao da ordem
 	int position=0;
 	boolean find = false;
-	for(Orders ordr : orders){
-	    position++;
-	    if(ordr.getClOrdID().equals(order.getClOrdID())){
-		find = true;
-	    }
-	}
-	
-	position = find?position:-1;
+
+	position = orders.getPosition(order.getOrderID());
 	
 	return position;
     }
-    
+
     private int getOrderPositionMBP(double price){
 	int position = 0;
 	for(Double level : ordersSummary.keySet()){
@@ -151,46 +168,30 @@ public class BookTable {
 	return position;
     }
 
-    
+
     public void addStop(Orders ordr) throws Exception{
 	if(ordr.getOrderType() == OrderTypes.Stop || ordr.getOrderType() == OrderTypes.StopLimit){
 	    if(!stopQueue.containsKey(ordr.getStopPrice())){
 		stopQueue.put(ordr.getStopPrice(), (TreeMap<Date, Orders>) Collections.synchronizedMap(new TreeMap<Date, Orders>()));
 	    }
 	    stopQueue.get(ordr.getStopPrice()).put(ordr.getOrderDateTime(), ordr);
-	    
+
 	}else{
 	    throw new Exception("Invalid order type: " + ordr.getOrderType());
 	}
-	
+
     }
 
 
     public MDEntry[] add(Orders order){
 	MDEntry[] entries = new MDEntry[2];
 	if(order.getSide() == side){
-//	    if (!ordersQueue.containsKey(order.getPrice())) {
-//		ordersQueue.put(order.getPrice(), (TreeMap<Date, Orders>) Collections.synchronizedMap(new TreeMap<Date, Orders>()));
-//	    }
 	    //adiciona a ordem
-	    orders.add(order);//Queue.get(order.getPrice()).put(order.getOrderDateTime(), order);
+	    orders.add(order);
 	    
-	    MDEntry mboEntry = new MDEntry();
-	    if(side == Side.BUY){
-		mboEntry.setMdEntryBuyer(order.getBrokerID());
-	    }else{
-		mboEntry.setMdEntrySeller(order.getBrokerID());
-	    }
-	    mboEntry.setMdEntryDate(order.getInsertDate());
-	    mboEntry.setMdEntryTime(order.getInsertTime());
-	    mboEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
-	    mboEntry.setMdUpdateAction(UpdateActions.New);
-	    mboEntry.setMdEntryPx(order.getPrice());
-	    mboEntry.setMdEntrySize((int) order.getVolume());
-	    mboEntry.setMdEntryPosNo(getOrderPositionMBO(order));
-	    entries[0] = mboEntry;
-	    
-	    
+	    entries[0] = createMBOEntry(order, UpdateActions.New);
+
+
 	    Summary sum = null;
 	    if(!ordersSummary.containsKey(order.getPrice())){
 		sum = new Summary(order.getPrice(), 1, order.getLeavesVolume());
@@ -200,7 +201,7 @@ public class BookTable {
 		sum.incrementOrder();
 		sum.incrementVolume(order.getLeavesVolume());
 	    }
-	    
+
 	    MDEntry mbpEntry = new MDEntry();
 	    mbpEntry.setMdEntryDate(order.getInsertDate());
 	    mbpEntry.setMdEntryTime(order.getInsertTime());
@@ -212,9 +213,9 @@ public class BookTable {
 	    mbpEntry.setMdEntryPosNo(getOrderPositionMBP(order.getPrice()));
 	    entries[1] = mbpEntry;
 	}
-	
+
 	return entries;
-	
+
     }
 
 
@@ -222,30 +223,17 @@ public class BookTable {
 	MDEntry[] entries = new MDEntry[2];
 	if(ordersSummary.containsKey(order.getPrice())){
 	    //--------------------------------------------------MBO
-	    MDEntry mboEntry = new MDEntry();
-	    if(side == Side.BUY){
-		mboEntry.setMdEntryBuyer(order.getBrokerID());
-	    }else{
-		mboEntry.setMdEntrySeller(order.getBrokerID());
-	    }
-	    mboEntry.setMdEntryDate(order.getInsertDate());
-	    mboEntry.setMdEntryTime(order.getInsertTime());
-	    mboEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
-	    mboEntry.setMdUpdateAction(UpdateActions.Delete);
-	    mboEntry.setMdEntryPx(order.getPrice());
-	    mboEntry.setMdEntrySize((int) order.getVolume());
-	    mboEntry.setMdEntryPosNo(getOrderPositionMBO(order));
-	    entries[0] = mboEntry;
-	    
+	    entries[0] = createMBOEntry(order, UpdateActions.Delete);
+
 	    //remove a ordem
-	    orders.remove(order);
-	    
-	    
+	    orders.remove(order.getOrderID());
+
+
 	    //--------------------------------------------------MBP
 	    Summary sum = ordersSummary.get(order.getPrice());
 	    sum.decrementOrder();
 	    sum.decrementVolume(order.getLeavesVolume());
-	    
+
 	    MDEntry mbpEntry = new MDEntry();
 	    mbpEntry.setMdEntryDate(order.getInsertDate());
 	    mbpEntry.setMdEntryTime(order.getInsertTime());
@@ -258,12 +246,17 @@ public class BookTable {
     }
 
     public MDEntry[] update(Orders order){
-	
+
 	MDEntry[] entries = new MDEntry[2];
 	if(order.getSide() == side){
-	    
-	    
-	    
+	    if(order.getClOrdID()!=null && order.getSecOrderID() != null) {
+		Orders ordr = null;
+		for(SortedMap<Date,Orders> sm: orders.values()) {
+		    for(Orders or : sm.values()) {
+			
+		    }
+		}
+	    }
 	}
 	return entries;
     }
@@ -273,65 +266,119 @@ public class BookTable {
 	ArrayList<OrderEvent> events = new ArrayList<>();
 
 	int cumVolume = 0;
-	for(Orders bookOrder :orders){
-	    if (bookOrder.getWorkingIndicator() == WorkingIndicator.Working) {
-		bookOrder.setWorkingIndicator(WorkingIndicator.No_Working);
 
-		double priceToFill = bookOrder.getPrice();
+	for(SortedMap<Date, Orders> tm : orders.getOrders().values()) {
+	    for(Orders bookOrder : tm.values()) {
+		if (bookOrder.getWorkingIndicator() == WorkingIndicator.Working) {
+		    bookOrder.setWorkingIndicator(WorkingIndicator.No_Working);
 
-		if(cumVolume < aggrOrder.getLeavesVolume() && priceToFill <= aggrOrder.getLimitPrice()){
-		    //calcula o volume que falta para completar na ordem agressora
-		    double vol = aggrOrder.getLeavesVolume() - cumVolume;
-		    double volumeToFill = 0;
-		    if(vol >= bookOrder.getLeavesVolume()){
-			volumeToFill = bookOrder.getLeavesVolume();
+		    double priceToFill = bookOrder.getPrice();
+
+		    if(cumVolume < aggrOrder.getLeavesVolume() && priceToFill <= aggrOrder.getLimitPrice()){
+			//calcula o volume que falta para completar na ordem agressora
+			double vol = aggrOrder.getLeavesVolume() - cumVolume;
+			double volumeToFill = 0;
+			if(vol >= bookOrder.getLeavesVolume()){
+			    volumeToFill = bookOrder.getLeavesVolume();
+			}
+			else if(vol < bookOrder.getLeavesVolume()){
+			    volumeToFill = vol;
+			}
+
+			//cria a execucao para a ordem do book
+			OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, volumeToFill, priceToFill);
+			fill.setOrderID(bookOrder);
+			events.add(fill);
 		    }
-		    else if(vol < bookOrder.getLeavesVolume()){
-			volumeToFill = vol;
-		    }
-
-		    //cria a execucao para a ordem do book
-		    OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, volumeToFill, priceToFill);
-		    fill.setOrderID(bookOrder);
-		    events.add(fill);
 		}
 	    }
 	}
-
 	return events;
     }
 
-    
+
     /**
      * @return the stopQueue
      */
-    public TreeMap<Double, TreeMap<Date, Orders>> getStopQueue() {
+    public SortedMap<Double, SortedMap<Date, Orders>> getStopQueue() {
 	return stopQueue;
     }
-    
-    public TreeMap<Date, Orders> getStops(double stopPrice){
-	
-	return stopQueue.get(stopPrice);
+
+    public SortedMap<Date, Orders> getStops(double stopPrice){
+
+	SortedMap<Date, Orders> stops = null;
+	if(stopQueue.containsKey(stopPrice)) {
+	    stops = stopQueue.get(stopPrice);
+	    stopQueue.put(stopPrice, Collections.synchronizedSortedMap(new TreeMap<Date, Orders>()));
+	}
+
+	return stops;
     }
-    
-    public void createSnapshot(){
-	
+
+    /**
+     * @return the ordersSummary
+     */
+    public SortedMap<Double, Summary> getOrdersSummary() {
+	return ordersSummary;
     }
+
+    public List<MDEntry> takeSnapshot(){
+	ArrayList<MDEntry> mds = new ArrayList<>(500);
+	synchronized(orders) {
+	    for(SortedMap<Date, Orders> tm: orders.values()) {
+		for(Orders o : tm.values()) {
+		    mds.add(createMBOEntry(o, null));
+		}
+	    }
+	}
+	//orders.forEach(o -> mds.add(createMBOEntry(o)));
+
+	return mds;
+    }
+
 
     public static void main(String[] args) throws OrderException{
-	Side s = Side.BUY;
-	BookTable bt = new BookTable(s);
-	Security sec = new Security("WDOJ17");
-	String clOrdID = "123456";
-	double price = 3272.5;
-	bt.add(new Orders(clOrdID, sec, s, price, 1, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	bt.add(new Orders(clOrdID, sec, s, price, 1, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	bt.add(new Orders(clOrdID, sec, s, price-.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	bt.add(new Orders(clOrdID, sec, s, price-1, 5, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	bt.add(new Orders(clOrdID, sec, s, price-1, 10, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	bt.add(new Orders(clOrdID, sec, s, price, 3, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+	try {
+	    Side s = Side.SELL;
+	    BookTable bt = new BookTable(s);
+	    Security sec = new Security("WDOJ17");
+	    String clOrdID = "123456";
+	    double price = 3272.5;
+	    long orderID = 1;
+
+	    bt.add(new Orders(orderID++, clOrdID+"a", sec, s, price, 1, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+	    Thread.sleep(500);
+	    bt.add(new Orders(orderID++, clOrdID+"b", sec, s, price, 1, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+	    Thread.sleep(10);
+	    bt.add(new Orders(orderID++, clOrdID+"c", sec, s, price-.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+	    Thread.sleep(5);
+	    bt.add(new Orders(orderID++, clOrdID+"d", sec, s, price-1, 5, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+	    Thread.sleep(10);
+	    bt.add(new Orders(orderID++, clOrdID+"e", sec, s, price-1, 10, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+	    Thread.sleep(50);
+	    bt.add(new Orders(orderID++, clOrdID+"f", sec, s, price+2, 3, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+	    Thread.sleep(50);
+	    bt.add(new Orders(orderID++, clOrdID+"g", sec, s, price-1.5, 3, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+
+	    //bt.getOrders().forEach(o -> System.out.println(o));
+	    int num = 100;
+	    while(num-- >=0) {
+		Thread.sleep(5);
+		bt.add(new Orders(orderID++, clOrdID+num, sec, s, price-1.5, 3, OrderTypes.Limit, TradeTypes.DAY_TRADE));
+	    }
 
 
+	    bt.getOrders().forEach(
+		    (d,tm) -> 
+		    tm.forEach(
+			    (dt,ord) -> 
+			    System.out.println(bt.getOrderPositionMBO(ord) + " - " + ord)));
+
+	    bt.getOrdersSummary().values().stream().forEach(sm -> System.out.println(sm));
+	}
+	catch(InterruptedException e) {
+	    e.printStackTrace();
+	}
     }
 
 }
