@@ -70,13 +70,13 @@ public class BookForm extends AbstractForm {
         tblBuy.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         tblBuy.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Broker", "Volume", "Price"
+                "Broker", "Volume", "NOrdr", "Price"
             }
         ));
         scrlBuy.setViewportView(tblBuy);
@@ -84,13 +84,13 @@ public class BookForm extends AbstractForm {
         tblSell.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         tblSell.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Price", "Volume", "Broker"
+                "Price", "Volume", "NOrdr", "Broker"
             }
         ));
         scrlSell.setViewportView(tblSell);

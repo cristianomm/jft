@@ -35,9 +35,6 @@ public class TimesTradesTableModel extends AbstractTableModel {
     
     
     public TimesTradesTableModel() {
-	
-	
-	
 	this.trades = new ArrayList<>();
 	this.headers = new String[]{"#", "Time", "Volume", "Price", "Buy", "Sell", "Agr"};
     }

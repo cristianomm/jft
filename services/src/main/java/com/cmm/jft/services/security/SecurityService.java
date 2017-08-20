@@ -26,107 +26,106 @@ import com.cmm.logging.Logging;
  */
 public class SecurityService {
 
-	private HashMap<String, Security> securities;
-	private static SecurityService instance;
-	
-	
-	/**
+    private HashMap<String, Security> securities;
+    private static SecurityService instance;
+
+    /**
      * 
      */
-	private SecurityService() {
-		restartSecurityList();
+    private SecurityService() {
+	restartSecurityList();
+    }
+
+    public static synchronized SecurityService getInstance() {
+	if (instance == null) {
+	    instance = new SecurityService();
+	}
+	return instance;
+    }
+
+    public void loadSecurity(Security security) {
+	if (security != null) {
+	    securities.put(security.getSymbol(), security);
+	}
+    }
+
+    private Security loadSecurity(String symbol) {
+	Security sec = null;
+
+	try {
+	    if (!securities.containsKey(symbol)) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("symbol", symbol);
+
+		List rs = DBFacade.getInstance().queryNamed("Security.findBySymbol", params);
+		if (rs != null && !rs.isEmpty()) {
+		    sec = (Security) rs.get(0);
+		    securities.put(symbol, sec);
+		}
+	    }
+
+	    sec = securities.get(symbol);
+
+	} catch (DataBaseException e) {
+	    Logging.getInstance().log(getClass(), e, Level.ERROR);
+	}
+	return sec;
+    }
+
+    public Security findSecurity(int securityID, char secIDSrc, String securityExchange) {
+
+	Security sec = securities.values().parallelStream().filter(s -> s.getSecurityID() == securityID
+		&& s.getSecurityIDSrc() == secIDSrc && s.getSecurityExchange().equalsIgnoreCase(securityExchange))
+		.findFirst().orElse(null);
+
+	return sec;
+    }
+
+    public Security provideSecurity(String symbol) {
+
+	Security s = null;
+	s = loadSecurity(symbol);
+	try {
+	    if (s == null && !DBFacade.getInstance().getConnection().isClosed() && symbol != "") {
+		s = new Security(symbol);
+		s = (Security) DBFacade.getInstance()._persist(s);
+	    }
+	} catch (SQLException e) {
+	    Logging.getInstance().log(getClass(), e, Level.ERROR);
+	} catch (DataBaseException e) {
+	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
 
-	public static synchronized SecurityService getInstance() {
-		if (instance == null) {
-			instance = new SecurityService();
-		}
-		return instance;
-	}
-	
-	public void loadSecurity(Security security) {
-		if(security != null) {
-			securities.put(security.getSymbol(), security);
-		}
-	}
+	return s;
+    }
 
-	private Security loadSecurity(String symbol) {
-		Security sec = null;
+    private boolean loadSecurityList() {
+	boolean ret = false;
+	try {
+	    List<Security> data = (List<Security>) DBFacade.getInstance().queryNamed("Security.findAll", null);
+	    data.parallelStream().forEach(s -> securities.put(s.getSymbol(), s));
+	    ret = securities.size() >0;
+	    
+	} catch (DataBaseException e) {
+	    e.printStackTrace();
+	}
+	
+	return ret;
+    }
+    
+    private void loadSecurityListFile() {
+	
+    }
 
-		try {
-			if(!securities.containsKey(symbol)){
-				HashMap<String, Object> params = new HashMap<String, Object>();
-				params.put("symbol", symbol);
-	
-				List rs = DBFacade.getInstance().queryNamed(
-						"Security.findBySymbol", params);
-				if (rs != null && !rs.isEmpty()) {
-					sec = (Security) rs.get(0);
-					securities.put(symbol, sec);
-				}
-			}
-			
-			sec = securities.get(symbol);
-			
-		} catch (DataBaseException e) {
-			Logging.getInstance().log(getClass(), e, Level.ERROR);
-		}
-		return sec;
-	}
-	
-	public Security findSecurity(int securityID, char secIDSrc, String securityExchange) {
-		
-		Security sec = securities.values().parallelStream().
-		filter(s -> 
-		s.getSecurityID() == securityID && 
-		s.getSecurityIDSrc() == secIDSrc && 
-		s.getStockExchangeID().getStockExchangeID().equalsIgnoreCase(securityExchange)
-		).findFirst().orElse(null);
-		
-		return sec;
-	}
-	
-	public Security provideSecurity(String symbol) {
+    public List<Security> getSecurityList() {
+	List<Security> data = new LinkedList<>();
+	securities.values().forEach(s -> data.add(s));
+	return data;
+    }
 
-		Security s = null;
-		s = loadSecurity(symbol);
-		try {
-			if (s == null && !DBFacade.getInstance().getConnection().isClosed() && symbol != "") {
-				s = new Security(symbol);
-				s = (Security) DBFacade.getInstance()._persist(s);
-			}
-		} catch (SQLException e) {
-			Logging.getInstance().log(getClass(), e, Level.ERROR);
-		} catch (DataBaseException e) {
-			Logging.getInstance().log(getClass(), e, Level.ERROR);
-		}
-		
-		return s;
-	}
-	
-	
-	private void loadSecurityList(){
-		try {
-			List<Security> data = (List<Security>) DBFacade.getInstance().queryNamed("Security.findAll", null);
-			data.parallelStream().forEach(s ->
-				securities.put(s.getSymbol(), s)
-			);
-		} catch (DataBaseException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public List<Security> getSecurityList(){
-		List<Security> data = new LinkedList<>();
-		securities.values().forEach(s -> data.add(s));
-		return data;
-	}
-	
-	
-	public void restartSecurityList(){
-		securities = new HashMap<>();
-		loadSecurityList();
-	}
-	
+    public void restartSecurityList() {
+	securities = new HashMap<>();
+	// loadSecurityList();
+    }
 
 }

@@ -47,8 +47,14 @@ public enum ObjectForms {
     SUBSECTORS("Sub Sectors"),
     TAX("Tax"),
     TAX_SETUP("Tax Setup"), 
+    TIME_SALES("Time & Sales"),
+    
     TRADE("Trade"),
     TRADE_MANAGER("Trade Manager"),
+    MARKET_RESUME("Market Resume"),
+    NEWS("News"),
+    NEWS_DETAILS("News Details"),
+    
     
     STRATEGY_BUILDER("Strategy Builder"), 
     SIMULATION("Simulation");

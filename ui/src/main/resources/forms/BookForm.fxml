@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cmm.jft.ui.controller.BookController">
    <children>
-      <GridPane prefHeight="526.0" prefWidth="400.0">
+      <GridPane layoutY="45.0" prefHeight="481.0" prefWidth="400.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="244.0" minWidth="10.0" prefWidth="200.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="301.0" minWidth="10.0" prefWidth="200.0" />
@@ -15,21 +22,30 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <TableView prefHeight="526.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <TableView fx:id="tblBid" prefHeight="495.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
               <columns>
-                  <TableColumn prefWidth="49.0" text="Broker" />
-                <TableColumn prefWidth="75.0" text="Volume" />
-                <TableColumn prefWidth="75.0" text="Price" />
+                  <TableColumn fx:id="colBidBroker" prefWidth="50.0" text="Broker" />
+                  <TableColumn fx:id="colBidNOrd" prefWidth="42.0" text="NOrd" />
+                <TableColumn fx:id="colBidQt" prefWidth="45.0" text="Qt" />
+                <TableColumn fx:id="colBidPrice" prefWidth="62.0" text="BPrice" />
               </columns>
             </TableView>
-            <TableView prefHeight="526.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <TableView fx:id="tblAsk" prefHeight="526.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
               <columns>
-                  <TableColumn prefWidth="78.0" text="Price" />
-                <TableColumn prefWidth="64.0" text="Volume" />
-                <TableColumn prefWidth="57.0" text="Broker" />
+                  <TableColumn fx:id="colAskPrice" prefWidth="62.0" text="SPrice" />
+                <TableColumn fx:id="colAskQt" prefWidth="45.0" text="Qt" />
+                <TableColumn fx:id="colAskNOrd" prefWidth="42.0" text="NOrd" />
+                  <TableColumn fx:id="colAskBroker" prefWidth="50.0" text="Broker" />
               </columns>
             </TableView>
          </children>
       </GridPane>
+      <Label layoutX="25.0" layoutY="15.0" text="Security" />
+      <TextField fx:id="txtSecurity" layoutX="92.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="262.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </TextField>
+      <Button fx:id="btnSrchSymbol" layoutX="364.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="30.0" />
    </children>
 </Pane>

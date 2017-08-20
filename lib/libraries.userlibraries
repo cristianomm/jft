@@ -1,7 +1,16 @@
-<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <eclipse-userlibraries version="2">
     <library name="ftp4j" systemlibrary="false">
         <archive path="/jft_modules/lib/ftp4j/ftp4j-1.7.2.jar"/>
+    </library>
+    <library name="HSQLDB" systemlibrary="false">
+        <archive path="/jft_modules/lib/hsqldb/hsqldb.jar"/>
+    </library>
+    <library name="jcalendar" systemlibrary="false">
+        <archive path="/jft_modules/lib/jcalendar/jcalendar-1.4.jar"/>
+    </library>
+    <library name="JDBC" systemlibrary="false">
+        <archive path="/jft_modules/lib/jdbc/postgresql-9.0-801.jdbc4.jar"/>
     </library>
     <library name="jdde" systemlibrary="false">
         <archive path="/jft_modules/lib/jdde/pretty-tools-JDDE-2.0.1.jar"/>
@@ -12,10 +21,19 @@
     <library name="jxl" systemlibrary="false">
         <archive path="/jft_modules/lib/jxl/jxl.jar"/>
     </library>
-    <library name="quickfix" systemlibrary="false">
-        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.5.3/mina-core-1.1.7.jar" source="/jft_modules/lib/quickfixj/quickfixj-1.5.3/mina-core-1.1.7-sources.jar"/>
-        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.5.3/quickfixj-all-1.5.3.jar"/>
-        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.5.3/quickfixj-core-1.5.3.jar" source="/jft_modules/lib/quickfixj/quickfixj-1.5.3/quickfixj-1.5.3-src.zip"/>
-        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.5.3/quickfixj-examples-1.5.3.jar" source="/jft_modules/lib/quickfixj/quickfixj-1.5.3/quickfixj-1.5.3-src.zip"/>
+    <library name="openfast" systemlibrary="false">
+        <archive javadoc="jar:platform:/resource/jft_modules/lib/openfast/openfast-1.1.2-javadoc.jar!/" path="/jft_modules/lib/openfast/openfast-1.1.2.jar" source="/jft_modules/lib/openfast/openfast-1.1.2-sources.jar"/>
+    </library>
+    <library name="quickfixj" systemlibrary="false">
+        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.6.3/lib/mina-core-2.0.16.jar"/>
+        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.6.3/quickfixj-all-1.6.3.jar"/>
+        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.6.3/quickfixj-core-1.6.3.jar"/>
+        <archive path="/jft_modules/lib/quickfixj/quickfixj-1.6.3/quickfixj-messages-all-1.6.3.jar"/>
+    </library>
+    <library name="searchbox" systemlibrary="false">
+        <archive path="/jft_modules/lib/searchbox/SearchBox.jar"/>
+    </library>
+    <library name="stockchartsfx" systemlibrary="false">
+        <archive path="/jft_modules/lib/stockchartsfx/StockChartsFx-1.0.1-SNAPSHOT.jar"/>
     </library>
 </eclipse-userlibraries>

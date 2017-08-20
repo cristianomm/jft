@@ -6,17 +6,30 @@ package com.cmm.jft.ui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.apache.log4j.Level;
+
 import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.security.Security;
+import com.cmm.jft.services.marketdata.Market;
+import com.cmm.jft.services.marketdata.MarketDataService;
+import com.cmm.jft.ui.utils.FormUtils;
+import com.cmm.jft.ui.utils.ImageIcons;
+import com.cmm.jft.ui.utils.Memory;
+import com.cmm.logging.Logging;
 import com.sun.javafx.collections.ObservableListWrapper;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 /**
@@ -63,22 +76,27 @@ public class BookController extends AbstractController {
     @FXML
     private TableColumn<MDEntry, Double> colAskPrice;
 
-    private ObservableListWrapper<MDEntry> buyOrders;
-    private ObservableListWrapper<MDEntry> sellOrders;
+    @FXML
+    private Button btnSrchSymbol;
+
+    @FXML
+    private TextField txtSecurity;
+
+
+    private ObservableList<MDEntry> buyOrders;
+    private ObservableList<MDEntry> sellOrders;
 
     private Security security;
-
     
     
     /**
      * 
      */
     public BookController() {
-	
-	this.buyOrders = FXCollections.observableList(list);
-	this.sellOrders = FXCollections.observableList(lst);
+	this.buyOrders = FXCollections.observableArrayList();
+	this.sellOrders = FXCollections.observableArrayList();
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -120,12 +138,10 @@ public class BookController extends AbstractController {
 	    colBidQt.setCellValueFactory(
 		    (TableColumn.CellDataFeatures<MDEntry, Integer> val) -> new ReadOnlyObjectWrapper<>(
 			    val.getValue().getMdEntrySize()));
-	    
-	    
+
 	    tblAsk.setItems(sellOrders);
 	    tblBid.setItems(buyOrders);
-	    
-	    
+
 	    tblAsk.setRowFactory(call -> {
 		final TableRow<MDEntry> row = new TableRow<>();
 		row.setOnMouseClicked(event -> {
@@ -146,10 +162,36 @@ public class BookController extends AbstractController {
 		return row;
 	    });
 
+	    txtSecurity.textProperty().addListener((obsrv, oldValue, newValue) -> {
+		if (newValue != null && !newValue.equalsIgnoreCase(oldValue)) {
+		    try {
+			security = Memory.getInstance().getSecurity();
+			loadMarket();
+		    } catch (Exception e) {
+			Logging.getInstance().log(getClass(), e, Level.ERROR);
+		    }
+		}
+	    });
+
+	    btnSrchSymbol.setGraphic(ImageIcons.getSecurityImage());
+	    btnSrchSymbol.setOnAction(new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+		    Memory.getInstance().setTextField(txtSecurity);
+		    FormUtils.getInstance().openForm("../../../../../forms/SymbolsForm.fxml", "Symbols");
+		}
+	    });
+
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
 
+    }
+
+    private void loadMarket(){
+	Market market = MarketDataService.getInstance().getMarket(security.getSecurityID());
+	this.buyOrders = FXCollections.observableList(market.getBidMBO());
+	this.sellOrders = FXCollections.observableList(market.getAskMBO());
     }
 
     /*
@@ -172,6 +214,7 @@ public class BookController extends AbstractController {
     public void addData(Object data) {
 	if (data instanceof Security) {
 	    security = (Security) data;
+	    loadMarket();
 	}
     }
 

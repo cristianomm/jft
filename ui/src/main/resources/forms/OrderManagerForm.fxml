@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cmm.jft.ui.controller.OrderManagerController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cmm.jft.ui.controller.OrderManagerController">
    <children>
       <TableView fx:id="tblOrders" layoutY="50.0" prefHeight="194.0" prefWidth="800.0">
         <columns>
             <TableColumn fx:id="colSymbol" prefWidth="69.0" text="Symbol" />
+            <TableColumn fx:id="colClOrdID" prefWidth="69.0" text="ClOrdID" />
+            <TableColumn fx:id="colOrderID" prefWidth="69.0" text="OrderID" />
+            <TableColumn fx:id="colOrderType" prefWidth="69.0" text="Type" />
           	<TableColumn fx:id="colStatus" prefWidth="75.0" text="Status" />
           	<TableColumn fx:id="colSide" prefWidth="75.0" text="Side" />
             <TableColumn fx:id="colDate" prefWidth="75.0" text="Date" />

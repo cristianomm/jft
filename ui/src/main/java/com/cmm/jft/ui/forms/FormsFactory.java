@@ -14,6 +14,11 @@ import com.cmm.jft.ui.masterdata.CompanyForm;
 import com.cmm.jft.ui.masterdata.CurrencyForm;
 import com.cmm.jft.ui.masterdata.CurrencyQuoteForm;
 import com.cmm.jft.ui.simulation.BacktestForm;
+import com.cmm.jft.ui.trading.BookForm;
+import com.cmm.jft.ui.trading.MarketResumeForm;
+import com.cmm.jft.ui.trading.MarketTradesForm;
+import com.cmm.jft.ui.trading.NewsDetailsForm;
+import com.cmm.jft.ui.trading.NewsForm;
 import com.cmm.jft.ui.trading.OrderForm;
 import com.cmm.jft.ui.trading.OrderManagerForm;
 import com.cmm.jft.ui.trading.PlaceOrderForm;
@@ -97,8 +102,8 @@ public class FormsFactory {
 	    frm = new OrderManagerForm();
 	    break;
 	case PLACE_ORDER:
-		frm = new PlaceOrderForm();
-		break;
+	    frm = new PlaceOrderForm();
+	    break;
 	case POSITION:
 	    break;
 	case PROGRAM:
@@ -126,12 +131,35 @@ public class FormsFactory {
 	case TAX_SETUP:
 	    frm = new TaxSetupForm();
 	    break;
+
+	    
+	    
+	    
+	case BOOK:
+	    frm = new BookForm();
+	    break;
+	case TIME_SALES:
+	    frm = new MarketTradesForm();
+	    break;
 	case TRADE:
 	    frm = new TradeForm();
-	    break;        	
+	    break;
 	case TRADE_MANAGER:
 	    frm = new TradeManagerForm();
 	    break;
+	case MARKET_RESUME:
+	    frm = new MarketResumeForm();
+	    break;
+	case NEWS:
+	    frm = new NewsForm();
+	    break;
+	case NEWS_DETAILS:
+	    frm = new NewsDetailsForm();
+	    break;
+	    
+	    
+	    
+	    
 	case SIMULATION:
 	    break;
 	case STRATEGY:

@@ -172,6 +172,10 @@ public class MarketResumeTableModel extends AbstractTableModel {
 	fireTableRowsInserted(lastRow, lastRow);
 
     }
+    
+    public Market getMarket(int i) {
+	return markets.get(i);
+    }
 
 
 }

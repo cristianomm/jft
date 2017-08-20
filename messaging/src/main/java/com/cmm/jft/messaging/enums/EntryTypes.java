@@ -20,6 +20,9 @@ public enum EntryTypes {
     LowPrice(new MDEntryType('8')), 
     VWAPPrice(new MDEntryType('9')), 
     TradeVolume(new MDEntryType('B')),
+    SecurityTradingState(new MDEntryType('c')),
+    PriceBand(new MDEntryType('g')),
+    QuantityBand(new MDEntryType('h')),
     EmptyBook(new MDEntryType('J'));
 
     MDEntryType value;

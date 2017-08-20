@@ -8,16 +8,17 @@
 	<session-factory>
 
 		<!-- Database connection settings -->
-		<property name="connection.driver_class">org.postgresql.Driver</property>
-		<property name="connection.url">jdbc:postgresql://localhost:5432/jft</property>
-		<property name="connection.username">jft</property>
-		<property name="connection.password">287463</property>
+		<property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
+		<!-- <property name="connection.url">jdbc:postgresql://localhost:5432/jft</property> -->
+		<property name="connection.url">jdbc:hsqldb:file:data/database/jft;hsqldb.lock_file=false</property>
+		<property name="connection.username">sa</property>
+		<property name="connection.password">""</property>
 
 		<!-- JDBC connection pool (use the built-in) -->
 		<property name="connection.pool_size">1</property>
 
 		<!-- SQL dialect -->
-		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<property name="dialect">org.hibernate.dialect.HSQLDialect</property>
 
 		<!-- Enable Hibernate's automatic session context management -->
 		<property name="current_session_context_class">thread</property>
@@ -31,7 +32,7 @@
 		<property name="show_sql">false</property>
 
 		<!-- Drop and re-create the database schema on startup -->
-		<property name="hbm2ddl.auto">none</property>
+		<property name="hbm2ddl.auto">create</property>
 		
 				
 		<!-- Core -->
@@ -44,13 +45,15 @@
 		<mapping class="com.cmm.jft.core.Configuration" />
 		-->
 		
+		
+		
 		<!-- Financial -->
-		<!--
+		
 		<mapping class="com.cmm.jft.financial.Account"/>
 		<mapping class="com.cmm.jft.financial.Broker"/>
 		<mapping class="com.cmm.jft.financial.Brokerage"/>
-		<mapping class="com.cmm.jft.financial.Commission"/>
 		<mapping class="com.cmm.jft.financial.CostCenter"/>
+		<mapping class="com.cmm.jft.financial.Commission"/>
 		<mapping class="com.cmm.jft.financial.Currency"/>
 		<mapping class="com.cmm.jft.financial.CurrencyQuote"/>
 		<mapping class="com.cmm.jft.financial.Deposit"/>
@@ -62,7 +65,7 @@
 		<mapping class="com.cmm.jft.financial.RuleFormula"/>		
 		<mapping class="com.cmm.jft.financial.Tax"/>
 		<mapping class="com.cmm.jft.financial.TaxSetup"/>
-		-->
+		
 		
 		<!-- DB -->
 		<!--
@@ -70,22 +73,22 @@
 		-->
 		
 		<!-- Trading -->
-		<!--
+		
 		<mapping class="com.cmm.jft.trading.OrderEvent"/>
 		<mapping class="com.cmm.jft.trading.Orders"/>
-		
-		
-		
+				
 		<mapping class="com.cmm.jft.marketdata.HistoricalQuote"/>
 		<mapping class="com.cmm.jft.marketdata.MarketEvent"/>
 		<mapping class="com.cmm.jft.marketdata.MarketOrder"/>
 		<mapping class="com.cmm.jft.marketdata.MarketTrade"/>
-		<mapping class="com.cmm.jft.security.Country"/>
+		
 		<mapping class="com.cmm.jft.security.Security"/>
 		<mapping class="com.cmm.jft.security.SecurityInfo"/>
-		<mapping class="com.cmm.jft.security.StockExchange"/>
-		-->
+		
+		
 		<!--
+		<mapping class="com.cmm.jft.security.Country"/>
+		<mapping class="com.cmm.jft.security.StockExchange"/>
 		
 		<mapping class="com.cmm.jft.trading.securities.Company"/>
 		<mapping class="com.cmm.jft.securities.Earning"/>

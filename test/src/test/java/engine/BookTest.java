@@ -12,7 +12,16 @@ import org.junit.Test;
 
 import com.cmm.jft.engine.Book;
 import com.cmm.jft.engine.enums.MatchTypes;
+import com.cmm.jft.security.Security;
+import com.cmm.jft.services.security.SecurityService;
+import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.trading.enums.TradeTypes;
+import com.cmm.jft.trading.exceptions.OrderException;
+
+import quickfix.FixVersions;
+import quickfix.SessionID;
 
 /**
  * <p>
@@ -25,18 +34,25 @@ import com.cmm.jft.trading.enums.OrderTypes;
  */
 public class BookTest {
 
-    
+
+    private Book book;
     private String symbol;
+    private Security security;
+    private SessionID sessionID;
     private HashSet<OrderTypes> orderTypes;
-    
-    
+
+
     /**
      * @throws java.lang.Exception
      */
     @Before
     public void setUp() throws Exception {
-	symbol = "WDOQ17";
+	symbol = "WDOV17";
+	security = SecurityService.getInstance().provideSecurity(symbol);
 	orderTypes = new HashSet<>();
+	sessionID = new SessionID(FixVersions.BEGINSTRING_FIX44, "SENDER", "TARGET");
+	
+	book = new Book(symbol, orderTypes, MatchTypes.FIFO, .20);
 	
     }
 
@@ -53,34 +69,7 @@ public class BookTest {
      */
     @Test
     public void testGetSecurity() { 
-	
-	Book book = new Book(symbol, orderTypes, MatchTypes.FIFO, .20);
-	
 	assertTrue(book.getSecurity().getSymbol().equalsIgnoreCase(symbol));
-    }
-
-    /**
-     * Test method for {@link com.cmm.jft.engine.Book#getOrderCount()}.
-     */
-    @Test
-    public void testGetOrderCount() {
-	fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link com.cmm.jft.engine.Book#getSymbol()}.
-     */
-    @Test
-    public void testGetSymbol() {
-	fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link com.cmm.jft.engine.Book#getBookInfo()}.
-     */
-    @Test
-    public void testGetBookInfo() {
-	fail("Not yet implemented"); // TODO
     }
 
     /**
@@ -96,7 +85,28 @@ public class BookTest {
      */
     @Test
     public void testAddOrder() {
-	fail("Not yet implemented"); // TODO
+
+	try {
+	    long orderID = 0;
+	    Orders ord = new Orders(orderID++, "123456", security, Side.BUY, 
+		    3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+	    ord.setBrokerID("308");
+	    
+	    boolean added = book.addOrder(ord, sessionID);
+	    
+	    for(int i=0;i<1000;i++) {
+		ord = new Orders(orderID++, "123457"+i, security, Side.BUY, 
+			3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+		ord.setBrokerID("308");
+		
+		added = added && book.addOrder(ord, sessionID);
+	    }
+
+	    assertTrue(added);
+
+	} catch (OrderException e) {
+	    e.printStackTrace();
+	}
     }
 
     /**
