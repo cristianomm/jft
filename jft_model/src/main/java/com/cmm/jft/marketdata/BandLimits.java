@@ -3,6 +3,9 @@
  */
 package com.cmm.jft.marketdata;
 
+import java.util.Random;
+import java.util.stream.IntStream;
+
 /**
  * <p>
  * <code>BandLimits.java</code>
@@ -37,17 +40,32 @@ public class BandLimits {
      */
     private double staticLimitLow, staticLimitHigh;
 
+    private int quantityLimit;
+    
+    public static void main(String args[]) {
+	
+	Random rnd = new Random();
+	IntStream it = rnd.ints(50,1000, 1100);
+	it.forEach(i -> System.out.println(i));
+	
+	
+	BandLimits bl = new BandLimits(0, .2, .15, .05, 200000);
+	bl.calculateBandLimit(10);
+	System.out.println(bl);
+	
+    }
+    
+    
 
-
-    public BandLimits(double basePrice, double auctionBand, double rejectHiBand, double rejectLoBand) {
+    public BandLimits(double basePrice, double auctionBand, double rejectHiBand, double rejectLoBand, int qtyLimit) {
 	this.auctionBandHigh = auctionBand;
 	this.auctionBandLow = -auctionBand;
 
 	this.rejectionBandHigh = rejectHiBand;
 	this.rejectionBandLow = -rejectLoBand;
-
+	this.quantityLimit = qtyLimit;
+	
 	calculateBandLimit(basePrice);
-
     }
 
     /**
@@ -126,5 +144,11 @@ public class BandLimits {
         return staticLimitHigh;
     }
     
+    /**
+     * @return the quantityLimit
+     */
+    public int getQuantityLimit() {
+	return quantityLimit;
+    }
 
 }

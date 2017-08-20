@@ -32,117 +32,113 @@ import com.cmm.logging.Logging;
  */
 public class AccountingService {
 
-	
-	private AccountPlan accountPlan;
-	private static AccountingService instance;
+    private AccountPlan accountPlan;
+    private static AccountingService instance;
 
-	private AccountingService() {
-		this.accountPlan = AccountPlan.getInstance();
-	}
+    private AccountingService() {
+	this.accountPlan = AccountPlan.getInstance();
+    }
 
-	public static AccountingService getInstance() {
-		if (instance == null) {
-			instance = new AccountingService();
-		}
-		return instance;
+    public static AccountingService getInstance() {
+	if (instance == null) {
+	    instance = new AccountingService();
 	}
-	
-	public void addInitialDeposit(Account account, double value){
-		Deposit deposit = new Deposit(new Date(), new BigDecimal(value), "Initial Deposit", account);
-		
-		
-		
-	}
-	
-	public void transfer(Account creditAccount, Account debitAccount, double value){
-		try {
-			transferFunds(creditAccount, debitAccount, new BigDecimal(value), "Transfer");
-		} catch (AccountException e) {
-			Logging.getInstance().log(getClass(), e, Level.ERROR);
-		}
-	}
-	
-	public void transfer(Account creditAccount, Account debitAccount, BigDecimal value){
-		try {
-			transferFunds(creditAccount, debitAccount, value, "Transfer");
-		} catch (AccountException e) {
-			Logging.getInstance().log(getClass(), e, Level.ERROR);
-		}
-	}
-	
-	public void deposit(Account creditAccount, Account debitAccount, double value){
-		try {
-			transferFunds(creditAccount, debitAccount, new BigDecimal(value), "Deposit");
-		} catch (AccountException e) {
-			Logging.getInstance().log(getClass(), e, Level.ERROR);
-		}
-	}
-	
-	
-	
+	return instance;
+    }
 
-	private void transferFunds(Account creditAccount, Account debitAccount, 
-			BigDecimal value, String description) throws AccountException {
+    public void addInitialDeposit(Account account, double value) {
+	Deposit deposit = new Deposit(new Date(), new BigDecimal(value), "Initial Deposit", account);
 
-		try {
-			debit(debitAccount, value);
-			deposit(creditAccount, value);
-			
-//			JournalEntry je = (JournalEntry) DBFacade.getInstance()._persist(JournalService.getInstance().createEntry());
-//			JournalService.getInstance().registerEntry(je, creditAccount, debitAccount, val, description);
-//			JournalService.getInstance().closeEntry(je);
-			
-		} catch (AccountException e) {
-			throw new AccountException(e);
-		} 
+    }
 
+    public void transfer(Account creditAccount, Account debitAccount, double value) {
+	try {
+	    transferFunds(creditAccount, debitAccount, new BigDecimal(value), "Transfer");
+	} catch (AccountException e) {
+	    Logging.getInstance().log(getClass(), e, Level.ERROR);
+	}
+    }
+
+    public void transfer(Account creditAccount, Account debitAccount, BigDecimal value) {
+	try {
+	    transferFunds(creditAccount, debitAccount, value, "Transfer");
+	} catch (AccountException e) {
+	    Logging.getInstance().log(getClass(), e, Level.ERROR);
+	}
+    }
+
+    public void deposit(Account creditAccount, Account debitAccount, double value) {
+	try {
+	    transferFunds(creditAccount, debitAccount, new BigDecimal(value), "Deposit");
+	} catch (AccountException e) {
+	    Logging.getInstance().log(getClass(), e, Level.ERROR);
+	}
+    }
+
+    private void transferFunds(Account creditAccount, Account debitAccount, BigDecimal value, String description)
+	    throws AccountException {
+
+	try {
+	    debit(debitAccount, value);
+	    deposit(creditAccount, value);
+
+	    // JournalEntry je = (JournalEntry)
+	    // DBFacade.getInstance()._persist(JournalService.getInstance().createEntry());
+	    // JournalService.getInstance().registerEntry(je, creditAccount,
+	    // debitAccount, val, description);
+	    // JournalService.getInstance().closeEntry(je);
+
+	} catch (AccountException e) {
+	    throw new AccountException(e);
 	}
 
-	private void debit(Account account, BigDecimal value) throws AccountException {
-		if (account.debit(value)) {
-			try {
-				account = (Account) DBFacade.getInstance()._update(account);
-			} catch (DataBaseException e) {
-				throw new AccountException(e);
-			}
-		}
+    }
+
+    private void debit(Account account, BigDecimal value) throws AccountException {
+	if (account.debit(value)) {
+	    try {
+		account = (Account) DBFacade.getInstance()._update(account);
+	    } catch (DataBaseException e) {
+		throw new AccountException(e);
+	    }
+	}
+    }
+
+    private void deposit(Account account, BigDecimal value) throws AccountException {
+	if (account.deposit(value)) {
+	    try {
+		account = (Account) DBFacade.getInstance()._update(account);
+	    } catch (DataBaseException e) {
+		throw new AccountException(e);
+	    }
+	}
+    }
+
+    public Account createAccount(String accountID, String accountName, double creditLimit, Currency currency,
+	    AccountTypes accountTypes, AccountCategories accountCategories) {
+
+	Account account = new Account(accountID, accountName, creditLimit, currency, accountTypes, accountCategories);
+
+	accountPlan.addAccount(account);
+
+	return account;
+    }
+
+    public void addChildAccount(Account father, Account child) {
+	if (father != null & child != null) {
+	    try {
+		accountPlan.addChildAccount(father, child);
+	    } catch (NullPointerException e) {
+		Logging.getInstance().log(getClass(), e, Level.ERROR);
+	    } catch (AccountException e) {
+		Logging.getInstance().log(getClass(), e, Level.ERROR);
+	    }
 	}
 
-	private void deposit(Account account, BigDecimal value) throws AccountException {
-		if (account.deposit(value)) {
-			try {
-				account = (Account) DBFacade.getInstance()._update(account);
-			} catch (DataBaseException e) {
-				throw new AccountException(e);
-			}
-		}
-	}
-	
-	public Account createAccount(String accountID, String accountName, double creditLimit,
-			Currency currency, AccountTypes accountTypes, AccountCategories accountCategories){
-		
-		Account account = new Account(accountID, accountName, creditLimit, currency, accountTypes, accountCategories);
-		
-		accountPlan.addAccount(account);
-		
-		return account;
-	}
-	
-	public void addChildAccount(Account father, Account child){
-		if(father!= null & child != null){
-			try {
-				accountPlan.addChildAccount(father, child);
-			} catch (NullPointerException e) {
-				Logging.getInstance().log(getClass(), e, Level.ERROR);
-			} catch (AccountException e) {
-				Logging.getInstance().log(getClass(), e, Level.ERROR);
-			}
-		}
-		
-	}
-	
-	public AccountPlan getAccountPlan(){
-		return accountPlan;
-	}
+    }
+
+    public AccountPlan getAccountPlan() {
+	return accountPlan;
+    }
 
 }

@@ -32,6 +32,7 @@ public class MDSnapshot {
     private int tradeVolume;
     private double financialVolume;
     private MarketPhase phase;
+    private BandLimits limits;
     
     private ArrayList<MDEntry> buyEntries;
     private ArrayList<MDEntry> sellEntries;
@@ -156,6 +157,13 @@ public class MDSnapshot {
     public ArrayList<MDEntry> getSellEntries() {
         return sellEntries;
     }
+    
+    /**
+     * @return the limits
+     */
+    public BandLimits getLimits() {
+	return limits;
+    }
 
     /**
      * @param rptSeqNum the rptSeqNum to set
@@ -232,6 +240,13 @@ public class MDSnapshot {
      */
     public void setPhase(MarketPhase phase) {
         this.phase = phase;
+    }
+    
+    /**
+     * @param limits the limits to set
+     */
+    public void setLimits(BandLimits limits) {
+	this.limits = limits;
     }
     
 }

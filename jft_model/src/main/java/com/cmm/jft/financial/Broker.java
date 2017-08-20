@@ -39,134 +39,134 @@ import com.cmm.jft.marketdata.MarketOrder;
 @Entity
 @Table(name = "Broker", schema="Financial")
 @NamedQueries({
-		@NamedQuery(name = "Broker.findAll", query = "SELECT b FROM Broker b"),
-		@NamedQuery(name = "Broker.findByBrokerCode", query = "SELECT b FROM Broker b WHERE b.brokerCode = :brokerCode") })
+    @NamedQuery(name = "Broker.findAll", query = "SELECT b FROM Broker b"),
+    @NamedQuery(name = "Broker.findByBrokerCode", query = "SELECT b FROM Broker b WHERE b.brokerCode = :brokerCode") })
 public class Broker implements DBObject<Broker> {
 
-	@Id
-	@SequenceGenerator(name = "BROKER_SEQ", sequenceName = "BROKER_SEQ", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(generator = "BROKER_SEQ", strategy = GenerationType.AUTO)
-	@Basic(optional = false)
-	@Column(name = "brokerID", nullable = false)
-	private Long brokerID;
+    @Id
+    @SequenceGenerator(name = "BROKER_SEQ", sequenceName = "BROKER_SEQ", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(generator = "BROKER_SEQ", strategy = GenerationType.AUTO)
+    @Basic(optional = false)
+    @Column(name = "brokerID", nullable = false)
+    private Long brokerID;
 
-	@Column(name = "BrokerCode", length = 20)
-	private String brokerCode;
+    @Column(name = "BrokerCode", length = 20)
+    private String brokerCode;
 
-	@Column(name = "BrokerName", nullable = false)
-	private String brokerName;
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "brokerID")
-	private List<Brokerage> brokerageList;
+    @Column(name = "BrokerName", nullable = false)
+    private String brokerName;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "brokerID")
-	private Set<MarketOrder> marketOrderSet;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "brokerID")
+    private List<Brokerage> brokerageList;
 
-	
-	/**
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "brokerID")
+    private Set<MarketOrder> marketOrderSet;
+
+
+    /**
      * 
      */
-	public Broker() {
-		this.marketOrderSet = new HashSet<MarketOrder>();
-		this.brokerageList = new ArrayList<Brokerage>();
-	}
+    public Broker() {
+	this.marketOrderSet = new HashSet<MarketOrder>();
+	this.brokerageList = new ArrayList<Brokerage>();
+    }
 
-	/**
-	 * @param brokerCode
-	 * @param brokerName
-	 */
-	public Broker(String brokerCode, String brokerName) {
-		super();
-		this.brokerCode = brokerCode;
-		this.brokerName = brokerName;
-		this.marketOrderSet = new HashSet<MarketOrder>();
-		this.brokerageList = new ArrayList<Brokerage>();
-	}
+    /**
+     * @param brokerCode
+     * @param brokerName
+     */
+    public Broker(String brokerCode, String brokerName) {
+	super();
+	this.brokerCode = brokerCode;
+	this.brokerName = brokerName;
+	this.marketOrderSet = new HashSet<MarketOrder>();
+	this.brokerageList = new ArrayList<Brokerage>();
+    }
 
-	/**
-	 * @return the brokerCode
-	 */
-	public String getBrokerCode() {
-		return this.brokerCode;
-	}
+    /**
+     * @return the brokerCode
+     */
+    public String getBrokerCode() {
+	return this.brokerCode;
+    }
 
-	/**
-	 * @param brokerCode
-	 *            the brokerCode to set
-	 */
-	public void setBrokerCode(String brokerCode) {
-		this.brokerCode = brokerCode;
-	}
+    /**
+     * @param brokerCode
+     *            the brokerCode to set
+     */
+    public void setBrokerCode(String brokerCode) {
+	this.brokerCode = brokerCode;
+    }
 
-	/**
-	 * @return the brokerName
-	 */
-	public String getBrokerName() {
-		return this.brokerName;
-	}
+    /**
+     * @return the brokerName
+     */
+    public String getBrokerName() {
+	return this.brokerName;
+    }
 
-	/**
-	 * @param brokerName
-	 *            the brokerName to set
-	 */
-	public void setBrokerName(String brokerName) {
-		this.brokerName = brokerName;
-	}
+    /**
+     * @param brokerName
+     *            the brokerName to set
+     */
+    public void setBrokerName(String brokerName) {
+	this.brokerName = brokerName;
+    }
 
-	/**
-	 * @return the brokerID
-	 */
-	public Long getBrokerID() {
-		return this.brokerID;
-	}
+    /**
+     * @return the brokerID
+     */
+    public Long getBrokerID() {
+	return this.brokerID;
+    }
 
-	/**
-	 * @return the brokerageList
-	 */
-	public List<Brokerage> getBrokerageList() {
-		return this.brokerageList;
-	}
-	
-	/**
-	 * @return the marketOrderSet
-	 */
-	public Set<MarketOrder> getMarketOrderSet() {
-		return this.marketOrderSet;
-	}
+    /**
+     * @return the brokerageList
+     */
+    public List<Brokerage> getBrokerageList() {
+	return this.brokerageList;
+    }
 
-	// @Override
-	// public Broker add() throws DataBaseException {
-	// return (Broker) DBFacade.getInstance()._persist(this);
-	// }
-	//
-	// /*
-	// * (non-Javadoc)
-	// *
-	// * @see com.cmm.jft_core.DBObject#update()
-	// */
-	// @Override
-	// public Broker update() throws DataBaseException {
-	// return (Broker) DBFacade.getInstance()._update(this);
-	// }
-	//
-	// /*
-	// * (non-Javadoc)
-	// *
-	// * @see com.cmm.jft_core.DBObject#remove()
-	// */
-	// @Override
-	// public Broker remove() throws DataBaseException {
-	// return (Broker) DBFacade.getInstance()._remove(this);
-	// }
-	//
-	// /*
-	// * (non-Javadoc)
-	// *
-	// * @see com.cmm.jft_core.DBObject#loadByKey(java.lang.Object)
-	// */
-	// @Override
-	// public Broker loadByKey(Object key) throws DataBaseException {
-	// return (Broker) DBFacade.getInstance()._findByKey(getClass(), key);
-	// }
+    /**
+     * @return the marketOrderSet
+     */
+    public Set<MarketOrder> getMarketOrderSet() {
+	return this.marketOrderSet;
+    }
+
+    // @Override
+    // public Broker add() throws DataBaseException {
+    // return (Broker) DBFacade.getInstance()._persist(this);
+    // }
+    //
+    // /*
+    // * (non-Javadoc)
+    // *
+    // * @see com.cmm.jft_core.DBObject#update()
+    // */
+    // @Override
+    // public Broker update() throws DataBaseException {
+    // return (Broker) DBFacade.getInstance()._update(this);
+    // }
+    //
+    // /*
+    // * (non-Javadoc)
+    // *
+    // * @see com.cmm.jft_core.DBObject#remove()
+    // */
+    // @Override
+    // public Broker remove() throws DataBaseException {
+    // return (Broker) DBFacade.getInstance()._remove(this);
+    // }
+    //
+    // /*
+    // * (non-Javadoc)
+    // *
+    // * @see com.cmm.jft_core.DBObject#loadByKey(java.lang.Object)
+    // */
+    // @Override
+    // public Broker loadByKey(Object key) throws DataBaseException {
+    // return (Broker) DBFacade.getInstance()._findByKey(getClass(), key);
+    // }
 
 }

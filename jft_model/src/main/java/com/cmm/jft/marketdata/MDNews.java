@@ -1,9 +1,11 @@
 /**
  * 
  */
-package com.cmm.jft.vo;
+package com.cmm.jft.marketdata;
 
 import java.util.Date;
+
+import com.cmm.jft.vo.Extractable;
 
 /**
  * <p><code>NewsVO.java</code></p>
@@ -11,86 +13,60 @@ import java.util.Date;
  * @version Nov 3, 2015 10:12:55 PM
  * @updated 04-nov-2015 13:06:59
  */
-public class NewsVO implements Extractable {
+public class MDNews implements Extractable {
 
 	private String newsID;
-	private Date dataTime;
-	private String text;
+	private Date origTime;
+	private String newsSrc;
 	private String headLine;
+	private String text;
+	private String url;
 	
 	
-	public NewsVO(String newsID, Date dataTime, String text, String headLine) {
+	/**
+	 * 
+	 * @param newsID
+	 * @param dateTime
+	 * @param newsSrc
+	 * @param headLine
+	 * @param text
+	 */
+	public MDNews(String newsID, Date dateTime, String newsSrc, String headLine, String text) {
 		super();
 		this.newsID = newsID;
-		this.dataTime = dataTime;
+		this.origTime = dateTime;
+		this.newsSrc = newsSrc;
 		this.text = text;
 		this.headLine = headLine;
 	}
 
+	public String getUrl() {
+		return url;
+	}
 
-	/**
-	 * @return the newsID
-	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public String getNewsID() {
 		return newsID;
 	}
 
-
-	/**
-	 * @return the dataTime
-	 */
-	public Date getDataTime() {
-		return dataTime;
+	public Date getOrigTime() {
+		return origTime;
 	}
 
-
-	/**
-	 * @return the text
-	 */
-	public String getText() {
-		return text;
+	public String getNewsSrc() {
+		return newsSrc;
 	}
 
-
-	/**
-	 * @return the headLine
-	 */
 	public String getHeadLine() {
 		return headLine;
 	}
 
-
-	/**
-	 * @param newsID the newsID to set
-	 */
-	public void setNewsID(String newsID) {
-		this.newsID = newsID;
+	public String getText() {
+		return text;
 	}
-
-
-	/**
-	 * @param dataTime the dataTime to set
-	 */
-	public void setDataTime(Date dataTime) {
-		this.dataTime = dataTime;
-	}
-
-
-	/**
-	 * @param text the text to set
-	 */
-	public void setText(String text) {
-		this.text = text;
-	}
-
-
-	/**
-	 * @param headLine the headLine to set
-	 */
-	public void setHeadLine(String headLine) {
-		this.headLine = headLine;
-	}
-	
 	
 	
 }

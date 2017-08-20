@@ -52,7 +52,7 @@ public class StockExchange implements DBObject<StockExchange> {
 	//@OneToMany(cascade = CascadeType.ALL, mappedBy = "stockExchangeID", fetch = FetchType.LAZY)
 	//private Set<Company> companySet;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "stockExchangeID", fetch = FetchType.LAZY)
+	//@OneToMany(cascade = CascadeType.ALL, mappedBy = "stockExchangeID", fetch = FetchType.LAZY)
 	private Set<Security> securitySet;
 
 	public StockExchange() {

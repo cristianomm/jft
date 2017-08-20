@@ -13,12 +13,28 @@ import java.util.Date;
  */
 public class TimeSalesVO {
 	
+    public String tradeID;
 	public Date dateTime;
 	public double price;
 	public double volume;
 	public String buyer;
 	public String seller;
 	public char side;
+	
+	/**
+	 * @return the tradeID
+	 */
+	public String getTradeID() {
+	    return tradeID;
+	}
+	
+	/**
+	 * @param tradeID the tradeID to set
+	 */
+	public void setTradeID(String tradeID) {
+	    this.tradeID = tradeID;
+	}
+	
 	/**
 	 * @return the dateTime
 	 */
