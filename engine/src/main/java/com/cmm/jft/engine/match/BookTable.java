@@ -44,12 +44,12 @@ public class BookTable {
     private class Summary{
 	double price;
 	int orderCount;
-	double orderVolume;
+	int orderVolume;
 
 	/**
 	 * 
 	 */
-	public Summary(double price, int numOrders, double volume) {
+	public Summary(double price, int numOrders, int volume) {
 	    this.price = price;
 	    this.orderCount = numOrders;
 	    this.orderVolume = volume;
@@ -135,11 +135,11 @@ public class BookTable {
 	mboEntry.setMdEntryDate(order.getInsertDate());
 	mboEntry.setMdEntryTime(order.getInsertTime());
 	mboEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
-	
+
 	if(updtAction != null) {
 	    mboEntry.setMdUpdateAction(updtAction);
 	}
-	
+
 	mboEntry.setMdEntryPx(order.getPrice());
 	mboEntry.setMdEntrySize((int) order.getVolume());
 	mboEntry.setMdEntryPosNo(getOrderPositionMBO(order));
@@ -153,7 +153,7 @@ public class BookTable {
 	boolean find = false;
 
 	position = orders.getPosition(order.getOrderID());
-	
+
 	return position;
     }
 
@@ -188,13 +188,13 @@ public class BookTable {
 	if(order.getSide() == side){
 	    //adiciona a ordem
 	    orders.add(order);
-	    
+
 	    entries[0] = createMBOEntry(order, UpdateActions.New);
 
 
 	    Summary sum = null;
 	    if(!ordersSummary.containsKey(order.getPrice())){
-		sum = new Summary(order.getPrice(), 1, order.getLeavesVolume());
+		sum = new Summary(order.getPrice(), 1, (int) order.getLeavesVolume());
 		ordersSummary.put(order.getPrice(), sum);
 	    }else{
 		sum = ordersSummary.get(order.getPrice());
@@ -208,7 +208,7 @@ public class BookTable {
 	    mbpEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
 	    mbpEntry.setMdUpdateAction(UpdateActions.New);
 	    mbpEntry.setMdEntryPx(order.getPrice());
-	    mbpEntry.setMdEntrySize((int) sum.orderVolume);
+	    mbpEntry.setMdEntrySize(sum.orderVolume);
 	    mbpEntry.setNumberOfOrders(sum.orderCount);
 	    mbpEntry.setMdEntryPosNo(getOrderPositionMBP(order.getPrice()));
 	    entries[1] = mbpEntry;
@@ -249,54 +249,114 @@ public class BookTable {
 
 	MDEntry[] entries = new MDEntry[2];
 	if(order.getSide() == side){
-	    if(order.getClOrdID()!=null && order.getSecOrderID() != null) {
-		Orders ordr = null;
-		for(SortedMap<Date,Orders> sm: orders.values()) {
-		    for(Orders or : sm.values()) {
-			
-		    }
-		}
-	    }
+	    entries[0] = createMBOEntry(order, UpdateActions.Change);
+
+	    Summary sum = ordersSummary.get(order.getPrice());
+
+	    MDEntry mbpEntry = new MDEntry();
+	    mbpEntry.setMdEntryPx(sum.price);
+	    mbpEntry.setMdEntrySize(sum.orderVolume);
+	    mbpEntry.setNumberOfOrders(sum.orderCount);
+	    mbpEntry.setMdEntryDate(order.getInsertDate());
+	    mbpEntry.setMdEntryTime(order.getInsertTime());
+	    mbpEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
+	    mbpEntry.setMdUpdateAction(UpdateActions.Change);
+	    mbpEntry.setMdEntryPosNo(getOrderPositionMBP(order.getPrice()));
+	    entries[1] = mbpEntry;
+
 	}
 	return entries;
     }
 
-    public List<OrderEvent> getExecutions(Orders aggrOrder){
+    /**
+     * Retorna uma lista com as provaveis execucoes para o preco e quantidade informados.
+     * @param limitPrice preco limite para a execucao da ordem.
+     * @param leavesVolume quantidade necessaria para executar a ordem.
+     * @return
+     */
+    public List<OrderEvent> listExecutions(double limitPrice, double leavesVolume){
 
-	ArrayList<OrderEvent> events = new ArrayList<>();
-
-	int cumVolume = 0;
-
-	for(SortedMap<Date, Orders> tm : orders.getOrders().values()) {
-	    for(Orders bookOrder : tm.values()) {
-		if (bookOrder.getWorkingIndicator() == WorkingIndicator.Working) {
-		    bookOrder.setWorkingIndicator(WorkingIndicator.No_Working);
-
-		    double priceToFill = bookOrder.getPrice();
-
-		    if(cumVolume < aggrOrder.getLeavesVolume() && priceToFill <= aggrOrder.getLimitPrice()){
-			//calcula o volume que falta para completar na ordem agressora
-			double vol = aggrOrder.getLeavesVolume() - cumVolume;
-			double volumeToFill = 0;
-			if(vol >= bookOrder.getLeavesVolume()){
-			    volumeToFill = bookOrder.getLeavesVolume();
-			}
-			else if(vol < bookOrder.getLeavesVolume()){
-			    volumeToFill = vol;
-			}
-
-			//cria a execucao para a ordem do book
-			OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, volumeToFill, priceToFill);
-			fill.setOrderID(bookOrder);
-			events.add(fill);
-		    }
-		}
-	    }
+	List<OrderEvent> events = null;
+	if(side == Side.BUY) {
+	    events = listBuyExecutions(limitPrice, leavesVolume);
+	}
+	else {
+	    events = listSellExecutions(limitPrice, leavesVolume);
 	}
 	return events;
     }
 
+    
+    private List<OrderEvent> listBuyExecutions(double limitPrice, double leavesVolume){
+	ArrayList<OrderEvent> events = new ArrayList<>();
+	
+	int cumVolume = 0;
+	for(SortedMap<Date, Orders> tm : orders.getOrders().values()) {
+	    for(Orders bookOrder : tm.values()) {
+		double priceToFill = bookOrder.getPrice();
+		
+		if(cumVolume < leavesVolume && priceToFill >= limitPrice){
+		    //calcula o volume que falta para completar na ordem agressora
+		    double vol = leavesVolume - cumVolume;
+		    double volumeToFill = 0;
+		    
+		    if(bookOrder.getMaxFloor() >0) {
+			
+		    }else {
+			
+		    }
+		    
+		    if(vol >= bookOrder.getLeavesVolume()){
+			volumeToFill = bookOrder.getLeavesVolume();
+		    }
+		    else if(vol < bookOrder.getLeavesVolume()){
+			volumeToFill = vol;
+		    }
 
+		    //cria a execucao para a ordem do book
+		    OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, volumeToFill, priceToFill);
+		    fill.setOrderID(bookOrder);
+		    events.add(fill);
+		}
+
+	    }
+	}
+	
+	return events;
+    }
+
+    private List<OrderEvent> listSellExecutions(double limitPrice, double leavesVolume){
+	ArrayList<OrderEvent> events = new ArrayList<>();
+	
+	int cumVolume = 0;
+	for(SortedMap<Date, Orders> tm : orders.getOrders().values()) {
+	    for(Orders bookOrder : tm.values()) {
+		double priceToFill = bookOrder.getPrice();
+		
+		if(cumVolume < leavesVolume && priceToFill <= limitPrice){
+		    //calcula o volume que falta para completar na ordem agressora
+		    double vol = leavesVolume - cumVolume;
+		    double volumeToFill = 0;
+		    if(vol >= bookOrder.getLeavesVolume()){
+			volumeToFill = bookOrder.getLeavesVolume();
+		    }
+		    else if(vol < bookOrder.getLeavesVolume()){
+			volumeToFill = vol;
+		    }
+
+		    //cria a execucao para a ordem do book
+		    OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, volumeToFill, priceToFill);
+		    fill.setOrderID(bookOrder);
+		    events.add(fill);
+		}
+
+	    }
+	}
+	
+	return events;
+    }
+    
+    
     /**
      * @return the stopQueue
      */

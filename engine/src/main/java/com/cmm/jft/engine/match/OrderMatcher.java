@@ -25,6 +25,7 @@ import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.CancelTypes;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
+import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.StreamTypes;
@@ -40,38 +41,6 @@ import com.cmm.logging.Logging;
  */
 public class OrderMatcher implements MessageSender {
 
-    private class StopOrderReleaser implements Runnable {
-
-	private SortedMap<Double, SortedMap<Date, Orders>> queue;
-
-	public StopOrderReleaser(SortedMap<Double, SortedMap<Date, Orders>> queue) {
-	    this.queue =  queue;
-	}
-
-	@Override
-	public void run() {
-	    while (verifyStopOrders) {
-		//se contem osdens stop no nivel de preco
-		if(queue.containsKey(lastPrice) && !queue.get(lastPrice).isEmpty()){
-		    SortedMap<Date, Orders> stops = queue.get(lastPrice);
-		    while(!stops.isEmpty()){
-			try {
-			    Orders stpOrd = stops.remove(stops.firstKey());
-			    stpOrd.setWorkingIndicator(WorkingIndicator.Working);
-			    stpOrd.changeToMarket();
-			    //agride o mercado com a ordem stop
-			    addOrder(stpOrd);
-
-			} catch (OrderException e) {
-			    e.printStackTrace();
-			}
-		    }
-		}
-	    }
-	}
-    }
-
-    private boolean verifyStopOrders;
     private double openPrice;
     private double closePrice;
     private double highPrice;
@@ -94,18 +63,13 @@ public class OrderMatcher implements MessageSender {
     public OrderMatcher(double protectionLevel, MarketDataChannel umdf, 
 	    BookTable buyTable, BookTable sellTable) {
 	this.umdf = umdf;
-	this.verifyStopOrders = true;
 	this.protectionLevel = protectionLevel;
 	this.tradeIds = new IdGenerator(new Date());
 	this.buyTable = buyTable;
 	this.sellTable = sellTable;
-	
-	// inicializa os verificadores de ordens stop
-	//new Thread(new StopOrderReleaser(buyTable.getStopQueue())).start();
-	//new Thread(new StopOrderReleaser(sellTable.getStopQueue())).start();
     }
 
-    
+
 
     /**
      * @return the openPrice
@@ -156,7 +120,7 @@ public class OrderMatcher implements MessageSender {
     public int getTotalVolume() {
 	return this.totalVolume;
     }
-    
+
     /**
      * @return the financialVolume
      */
@@ -218,6 +182,27 @@ public class OrderMatcher implements MessageSender {
 
     }
 
+    public void changeOrder(Orders bookOrder) {
+	BookTable table = bookOrder.getSide() == Side.BUY? buyTable : sellTable;
+	MDEntry[] entries = table.update(bookOrder);
+	umdf.informChangeOrder(entries[0], entries[1]);
+    }
+
+
+
+    private boolean addStop(Orders order) throws Exception {
+	boolean ret = false;
+	order.setWorkingIndicator(WorkingIndicator.No_Working);
+	if(order.getSide() == Side.BUY) {
+	    buyTable.addStop(order);
+	    ret = true;
+	}else {
+	    sellTable.addStop(order);
+	    ret = true;
+	}
+	return ret;
+    }
+
     private boolean addOnBook(Orders ordr) {
 	boolean add = false;
 	MDEntry[] entries = null;
@@ -227,7 +212,7 @@ public class OrderMatcher implements MessageSender {
 	} else {
 	    entries = sellTable.add(ordr);
 	}
-	
+
 	if(entries[0] != null && entries[1] != null) {
 	    add = true;
 	    umdf.informNewOrder(entries[0], entries[1]);
@@ -239,31 +224,40 @@ public class OrderMatcher implements MessageSender {
     private boolean execute(Orders ordr) {
 
 	boolean executed = false;
-	switch (ordr.getOrderType()) {
-	case Market:
-	    executed = executeMarketWithProtection(ordr);
-	    break;
-	case Limit:
-	    executed = executeLimit(ordr);
-	    break;
-	case Stop:
-	    adjustProtectionPrice(ordr);
-	    executed = addOnBook(ordr);// nao executa stop mas sim adiciona no
-	    // "stop book" e aguarda para ser ativada
-	    break;
-	case StopLimit:
-	    executed = addOnBook(ordr);// nao executa stoplimit, deve inserir no
-	    // stop book e aguardar o gatilho
-	    break;
-	case MarketWithLeftOverAsLimit:
-	    executed = executeMarketToLimit(ordr);
-	    break;
-	    
+
+	try {
+	    switch (ordr.getOrderType()) {
+	    case Market:
+		executed = executeMarketWithProtection(ordr);
+		break;
+	    case Limit:
+		executed = executeLimit(ordr);
+		break;
+	    case Stop:
+		/*
+		 * Nao executa stop mas adiciona no
+		 * "stop book" e aguarda para ser ativada
+		 */
+		executed = addStop(ordr);
+		break;
+	    case StopLimit:
+		/*
+		 * Nao executa stoplimit, deve inserir no
+		 * stop book e aguardar o gatilho
+		 */
+		executed = addStop(ordr);
+		break;
+	    case MarketWithLeftOverAsLimit:
+		executed = executeMarketToLimit(ordr);
+		break;
+
 	    default:
 		break;
-	    
-	}
 
+	    }
+	}catch(Exception e) {
+	    e.printStackTrace();
+	}
 	return executed;
     }
 
@@ -337,19 +331,34 @@ public class OrderMatcher implements MessageSender {
     }
 
     //private PriorityBlockingQueue<Orders> getCounterpartyBookOrders(Side side) {
-	//return (side == Side.BUY) ? sellTable.getOrders() : buyTable.getOrders();
+    //return (side == Side.BUY) ? sellTable.getOrders() : buyTable.getOrders();
     //}
 
+    /**
+     * For bids, the protection price calculated is by adding an offset to
+     * the last trade price. For offers, the offset is subtracted from the
+     * last trade. The protection price cannot be specified in the incoming
+     * order.
+     * @param ordr
+     */
     private void adjustProtectionPrice(Orders ordr) {
-	/*
-	 * For bids, the protection price calculated is by adding an offset to
-	 * the last trade price. For offers, the offset is subtracted from the
-	 * last trade. The protection price cannot be specified in the incoming
-	 * order.
-	 */
-	double offset = (lastPrice * protectionLevel) * (ordr.getSide() == Side.BUY ? 1 : -1);
-	ordr.setProtectionPrice(lastPrice + offset);
 
+	double protectPx = lastPrice + ((lastPrice * protectionLevel) * (ordr.getSide() == Side.BUY ? 1 : -1));
+
+	ordr.setPrice(protectPx);
+	ordr.setProtectionPrice(protectPx);
+    }
+
+
+
+    private BookTable getTable(Orders ordr) {
+	BookTable table = null;
+	if(ordr.getSide() == Side.BUY){
+	    table = sellTable;
+	}else{
+	    table = buyTable;
+	}
+	return table;
     }
 
     /**
@@ -362,7 +371,9 @@ public class OrderMatcher implements MessageSender {
 	boolean exec = false;
 
 	adjustProtectionPrice(ordr);
-	exec = generalExecute(ordr, ordr.getProtectionPrice(), ordr.getVolume());
+
+	List<OrderEvent> execs = getTable(ordr).listExecutions(ordr.getProtectionPrice(), ordr.getLeavesVolume());
+	exec = generalExecute(execs, ordr);
 
 	return exec;
     }
@@ -370,7 +381,8 @@ public class OrderMatcher implements MessageSender {
     private boolean executeLimit(Orders ordr) {
 	boolean exec = false;
 
-	exec = generalExecute(ordr, ordr.getPrice(), ordr.getVolume());
+	List<OrderEvent> execs = getTable(ordr).listExecutions(ordr.getPrice(), ordr.getLeavesVolume());
+	exec = generalExecute(execs, ordr);
 
 	return exec;
     }
@@ -378,23 +390,25 @@ public class OrderMatcher implements MessageSender {
     private boolean executeMarketToLimit(Orders ordr) {
 	boolean exec = false;
 
-	exec = generalExecute(ordr, ordr.getPrice(), ordr.getVolume());
-
+	List<OrderEvent> execs = getTable(ordr).listExecutions(ordr.getPrice(), ordr.getLeavesVolume());
+	//utiliza somente a primeira execucao
+	execs = execs.subList(0, 1);
+	exec = generalExecute(execs, ordr);
+	
+	/*
+	 * apos a primeira execucao, ajusta a ordem para limit 
+	 * e ajusta o preco da ordem para o preco do ultimo negocio executado 
+	 */
+	ordr.setOrderType(OrderTypes.Limit);
+	ordr.setPrice(lastPrice);
+	execs = getTable(ordr).listExecutions(ordr.getPrice(), ordr.getLeavesVolume());
+	exec = generalExecute(execs, ordr);
+	
 	return exec;
     }
 
-    private boolean generalExecute(Orders aggrOrdr, double orderPrice, double orderVolume) {
+    private boolean generalExecute(List<OrderEvent>execs, Orders aggrOrdr) {
 	boolean exec = false;
-
-	BookTable table = null;
-
-	if(aggrOrdr.getSide() == Side.BUY){
-	    table = sellTable;
-	}else{
-	    table = buyTable;
-	}
-
-	List<OrderEvent> execs = table.getExecutions(aggrOrdr);
 
 	try {
 	    // verifica se pode executar a ordem
@@ -410,9 +424,7 @@ public class OrderMatcher implements MessageSender {
 		    if (bookOrdr.getOrderStatus() == OrderStatus.FILLED) {
 			cancelOrder(bookOrdr, CancelTypes.Trade);
 		    } else {//
-			bookOrdr.setWorkingIndicator(WorkingIndicator.Working);
-			MDEntry[] entries = table.update(bookOrdr);
-			umdf.informChangeOrder(entries[0], entries[1]);
+			changeOrder(bookOrdr);
 		    }
 
 		}
@@ -424,17 +436,15 @@ public class OrderMatcher implements MessageSender {
 			cancelOrder(aggrOrdr, CancelTypes.Expiration);
 		    } else {
 			// ajusta o tipo da ordem para Limit e adiciona o restante no book
-			aggrOrdr.changeToLimit(orderPrice);
+			aggrOrdr.setOrderType(OrderTypes.Limit);
 			exec = addOnBook(aggrOrdr);
 		    }
 		}
-		
+
 		//caso tenha realizado algum negocio, verifica se deve acionar ordens stop
-		if(exec) {
-		    releaseStopOrders(buyTable.getStops(lastPrice));
-		    releaseStopOrders(sellTable.getStops(lastPrice));
-		}
-		
+		releaseStopOrders(buyTable.getStops(lastPrice));
+		releaseStopOrders(sellTable.getStops(lastPrice));
+
 	    } else {
 		// cancela a ordem e informa que a ordem nao podera ser executada
 		exec = false;
@@ -448,16 +458,21 @@ public class OrderMatcher implements MessageSender {
 
 	return exec;
     }
-    
-    
+
+
     private void releaseStopOrders(SortedMap<Date, Orders> stops) {
 	if(stops != null) {
 	    while(!stops.isEmpty()){
 		try {
 		    Orders stpOrd = stops.remove(stops.firstKey());
-		    stpOrd.setWorkingIndicator(WorkingIndicator.Working);
-		    stpOrd.changeToMarket();
-		    //agride o mercado com a ordem stop
+
+		    if(stpOrd.getOrderType() == OrderTypes.Stop) {
+			adjustProtectionPrice(stpOrd);
+		    }
+
+		    stpOrd.setOrderType(OrderTypes.Limit);
+
+		    //insere a ordem no book
 		    addOrder(stpOrd);
 
 		} catch (OrderException e) {
@@ -466,77 +481,6 @@ public class OrderMatcher implements MessageSender {
 	    }
 	}
     }
-
-    /**
-     * Cria as execucoes para os valores passados por parametro, 
-     * referenciando na execucao, a ordem que esta presente no book 
-     * e que fara a contra-parte na transacao. Ainda nao removera do book 
-     * as ordens que seram completamente executadas.
-     * 
-     * @param side
-     * @param price
-     * @param volume
-     * @return	
-     */
-    /*
-    private ArrayList<OrderEvent> createExecutions(Side side, double price, double limitPrice, double volume) {
-
-	ArrayList<OrderEvent> lst = new ArrayList<OrderEvent>();
-	TreeMap<Double, TreeMap<Date, Orders>> ordrs = getCounterpartyBookOrders(side);
-
-	double cumVolume = 0;
-
-	//busca o primeiro nivel de preco para a contraparte
-	//para verificar se vai executar ou nao a ordem
-	if((side == Side.BUY && (price <= ordrs.firstKey() && limitPrice <= ordrs.firstKey())) || 
-		(side == Side.SELL && (price >= ordrs.firstKey() && limitPrice >= ordrs.firstKey()))){
-
-	    for (TreeMap<Date, Orders> tm : ordrs. values()) {
-		double priceLevel = tm.firstEntry().getValue().getPrice();
-		//caso o preco da ordem no book esteja dentro do limite especificado
-		if((side == Side.BUY && (price <= priceLevel && limitPrice <= priceLevel)) || 
-			(side == Side.SELL && (price >= priceLevel && limitPrice >= priceLevel))){
-		    //para este nivel de preco, percorre as ordens que estao ordenadas por tempo
-		    //a fim de preencher a ordem agressora.
-		    //enquanto ha ordens e nao preencheu o volume...
-		    Iterator<Orders> ordrIter = tm.values().iterator(); 
-		    while (ordrIter.hasNext() && cumVolume < volume) {
-			Orders bookOrder = ordrIter.next();
-			if (bookOrder.getWorkingIndicator() == WorkingIndicator.Working) {
-			    bookOrder.setWorkingIndicator(WorkingIndicator.No_Working);
-			    double volumeToFill = 0;
-			    double priceToFill = bookOrder.getPrice();
-
-
-			    //* a ordem que esta no book pode ter um volume maior, menor ou igual 
-			    //* ao necessario para executar a ordem agressora.
-			    //o volume da ordem agressora eh maior ou igual ao volume da ordem no book
-			    if ((volume - cumVolume) >= bookOrder.getLeavesVolume()) {
-				volumeToFill = bookOrder.getLeavesVolume();
-			    } 
-			    //o volume da ordem agressora eh menor que o volume restante da ordem no book
-			    else if((volume - cumVolume) < bookOrder.getLeavesVolume()){
-				volumeToFill = bookOrder.getLeavesVolume() - (volume - cumVolume);
-			    }
-			    //atualiza o volume acumulado para a ordem agressora.
-			    cumVolume += volumeToFill;
-
-			    //cria a execucao para a ordem do book
-			    OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, volumeToFill, priceToFill);
-			    fill.setOrderID(bookOrder);
-			    lst.add(fill);
-			}
-		    }
-		}
-		else{
-		    break;
-		}
-	    }
-	}
-
-	return lst;
-    }*/
-
 
 
     private boolean validateExecution(Orders ordr, List<OrderEvent> executions) {

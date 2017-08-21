@@ -5,6 +5,7 @@ package com.cmm.jft.engine;
 
 import static org.junit.Assert.assertTrue;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -132,7 +133,7 @@ public class Book implements MessageSender {
 	this.phase = MarketPhase.Pause;
 	this.validOrderTypes = orderTypes;
 
-	this.orderIDs = 1;
+	this.orderIDs = Instant.now().toEpochMilli();
 	this.buyTable = new BookTable(Side.BUY);
 	this.sellTable = new BookTable(Side.SELL);
 	this.snapshot = new MDSnapshot(security);
@@ -188,13 +189,15 @@ public class Book implements MessageSender {
 	valid = valid && (order.getVolume() % security.getSecurityInfoID().getMinVolume()) == 0;
 
 	// verifica se o preco esta correto
-	if (order.getPrice() == 0) {
-	    valid = valid 
-		    && (order.getOrderType() == OrderTypes.Market
-		    || order.getOrderType() != OrderTypes.MarketWithLeftOverAsLimit);
-
-	} else if (order.getPrice() > 0) {
-	    valid = valid && true;
+	switch(order.getOrderType()) {
+	case Market:
+	case MarketWithLeftOverAsLimit:
+	case Stop:
+	case StopLimit:
+	    valid = valid && (order.getPrice() == 0);
+	    break;
+	case Limit:
+	    valid = valid && (order.getPrice() >0 );
 	}
 
 	return valid;
@@ -235,9 +238,20 @@ public class Book implements MessageSender {
     
     private void adjustOrderParameters(Orders order) throws OrderException {
 	
-	order.setWorkingIndicator(WorkingIndicator.No_Working);
-	order.setOrderStatus(OrderStatus.SUSPENDED);
-
+	switch(order.getOrderType()) {
+	case Limit:
+	case Market:
+	case MarketWithLeftOverAsLimit:
+	    order.setWorkingIndicator(WorkingIndicator.Working);
+	    break;
+	case Stop:
+	case StopLimit:
+	    order.setWorkingIndicator(WorkingIndicator.No_Working);
+	    break;
+	}
+	
+	order.setOrderStatus(OrderStatus.NEW);
+	
 	//ajusta parametros da ordem no recebimento da oferta
 	Date insertDt = new Date();
 	order.setInsertDate(insertDt);
@@ -255,7 +269,6 @@ public class Book implements MessageSender {
 		// se a ordem poderá ser executada antes de inserir no book.
 		// envia mensagem informando que a ordem foi aceita pelo book
 		
-		order.setOrderStatus(OrderStatus.NEW);
 		sendOrderReceived(order, ExecutionTypes.NEW, "Order received.", sessionID);
 		
 		// adiciona a ordem no match engine
@@ -291,16 +304,13 @@ public class Book implements MessageSender {
 	    
 	    adjustOrderParameters(ordr);
 	    if (ordr.getSide() == Side.BUY) {
-		buyTable. update(ordr);
+		buyTable.update(ordr);
 	    } else {
 		entries = sellTable.update(ordr);
 	    }
 	    
+	    sendOrderReceived(ordr, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
 	    
-	    sendOrderReceived(order, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
-	    
-	    sendOrderReceived(ordr, sessionID);
-
 	    MDEntry[] entries = null;
 	    if (ordr.getSide() == Side.BUY) {
 		entries = buyTable.update(ordr);
@@ -309,7 +319,7 @@ public class Book implements MessageSender {
 	    }
 
 	    if(entries == null) {
-		sendOrderRejected(ordr, sessionID, "Order rejected.");
+		sendOrderReceived(ordr, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
 	    }
 
 	    // TODO: enviar o estado atual do book com o que mudou do estado anterior

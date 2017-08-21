@@ -116,6 +116,17 @@ public class OrdersTable {
 	return orderIDs.getOrDefault(orderID, null);
     }
     
+    public Orders getFirst() {
+	Orders ret = null;
+	for(SortedMap<Date, Orders> sm: orders.values()) {
+	    for(Orders o:sm.values()) {
+		return ret = o;
+	    }
+	}
+	return ret;
+    }
+    
+    
     
     
     public int getPosition(long orderID) {

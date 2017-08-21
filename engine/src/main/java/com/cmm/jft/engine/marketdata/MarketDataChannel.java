@@ -119,6 +119,7 @@ public class MarketDataChannel implements MessageSender {
     public void informChangeOrder(MDEntry mboInfo, MDEntry mbpInfo) {
 
     }
+    
 
     public void informDeleteOrder(MDEntry mboInfo, MDEntry mbpInfo){
 
