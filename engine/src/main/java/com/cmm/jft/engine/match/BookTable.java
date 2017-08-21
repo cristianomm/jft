@@ -300,12 +300,6 @@ public class BookTable {
 		    double vol = leavesVolume - cumVolume;
 		    double volumeToFill = 0;
 		    
-		    if(bookOrder.getMaxFloor() >0) {
-			
-		    }else {
-			
-		    }
-		    
 		    if(vol >= bookOrder.getLeavesVolume()){
 			volumeToFill = bookOrder.getLeavesVolume();
 		    }
