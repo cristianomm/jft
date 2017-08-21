@@ -82,16 +82,22 @@ public class Orders implements DBObject<Orders> {
     @Column(name = "StopPrice", precision = 19, scale = 6)
     private double stopPrice;
 
-    @Column(name = "LimitPrice", precision = 19, scale = 6)
-    private double limitPrice;
-
     @Basic(optional = false)
     @Column(name = "Volume", nullable = false)
     private double volume;
-
+    
+    @Column(name = "ExecutedVolume")
+    private Integer executedVolume;
 
     @Column(name="LeavesVolume")
     private double leavesVolume;
+    
+    @Column(name = "MaxFloor")
+    private double maxFloor;
+    
+    @Column(name = "MinVolume")
+    private double minVolume;
+    
 
     // @Max(value=?) @Min(value=?)//if you know range of your decimal fields
     // consider using these annotations to enforce field validation
@@ -100,12 +106,6 @@ public class Orders implements DBObject<Orders> {
 
     @Column(name = "ProtectionPrice", precision = 19, scale = 6)
     private double protectionPrice;
-
-    @Column(name = "MaxFloor")
-    private double maxFloor;
-
-    @Column(name = "ExecutedVolume")
-    private Integer executedVolume;
 
     @Column(name = "Duration", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -199,11 +199,6 @@ public class Orders implements DBObject<Orders> {
 	switch(orderType){
 	case Limit:
 	    this.price = price;
-	    this.limitPrice = price;
-	    if(price <=0){
-		throw new OrderException(
-			String.format("Invalid price for type: %1$f %2$s", price, orderType));
-	    }
 	    break;
 	case Market:
 	    break;
@@ -464,19 +459,26 @@ public class Orders implements DBObject<Orders> {
 	return this.price;
     }
 
-    /**
-     * @return the limitPrice
-     */
-    public double getLimitPrice() {
-	return limitPrice;
-    }
-
     public double getLeavesVolume() {
 	return leavesVolume;
     }
 
     public double getVolume() {
 	return volume;
+    }
+    
+    /**
+     * @return the minVolume
+     */
+    public double getMinVolume() {
+	return minVolume;
+    }
+    
+    /**
+     * @param minVolume the minVolume to set
+     */
+    public void setMinVolume(double minVolume) {
+	this.minVolume = minVolume;
     }
 
     public double getAvgPrice() {
@@ -618,13 +620,6 @@ public class Orders implements DBObject<Orders> {
      */
     public void setPrice(double price) {
 	this.price = price;
-    }
-
-    /**
-     * @param limitPrice the limitPrice to set
-     */
-    public void setLimitPrice(double limitPrice) {
-	this.limitPrice = limitPrice;
     }
 
     /**
@@ -893,17 +888,10 @@ public class Orders implements DBObject<Orders> {
 
 	return ret;
     }
-
-    public void changeToLimit(double price) throws OrderException {
-	OrderEvent oe = new OrderEvent(ExecutionTypes.REPLACE, getVolume(), price);
-	oe.setOrderType(OrderTypes.Limit);
-	addExecution(oe);
-    }
-
+    
     public void changeToMarket() throws OrderException {
-	OrderEvent oe = new OrderEvent(ExecutionTypes.REPLACE, getVolume(), 0);
-	oe.setOrderType(OrderTypes.Market);
-	addExecution(oe);
+	setOrderType(OrderTypes.Market);
+	setPrice(0);
     }
 
 }
