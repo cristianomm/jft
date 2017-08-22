@@ -15,6 +15,7 @@ import com.cmm.jft.engine.marketdata.MarketDataChannel;
 import com.cmm.jft.engine.marketdata.recovery.SnapshotRecoveryChannel;
 import com.cmm.jft.engine.match.BookTable;
 import com.cmm.jft.engine.match.OrderMatcher;
+import com.cmm.jft.engine.match.OrdersTable;
 import com.cmm.jft.marketdata.BandLimits;
 import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.marketdata.MDSnapshot;
@@ -57,15 +58,17 @@ public class Book implements MessageSender {
     private double adjustPrice;
     private Security security;
     private OrderMatcher orderMatcher;
-    private HashSet<OrderTypes> validOrderTypes;
     private MarketDataChannel umdf;
     private SnapshotRecoveryChannel snpr;
 
     private BandLimits bandLimits;
 
     private long orderIDs;
-    private BookTable buyTable;
-    private BookTable sellTable;
+    //private BookTable buyTable;
+    //private BookTable sellTable;
+    
+    private OrdersTable buyTable;
+    private OrdersTable sellTable;
 
     private MarketPhase phase;
 
@@ -75,10 +78,9 @@ public class Book implements MessageSender {
 	long orderID = 1;
 	String symbol = "WDOV17";
 	Security security = SecurityService.getInstance().provideSecurity(symbol);
-	HashSet<OrderTypes> orderTypes = new HashSet<>();
 	SessionID sessionID = new SessionID(FixVersions.BEGINSTRING_FIX44, "SENDER", "TARGET");
 
-	Book book = new Book(symbol, orderTypes, .20);
+	Book book = new Book(symbol, .20);
 
 	long t0 = System.currentTimeMillis();
 	try {
@@ -127,15 +129,17 @@ public class Book implements MessageSender {
      * @param matchType
      * @param protectionLevel
      */
-    public Book(String symbol, HashSet<OrderTypes> orderTypes, double protectionLevel) {
+    public Book(String symbol, double protectionLevel) {
 	this.protectionLevel = protectionLevel;
 	this.security = SecurityService.getInstance().provideSecurity(symbol);
 	this.phase = MarketPhase.Pause;
-	this.validOrderTypes = orderTypes;
 
 	this.orderIDs = Instant.now().toEpochMilli();
-	this.buyTable = new BookTable(Side.BUY);
-	this.sellTable = new BookTable(Side.SELL);
+	//this.buyTable = new BookTable(Side.BUY);
+	//this.sellTable = new BookTable(Side.SELL);
+	
+	this.buyTable = new OrdersTable(Side.BUY);
+	this.sellTable = new OrdersTable(Side.SELL);
 	this.snapshot = new MDSnapshot(security);
 
 	double auctionBand = security.getSecurityInfoID().getAuctionBand();
@@ -180,8 +184,25 @@ public class Book implements MessageSender {
     private boolean validateOrder(Orders order) {
 
 	boolean valid = false;
-
-	valid = isValidType(order);
+	switch (order.getOrderType()) {
+	case Market:
+	    valid = true;
+	    break;
+	case Limit:
+	    valid = true;
+	    break;
+	case Stop:
+	    valid = true;
+	    break;
+	case StopLimit:
+	    valid = true;
+	    break;
+	case MarketWithLeftOverAsLimit:
+	    valid = true;
+	    break;
+	default:
+	    valid = false;
+	}
 
 	valid = valid && !order.getClOrdID().isEmpty();
 
@@ -193,48 +214,15 @@ public class Book implements MessageSender {
 	case Market:
 	case MarketWithLeftOverAsLimit:
 	case Stop:
-	case StopLimit:
 	    valid = valid && (order.getPrice() == 0);
 	    break;
 	case Limit:
+	case StopLimit:
 	    valid = valid && (order.getPrice() >0 );
 	}
 
 	return valid;
     }
-
-    private boolean isValidType(Orders order) {
-
-	boolean isValid = false;
-	switch (order.getOrderType()) {
-
-	case Market:
-	    isValid = true;
-	    break;
-
-	case Limit:
-	    isValid = true;
-	    break;
-
-	case Stop:
-	    isValid = true;
-	    break;
-
-	case StopLimit:
-	    isValid = true;
-	    break;
-
-	case MarketWithLeftOverAsLimit:
-	    isValid = true;
-	    break;
-
-	default:
-	    isValid = false;
-	}
-
-	return isValid;
-    }
-
     
     private void adjustOrderParameters(Orders order) throws OrderException {
 	
@@ -269,19 +257,19 @@ public class Book implements MessageSender {
 		// se a ordem poderá ser executada antes de inserir no book.
 		// envia mensagem informando que a ordem foi aceita pelo book
 		
-		sendOrderReceived(order, ExecutionTypes.NEW, "Order received.", sessionID);
+		sendExecutionReport(order, ExecutionTypes.NEW, "Order received.", sessionID);
 		
 		// adiciona a ordem no match engine
 		added = added && orderMatcher.addOrder(order);
 	    }
 	    else {
 		order.setOrderStatus(OrderStatus.REJECTED);
-		sendOrderReceived(order, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
+		sendExecutionReport(order, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
 	    }
 	    
 	} catch (OrderException e) {
 	    added = false;
-	    sendOrderReceived(order, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
+	    sendExecutionReport(order, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
 
@@ -309,7 +297,7 @@ public class Book implements MessageSender {
 		entries = sellTable.update(ordr);
 	    }
 	    
-	    sendOrderReceived(ordr, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
+	    sendExecutionReport(ordr, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
 	    
 	    MDEntry[] entries = null;
 	    if (ordr.getSide() == Side.BUY) {
@@ -319,7 +307,7 @@ public class Book implements MessageSender {
 	    }
 
 	    if(entries == null) {
-		sendOrderReceived(ordr, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
+		sendExecutionReport(ordr, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
 	    }
 
 	    // TODO: enviar o estado atual do book com o que mudou do estado anterior
@@ -370,7 +358,7 @@ public class Book implements MessageSender {
     }
 
 
-    private void sendOrderReceived(Orders order, ExecutionTypes exec, String message, SessionID sessionID) {
+    private void sendExecutionReport(Orders order, ExecutionTypes exec, String message, SessionID sessionID) {
 	
 	try {
 	    OrderEvent oe = new OrderEvent(

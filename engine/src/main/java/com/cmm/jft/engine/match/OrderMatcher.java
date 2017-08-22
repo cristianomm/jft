@@ -57,11 +57,11 @@ public class OrderMatcher implements MessageSender {
 
     private MarketDataChannel umdf;
 
-    private BookTable buyTable;
-    private BookTable sellTable;
+    private OrdersTable buyTable;
+    private OrdersTable sellTable;
 
     public OrderMatcher(double protectionLevel, MarketDataChannel umdf, 
-	    BookTable buyTable, BookTable sellTable) {
+	    OrdersTable buyTable, OrdersTable sellTable) {
 	this.umdf = umdf;
 	this.protectionLevel = protectionLevel;
 	this.tradeIds = new IdGenerator(new Date());
@@ -141,7 +141,7 @@ public class OrderMatcher implements MessageSender {
 
 	umdf.openNewPacket();
 	//umdf.informNewOrder(order, positionNo);
-	order.setWorkingIndicator(WorkingIndicator.Working);
+	//order.setWorkingIndicator(WorkingIndicator.Working);
 	add = execute(order);
 
 	umdf.closePacket();
@@ -150,7 +150,7 @@ public class OrderMatcher implements MessageSender {
 
     public void cancelOrder(Orders ordr, CancelTypes cancelType) throws OrderException {
 
-	BookTable table = ordr.getSide() == Side.BUY? buyTable : sellTable;
+	OrdersTable table = ordr.getSide() == Side.BUY? buyTable : sellTable;
 
 	OrderEvent oe = new OrderEvent(ExecutionTypes.CANCELED, ordr.getVolume(), ordr.getPrice());
 	switch(cancelType){
@@ -183,7 +183,7 @@ public class OrderMatcher implements MessageSender {
     }
 
     public void changeOrder(Orders bookOrder) {
-	BookTable table = bookOrder.getSide() == Side.BUY? buyTable : sellTable;
+	OrdersTable table = bookOrder.getSide() == Side.BUY? buyTable : sellTable;
 	MDEntry[] entries = table.update(bookOrder);
 	umdf.informChangeOrder(entries[0], entries[1]);
     }
@@ -234,16 +234,10 @@ public class OrderMatcher implements MessageSender {
 		executed = executeLimit(ordr);
 		break;
 	    case Stop:
-		/*
-		 * Nao executa stop mas adiciona no
-		 * "stop book" e aguarda para ser ativada
-		 */
-		executed = addStop(ordr);
-		break;
 	    case StopLimit:
 		/*
-		 * Nao executa stoplimit, deve inserir no
-		 * stop book e aguardar o gatilho
+		 * Nao executa stop mas adiciona no
+		 * "stop book" e aguarda gatilho para ser ativada
 		 */
 		executed = addStop(ordr);
 		break;
@@ -329,10 +323,6 @@ public class OrderMatcher implements MessageSender {
 
 	return send;
     }
-
-    //private PriorityBlockingQueue<Orders> getCounterpartyBookOrders(Side side) {
-    //return (side == Side.BUY) ? sellTable.getOrders() : buyTable.getOrders();
-    //}
 
     /**
      * For bids, the protection price calculated is by adding an offset to

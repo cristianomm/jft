@@ -115,7 +115,7 @@ public class BookRepository {
 	}
 	
 	if(symbol != null & !symbol.isEmpty()) {
-	    books.put(symbol, new Book(symbol, types, protectionLevel));
+	    books.put(symbol, new Book(symbol/*, types*/, protectionLevel));
 	}
 
     }

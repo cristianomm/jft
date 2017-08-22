@@ -41,60 +41,7 @@ import com.cmm.jft.trading.exceptions.OrderException;
  */
 public class BookTable {
 
-    private class Summary{
-	double price;
-	int orderCount;
-	int orderVolume;
-
-	/**
-	 * 
-	 */
-	public Summary(double price, int numOrders, int volume) {
-	    this.price = price;
-	    this.orderCount = numOrders;
-	    this.orderVolume = volume;
-	}
-
-	public void incrementOrder(){
-	    orderCount++;
-	}
-
-	public void incrementVolume(double volume){
-	    this.orderVolume += volume;
-	}
-
-	public void decrementOrder(){
-	    if(orderCount>0){
-		orderCount--;
-	    }
-	}
-
-	public void decrementVolume(double volume){
-	    if(orderVolume >= volume){
-		orderVolume -= volume;
-	    }
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#clone()
-	 */
-	@Override
-	protected Summary clone() throws CloneNotSupportedException {
-	    return new Summary(this.price, this.orderCount, this.orderVolume);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-	    return "Summary [price=" + price + ", orderCount=" + orderCount + ", orderVolume=" + orderVolume + "]";
-	}
-
-    }
-
     private Side side;
-    private SortedMap<Double, Summary> ordersSummary;
     private OrdersTable orders;
     private SortedMap<Double, SortedMap<Date, Orders>> stopQueue;
 
@@ -106,13 +53,10 @@ public class BookTable {
     public BookTable(Side side) {
 	this.side = side;
 
-	this.orders = new OrdersTable();
+	this.orders = new OrdersTable(side);
 
 	this.stopQueue = Collections.synchronizedSortedMap(
 		new TreeMap<Double, SortedMap<Date, Orders>>());
-
-	this.ordersSummary = Collections.synchronizedSortedMap(
-		new TreeMap<Double, Summary>(new PriceComparator(side)));
 	//this.orders = new PriorityBlockingQueue<>(10000, new PriceTimeComparator(side));
     }
 
@@ -142,30 +86,9 @@ public class BookTable {
 
 	mboEntry.setMdEntryPx(order.getPrice());
 	mboEntry.setMdEntrySize((int) order.getVolume());
-	mboEntry.setMdEntryPosNo(getOrderPositionMBO(order));
+	mboEntry.setMdEntryPosNo(orders.getOrderPosition(order.getOrderID()));
 
 	return mboEntry;
-    }
-
-    private int getOrderPositionMBO(Orders order){
-	//calcula a posicao da ordem
-	int position=0;
-	boolean find = false;
-
-	position = orders.getPosition(order.getOrderID());
-
-	return position;
-    }
-
-    private int getOrderPositionMBP(double price){
-	int position = 0;
-	for(Double level : ordersSummary.keySet()){
-	    position++;
-	    if(level == price){
-		break;
-	    }
-	}
-	return position;
     }
 
 
@@ -190,27 +113,17 @@ public class BookTable {
 	    orders.add(order);
 
 	    entries[0] = createMBOEntry(order, UpdateActions.New);
-
-
-	    Summary sum = null;
-	    if(!ordersSummary.containsKey(order.getPrice())){
-		sum = new Summary(order.getPrice(), 1, (int) order.getLeavesVolume());
-		ordersSummary.put(order.getPrice(), sum);
-	    }else{
-		sum = ordersSummary.get(order.getPrice());
-		sum.incrementOrder();
-		sum.incrementVolume(order.getLeavesVolume());
-	    }
-
+	    
+	    Summary sum = orders.findSummary(order.getPrice());
 	    MDEntry mbpEntry = new MDEntry();
 	    mbpEntry.setMdEntryDate(order.getInsertDate());
 	    mbpEntry.setMdEntryTime(order.getInsertTime());
 	    mbpEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
 	    mbpEntry.setMdUpdateAction(UpdateActions.New);
 	    mbpEntry.setMdEntryPx(order.getPrice());
-	    mbpEntry.setMdEntrySize(sum.orderVolume);
-	    mbpEntry.setNumberOfOrders(sum.orderCount);
-	    mbpEntry.setMdEntryPosNo(getOrderPositionMBP(order.getPrice()));
+	    mbpEntry.setMdEntrySize(sum.getOrderVolume());
+	    mbpEntry.setNumberOfOrders(sum.getOrderCount());
+	    mbpEntry.setMdEntryPosNo(orders.getPricePosition(order.getPrice()));
 	    entries[1] = mbpEntry;
 	}
 
@@ -221,7 +134,8 @@ public class BookTable {
 
     public MDEntry[] remove(Orders order){
 	MDEntry[] entries = new MDEntry[2];
-	if(ordersSummary.containsKey(order.getPrice())){
+	Summary sum = orders.findSummary(order.getPrice());
+	if(sum != null){
 	    //--------------------------------------------------MBO
 	    entries[0] = createMBOEntry(order, UpdateActions.Delete);
 
@@ -230,16 +144,12 @@ public class BookTable {
 
 
 	    //--------------------------------------------------MBP
-	    Summary sum = ordersSummary.get(order.getPrice());
-	    sum.decrementOrder();
-	    sum.decrementVolume(order.getLeavesVolume());
-
 	    MDEntry mbpEntry = new MDEntry();
 	    mbpEntry.setMdEntryDate(order.getInsertDate());
 	    mbpEntry.setMdEntryTime(order.getInsertTime());
 	    mbpEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
 	    mbpEntry.setMdUpdateAction(UpdateActions.Delete);
-	    mbpEntry.setMdEntryPosNo(getOrderPositionMBP(order.getPrice()));
+	    mbpEntry.setMdEntryPosNo(orders.getPricePosition(order.getPrice()));
 	    entries[1] = mbpEntry;
 	}
 	return entries;
@@ -251,17 +161,17 @@ public class BookTable {
 	if(order.getSide() == side){
 	    entries[0] = createMBOEntry(order, UpdateActions.Change);
 
-	    Summary sum = ordersSummary.get(order.getPrice());
+	    Summary sum = orders.findSummary(order.getPrice());
 
 	    MDEntry mbpEntry = new MDEntry();
-	    mbpEntry.setMdEntryPx(sum.price);
-	    mbpEntry.setMdEntrySize(sum.orderVolume);
-	    mbpEntry.setNumberOfOrders(sum.orderCount);
+	    mbpEntry.setMdEntryPx(sum.getPrice());
+	    mbpEntry.setMdEntrySize(sum.getOrderVolume());
+	    mbpEntry.setNumberOfOrders(sum.getOrderCount());
 	    mbpEntry.setMdEntryDate(order.getInsertDate());
 	    mbpEntry.setMdEntryTime(order.getInsertTime());
 	    mbpEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
 	    mbpEntry.setMdUpdateAction(UpdateActions.Change);
-	    mbpEntry.setMdEntryPosNo(getOrderPositionMBP(order.getPrice()));
+	    mbpEntry.setMdEntryPosNo(orders.getPricePosition(order.getPrice()));
 	    entries[1] = mbpEntry;
 
 	}
@@ -369,17 +279,11 @@ public class BookTable {
 	return stops;
     }
 
-    /**
-     * @return the ordersSummary
-     */
-    public SortedMap<Double, Summary> getOrdersSummary() {
-	return ordersSummary;
-    }
-
+    
     public List<MDEntry> takeSnapshot(){
 	ArrayList<MDEntry> mds = new ArrayList<>(500);
 	synchronized(orders) {
-	    for(SortedMap<Date, Orders> tm: orders.values()) {
+	    for(SortedMap<Date, Orders> tm: orders.getOrders().values()) {
 		for(Orders o : tm.values()) {
 		    mds.add(createMBOEntry(o, null));
 		}
@@ -426,9 +330,9 @@ public class BookTable {
 		    (d,tm) -> 
 		    tm.forEach(
 			    (dt,ord) -> 
-			    System.out.println(bt.getOrderPositionMBO(ord) + " - " + ord)));
+			    System.out.println(bt.orders.getOrderPosition(ord.getOrderID()) + " - " + ord)));
 
-	    bt.getOrdersSummary().values().stream().forEach(sm -> System.out.println(sm));
+	    bt.orders.getOrdersSummary().values().stream().forEach(sm -> System.out.println(sm));
 	}
 	catch(InterruptedException e) {
 	    e.printStackTrace();

@@ -11,6 +11,8 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 
 import com.cmm.jft.trading.Orders;
+import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.Side;
 
 /**
  * <p>
@@ -30,23 +32,30 @@ public class OrdersTable {
 	private Row prev;
 	private int position;
 	private Orders order;
-	
-	
-	
     }
     
     private Row root;
     
+    
+    
+    
+    
+    private SortedMap<Double, Summary> ordersSummary;
     private SortedMap<Long, Orders> orderIDs;
     private SortedMap<String, Orders> clordIDs;
     private SortedMap<Double, SortedMap<Date,Orders>> orders;
+    private SortedMap<Double, SortedMap<Date, Orders>> stopQueue;
     
     
-    public OrdersTable() {
+    public OrdersTable(Side side) {
 	
 	this.clordIDs = Collections.synchronizedSortedMap(new TreeMap<String, Orders>());
 	this.orderIDs = Collections.synchronizedSortedMap(new TreeMap<Long, Orders>());
 	this.orders = Collections.synchronizedSortedMap(new TreeMap<Double,SortedMap<Date,Orders>>());
+	this.ordersSummary = Collections.synchronizedSortedMap(
+		new TreeMap<Double, Summary>(new PriceComparator(side)));
+	this.stopQueue = Collections.synchronizedSortedMap(
+		new TreeMap<Double, SortedMap<Date, Orders>>());
     }
     
     /**
@@ -70,6 +79,13 @@ public class OrdersTable {
 	return orders;
     }
     
+    /**
+     * @return the ordersSummary
+     */
+    public SortedMap<Double, Summary> getOrdersSummary() {
+	return ordersSummary;
+    }
+    
     
     public boolean add(Orders order) {
 	boolean added=false;
@@ -82,6 +98,17 @@ public class OrdersTable {
 	    orders.get(order.getPrice()).put(order.getOrderDateTime(), order); 
 	    orderIDs.put(order.getOrderID(), order);
 	    clordIDs.put(order.getClOrdID(), order);
+	    
+	    Summary sum = null;
+	    if(!ordersSummary.containsKey(order.getPrice())){
+		sum = new Summary(order.getPrice(), 1, (int) order.getLeavesVolume());
+		ordersSummary.put(order.getPrice(), sum);
+	    }else{
+		sum = ordersSummary.get(order.getPrice());
+		sum.incrementOrder();
+		sum.incrementVolume(order.getLeavesVolume());
+	    }
+	    
 	    
 	    added = true;
 	}
@@ -103,8 +130,33 @@ public class OrdersTable {
 	    order = orderIDs.remove(order.getOrderID());
 	    clordIDs.remove(order.getClOrdID());
 	    orders.get(order.getPrice()).remove(order.getOrderDateTime());
+	    
+	    Summary sum = findSummary(order.getPrice());
+	    sum.decrementOrder();
+	    sum.decrementVolume(order.getLeavesVolume());
+	    
+	    //remove o summary
+	    if(sum.getOrderCount() == 0) {
+		ordersSummary.remove(sum.getPrice());
+	    }
+	    
+	    
 	}
 	return ordr;
+    }
+    
+    
+    public void addStop(Orders ordr) throws Exception{
+	if(ordr.getOrderType() == OrderTypes.Stop || ordr.getOrderType() == OrderTypes.StopLimit){
+	    if(!stopQueue.containsKey(ordr.getStopPrice())){
+		stopQueue.put(ordr.getStopPrice(), (TreeMap<Date, Orders>) Collections.synchronizedMap(new TreeMap<Date, Orders>()));
+	    }
+	    stopQueue.get(ordr.getStopPrice()).put(ordr.getOrderDateTime(), ordr);
+
+	}else{
+	    throw new Exception("Invalid order type: " + ordr.getOrderType());
+	}
+
     }
     
 
@@ -114,6 +166,10 @@ public class OrdersTable {
     
     public Orders findByOrderID(long orderID) {
 	return orderIDs.getOrDefault(orderID, null);
+    }
+    
+    public Summary findSummary(double price) {
+	return ordersSummary.get(price);
     }
     
     public Orders getFirst() {
@@ -126,36 +182,44 @@ public class OrdersTable {
 	return ret;
     }
     
-    
-    
-    
-    public int getPosition(long orderID) {
-	int pos = -1;
-	boolean find = false;
+    public int getOrderPosition(long orderID) {
+	int pos = 0;
 	for(Map.Entry<Double, SortedMap<Date, Orders>> set : orders.entrySet()) {
 	    for(Orders ordr : set.getValue().values()){
 		pos++;
 		if(ordr.getOrderID() == orderID){
-		    find = true;
-		    break;
+		    return pos;
 		}
 	    }
-	    if(find) {
+	}
+	pos = -1;
+	return pos;
+    }
+    
+    public int getOrderPosition(String clOrderID) {
+	int pos = 0;
+	
+	for(Map.Entry<Double, SortedMap<Date, Orders>> set : orders.entrySet()) {
+	    for(Orders ordr : set.getValue().values()){
+		pos++;
+		if(ordr.getClOrdID() == clOrderID){
+		    return pos;
+		}
+	    }
+	}
+	pos = -1;
+	return pos;
+    }
+    
+    public int getPricePosition(double price) {
+	int pos =-1;
+	for(Double level : ordersSummary.keySet()){
+	    pos++;
+	    if(level == price){
 		break;
 	    }
-
 	}
-	
 	return pos;
     }
-    
-    public int getPosition(String clOrderID) {
-	int pos = -1;
-	
-	
-	
-	return pos;
-    }
-    
     
 }
