@@ -175,7 +175,10 @@ public class Book implements MessageSender {
     public Security getSecurity() {
 	return security;
     }
-
+    
+    
+    
+    
     public void calculateAdjPrice() {
 
     }
