@@ -10,6 +10,8 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 
+import com.cmm.jft.engine.ErrorCodes;
+import com.cmm.jft.engine.OrderValidationException;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.Side;
@@ -39,7 +41,7 @@ public class OrdersTable {
     
     
     
-    
+    private ErrorCodes errCodes = ErrorCodes.getInstance();
     private SortedMap<Double, Summary> ordersSummary;
     private SortedMap<Long, Orders> orderIDs;
     private SortedMap<String, Orders> clordIDs;
@@ -146,7 +148,7 @@ public class OrdersTable {
     }
     
     
-    public void addStop(Orders ordr) throws Exception{
+    public void addStop(Orders ordr) throws OrderValidationException{
 	if(ordr.getOrderType() == OrderTypes.Stop || ordr.getOrderType() == OrderTypes.StopLimit){
 	    if(!stopQueue.containsKey(ordr.getStopPrice())){
 		stopQueue.put(ordr.getStopPrice(), (TreeMap<Date, Orders>) Collections.synchronizedMap(new TreeMap<Date, Orders>()));
@@ -154,7 +156,8 @@ public class OrdersTable {
 	    stopQueue.get(ordr.getStopPrice()).put(ordr.getOrderDateTime(), ordr);
 
 	}else{
-	    throw new Exception("Invalid order type: " + ordr.getOrderType());
+	    throw new OrderValidationException(
+		    2045, errCodes.getMessage(2045) +":Invalid order type: " + ordr.getOrderType());
 	}
 
     }

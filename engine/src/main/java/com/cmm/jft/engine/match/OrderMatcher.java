@@ -134,17 +134,22 @@ public class OrderMatcher implements MessageSender {
     public int getTotalTrades() {
 	return this.totalTrades;
     }
+    
+    private void checkExecution() {
+	
+    }
+    
 
 
     public boolean addOrder(Orders order) throws OrderException {
 	boolean add = false;
 
-	umdf.openNewPacket();
+	//umdf.openNewPacket();
 	//umdf.informNewOrder(order, positionNo);
 	//order.setWorkingIndicator(WorkingIndicator.Working);
 	add = execute(order);
 
-	umdf.closePacket();
+	//umdf.closePacket();
 	return add;
     }
 

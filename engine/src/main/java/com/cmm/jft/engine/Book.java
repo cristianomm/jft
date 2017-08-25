@@ -32,6 +32,7 @@ import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.MarketPhase;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.enums.WorkingIndicator;
@@ -64,14 +65,12 @@ public class Book implements MessageSender {
     private BandLimits bandLimits;
 
     private long orderIDs;
-    //private BookTable buyTable;
-    //private BookTable sellTable;
-    
+
     private OrdersTable buyTable;
     private OrdersTable sellTable;
 
     private MarketPhase phase;
-
+    private ErrorCodes errCodes = ErrorCodes.getInstance();
 
     public static void main(String args[]) {
 
@@ -135,9 +134,7 @@ public class Book implements MessageSender {
 	this.phase = MarketPhase.Pause;
 
 	this.orderIDs = Instant.now().toEpochMilli();
-	//this.buyTable = new BookTable(Side.BUY);
-	//this.sellTable = new BookTable(Side.SELL);
-	
+
 	this.buyTable = new OrdersTable(Side.BUY);
 	this.sellTable = new OrdersTable(Side.SELL);
 	this.snapshot = new MDSnapshot(security);
@@ -175,60 +172,128 @@ public class Book implements MessageSender {
     public Security getSecurity() {
 	return security;
     }
-    
-    
-    
-    
+
     public void calculateAdjPrice() {
 
     }
 
 
-    private boolean validateOrder(Orders order) {
+    private boolean checkOrder(Orders order) throws OrderValidationException {
 
-	boolean valid = false;
-	switch (order.getOrderType()) {
-	case Market:
-	    valid = true;
-	    break;
-	case Limit:
-	    valid = true;
-	    break;
-	case Stop:
-	    valid = true;
-	    break;
-	case StopLimit:
-	    valid = true;
-	    break;
-	case MarketWithLeftOverAsLimit:
-	    valid = true;
-	    break;
-	default:
+	boolean valid = true;
+	try {
+	    switch(security.getSecurityInfoID().getObjectAsset()) {
+	    case COMMODITIES:
+	    case STOCK:
+		checkEquity(order);
+		break;
+
+	    case BASKET:
+	    case CURRENCY:
+	    case FUTURE:
+	    case INDEX:
+	    case OPTION:
+	    case SWAP:
+	    case TAXRATE:
+	    case OTHERS:
+		checkDerivative(order);
+		break;
+	    }
+	    
+	    checkCommon(order);
+	    
+	}catch(OrderValidationException e) {
 	    valid = false;
-	}
-
-	valid = valid && !order.getClOrdID().isEmpty();
-
-	// verifica se a quantidade para o instrumento eh valida
-	valid = valid && (order.getVolume() % security.getSecurityInfoID().getMinVolume()) == 0;
-
-	// verifica se o preco esta correto
-	switch(order.getOrderType()) {
-	case Market:
-	case MarketWithLeftOverAsLimit:
-	case Stop:
-	    valid = valid && (order.getPrice() == 0);
-	    break;
-	case Limit:
-	case StopLimit:
-	    valid = valid && (order.getPrice() >0 );
+	    throw new OrderValidationException(e.getErrorCode(), e.getErrorMsg(), e);
 	}
 
 	return valid;
     }
-    
-    private void adjustOrderParameters(Orders order) throws OrderException {
+
+    private void checkCommon(Orders order) throws OrderValidationException{
+	if(order.getClOrdID().isEmpty()) {
+	    throw new OrderValidationException(1010, errCodes.getMessage(1010));
+	}
+
+	// verifica se a quantidade para o instrumento eh valida
+	if((order.getVolume() % security.getSecurityInfoID().getMinVolume()) == 0) {
+	    throw new OrderValidationException(993502, errCodes.getMessage(993502));
+	}
 	
+	switch(order.getOrderType()) {
+	case Market:
+	case MarketWithLeftOverAsLimit:
+	case Stop:
+	    if(order.getPrice() != 0) {
+		throw new OrderValidationException(992138, errCodes.getMessage(992138));
+	    }
+	    break;
+	case Limit:
+	case StopLimit:
+	    if(order.getPrice() <=0 ) {
+		throw new OrderValidationException(992071, errCodes.getMessage(992071));
+	    }
+	}
+
+    }
+
+    private void checkEquity(Orders order) throws OrderValidationException {
+
+	switch (order.getOrderType()) {
+	case Market:
+	    break;
+	case Limit:
+	case Stop:
+	case StopLimit:
+	case MarketWithLeftOverAsLimit:
+	    if(order.getValidityType() == OrderValidityTypes.MOC ||
+	    order.getValidityType() == OrderValidityTypes.MOA) {
+		throw new OrderValidationException(7047, errCodes.getMessage(7047));
+	    }
+	    break;
+	default:
+	    throw new OrderValidationException(7047, errCodes.getMessage(7047));
+	}
+
+    }
+
+    private void checkDerivative(Orders order) throws OrderValidationException {
+	switch (order.getOrderType()) {
+	case Market:
+	    break;
+	
+	case Stop:
+	case StopLimit:
+	    if(order.getValidityType() != OrderValidityTypes.DAY) {
+		throw new OrderValidationException(7047, errCodes.getMessage(7047));
+	    }
+	    if(order.getMaxFloor() >0) {
+		throw new OrderValidationException(7050, errCodes.getMessage(7050));
+	    }
+	    if(order.getMinVolume()>0) {
+		throw new OrderValidationException(992129, errCodes.getMessage(992129));
+	    }
+	    
+	    break;
+	    
+	case Limit:
+	case MarketWithLeftOverAsLimit:
+	    if(order.getValidityType() == OrderValidityTypes.MOC ||
+	    order.getValidityType() == OrderValidityTypes.MOA) {
+		throw new OrderValidationException(7047, errCodes.getMessage(7047));
+	    }
+	    break;
+	    
+	default:
+	    throw new OrderValidationException(7047, errCodes.getMessage(7047));
+	}
+
+    }
+
+
+
+    private void adjustOrderParameters(Orders order) throws OrderException {
+
 	switch(order.getOrderType()) {
 	case Limit:
 	case Market:
@@ -240,9 +305,9 @@ public class Book implements MessageSender {
 	    order.setWorkingIndicator(WorkingIndicator.No_Working);
 	    break;
 	}
-	
+
 	order.setOrderStatus(OrderStatus.NEW);
-	
+
 	//ajusta parametros da ordem no recebimento da oferta
 	Date insertDt = new Date();
 	order.setInsertDate(insertDt);
@@ -254,25 +319,45 @@ public class Book implements MessageSender {
     public boolean addOrder(Orders order, SessionID sessionID) {
 	boolean added = false;
 	try {
-	    if (added = validateOrder(order)) {
+	    if (added = checkOrder(order)) {
+		
+		//ajusta os parametros da ordem
 		adjustOrderParameters(order);
-		// ainda nao adicionou no book, deve primeiro verificar
-		// se a ordem poderá ser executada antes de inserir no book.
-		// envia mensagem informando que a ordem foi aceita pelo book
 		
-		sendExecutionReport(order, ExecutionTypes.NEW, "Order received.", sessionID);
+		//envia o execution report de ordem recebida
+		sendExecutionReport(order, ExecutionTypes.NEW, "Order received.", 0, sessionID);
 		
-		// adiciona a ordem no match engine
+		//adiciona a ordem na tabela correspondente
+		if(order.getSide() == Side.BUY) {
+		    if(order.getOrderType() == OrderTypes.Stop || order.getOrderType() == OrderTypes.StopLimit) {
+			buyTable.addStop(order);
+		    }else {
+			buyTable.add(order);
+		    }
+		}else {
+		    if(order.getOrderType() == OrderTypes.Stop || order.getOrderType() == OrderTypes.StopLimit) {
+			sellTable.addStop(order);
+		    }else {
+			sellTable.add(order);
+		    }
+		}
+		
+		// informa ao match engine a nova ordem
 		added = added && orderMatcher.addOrder(order);
 	    }
 	    else {
-		order.setOrderStatus(OrderStatus.REJECTED);
-		sendExecutionReport(order, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
+		sendExecutionReport(order, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
 	    }
-	    
-	} catch (OrderException e) {
+
+	} 
+	
+	catch (OrderException e) {
 	    added = false;
-	    sendExecutionReport(order, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
+	    sendExecutionReport(order, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
+	    Logging.getInstance().log(getClass(), e, Level.ERROR);
+	} catch(OrderValidationException e) {
+	    added = false;
+	    sendExecutionReport(order, ExecutionTypes.REJECTED, e.getErrorMsg(), e.getErrorCode(), sessionID);
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
 
@@ -282,7 +367,7 @@ public class Book implements MessageSender {
     public void cancelOrder(Orders ordr, SessionID sessionID) {
 
 	try {
-	    
+
 	    orderMatcher.cancelOrder(ordr, CancelTypes.Requested);
 	} catch (OrderException e) {
 	    e.printStackTrace();
@@ -292,15 +377,15 @@ public class Book implements MessageSender {
 
     public void replaceOrder(Orders ordr, SessionID sessionID) {
 	try {
-	    
+
 	    adjustOrderParameters(ordr);
 	    if (ordr.getSide() == Side.BUY) {
 		buyTable.update(ordr);
 	    } else {
 		entries = sellTable.update(ordr);
 	    }
-	    
-	    sendExecutionReport(ordr, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
+
+	    sendExecutionReport(ordr, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
 	    
 	    MDEntry[] entries = null;
 	    if (ordr.getSide() == Side.BUY) {
@@ -310,7 +395,7 @@ public class Book implements MessageSender {
 	    }
 
 	    if(entries == null) {
-		sendExecutionReport(ordr, ExecutionTypes.REJECTED, "Order rejected.", sessionID);
+		sendExecutionReport(ordr, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
 	    }
 
 	    // TODO: enviar o estado atual do book com o que mudou do estado anterior
@@ -361,14 +446,15 @@ public class Book implements MessageSender {
     }
 
 
-    private void sendExecutionReport(Orders order, ExecutionTypes exec, String message, SessionID sessionID) {
-	
+    private void sendExecutionReport(Orders order, ExecutionTypes exec, String message, int ordRejReason, SessionID sessionID) {
+
 	try {
 	    OrderEvent oe = new OrderEvent(
 		    exec, new Date(), order.getVolume(), order.getPrice()
 		    );
 	    oe.setMessage(message);
 	    oe.setOrderID(order);
+	    oe.setOrdRejReason(ordRejReason);
 	    order.addExecution(oe);
 
 	    sendMessage((
@@ -389,7 +475,6 @@ public class Book implements MessageSender {
      */
     @Override
     public boolean sendMessage(Message message, SessionID sessionID) {
-	//System.out.println(message);
 	return MessageRepository.getInstance().addMessage(message, sessionID);
     }
 
