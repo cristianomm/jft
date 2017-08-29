@@ -343,7 +343,7 @@ public class Book implements MessageSender {
 		}
 		
 		// informa ao match engine a nova ordem
-		added = added && orderMatcher.addOrder(order);
+		added = added && orderMatcher.match(order);
 	    }
 	    else {
 		sendExecutionReport(order, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);

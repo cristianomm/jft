@@ -88,6 +88,13 @@ public class OrdersTable {
 	return ordersSummary;
     }
     
+    /**
+     * @return the stopQueue
+     */
+    public SortedMap<Double, SortedMap<Date, Orders>> getStopQueue() {
+	return stopQueue;
+    }
+    
     
     public boolean add(Orders order) {
 	boolean added=false;
@@ -145,6 +152,11 @@ public class OrdersTable {
 	    
 	}
 	return ordr;
+    }
+    
+    public void restate(Orders order) {
+	remove(order.getOrderID());
+	add(order);
     }
     
     

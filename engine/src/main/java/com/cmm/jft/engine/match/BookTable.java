@@ -67,6 +67,22 @@ public class BookTable {
 	return orders.getOrders();
     }
 
+    
+
+
+    public void addStop(Orders ordr) throws Exception{
+	if(ordr.getOrderType() == OrderTypes.Stop || ordr.getOrderType() == OrderTypes.StopLimit){
+	    if(!stopQueue.containsKey(ordr.getStopPrice())){
+		stopQueue.put(ordr.getStopPrice(), (TreeMap<Date, Orders>) Collections.synchronizedMap(new TreeMap<Date, Orders>()));
+	    }
+	    stopQueue.get(ordr.getStopPrice()).put(ordr.getOrderDateTime(), ordr);
+
+	}else{
+	    throw new Exception("Invalid order type: " + ordr.getOrderType());
+	}
+
+    }
+
     private MDEntry createMBOEntry(Orders order, UpdateActions updtAction){
 	MDEntry mboEntry = new MDEntry();
 
@@ -90,21 +106,6 @@ public class BookTable {
 
 	return mboEntry;
     }
-
-
-    public void addStop(Orders ordr) throws Exception{
-	if(ordr.getOrderType() == OrderTypes.Stop || ordr.getOrderType() == OrderTypes.StopLimit){
-	    if(!stopQueue.containsKey(ordr.getStopPrice())){
-		stopQueue.put(ordr.getStopPrice(), (TreeMap<Date, Orders>) Collections.synchronizedMap(new TreeMap<Date, Orders>()));
-	    }
-	    stopQueue.get(ordr.getStopPrice()).put(ordr.getOrderDateTime(), ordr);
-
-	}else{
-	    throw new Exception("Invalid order type: " + ordr.getOrderType());
-	}
-
-    }
-
 
     public MDEntry[] add(Orders order){
 	MDEntry[] entries = new MDEntry[2];
@@ -222,7 +223,6 @@ public class BookTable {
 		    fill.setOrderID(bookOrder);
 		    events.add(fill);
 		}
-
 	    }
 	}
 	
@@ -253,31 +253,12 @@ public class BookTable {
 		    fill.setOrderID(bookOrder);
 		    events.add(fill);
 		}
-
 	    }
 	}
 	
 	return events;
     }
     
-    
-    /**
-     * @return the stopQueue
-     */
-    public SortedMap<Double, SortedMap<Date, Orders>> getStopQueue() {
-	return stopQueue;
-    }
-
-    public SortedMap<Date, Orders> getStops(double stopPrice){
-
-	SortedMap<Date, Orders> stops = null;
-	if(stopQueue.containsKey(stopPrice)) {
-	    stops = stopQueue.get(stopPrice);
-	    stopQueue.put(stopPrice, Collections.synchronizedSortedMap(new TreeMap<Date, Orders>()));
-	}
-
-	return stops;
-    }
 
     
     public List<MDEntry> takeSnapshot(){
@@ -292,51 +273,6 @@ public class BookTable {
 	//orders.forEach(o -> mds.add(createMBOEntry(o)));
 
 	return mds;
-    }
-
-
-    public static void main(String[] args) throws OrderException{
-	try {
-	    Side s = Side.SELL;
-	    BookTable bt = new BookTable(s);
-	    Security sec = new Security("WDOJ17");
-	    String clOrdID = "123456";
-	    double price = 3272.5;
-	    long orderID = 1;
-
-	    bt.add(new Orders(orderID++, clOrdID+"a", sec, s, price, 1, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	    Thread.sleep(500);
-	    bt.add(new Orders(orderID++, clOrdID+"b", sec, s, price, 1, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	    Thread.sleep(10);
-	    bt.add(new Orders(orderID++, clOrdID+"c", sec, s, price-.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	    Thread.sleep(5);
-	    bt.add(new Orders(orderID++, clOrdID+"d", sec, s, price-1, 5, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	    Thread.sleep(10);
-	    bt.add(new Orders(orderID++, clOrdID+"e", sec, s, price-1, 10, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	    Thread.sleep(50);
-	    bt.add(new Orders(orderID++, clOrdID+"f", sec, s, price+2, 3, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	    Thread.sleep(50);
-	    bt.add(new Orders(orderID++, clOrdID+"g", sec, s, price-1.5, 3, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-
-	    //bt.getOrders().forEach(o -> System.out.println(o));
-	    int num = 100;
-	    while(num-- >=0) {
-		Thread.sleep(5);
-		bt.add(new Orders(orderID++, clOrdID+num, sec, s, price-1.5, 3, OrderTypes.Limit, TradeTypes.DAY_TRADE));
-	    }
-
-
-	    bt.getOrders().forEach(
-		    (d,tm) -> 
-		    tm.forEach(
-			    (dt,ord) -> 
-			    System.out.println(bt.orders.getOrderPosition(ord.getOrderID()) + " - " + ord)));
-
-	    bt.orders.getOrdersSummary().values().stream().forEach(sm -> System.out.println(sm));
-	}
-	catch(InterruptedException e) {
-	    e.printStackTrace();
-	}
     }
 
 }
