@@ -166,14 +166,14 @@ public class OrderMatcher implements MessageSender {
 	    case Limit:
 		matchLimit(order);
 		break;
-	    case Stop:
-	    case StopLimit:
-		/*
-		 * Nao executa stop mas adiciona no
-		 * "stop book" e aguarda gatilho para ser ativada
-		 */
-		addStop(order);
-		break;
+//	    case Stop:
+//	    case StopLimit:
+//		/*
+//		 * Nao executa stop mas adiciona no
+//		 * "stop book" e aguarda gatilho para ser ativada
+//		 */
+//		addStop(order);
+//		break;
 	    case MarketWithLeftOverAsLimit:
 		matchMarketToLimit(order);
 		break;
@@ -221,15 +221,15 @@ public class OrderMatcher implements MessageSender {
 
 	}
 	ordr.addExecution(oe);
-	MDEntry[] entries = table.remove(ordr);
-	umdf.informDeleteOrder(entries[0], entries[1]);
+	//MDEntry[] entries = table.remove(ordr);
+	//umdf.informDeleteOrder(entries[0], entries[1]);
 
     }
 
     private void changeOrder(Orders bookOrder) {
-	OrdersTable table = getTable(bookOrder);
-	MDEntry[] entries = table.update(bookOrder);
-	umdf.informChangeOrder(entries[0], entries[1]);
+	//OrdersTable table = getTable(bookOrder);
+	//MDEntry[] entries = table.update(bookOrder);
+	//umdf.informChangeOrder(entries[0], entries[1]);
     }
 
 
@@ -267,7 +267,16 @@ public class OrderMatcher implements MessageSender {
 			umdf.informLowPrice(lowPrice);
 		    }
 
-
+		    //orderFill.setCumQty(newOrder.getExecutedVolume());
+		    //orderFill.setLeavesQty(newOrder.getLeavesVolume());
+		    orderFill.setLastQty(qtyToFill);
+		    
+		    
+		    //bookFill.setCumQty(bookOrder.getExecutedVolume());
+		    //bookFill.setLeavesQty(bookOrder.getLeavesVolume());
+		    bookFill.setLastQty(qtyToFill);
+		    
+		    
 		    // envia os executionReport para os participantes
 		    // executionreport da ordem agressora
 		    sendExecutionReport(newOrder.getTraderID(), orderFill);
@@ -612,9 +621,9 @@ public class OrderMatcher implements MessageSender {
 		matchIOC(aggrOrder, bookOrder, fillPrice);
 		break;
 	    }
-	    
-	    aggrOrder.
-	    
+
+
+
 	    //no caso de alguma ordem ser iceberg
 	    restateOrder(aggrOrder);
 	    restateOrder(bookOrder);
@@ -683,24 +692,23 @@ public class OrderMatcher implements MessageSender {
     private void releaseStopOrders(SortedMap<Date, Orders> stops) {
 	if(stops != null) {
 	    while(!stops.isEmpty()){
-		try {
-		    Orders stpOrd = stops.remove(stops.firstKey());
 
-		    if(stpOrd.getOrderType() == OrderTypes.Stop) {
-			adjustProtectionPrice(stpOrd);
-		    }
+		Orders stpOrd = stops.remove(stops.firstKey());
 
-		    //altera para limit e avisa ao participante
-		    stpOrd.setOrderType(OrderTypes.Limit);
-		    
-		    
-		    
-		    //insere a ordem no book
-		    getTable(stpOrd).add(stpOrd);
-		    
-		} catch (OrderException e) {
-		    e.printStackTrace();
+		if(stpOrd.getOrderType() == OrderTypes.Stop) {
+		    adjustProtectionPrice(stpOrd);
 		}
+
+		//altera para limit e avisa ao participante
+		stpOrd.setOrderType(OrderTypes.Limit);
+		stpOrd.setWorkingIndicator(WorkingIndicator.Working);
+		OrderEvent limEvnt = new OrderEvent(ExecutionTypes.NEW, stpOrd.getVolume(), stpOrd.getPrice());
+		limEvnt.setOrderID(stpOrd);
+
+		sendExecutionReport(stpOrd.getTraderID(), limEvnt);
+
+		//insere a ordem no book
+		getTable(stpOrd).add(stpOrd);
 	    }
 	}
     }

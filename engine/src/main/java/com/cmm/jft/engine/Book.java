@@ -343,7 +343,7 @@ public class Book implements MessageSender {
 		}
 		
 		// informa ao match engine a nova ordem
-		added = added && orderMatcher.match(order);
+		orderMatcher.match(order);
 	    }
 	    else {
 		sendExecutionReport(order, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
@@ -366,12 +366,12 @@ public class Book implements MessageSender {
 
     public void cancelOrder(Orders ordr, SessionID sessionID) {
 
-	try {
-
-	    orderMatcher.cancelOrder(ordr, CancelTypes.Requested);
-	} catch (OrderException e) {
-	    e.printStackTrace();
-	}
+//	try {
+//
+//	    //orderMatcher.cancelOrder(ordr, CancelTypes.Requested);
+//	} catch (OrderException e) {
+//	    e.printStackTrace();
+//	}
 
     }
 
@@ -380,18 +380,18 @@ public class Book implements MessageSender {
 
 	    adjustOrderParameters(ordr);
 	    if (ordr.getSide() == Side.BUY) {
-		buyTable.update(ordr);
+		//buyTable.update(ordr);
 	    } else {
-		entries = sellTable.update(ordr);
+		//entries = sellTable.update(ordr);
 	    }
 
 	    sendExecutionReport(ordr, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
 	    
 	    MDEntry[] entries = null;
 	    if (ordr.getSide() == Side.BUY) {
-		entries = buyTable.update(ordr);
+		//entries = buyTable.update(ordr);
 	    } else {
-		entries = sellTable.update(ordr);
+		//entries = sellTable.update(ordr);
 	    }
 
 	    if(entries == null) {
@@ -420,8 +420,8 @@ public class Book implements MessageSender {
 	snapshot.resetSnapshot(0);
 
 	//add an snapshot for each order book
-	buyTable.takeSnapshot().forEach(md -> snapshot.addOffer(md));
-	sellTable.takeSnapshot().forEach(md -> snapshot.addOffer(md));
+	//buyTable.takeSnapshot().forEach(md -> snapshot.addOffer(md));
+	//sellTable.takeSnapshot().forEach(md -> snapshot.addOffer(md));
 
 	//add information about this market
 	snapshot.setOpenPrice(orderMatcher.getOpenPrice());
@@ -452,8 +452,8 @@ public class Book implements MessageSender {
 	    OrderEvent oe = new OrderEvent(
 		    exec, new Date(), order.getVolume(), order.getPrice()
 		    );
-	    oe.setMessage(message);
 	    oe.setOrderID(order);
+	    oe.setMessage(message);
 	    oe.setOrdRejReason(ordRejReason);
 	    order.addExecution(oe);
 
