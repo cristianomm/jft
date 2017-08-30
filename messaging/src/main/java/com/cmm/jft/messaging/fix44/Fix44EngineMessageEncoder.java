@@ -19,9 +19,12 @@ import quickfix.field.ExecID;
 import quickfix.field.ExecType;
 import quickfix.field.ExpireDate;
 import quickfix.field.HeartBtInt;
+import quickfix.field.LastPx;
+import quickfix.field.LastQty;
 import quickfix.field.LeavesQty;
 import quickfix.field.NewPassword;
 import quickfix.field.NewSeqNo;
+import quickfix.field.OrdRejReason;
 import quickfix.field.OrdStatus;
 import quickfix.field.OrdType;
 import quickfix.field.OrderID;
@@ -35,6 +38,7 @@ import quickfix.field.RawData;
 import quickfix.field.RawDataLength;
 import quickfix.field.RefSeqNum;
 import quickfix.field.ResetSeqNumFlag;
+import quickfix.field.SecondaryClOrdID;
 import quickfix.field.SecurityExchange;
 import quickfix.field.Side;
 import quickfix.field.Symbol;
@@ -42,6 +46,7 @@ import quickfix.field.TestReqID;
 import quickfix.field.Text;
 import quickfix.field.TimeInForce;
 import quickfix.field.TransactTime;
+import quickfix.field.WorkingIndicator;
 import quickfix.fix44.AllocationInstruction;
 import quickfix.fix44.AllocationReport;
 import quickfix.fix44.BusinessMessageReject;
@@ -308,9 +313,9 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
      */
     public ExecutionReport executionReport(OrderEvent execution){
 
-	ExecutionReport executionReport = new ExecutionReport(
-		new OrderID(execution.getOrderID().getClOrdID()), 
-		new ExecID(execution.getOrderEventID()+""),
+	ExecutionReport execReport = new ExecutionReport(
+		new OrderID(execution.getOrderID().getOrderID().toString()), 
+		new ExecID(execution.getOrderEventID().toString()),
 		new ExecType(execution.getExecutionType().getValue()), 
 		new OrdStatus(execution.getOrderID().getOrderStatus().getValue()),
 		new Side(execution.getOrderID().getSide().getValue()), 
@@ -319,18 +324,42 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 		new AvgPx(0)
 		);
 
-	executionReport.set(new Symbol(execution.getOrderID().getSecurityID().getSymbol()));
-	executionReport.set(new OrderQty(execution.getOrderID().getVolume()));
+	execReport.set(new ClOrdID(execution.getOrderID().getClOrdID()));
 
+	if(execution.getOrderID().getOrigClOrdID() != null) {
+	    execReport.set(new OrigClOrdID(execution.getOrderID().getOrigClOrdID()));
+	}
+
+	if(execution.getOrderID().getSecOrderID() != null) {
+	    execReport.set(new SecondaryClOrdID(execution.getOrderID().getSecOrderID().toString()));
+	}
+
+	boolean work = execution.getOrderID().getWorkingIndicator() == com.cmm.jft.trading.enums.WorkingIndicator.Working? true:false;
+	execReport.set(new WorkingIndicator(work));
+	execReport.set(new Symbol(execution.getOrderID().getSecurityID().getSymbol()));
+
+
+	execReport.set(new OrderQty(execution.getOrderID().getVolume()));
+	if(execution.getPrice() > 0) {
+	    execReport.set(new LastPx(execution.getPrice()));
+	    execReport.set(new LastQty(execution.getVolume()));
+	}
 	if(execution.getContraBroker() != null) {
 	    ExecutionReport.NoContraBrokers cb = new ExecutionReport.NoContraBrokers();
 	    cb.set(new ContraBroker(execution.getContraBroker()));
 	}
+	
+	if(execution.getOrdRejReason()>0) {
+	    execReport.set(new OrdRejReason(execution.getOrdRejReason()));
+	}
+	
+	if(execution.getLastQty()>0) {
+	    execReport.set(new LastQty(execution.getLastQty()));
+	}
 
-	addIdFields(executionReport);
+	addIdFields(execReport);
 
-
-	return executionReport;
+	return execReport;
     }
 
     /* (non-Javadoc)
