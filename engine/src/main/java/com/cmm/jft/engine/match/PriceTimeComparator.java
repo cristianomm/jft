@@ -40,7 +40,7 @@ public class PriceTimeComparator implements Comparator<Orders> {
 	int result = 0;
 	if (ordr_a != null && ordr_b != null) {
 	    int dtComp = ordr_a.getOrderDateTime().compareTo(ordr_b.getOrderDateTime());
-	    switch((result = ordr_a.getPrice().compareTo(ordr_b.getPrice()))) {
+	    switch((result = comparePrice(ordr_a, ordr_b))) {
 	    case -1:
 		result = side == Side.BUY? 1: result;
 		break;
@@ -76,7 +76,7 @@ public class PriceTimeComparator implements Comparator<Orders> {
 	}
 
 	// a>b
-	else if (ordr_a.getPrice() > ordr_b.getPrice().doubleValue()) {
+	else if (ordr_a.getPrice() > ordr_b.getPrice()) {
 	    comp = 1;
 	}
 

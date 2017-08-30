@@ -35,12 +35,40 @@ public class IdGenerator {
 	this.seqNumericID = new AtomicInteger((int)date.getTime());
     }
 
+    public int actualInt() {
+	return seqNumericID.get();
+    }
+    
+    public long actualLong() {
+	return seqNumericID.get();
+    }
+    
+    
+    public String actualString() {
+	return seqNumericID.toString();
+    }
+    
+    
     /**
-     * 
+     * Incrementa e retorna um <code>int</code>
      * @return 
      */
-    public int getNextNumeric() {
+    public int nextInt() {
 	return seqNumericID.getAndIncrement();
+    }
+    
+    /**
+     * Incrementa e retorna um <code>long</code>
+     * @return
+     */
+    public long nextLong() {
+	nextInt();
+	return seqNumericID.longValue();
+    }
+    
+    public String nextNumericString() {
+	nextInt();
+	return seqNumericID.toString();
     }
 
 }

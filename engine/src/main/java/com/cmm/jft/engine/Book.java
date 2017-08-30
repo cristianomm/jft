@@ -16,6 +16,7 @@ import com.cmm.jft.engine.marketdata.recovery.SnapshotRecoveryChannel;
 import com.cmm.jft.engine.match.BookTable;
 import com.cmm.jft.engine.match.OrderMatcher;
 import com.cmm.jft.engine.match.OrdersTable;
+import com.cmm.jft.engine.match.Summary;
 import com.cmm.jft.marketdata.BandLimits;
 import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.marketdata.MDSnapshot;
@@ -35,6 +36,7 @@ import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.TradeTypes;
+import com.cmm.jft.trading.enums.UpdateActions;
 import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
@@ -64,7 +66,8 @@ public class Book implements MessageSender {
 
     private BandLimits bandLimits;
 
-    private long orderIDs;
+    private IdGenerator orderIDs;
+    private IdGenerator eventIDs;
 
     private OrdersTable buyTable;
     private OrdersTable sellTable;
@@ -133,7 +136,8 @@ public class Book implements MessageSender {
 	this.security = SecurityService.getInstance().provideSecurity(symbol);
 	this.phase = MarketPhase.Pause;
 
-	this.orderIDs = Instant.now().toEpochMilli();
+	this.orderIDs = new IdGenerator(new Date());
+	this.eventIDs = new IdGenerator(new Date());
 
 	this.buyTable = new OrdersTable(Side.BUY);
 	this.sellTable = new OrdersTable(Side.SELL);
@@ -199,9 +203,9 @@ public class Book implements MessageSender {
 		checkDerivative(order);
 		break;
 	    }
-	    
+
 	    checkCommon(order);
-	    
+
 	}catch(OrderValidationException e) {
 	    valid = false;
 	    throw new OrderValidationException(e.getErrorCode(), e.getErrorMsg(), e);
@@ -216,10 +220,10 @@ public class Book implements MessageSender {
 	}
 
 	// verifica se a quantidade para o instrumento eh valida
-	if((order.getVolume() % security.getSecurityInfoID().getMinVolume()) == 0) {
+	if((order.getVolume() % security.getSecurityInfoID().getMinVolume()) != 0d) {
 	    throw new OrderValidationException(993502, errCodes.getMessage(993502));
 	}
-	
+
 	switch(order.getOrderType()) {
 	case Market:
 	case MarketWithLeftOverAsLimit:
@@ -261,7 +265,7 @@ public class Book implements MessageSender {
 	switch (order.getOrderType()) {
 	case Market:
 	    break;
-	
+
 	case Stop:
 	case StopLimit:
 	    if(order.getValidityType() != OrderValidityTypes.DAY) {
@@ -273,9 +277,9 @@ public class Book implements MessageSender {
 	    if(order.getMinVolume()>0) {
 		throw new OrderValidationException(992129, errCodes.getMessage(992129));
 	    }
-	    
+
 	    break;
-	    
+
 	case Limit:
 	case MarketWithLeftOverAsLimit:
 	    if(order.getValidityType() == OrderValidityTypes.MOC ||
@@ -283,7 +287,7 @@ public class Book implements MessageSender {
 		throw new OrderValidationException(7047, errCodes.getMessage(7047));
 	    }
 	    break;
-	    
+
 	default:
 	    throw new OrderValidationException(7047, errCodes.getMessage(7047));
 	}
@@ -306,51 +310,54 @@ public class Book implements MessageSender {
 	    break;
 	}
 
-	order.setOrderStatus(OrderStatus.NEW);
+	order.setOrderStatus(OrderStatus.SUSPENDED);
 
 	//ajusta parametros da ordem no recebimento da oferta
 	Date insertDt = new Date();
 	order.setInsertDate(insertDt);
 	order.setInsertTime(insertDt);
 
-	order.setOrderID(orderIDs++);
+	order.setOrderID(orderIDs.nextLong());
     }
 
     public boolean addOrder(Orders order, SessionID sessionID) {
 	boolean added = false;
 	try {
+	    umdf.openNewPacket();
 	    if (added = checkOrder(order)) {
-		
+
 		//ajusta os parametros da ordem
 		adjustOrderParameters(order);
-		
+
 		//envia o execution report de ordem recebida
 		sendExecutionReport(order, ExecutionTypes.NEW, "Order received.", 0, sessionID);
-		
+
 		//adiciona a ordem na tabela correspondente
-		if(order.getSide() == Side.BUY) {
-		    if(order.getOrderType() == OrderTypes.Stop || order.getOrderType() == OrderTypes.StopLimit) {
-			buyTable.addStop(order);
-		    }else {
-			buyTable.add(order);
-		    }
-		}else {
-		    if(order.getOrderType() == OrderTypes.Stop || order.getOrderType() == OrderTypes.StopLimit) {
-			sellTable.addStop(order);
-		    }else {
-			sellTable.add(order);
-		    }
-		}
+		OrdersTable table = order.getSide() == Side.BUY?buyTable:sellTable;
 		
+		if(order.getOrderType() == OrderTypes.Stop || order.getOrderType() == OrderTypes.StopLimit) {
+		    table.addStop(order);
+		}else {
+		    table.add(order);
+		}
+
 		// informa ao match engine a nova ordem
 		orderMatcher.match(order);
+
+		//envia market data
+		int mboPos = table.getOrderPosition(order.getOrderID());
+		int mbpPos = table.getPricePosition(order.getPrice());
+		Summary sm = table.findSummary(order.getPrice());
+		
+		umdf.informNewOrder(order, mboPos, sm, mbpPos);
+
 	    }
 	    else {
 		sendExecutionReport(order, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
 	    }
 
 	} 
-	
+
 	catch (OrderException e) {
 	    added = false;
 	    sendExecutionReport(order, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
@@ -359,6 +366,8 @@ public class Book implements MessageSender {
 	    added = false;
 	    sendExecutionReport(order, ExecutionTypes.REJECTED, e.getErrorMsg(), e.getErrorCode(), sessionID);
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
+	}finally {
+	    umdf.closePacket();
 	}
 
 	return added;
@@ -366,12 +375,12 @@ public class Book implements MessageSender {
 
     public void cancelOrder(Orders ordr, SessionID sessionID) {
 
-//	try {
-//
-//	    //orderMatcher.cancelOrder(ordr, CancelTypes.Requested);
-//	} catch (OrderException e) {
-//	    e.printStackTrace();
-//	}
+	//	try {
+	//
+	//	    //orderMatcher.cancelOrder(ordr, CancelTypes.Requested);
+	//	} catch (OrderException e) {
+	//	    e.printStackTrace();
+	//	}
 
     }
 
@@ -386,7 +395,7 @@ public class Book implements MessageSender {
 	    }
 
 	    sendExecutionReport(ordr, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
-	    
+
 	    MDEntry[] entries = null;
 	    if (ordr.getSide() == Side.BUY) {
 		//entries = buyTable.update(ordr);
@@ -452,6 +461,7 @@ public class Book implements MessageSender {
 	    OrderEvent oe = new OrderEvent(
 		    exec, new Date(), order.getVolume(), order.getPrice()
 		    );
+	    oe.setOrderEventID(eventIDs.nextLong());
 	    oe.setOrderID(order);
 	    oe.setMessage(message);
 	    oe.setOrdRejReason(ordRejReason);
@@ -461,6 +471,7 @@ public class Book implements MessageSender {
 		    (Fix44EngineMessageEncoder) MessageEncoder.getEncoder(sessionID)).
 		    executionReport(oe), sessionID);
 	}catch(OrderException e) {
+	    e.printStackTrace();
 	    Logging.getInstance().log(this.getClass(), e, Level.ERROR);
 	}
 

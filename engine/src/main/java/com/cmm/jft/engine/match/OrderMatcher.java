@@ -13,7 +13,6 @@ import quickfix.Message;
 import quickfix.SessionID;
 
 import com.cmm.jft.engine.IdGenerator;
-import com.cmm.jft.engine.OrderValidationException;
 import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.engine.marketdata.MarketDataChannel;
 import com.cmm.jft.marketdata.MDEntry;
@@ -27,7 +26,6 @@ import com.cmm.jft.trading.enums.CancelTypes;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
-import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.StreamTypes;
 import com.cmm.jft.trading.enums.UpdateActions;
@@ -55,7 +53,8 @@ public class OrderMatcher implements MessageSender {
     private double protectionLevel;
 
     private IdGenerator tradeIds;
-
+    private IdGenerator eventIds;
+    
     private MarketDataChannel umdf;
 
     private OrdersTable buyTable;
@@ -66,6 +65,7 @@ public class OrderMatcher implements MessageSender {
 	this.umdf = umdf;
 	this.protectionLevel = protectionLevel;
 	this.tradeIds = new IdGenerator(new Date());
+	this.eventIds = new IdGenerator(new Date());
 	this.buyTable = buyTable;
 	this.sellTable = sellTable;
     }
@@ -137,25 +137,6 @@ public class OrderMatcher implements MessageSender {
     }
 
 
-    private void checkLimitExecution(Orders order) {
-
-    }
-
-    private void checkMarketExecution(Orders order) {
-
-    }
-
-    private void checkMarketLimitExecution(Orders order) {
-
-    }
-
-    private void checkMinQtyExecution(Orders order) {
-
-    }
-
-
-
-
     public void match(Orders order) {
 
 	try {
@@ -221,14 +202,22 @@ public class OrderMatcher implements MessageSender {
 
 	}
 	ordr.addExecution(oe);
-	//MDEntry[] entries = table.remove(ordr);
-	//umdf.informDeleteOrder(entries[0], entries[1]);
+	int orderPos = table.getOrderPosition(ordr.getOrderID());
+	int pricePos = table.getPricePosition(ordr.getPrice());
+	table.remove(ordr.getOrderID());
+	
+	Summary sm = table.findSummary(ordr.getPrice());
+	UpdateActions mbpAction = sm == null || sm.getOrderCount() == 0? UpdateActions.Delete:UpdateActions.Change;
+	
+	umdf.informDeleteOrder(
+		umdf.createMBOEntry(ordr, UpdateActions.Delete, orderPos), 
+		umdf.createMBPEntry(mbpAction, sm, pricePos));
 
     }
 
     private void changeOrder(Orders bookOrder) {
 	//OrdersTable table = getTable(bookOrder);
-	//MDEntry[] entries = table.update(bookOrder);
+	//MDEntry[] entries = table. update(bookOrder);
 	//umdf.informChangeOrder(entries[0], entries[1]);
     }
 
@@ -285,7 +274,7 @@ public class OrderMatcher implements MessageSender {
 		    sendExecutionReport(bookOrder.getTraderID(), bookFill);
 
 		    MDEntry trade = new MDEntry();
-		    trade.setTradeID(tradeIds.getNextNumeric()+"");
+		    trade.setTradeID(tradeIds.nextNumericString());
 		    if(newOrder.getSide() == Side.BUY){
 			trade.setMdEntryBuyer(newOrder.getBrokerID());
 			trade.setMdEntrySeller(bookOrder.getBrokerID());
@@ -495,7 +484,7 @@ public class OrderMatcher implements MessageSender {
 	OrdersTable table = oppositeTable(order);
 	Orders bookOrder = table.getFirst();
 
-	while(
+	while(bookOrder!=null &&
 		(order.getOrderStatus() == OrderStatus.NEW 
 		|| order.getOrderStatus() == OrderStatus.PARTIALLY_FILLED
 		||order.getOrderStatus() == OrderStatus.REPLACED)
@@ -754,6 +743,7 @@ public class OrderMatcher implements MessageSender {
 
     private void sendExecutionReport(String traderID, OrderEvent event){
 	//TODO: Faltou TraderID
+	event.setOrderEventID(eventIds.nextLong());
 	SessionID bookOrderSession = SessionRepository.getInstance().getSession(
 		StreamTypes.ENTRYPOINT, traderID);
 	Fix44EngineMessageEncoder encoder = (Fix44EngineMessageEncoder) MessageEncoder.getEncoder(bookOrderSession);

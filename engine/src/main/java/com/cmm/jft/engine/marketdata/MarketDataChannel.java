@@ -12,14 +12,18 @@ import org.apache.log4j.Level;
 
 import com.cmm.jft.engine.IdGenerator;
 import com.cmm.jft.engine.SessionRepository;
+import com.cmm.jft.engine.match.Summary;
 import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.marketdata.MDSnapshot;
 import com.cmm.jft.messaging.MarketDataMessageEncoder;
+import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.MessageSender;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
+import com.cmm.jft.trading.enums.MDEntryTypes;
+import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.StreamTypes;
 import com.cmm.jft.trading.enums.UpdateActions;
 import com.cmm.logging.Logging;
@@ -27,6 +31,7 @@ import com.cmm.logging.Logging;
 import quickfix.Group;
 import quickfix.Message;
 import quickfix.SessionID;
+import quickfix.field.NoMDEntries;
 import quickfix.field.SecurityExchange;
 import quickfix.field.SecurityID;
 import quickfix.field.SecurityIDSource;
@@ -65,8 +70,8 @@ public class MarketDataChannel implements MessageSender {
 
     private MarketDataMessageEncoder encoder;
 
-    private LinkedBlockingQueue<MarketDataIncrementalRefresh.NoMDEntries> packets;
-
+    private LinkedBlockingQueue<MarketDataIncrementalRefresh.NoMDEntries> mbpPackets;
+    private LinkedBlockingQueue<MarketDataIncrementalRefresh.NoMDEntries> mboPackets;
 
     public MarketDataChannel(Security security) {
 	encoder = Fix50SP2MDMessageEncoder.getInstance();
@@ -76,21 +81,20 @@ public class MarketDataChannel implements MessageSender {
 	exchangeID = new SecurityExchange(security.getSecurityExchange());
 
 	packState = IncrementalStates.OPEN;
-	packets = new LinkedBlockingQueue<>(1000);
+	mbpPackets = new LinkedBlockingQueue<>(1000);
+	mboPackets = new LinkedBlockingQueue<>(1000);
 
 	idGen = new IdGenerator(security, new Date());
     }
 
 
-
-
     public void openNewPacket(){
 	if(packState == IncrementalStates.CLOSED || packState == null){
 	    packState = IncrementalStates.OPEN;
-	    packets.clear();
+	    mbpPackets.clear();
+	    mboPackets.clear();
 	}
     }
-
 
     public void packing(){
 	if(packState ==IncrementalStates.OPEN || packState == IncrementalStates.PACKING){
@@ -98,13 +102,52 @@ public class MarketDataChannel implements MessageSender {
 	}
     }
 
+    /**
+     * Close last open packet and send market data to listeners
+     */
     public void closePacket(){
 	if(packState == IncrementalStates.PACKING){
 	    packState = IncrementalStates.CLOSED;
+	    Message msgMBO = encoder.mdIncrementalRefresh(mboPackets);
+	    Message msgMBP = encoder.mdIncrementalRefresh(mbpPackets);
+	    sendUMDF(msgMBO);
+	    sendUMDF(msgMBP);
+	}
+    }
 
-	    encoder.mdIncrementalRefresh(packets);
+
+    public MDEntry createMBOEntry(Orders order, UpdateActions updtAction, int position){
+	MDEntry mboEntry = new MDEntry();
+
+	if(position >0) {
+	    mboEntry.setOrderID(order.getOrderID().toString());
+	    if(order.getSide() == Side.BUY){
+		mboEntry.setMdEntryBuyer(order.getBrokerID());
+	    }else{
+		mboEntry.setMdEntrySeller(order.getBrokerID());
+	    }
+	    mboEntry.setMdEntryDate(order.getInsertDate());
+	    mboEntry.setMdEntryTime(order.getInsertTime());
+	    mboEntry.setMdEntryType(order.getSide() == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
+
+	    if(updtAction != null) {
+		mboEntry.setMdUpdateAction(updtAction);
+	    }
+
+	    mboEntry.setMdEntryPx(order.getPrice());
+	    mboEntry.setMdEntrySize((int) order.getVolume());
+	    mboEntry.setMdEntryPosNo(position);
+	}
+	return mboEntry;
+    }
+
+    public MDEntry createMBPEntry(UpdateActions updtAction, Summary summary, int position) {
+	MDEntry mbpEntry = new MDEntry();
+	if(summary != null) {
 
 	}
+
+	return mbpEntry;
     }
 
 
@@ -112,14 +155,36 @@ public class MarketDataChannel implements MessageSender {
     /**
      * @param order
      */
-    public void informNewOrder(MDEntry mboInfo, MDEntry mbpInfo) {
+    public void informNewOrder(Orders order, int posMBO, Summary summary, int posMBP) {
+	if(posMBO >0) {
+	    try {
+		MarketDataIncrementalRefresh.NoMDEntries entry = null;
+		if(order.getSide() == Side.BUY) {
+		    mboPackets.put(encoder.bidEntryIncMBO(order, posMBO, UpdateActions.New, idGen.nextInt()));
+		    /*
+		    mbpPackets.put(encoder.bidEntryIncMBP(
+			    summary.getPrice(), summary.getOrderVolume(), summary.getOrderCount(), 
+			    order.getSecurityID(), posMBO, UpdateActions.New, idGen.actualInt())
+			    );*/
+		}else {
+		    mboPackets.put(encoder.offerEntryIncMBO(order, posMBO, UpdateActions.New, idGen.nextInt()));
+		    /*
+		    mbpPackets.put(encoder.bidEntryIncMBP(
+			    summary.getPrice(), summary.getOrderVolume(), summary.getOrderCount(), 
+			    order.getSecurityID(), posMBO, UpdateActions.New, idGen.actualInt())
+			    );*/
+		}
 
+	    }catch(InterruptedException e) {
+		e.printStackTrace();
+	    }
+	}
     }
 
     public void informChangeOrder(MDEntry mboInfo, MDEntry mbpInfo) {
 
     }
-    
+
 
     public void informDeleteOrder(MDEntry mboInfo, MDEntry mbpInfo){
 
@@ -140,12 +205,15 @@ public class MarketDataChannel implements MessageSender {
     //----------------------------------------/MarketData packets
     public void informTrade(MDEntry trade) {
 	try{
-	    packets.put(encoder.tradeEntryInc(
+	    MarketDataIncrementalRefresh.NoMDEntries entry = encoder.tradeEntryInc(
 		    trade.getMdUpdateAction(), security, trade.getMdEntryBuyer(), trade.getMdEntrySeller(), 
 		    trade.getMdEntryPx(), trade.getMdEntrySize(), 
 		    trade.getMdEntryDate(), trade.getMdEntryTime(), trade.getTradeID(), 
-		    trade.getTradeVolume(), idGen.getNextNumeric()
-		    ));
+		    trade.getTradeVolume(), idGen.nextInt()
+		    );
+	    mboPackets.put(entry);
+	    mbpPackets.put(entry);
+
 	}catch(InterruptedException e){
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
@@ -158,9 +226,11 @@ public class MarketDataChannel implements MessageSender {
 
     public void informOpenPrice(double openPrice){
 	try{
-	    packets.put(
-		    encoder.openPriceEntryInc(UpdateActions.New, security, openPrice, idGen.getNextNumeric())
-		    );
+	    MarketDataIncrementalRefresh.NoMDEntries entry = 
+		    encoder.openPriceEntryInc(UpdateActions.New, security, openPrice, idGen.nextInt());
+
+	    mboPackets.put(entry);
+	    mbpPackets.put(entry);
 	}catch(InterruptedException e){
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
@@ -168,9 +238,11 @@ public class MarketDataChannel implements MessageSender {
 
     public void informClosePrice(double closePrice){
 	try{
-	    packets.put(
-		    encoder.closePriceEntryInc(security, closePrice, idGen.getNextNumeric())
-		    );
+	    MarketDataIncrementalRefresh.NoMDEntries entry = 
+		    encoder.closePriceEntryInc(security, closePrice, idGen.nextInt());
+
+	    mboPackets.put(entry);
+	    mbpPackets.put(entry);
 	}catch(InterruptedException e){
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
@@ -182,9 +254,11 @@ public class MarketDataChannel implements MessageSender {
 
     public void informHighPrice(double highPrice){
 	try{
-	    packets.put(
-		    encoder.highPriceEntryInc(UpdateActions.New, security, highPrice, idGen.getNextNumeric())
-		    );
+	    MarketDataIncrementalRefresh.NoMDEntries entry = 
+		    encoder.highPriceEntryInc(UpdateActions.New, security, highPrice, idGen.nextInt());
+
+	    mboPackets.put(entry);
+	    mbpPackets.put(entry);
 	}catch(InterruptedException e){
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
@@ -192,9 +266,11 @@ public class MarketDataChannel implements MessageSender {
 
     public void informLowPrice(double lowPrice){
 	try{
-	    packets.put(
-		    encoder.lowPriceEntryInc(UpdateActions.New, security, lowPrice, idGen.getNextNumeric())
-		    );
+	    MarketDataIncrementalRefresh.NoMDEntries entry = 
+		    encoder.lowPriceEntryInc(UpdateActions.New, security, lowPrice, idGen.nextInt());
+
+	    mboPackets.put(entry);
+	    mbpPackets.put(entry);
 	}catch(InterruptedException e){
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
@@ -202,9 +278,11 @@ public class MarketDataChannel implements MessageSender {
 
     public void informVWAPPrice(double vwapPrice){
 	try{
-	    packets.put(
-		    encoder.vwapPriceEntryInc(UpdateActions.New, security, vwapPrice, idGen.getNextNumeric())
-		    );
+	    MarketDataIncrementalRefresh.NoMDEntries entry = 
+		    encoder.vwapPriceEntryInc(UpdateActions.New, security, vwapPrice, idGen.nextInt());
+
+	    mboPackets.put(entry);
+	    mbpPackets.put(entry);
 	}catch(InterruptedException e){
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
@@ -216,10 +294,12 @@ public class MarketDataChannel implements MessageSender {
 
     public void informTradeVolume(int numOfTrades, double financialVolume, double tradedVolume){
 	try{
-	    packets.put(
+	    MarketDataIncrementalRefresh.NoMDEntries entry = 
 		    encoder.tradeVolumeEntryInc(
-			    security, numOfTrades, financialVolume, tradedVolume, idGen.getNextNumeric())
-		    );
+			    security, numOfTrades, financialVolume, tradedVolume, idGen.nextInt());
+
+	    mboPackets.put(entry);
+	    mbpPackets.put(entry);
 	}catch(InterruptedException e){
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
@@ -231,9 +311,11 @@ public class MarketDataChannel implements MessageSender {
 
     public void informEmptyBook(){
 	try{
-	    packets.put(
-		    encoder.emptyBookEntryInc(security, idGen.getNextNumeric())
-		    );
+	    MarketDataIncrementalRefresh.NoMDEntries entry = 
+		    encoder.emptyBookEntryInc(security, idGen.nextInt());
+
+	    mboPackets.put(entry);
+	    mbpPackets.put(entry);
 	}catch(InterruptedException e){
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
@@ -299,7 +381,13 @@ public class MarketDataChannel implements MessageSender {
 	tob();
 
     }
-    
+
+
+    private void sendUMDF(Message message) {
+	for (SessionID sid : SessionRepository.getInstance().getSessions(StreamTypes.MARKET_DATA).values()) {
+	    sendMessage(message, sid);
+	}
+    }
 
     /*
      * (non-Javadoc)
@@ -309,12 +397,7 @@ public class MarketDataChannel implements MessageSender {
      */
     @Override
     public boolean sendMessage(Message message, SessionID sessionID) {
-
-	for (SessionID sid : SessionRepository.getInstance().getSessions(StreamTypes.MARKET_DATA).values()) {
-	    // MessageRepository.getInstance().addMessage(sl, sid);
-	}
-
-	return false;
+	return MessageRepository.getInstance().addMessage(message, sessionID);
     }
 
 }

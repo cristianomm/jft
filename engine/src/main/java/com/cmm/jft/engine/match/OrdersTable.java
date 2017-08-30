@@ -149,7 +149,6 @@ public class OrdersTable {
 		ordersSummary.remove(sum.getPrice());
 	    }
 	    
-	    
 	}
 	return ordr;
     }
