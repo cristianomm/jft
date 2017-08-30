@@ -46,11 +46,20 @@ public class OrderEvent implements DBObject<OrderEvent> {
     @Column(name = "orderEventID", nullable = false)
     private Long orderEventID;
 
-    @Column(name = "Volume")
-    private double volume;
-
     @Column(name = "Price", precision = 19, scale = 6)
     private double price;
+    
+    @Column(name = "Volume")
+    private double volume;
+    
+    @Column(name = "CumQty")
+    private double cumQty;
+    
+    @Column(name = "LeavesQty")
+    private double leavesQty;
+    
+    @Column(name = "LastQty")
+    private double lastQty;
 
     @Enumerated(EnumType.STRING)
     @Column(name="ExecutionType", length=30)
@@ -231,6 +240,56 @@ public class OrderEvent implements DBObject<OrderEvent> {
      */
     public void setTradeID(String tradeID) {
 	this.tradeID = tradeID;
+    }
+    
+
+    /**
+     * @return the eventDateTime
+     */
+    public Date getEventDateTime() {
+	return eventDateTime;
+    }
+    
+    /**
+     * @return the cumQty
+     */
+    public double getCumQty() {
+	return cumQty;
+    }
+    
+    /**
+     * @return the lastQty
+     */
+    public double getLastQty() {
+	return lastQty;
+    }
+    
+    /**
+     * @return the leavesQty
+     */
+    public double getLeavesQty() {
+	return leavesQty;
+    }
+    
+    /**
+     * @param cumQty the cumQty to set
+     */
+    public void setCumQty(double cumQty) {
+	this.cumQty = cumQty;
+    }
+    
+    /**
+     * @param lastQty the lastQty to set
+     */
+    public void setLastQty(double lastQty) {
+	this.lastQty = lastQty;
+    }
+    
+    /**
+     * @param leavesQty the leavesQty to set
+     */
+    public void setLeavesQty(double leavesQty) {
+	this.leavesQty = leavesQty;
     }
 
 }

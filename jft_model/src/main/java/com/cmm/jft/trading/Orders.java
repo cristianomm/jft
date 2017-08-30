@@ -40,9 +40,7 @@ import com.cmm.logging.Logging;
 @NamedQueries({
     @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
     @NamedQuery(name = "Orders.findByOrderID", query = "SELECT o FROM Orders o WHERE o.orderID = :orderID"),
-    @NamedQuery(name = "Orders.findByVolume", query = "SELECT o FROM Orders o WHERE o.volume = :volume"),
-    @NamedQuery(name = "Orders.findByOrderStatus", query = "SELECT o FROM Orders o WHERE o.orderStatus = :orderStatus"),
-    @NamedQuery(name = "Orders.findBySide", query = "SELECT o FROM Orders o WHERE o.side = :side") })
+    })
 public class Orders implements DBObject<Orders> {
     private static final long serialVersionUID = 1L;
 
@@ -755,6 +753,7 @@ public class Orders implements DBObject<Orders> {
 		replaceOrder(execution);
 		break;
 	    case RESTATED:
+		restateOrder(execution);
 		break;
 	    case SUSPENDED:
 		break;
@@ -765,6 +764,7 @@ public class Orders implements DBObject<Orders> {
 		cancelTrade(execution);
 		break;
 	    }	
+	    eventsList.add(execution);
 	}
 	catch(OrderException e) {
 	    added = false;
@@ -777,7 +777,6 @@ public class Orders implements DBObject<Orders> {
     private void cancelOrder(OrderEvent execution) throws OrderException {
 
 	setOrderStatus(OrderStatus.CANCELED);
-	eventsList.add(execution);
 	workingIndicator = WorkingIndicator.No_Working;
 	refreshOrder();
 
@@ -819,9 +818,12 @@ public class Orders implements DBObject<Orders> {
 	if(replace.getVolume() >0 && replace.getVolume() != volume) {
 	    changeVolume(replace.getVolume());
 	}
-
 	refreshOrder();
-
+    }
+    
+    private void restateOrder(OrderEvent restate) {
+	this.secOrderID++;
+	this.orderDateTime = restate.getExecutionDateTime();
     }
 
     private void tradeOrder(OrderEvent execution) throws OrderException {
