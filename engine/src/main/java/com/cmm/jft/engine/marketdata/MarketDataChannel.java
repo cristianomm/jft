@@ -55,6 +55,7 @@ public class MarketDataChannel implements MessageSender {
 	OPEN, CLOSED, PACKING
     }
 
+    private int openCont;
     private int sequence;
     private IdGenerator idGen;
     private Security security;
@@ -94,6 +95,7 @@ public class MarketDataChannel implements MessageSender {
 	    mbpPackets.clear();
 	    mboPackets.clear();
 	}
+	openCont++;
     }
 
     public void packing(){
@@ -106,13 +108,14 @@ public class MarketDataChannel implements MessageSender {
      * Close last open packet and send market data to listeners
      */
     public void closePacket(){
-	if(packState == IncrementalStates.PACKING){
+	if(packState == IncrementalStates.PACKING && openCont == 1){
 	    packState = IncrementalStates.CLOSED;
 	    Message msgMBO = encoder.mdIncrementalRefresh(mboPackets);
 	    Message msgMBP = encoder.mdIncrementalRefresh(mbpPackets);
 	    sendUMDF(msgMBO);
 	    sendUMDF(msgMBP);
 	}
+	openCont--;
     }
 
 
@@ -130,6 +133,7 @@ public class MarketDataChannel implements MessageSender {
 	    mboEntry.setMdEntryTime(order.getInsertTime());
 	    mboEntry.setMdEntryType(order.getSide() == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
 
+	    //para MD Inc refresh
 	    if(updtAction != null) {
 		mboEntry.setMdUpdateAction(updtAction);
 	    }

@@ -2,6 +2,7 @@ package com.cmm.jft.engine.message;
 
 import com.cmm.jft.engine.Book;
 import com.cmm.jft.engine.BookRepository;
+import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageDecoder;
 import com.cmm.jft.messaging.handlers.EngineMessageHandler;
@@ -40,11 +41,9 @@ public class EngineHandler implements EngineMessageHandler {
 	Book book = null;
 	if ((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null) {
 	    Orders order = decoder.newOrderSingle(message);
-	    
-	    
-	    
+	    SessionRepository.getInstance().addTraderSession(order.getTraderID(), sessionID);
 	    // try to add the order in the book
-	    book.addOrder(order, sessionID);
+	    book.addOrder(order);
 	}
 
     }
@@ -54,7 +53,8 @@ public class EngineHandler implements EngineMessageHandler {
 	Book book = null;
 	Orders ordr = MessageDecoder.getDecoder(sessionID).orderCancelReplaceRequest(message);
 	if ((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null) {
-	    book.replaceOrder(ordr, sessionID);
+	    
+	    book.replaceOrder(ordr);
 	}
 
     }
@@ -64,7 +64,7 @@ public class EngineHandler implements EngineMessageHandler {
 	Book book = null;
 	Orders ordr = MessageDecoder.getDecoder(sessionID).orderCancelRequest(message);
 	if ((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null) {
-	    book.replaceOrder(ordr, sessionID);
+	    book.cancelOrder(ordr);
 	}
 
     }

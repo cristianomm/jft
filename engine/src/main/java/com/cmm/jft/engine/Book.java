@@ -5,15 +5,13 @@ package com.cmm.jft.engine;
 
 import static org.junit.Assert.assertTrue;
 
-import java.time.Instant;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.SortedMap;
 
 import org.apache.log4j.Level;
 
 import com.cmm.jft.engine.marketdata.MarketDataChannel;
 import com.cmm.jft.engine.marketdata.recovery.SnapshotRecoveryChannel;
-import com.cmm.jft.engine.match.BookTable;
 import com.cmm.jft.engine.match.OrderMatcher;
 import com.cmm.jft.engine.match.OrdersTable;
 import com.cmm.jft.engine.match.Summary;
@@ -34,8 +32,8 @@ import com.cmm.jft.trading.enums.MarketPhase;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
+import com.cmm.jft.trading.enums.RejectTypes;
 import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.enums.UpdateActions;
 import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.OrderException;
@@ -82,32 +80,40 @@ public class Book implements MessageSender {
 	Security security = SecurityService.getInstance().provideSecurity(symbol);
 	SessionID sessionID = new SessionID(FixVersions.BEGINSTRING_FIX44, "SENDER", "TARGET");
 
+	String traderIDB = "";
+	String traderIDS = "";
+	String brokerID = "";
+	String sLct = "";
+
 	Book book = new Book(symbol, .20);
 
 	long t0 = System.currentTimeMillis();
 	try {
 
 	    Orders ord = new Orders(orderID++, "123456", security, Side.BUY, 
-		    3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+		    3321.5, 2, OrderTypes.Limit, traderIDB, brokerID, sLct);
 	    ord.setBrokerID("308");
+	    ord.setTraderID("123456");
 
-	    boolean added = book.addOrder(ord, sessionID);
+	    boolean added = book.addOrder(ord);
 
 	    ord = new Orders(orderID++, "123455", security, Side.SELL, 
-		    3321.5, 1, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+		    3321.5, 1, OrderTypes.Limit, traderIDS, brokerID, sLct);
 	    ord.setBrokerID("154");
+	    ord.setTraderID("654321");
 
-	    added = book.addOrder(ord, sessionID);
+	    added = book.addOrder(ord);
 
 	    System.out.println(System.currentTimeMillis() - t0);
 
 	    double qt = -1000;
 	    for(int i=0;i<qt;i++) {
 		ord = new Orders(orderID++, "123457"+i, security, Side.BUY, 
-			3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+			3321.5, 2, OrderTypes.Limit, traderIDB, brokerID, sLct);
 		ord.setBrokerID("308");
+		ord.setTraderID("3"+i);
 
-		added = added && book.addOrder(ord, sessionID);
+		added = added && book.addOrder(ord);
 	    }
 	    long t1 = System.currentTimeMillis() - t0;
 	    System.out.println("Tempo total: " + t1);
@@ -155,21 +161,8 @@ public class Book implements MessageSender {
 
 	this.orderMatcher = new OrderMatcher(this.protectionLevel, umdf, buyTable, sellTable);
 
-	{
-	    new Thread(new Runnable() {
-		@Override
-		public void run() {
-		    while(true) {
-			try {
-			    takeSnapshot();
-			    Thread.sleep(15 * 60);
-			} catch (InterruptedException e) {
-			    e.printStackTrace();
-			}
-		    }
-		}
-	    }).start();
-	}
+	//realiza um snapshot inicial
+	takeSnapshot();
     }
 
 
@@ -320,7 +313,7 @@ public class Book implements MessageSender {
 	order.setOrderID(orderIDs.nextLong());
     }
 
-    public boolean addOrder(Orders order, SessionID sessionID) {
+    public boolean addOrder(Orders order) {
 	boolean added = false;
 	try {
 	    umdf.openNewPacket();
@@ -330,11 +323,11 @@ public class Book implements MessageSender {
 		adjustOrderParameters(order);
 
 		//envia o execution report de ordem recebida
-		sendExecutionReport(order, ExecutionTypes.NEW, "Order received.", 0, sessionID);
+		sendExecutionReport(order, ExecutionTypes.NEW, "Order received.", 0);
 
 		//adiciona a ordem na tabela correspondente
 		OrdersTable table = order.getSide() == Side.BUY?buyTable:sellTable;
-		
+
 		if(order.getOrderType() == OrderTypes.Stop || order.getOrderType() == OrderTypes.StopLimit) {
 		    table.addStop(order);
 		}else {
@@ -348,23 +341,23 @@ public class Book implements MessageSender {
 		int mboPos = table.getOrderPosition(order.getOrderID());
 		int mbpPos = table.getPricePosition(order.getPrice());
 		Summary sm = table.findSummary(order.getPrice());
-		
+
 		umdf.informNewOrder(order, mboPos, sm, mbpPos);
 
 	    }
 	    else {
-		sendExecutionReport(order, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
+		sendExecutionReport(order, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000);
 	    }
 
 	} 
 
 	catch (OrderException e) {
 	    added = false;
-	    sendExecutionReport(order, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
+	    sendExecutionReport(order, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000);
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	} catch(OrderValidationException e) {
 	    added = false;
-	    sendExecutionReport(order, ExecutionTypes.REJECTED, e.getErrorMsg(), e.getErrorCode(), sessionID);
+	    sendExecutionReport(order, ExecutionTypes.REJECTED, e.getErrorMsg(), e.getErrorCode());
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}finally {
 	    umdf.closePacket();
@@ -373,20 +366,59 @@ public class Book implements MessageSender {
 	return added;
     }
 
-    public void cancelOrder(Orders ordr, SessionID sessionID) {
+    public void cancelOrder(Orders order) {	
+	try {
+	    umdf.openNewPacket();
 
-	//	try {
-	//
-	//	    //orderMatcher.cancelOrder(ordr, CancelTypes.Requested);
-	//	} catch (OrderException e) {
-	//	    e.printStackTrace();
-	//	}
+	    Orders bookOrder = null;
+	    OrdersTable table = order.getSide() == Side.BUY?buyTable:sellTable;
+
+	    if(order.getOrderID() >0) {
+		bookOrder = table.findByOrderID(order.getOrderID());
+	    }
+	    else if(order.getOrigClOrdID() != null) {
+		bookOrder = table.findByClOrderID(order.getOrigClOrdID());
+	    }
+
+	    if(bookOrder != null) {		
+		orderMatcher.cancelOrder(bookOrder, CancelTypes.Requested);
+	    }else {
+		sendMessage(((Fix44EngineMessageEncoder)MessageEncoder.getEncoder(null)).
+			orderCancelReject(order, 989001, ErrorCodes.getInstance().getMessage(989001))
+			, SessionRepository.getInstance().getTraderSession(order.getTraderID()));
+	    }
+
+	} catch (OrderException e) {
+	    e.printStackTrace();
+	}finally {
+	    umdf.closePacket();
+	}
 
     }
 
-    public void replaceOrder(Orders ordr, SessionID sessionID) {
+    public void replaceOrder(Orders order) {
 	try {
+	    umdf.openNewPacket();
+	    
+	    Orders bookOrder = null;
+	    OrdersTable table = order.getSide() == Side.BUY?buyTable:sellTable;
 
+	    if(order.getOrderID() >0) {
+		bookOrder = table.findByOrderID(order.getOrderID());
+	    }
+	    else if(order.getOrigClOrdID() != null) {
+		bookOrder = table.findByClOrderID(order.getOrigClOrdID());
+	    }
+
+	    if(bookOrder != null) {		
+		
+	    }else {
+		sendMessage(((Fix44EngineMessageEncoder)MessageEncoder.getEncoder(null)).
+			orderCancelReject(order, RejectTypes.OrderCancelReplaceRequest, 
+				989001, ErrorCodes.getInstance().getMessage(989001))
+			, SessionRepository.getInstance().getTraderSession(order.getTraderID()));
+	    }
+	    
 	    adjustOrderParameters(ordr);
 	    if (ordr.getSide() == Side.BUY) {
 		//buyTable.update(ordr);
@@ -394,7 +426,7 @@ public class Book implements MessageSender {
 		//entries = sellTable.update(ordr);
 	    }
 
-	    sendExecutionReport(ordr, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
+	    sendExecutionReport(ordr, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000);
 
 	    MDEntry[] entries = null;
 	    if (ordr.getSide() == Side.BUY) {
@@ -404,7 +436,7 @@ public class Book implements MessageSender {
 	    }
 
 	    if(entries == null) {
-		sendExecutionReport(ordr, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000, sessionID);
+		sendExecutionReport(ordr, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000);
 	    }
 
 	    // TODO: enviar o estado atual do book com o que mudou do estado anterior
@@ -413,14 +445,23 @@ public class Book implements MessageSender {
 
 	}catch(OrderException e) {
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
+	}finally {
+	    umdf.closePacket();
 	}
 
     }
+
 
     public void closeBook() {
 
 	// buyQueue.forEach(o -> cancelOrder(o));
 	// sellQueue.forEach(o -> cancelOrder(o));
+
+	//cancela as ordens conforme validade 
+
+	//realiza um novo snapshot
+	takeSnapshot();
+
 
     }
 
@@ -428,9 +469,20 @@ public class Book implements MessageSender {
     public void takeSnapshot() {
 	snapshot.resetSnapshot(0);
 
-	//add an snapshot for each order book
-	//buyTable.takeSnapshot().forEach(md -> snapshot.addOffer(md));
-	//sellTable.takeSnapshot().forEach(md -> snapshot.addOffer(md));
+	//add current orders in the snapshot
+	for(SortedMap<Date,Orders> orders : buyTable.getOrders().values()) {
+	    for (Orders ordr : orders.values()) {
+		int position = buyTable.getOrderPosition(ordr.getOrderID());
+		snapshot.addOffer(umdf.createMBOEntry(ordr, null, position));
+	    }
+	}
+
+	for(SortedMap<Date,Orders> orders : sellTable.getOrders().values()) {
+	    for (Orders ordr : orders.values()) {
+		int position = sellTable.getOrderPosition(ordr.getOrderID());
+		snapshot.addOffer(umdf.createMBOEntry(ordr, null, position));
+	    }
+	}
 
 	//add information about this market
 	snapshot.setOpenPrice(orderMatcher.getOpenPrice());
@@ -455,7 +507,7 @@ public class Book implements MessageSender {
     }
 
 
-    private void sendExecutionReport(Orders order, ExecutionTypes exec, String message, int ordRejReason, SessionID sessionID) {
+    private void sendExecutionReport(Orders order, ExecutionTypes exec, String message, int ordRejReason) {
 
 	try {
 	    OrderEvent oe = new OrderEvent(
@@ -467,6 +519,7 @@ public class Book implements MessageSender {
 	    oe.setOrdRejReason(ordRejReason);
 	    order.addExecution(oe);
 
+	    SessionID sessionID = SessionRepository.getInstance().getTraderSession(order.getTraderID());
 	    sendMessage((
 		    (Fix44EngineMessageEncoder) MessageEncoder.getEncoder(sessionID)).
 		    executionReport(oe), sessionID);
