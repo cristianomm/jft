@@ -16,31 +16,31 @@ import quickfix.field.MsgType;
 public interface MessageEncoder {
 
 
-	static MessageEncoder getEncoder(SessionID sessionId) {
-		
-		MessageEncoder encoder = null;
-		switch(sessionId.getBeginString()) {
-		case "FIX.4.4":
-			encoder = Fix44EngineMessageEncoder.getInstance();
-			break;
-			
-		case "FIX.5.0SP2":
-			encoder = Fix50SP2MDMessageEncoder.getInstance();
-			
-		}
-		
-		return encoder;
+    static MessageEncoder getEncoder(SessionID sessionId) {
+
+	MessageEncoder encoder = null;
+	switch(sessionId.getBeginString()) {
+	case "FIX.4.4":
+	    encoder = Fix44EngineMessageEncoder.getInstance();
+	    break;
+
+	case "FIX.5.0SP2":
+	    encoder = Fix50SP2MDMessageEncoder.getInstance();
+
 	}
-	
-	
-	//[start]-------------------------------------------Session Specific
-	Message heartbeat();
 
-	Message sequenceReset();
+	return encoder;
+    }
 
-	//[end]
 
-	
+    //[start]-------------------------------------------Session Specific
+    Message heartbeat();
+
+    Message sequenceReset();
+
+    //[end]
+
+
 
 
 }

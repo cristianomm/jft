@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.cmm.jft.engine.Book;
-import com.cmm.jft.engine.enums.MatchTypes;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.trading.Orders;
@@ -52,7 +51,7 @@ public class BookTest {
 	orderTypes = new HashSet<>();
 	sessionID = new SessionID(FixVersions.BEGINSTRING_FIX44, "SENDER", "TARGET");
 	
-	book = new Book(symbol, orderTypes, MatchTypes.FIFO, .20);
+	book = new Book(symbol, .20);
 	
     }
 
@@ -87,14 +86,14 @@ public class BookTest {
     public void testAddOrder() {
 
 	try {
-	    long orderID = 0;
+	    long orderID = 123456;
 	    Orders ord = new Orders(orderID++, "123456", security, Side.BUY, 
 		    3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
 	    ord.setBrokerID("308");
 	    
 	    boolean added = book.addOrder(ord, sessionID);
 	    
-	    for(int i=0;i<1000;i++) {
+	    for(int i=0;i<10000;i++) {
 		ord = new Orders(orderID++, "123457"+i, security, Side.BUY, 
 			3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
 		ord.setBrokerID("308");
@@ -108,6 +107,33 @@ public class BookTest {
 	    e.printStackTrace();
 	}
     }
+    
+    @Test
+    public void testMatchOrder() {
+
+	try {
+	    long orderID = 123456;
+	    Orders ord = new Orders(orderID++, "123456", security, Side.BUY, 
+		    3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+	    ord.setBrokerID("308");
+	    
+	    boolean added = book.addOrder(ord, sessionID);
+	    
+	    ord = new Orders(orderID++, "123457", security, Side.SELL, 
+			3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+	    ord.setBrokerID("308");
+		
+	    added = added && book.addOrder(ord, sessionID);
+	    
+
+	    assertTrue(added);
+
+	} catch (OrderException e) {
+	    e.printStackTrace();
+	}
+    }
+    
+        
 
     /**
      * Test method for {@link com.cmm.jft.engine.Book#cancelOrder(com.cmm.jft.trading.Orders)}.

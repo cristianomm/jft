@@ -47,7 +47,7 @@ public class OrdersTableTest {
     @Test
     public void testOrdersTable() {
 
-	OrdersTable ot = new OrdersTable();
+	OrdersTable ot = new OrdersTable(Side.BUY);
 
 	assertNotNull(ot.getClordIDs());
 	assertNotNull(ot.getOrderIDs());
@@ -67,7 +67,7 @@ public class OrdersTableTest {
 		    3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
 	    ord.setBrokerID("308");
 
-	    OrdersTable ot = new OrdersTable();
+	    OrdersTable ot = new OrdersTable(Side.BUY);
 
 	    assertTrue(ot.add(ord));
 
@@ -104,7 +104,7 @@ public class OrdersTableTest {
     @Test
     public void testPerformance() {
 	System.out.println("testPerformance()");
-	OrdersTable ot = new OrdersTable();
+	OrdersTable ot = new OrdersTable(Side.BUY);
 	long orderID = 1;
 	Orders ord = null;
 	try {

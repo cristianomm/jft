@@ -12,6 +12,7 @@ import quickfix.field.BeginSeqNo;
 import quickfix.field.ClOrdID;
 import quickfix.field.ContraBroker;
 import quickfix.field.CumQty;
+import quickfix.field.CxlRejReason;
 import quickfix.field.CxlRejResponseTo;
 import quickfix.field.EncryptMethod;
 import quickfix.field.EndSeqNo;
@@ -165,6 +166,21 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 
     }
 
+    public void addIdFields(Message message, String traderID, String brokerID) {
+	Group ids = new Group(453,453);
+	ids.setString(448, brokerID);
+	ids.setChar(447, 'D');
+	ids.setInt(452, 7);
+	message.addGroup(ids);
+
+	ids = new AllocationInstruction.NoPartyIDs();
+	ids.setString(448, traderID);
+	ids.setChar(447, 'D');
+	ids.setInt(452, 36);
+	message.addGroup(ids);
+
+    }
+
 
 
     //[start]-------------------------------------------Session Specific
@@ -312,53 +328,56 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
      * @see com.cmm.jft.engine.message.MessageEncoder#executionReport(OrderEvent execution)
      */
     public ExecutionReport executionReport(OrderEvent execution){
+	ExecutionReport execReport = null;
+	try {
+	    execReport = new ExecutionReport(
+		    new OrderID(execution.getOrderID().getOrderID().toString()), 
+		    new ExecID(execution.getOrderEventID().toString()),
+		    new ExecType(execution.getExecutionType().getValue()), 
+		    new OrdStatus(execution.getOrderID().getOrderStatus().getValue()),
+		    new Side(execution.getOrderID().getSide().getValue()), 
+		    new LeavesQty(execution.getOrderID().getLeavesVolume()), 
+		    new CumQty(execution.getOrderID().getExecutedVolume()), 
+		    new AvgPx(0)
+		    );
 
-	ExecutionReport execReport = new ExecutionReport(
-		new OrderID(execution.getOrderID().getOrderID().toString()), 
-		new ExecID(execution.getOrderEventID().toString()),
-		new ExecType(execution.getExecutionType().getValue()), 
-		new OrdStatus(execution.getOrderID().getOrderStatus().getValue()),
-		new Side(execution.getOrderID().getSide().getValue()), 
-		new LeavesQty(execution.getOrderID().getLeavesVolume()), 
-		new CumQty(execution.getOrderID().getExecutedVolume()), 
-		new AvgPx(0)
-		);
+	    execReport.set(new ClOrdID(execution.getOrderID().getClOrdID()));
 
-	execReport.set(new ClOrdID(execution.getOrderID().getClOrdID()));
+	    if(execution.getOrderID().getOrigClOrdID() != null) {
+		execReport.set(new OrigClOrdID(execution.getOrderID().getOrigClOrdID()));
+	    }
 
-	if(execution.getOrderID().getOrigClOrdID() != null) {
-	    execReport.set(new OrigClOrdID(execution.getOrderID().getOrigClOrdID()));
+	    if(execution.getOrderID().getSecOrderID() != null) {
+		execReport.set(new SecondaryClOrdID(execution.getOrderID().getSecOrderID().toString()));
+	    }
+
+	    boolean work = execution.getOrderID().getWorkingIndicator() == com.cmm.jft.trading.enums.WorkingIndicator.Working? true:false;
+	    execReport.set(new WorkingIndicator(work));
+	    execReport.set(new Symbol(execution.getOrderID().getSecurityID().getSymbol()));
+
+
+	    execReport.set(new OrderQty(execution.getOrderID().getVolume()));
+	    if(execution.getPrice() > 0) {
+		execReport.set(new LastPx(execution.getPrice()));
+		execReport.set(new LastQty(execution.getVolume()));
+	    }
+	    if(execution.getContraBroker() != null) {
+		ExecutionReport.NoContraBrokers cb = new ExecutionReport.NoContraBrokers();
+		cb.set(new ContraBroker(execution.getContraBroker()));
+	    }
+
+	    if(execution.getOrdRejReason()>0) {
+		execReport.set(new OrdRejReason(execution.getOrdRejReason()));
+	    }
+
+	    if(execution.getLastQty()>0) {
+		execReport.set(new LastQty(execution.getLastQty()));
+	    }
+
+	    addIdFields(execReport);
+	}catch(Exception e) {
+	    e.printStackTrace();
 	}
-
-	if(execution.getOrderID().getSecOrderID() != null) {
-	    execReport.set(new SecondaryClOrdID(execution.getOrderID().getSecOrderID().toString()));
-	}
-
-	boolean work = execution.getOrderID().getWorkingIndicator() == com.cmm.jft.trading.enums.WorkingIndicator.Working? true:false;
-	execReport.set(new WorkingIndicator(work));
-	execReport.set(new Symbol(execution.getOrderID().getSecurityID().getSymbol()));
-
-
-	execReport.set(new OrderQty(execution.getOrderID().getVolume()));
-	if(execution.getPrice() > 0) {
-	    execReport.set(new LastPx(execution.getPrice()));
-	    execReport.set(new LastQty(execution.getVolume()));
-	}
-	if(execution.getContraBroker() != null) {
-	    ExecutionReport.NoContraBrokers cb = new ExecutionReport.NoContraBrokers();
-	    cb.set(new ContraBroker(execution.getContraBroker()));
-	}
-	
-	if(execution.getOrdRejReason()>0) {
-	    execReport.set(new OrdRejReason(execution.getOrdRejReason()));
-	}
-	
-	if(execution.getLastQty()>0) {
-	    execReport.set(new LastQty(execution.getLastQty()));
-	}
-
-	addIdFields(execReport);
-
 	return execReport;
     }
 
@@ -401,18 +420,24 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
     /* (non-Javadoc)
      * @see com.cmm.jft.engine.message.MessageEncoder#orderCancelReject(Orders order, RejectTypes reject)
      */
-    public OrderCancelReject orderCancelReject(Orders order, RejectTypes reject){
+    public OrderCancelReject orderCancelReject(Orders order, RejectTypes rejectTypes, int rejReason, String message){
 
 	OrderCancelReject cancelReject = new OrderCancelReject();
 
 	if(order!=null) {
 	    cancelReject.set(new OrderID(order.getOrderID().toString()));
+	    cancelReject.set(new SecondaryClOrdID(order.getSecOrderID().toString()));
 	    cancelReject.set(new ClOrdID(order.getClOrdID()));
 	    cancelReject.set(new OrigClOrdID(order.getOrigClOrdID()));
 	    cancelReject.set(new OrdStatus(order.getOrderStatus().getValue()));
-	    cancelReject.set(new CxlRejResponseTo(reject.getValue()));
-	    cancelReject.setInt(453, 0);
-	    cancelReject.setString(5149, order.getComment());
+	    cancelReject.set(new CxlRejResponseTo(rejectTypes.getValue()));
+	    if(rejReason>0) {
+		cancelReject.set(new CxlRejReason(rejReason));
+		cancelReject.set(new Text(message));
+	    }
+	    cancelReject.setString(55, order.getSecurityID().getSymbol());
+	    addIdFields(cancelReject, order.getTraderID(), order.getBrokerID());
+
 	}
 
 	return cancelReject;

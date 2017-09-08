@@ -45,6 +45,54 @@ import com.cmm.logging.Logging;
  */
 public class Fix44EngineMessageDecoder implements MessageDecoder {
 
+    
+    
+    private void addPartyIDs(Orders order, Message message) throws FieldNotFound {
+	for(Group g: message.getGroups(453)) {
+	    String partyID = g.getString(448);
+	    char partIDSrc = g.getChar(447);//always 'D'
+	    int partyRole = g.getInt(452);
+	    /*
+	    4 - Clearing Firm
+	    5 - Investor Id
+	    7 - Entering Firm
+	    12 - Executing Trader
+	    36 - Entering Trader
+	    54 - Sender Location
+	    76 - Desk ID
+	    1001 - Order Origination Session
+	     */
+	    switch(partyRole) {
+	    case 4:
+		break;
+	    case 5:
+		order.setTraderID(partyID);
+		break;
+	    case 7:
+		order.setBrokerID(partyID);
+		break;
+	    case 12:
+		break;
+	    case 36:
+		break;
+	    case 54:
+		order.setSenderLocation(partyID);
+		break;
+	    case 76:
+		break;
+	    case 1001:
+		break;
+	    }
+
+	}
+    }
+    
+    
+    
+    
+    
+    
+    
     /* (non-Javadoc)
      * @see com.cmm.jft.engine.message.MessageDecoder#heartbeat()
      */
@@ -183,42 +231,7 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 		NewOrderSingle orderSingle = (NewOrderSingle) message;
 		ordr.setClOrdID(orderSingle.getClOrdID().getValue());
 
-		for(Group g: orderSingle.getGroups(453)) {
-		    String partyID = g.getString(448);
-		    char partIDSrc = g.getChar(447);
-		    int partyRole = g.getInt(452);
-		    /*
-		    4 - Clearing Firm
-		    5 - Investor Id
-		    7 - Entering Firm
-		    12 - Executing Trader
-		    36 - Entering Trader
-		    54 - Sender Location
-		    76 - Desk ID
-		    1001 - Order Origination Session
-		     */
-		    switch(partyRole) {
-		    case 4:
-			ordr.setBrokerID(partyID);
-			break;
-		    case 5:
-			ordr.setTraderID(partyID);
-			break;
-		    case 7:
-			break;
-		    case 12:
-			break;
-		    case 36:
-			break;
-		    case 54:
-			break;
-		    case 76:
-			break;
-		    case 1001:
-			break;
-		    }
-
-		}
+		addPartyIDs(ordr, orderSingle);
 
 		//ordr.setSecurityID(SecurityService.getInstance().provideSecurity(orderSingle.getSecurityID().getValue()));
 		ordr.setSide(Side.getByValue(orderSingle.getSide().getValue()));
@@ -289,6 +302,9 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 	try{
 	    ordr.setClOrdID(request.getClOrdID().getValue());
 	    ordr.setOrigClOrdID(request.getOrigClOrdID().getValue());
+	    
+	    addPartyIDs(ordr, request);
+	    
 	    //ordr.setSecurityID(SecurityService.getInstance().provideSecurity(request.getSymbol().getValue()));
 	    ordr.setSide(Side.getByValue(request.getSide().getValue()));
 	    ordr.setVolume(request.getOrderQty().getValue());
