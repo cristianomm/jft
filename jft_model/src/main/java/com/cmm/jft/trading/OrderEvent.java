@@ -24,6 +24,7 @@ import javax.persistence.TemporalType;
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.trading.enums.OrderValidityTypes;
 
 /**
  * <p>
@@ -49,8 +50,14 @@ public class OrderEvent implements DBObject<OrderEvent> {
     @Column(name = "Price", precision = 19, scale = 6)
     private double price;
     
+    @Column(name = "StopPrice", precision = 19, scale = 6)
+    private double stopPrice;
+    
     @Column(name = "Volume")
     private double volume;
+    
+    @Column(name = "MinQty")
+    private double minQty;
     
     @Column(name = "CumQty")
     private double cumQty;
@@ -69,6 +76,10 @@ public class OrderEvent implements DBObject<OrderEvent> {
     @Basic(optional = false)
     @Column(name = "OrderType", length=30)
     private OrderTypes orderType;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name="Validity", length=30)
+    private OrderValidityTypes validity;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "EventDateTime")
@@ -121,7 +132,14 @@ public class OrderEvent implements DBObject<OrderEvent> {
 	this.volume = volume;
 	this.price = price;
     }
-
+    
+    /**
+     * @param orderEventID the orderEventID to set
+     */
+    public void setOrderEventID(Long orderEventID) {
+	this.orderEventID = orderEventID;
+    }
+    
     /**
      * @return the executionDateTime
      */
@@ -148,10 +166,24 @@ public class OrderEvent implements DBObject<OrderEvent> {
      * @param volume
      *            the volume to set
      */
-    public void setVolume(int volume) {
+    public void setVolume(double volume) {
 	this.volume = volume;
     }
-
+    
+    /**
+     * @return the minQty
+     */
+    public double getMinQty() {
+	return minQty;
+    }
+    
+    /**
+     * @param minQty the minQty to set
+     */
+    public void setMinQty(double minQty) {
+	this.minQty = minQty;
+    }
+    
     /**
      * @return the price
      */
@@ -165,6 +197,20 @@ public class OrderEvent implements DBObject<OrderEvent> {
      */
     public void setPrice(double price) {
 	this.price = price;
+    }
+    
+    /**
+     * @return the stopPrice
+     */
+    public double getStopPrice() {
+	return stopPrice;
+    }
+    
+    /**
+     * @param stopPrice the stopPrice to set
+     */
+    public void setStopPrice(double stopPrice) {
+	this.stopPrice = stopPrice;
     }
 
     /**
@@ -226,6 +272,20 @@ public class OrderEvent implements DBObject<OrderEvent> {
 
     public void setExecutionType(ExecutionTypes executionType) {
 	this.executionType = executionType;
+    }
+    
+    /**
+     * @param validity the validity to set
+     */
+    public void setValidity(OrderValidityTypes validity) {
+	this.validity = validity;
+    }
+    
+    /**
+     * @return the validity
+     */
+    public OrderValidityTypes getValidity() {
+	return validity;
     }
 
     /**

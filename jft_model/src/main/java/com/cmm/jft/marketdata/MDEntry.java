@@ -17,8 +17,7 @@ public class MDEntry {
     private double mdEntryPx;
     private int mdEntrySize;
     private int numberOfOrders;
-    private Date mdEntryDate;
-    private Date mdEntryTime;
+    private Date mdEntryDateTime;
     private char securityTradingStatus;
     private String orderID;
     private String tradeID;
@@ -30,6 +29,7 @@ public class MDEntry {
     /**
      * Instrument identification block
      */
+    private String symbol;
     private String securityID;
     private String securityIdSrc;
     private String securityExchange;
@@ -40,9 +40,7 @@ public class MDEntry {
      * 
      */
     public MDEntry() {
-	Date d = new Date();
-	this.mdEntryDate = d;
-	this.mdEntryTime = d;
+	this.mdEntryDateTime = new Date();
     }
     
     
@@ -82,17 +80,17 @@ public class MDEntry {
     public void setNumberOfOrders(int numberOfOrders) {
 	this.numberOfOrders = numberOfOrders;
     }
-    public Date getMdEntryDate() {
-	return mdEntryDate;
+    /**
+     * @return the mdEntryDateTime
+     */
+    public Date getMdEntryDateTime() {
+	return mdEntryDateTime;
     }
-    public void setMdEntryDate(Date mdEntryDate) {
-	this.mdEntryDate = mdEntryDate;
-    }
-    public Date getMdEntryTime() {
-	return mdEntryTime;
-    }
-    public void setMdEntryTime(Date mdEntryTime) {
-	this.mdEntryTime = mdEntryTime;
+    /**
+     * @param mdEntryDateTime the mdEntryDateTime to set
+     */
+    public void setMdEntryDateTime(Date mdEntryDateTime) {
+	this.mdEntryDateTime = mdEntryDateTime;
     }
     public char getSecurityTradingStatus() {
 	return securityTradingStatus;
@@ -153,6 +151,20 @@ public class MDEntry {
     }
     public void setSecurityExchange(String securityExchange) {
 	this.securityExchange = securityExchange;
+    }
+    
+    /**
+     * @return the symbol
+     */
+    public String getSymbol() {
+	return symbol;
+    }
+    
+    /**
+     * @param symbol the symbol to set
+     */
+    public void setSymbol(String symbol) {
+	this.symbol = symbol;
     }
 
 }

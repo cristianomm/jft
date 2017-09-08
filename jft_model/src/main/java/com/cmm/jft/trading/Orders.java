@@ -26,11 +26,25 @@ import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
 
+import quickfix.SessionID;
+
 /**
  *
  * <p>
  * <code>Orders</code>
  * </p>
+ * Any Order is identified by three identifiers when is created:
+ * <code>brokerID</code> Entering Firm: 
+ * <code>traderID</code> Entering Trader: 
+ * <code>senderLocation</code> Sender Location
+ * this fields are required and are used to identify market participants.
+ * 
+ * After that, orders can be identified as a group of orders related to an trader. 
+ * To address this, fields are used:  
+ * 
+ * <code>clOrdID</code>
+ * <code>origClOrdID</code>
+ * 
  * 
  * @author Cristiano M Martins
  * @version Aug 6, 2013 2:00:40 AM
@@ -40,7 +54,7 @@ import com.cmm.logging.Logging;
 @NamedQueries({
     @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
     @NamedQuery(name = "Orders.findByOrderID", query = "SELECT o FROM Orders o WHERE o.orderID = :orderID"),
-    })
+})
 public class Orders implements DBObject<Orders> {
     private static final long serialVersionUID = 1L;
 
@@ -53,7 +67,7 @@ public class Orders implements DBObject<Orders> {
 
     @Column(name = "secOrderID", nullable = false)
     private Long secOrderID;
-    
+
     /**
      * Unique identifier of the order as assigned by the market participant
      */
@@ -66,13 +80,25 @@ public class Orders implements DBObject<Orders> {
      */
     @Column(name="OrigClOrdID", length=50, updatable=false)
     private String origClOrdID;
-    
+
+
+    /**
+     * Identification of trader 
+     */
     @Column(name="traderID", updatable=false, length=50)
     private String traderID;
 
+    /**
+     * Broker's identification
+     */
     @Column(name="brokerID", length=5, updatable=false)
     private String brokerID;
-    
+
+    @Column(name="senderLocation", length=50, updatable=false)
+    private String senderLocation;
+
+    @Column(name="Account", length=10, updatable=false)
+    private String account;
 
     @Column(name = "Price", precision = 19, scale = 6)
     private double price;
@@ -83,19 +109,19 @@ public class Orders implements DBObject<Orders> {
     @Basic(optional = false)
     @Column(name = "Volume", nullable = false)
     private double volume;
-    
+
     @Column(name = "ExecutedVolume")
     private Integer executedVolume;
 
     @Column(name="LeavesVolume")
     private double leavesVolume;
-    
+
     @Column(name = "MaxFloor")
     private double maxFloor;
-    
+
     @Column(name = "MinVolume")
     private double minVolume;
-    
+
 
     // @Max(value=?) @Min(value=?)//if you know range of your decimal fields
     // consider using these annotations to enforce field validation
@@ -113,13 +139,9 @@ public class Orders implements DBObject<Orders> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDateTime;
 
-    @Column(name = "InsertDate", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date insertDate;
-
-    @Column(name = "InsertTime", nullable = false)
-    @Temporal(TemporalType.TIME)
-    private Date insertTime;
+    @Column(name = "InsertDateTime", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date insertDateTime;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "OrderStatus", nullable = false, length=50)
@@ -151,9 +173,6 @@ public class Orders implements DBObject<Orders> {
     @Column(name="Comment", length=250)
     private String comment;
 
-    @Column(name="senderLocation", length=50, updatable=false)
-    private String senderLocation;
-
     @JoinColumn(name = "securityID", referencedColumnName = "securityID", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Security securityID;
@@ -171,19 +190,24 @@ public class Orders implements DBObject<Orders> {
 
 
     /**
-     * @param limitPrice
+     * 
+     * @param orderID
+     * @param clOrdID
+     * @param security
+     * @param side
+     * @param price
      * @param volume
      * @param orderType
-     * @param tradeType
-     * @param side
-     * @throws OrderException 
+     * @param traderID
+     * @param brokerID
+     * @param senderLct
+     * @throws OrderException
      */
     public Orders(long orderID, String clOrdID, Security security,  Side side, double price, int volume, 
-	    OrderTypes orderType, TradeTypes tradeType) throws OrderException {
+	    OrderTypes orderType, String traderID, String brokerID, String senderLct) throws OrderException {
 
-
-
-	if(orderID <=0 || clOrdID == null || security == null || side == null){
+	if(clOrdID == null || security == null || side == null ||
+		traderID == null || brokerID == null || senderLct == null){
 	    throw new OrderException(
 		    String.format(
 			    "Invalid field value: orderID %4$d, clOrdID: %1$s, security: %2$s, side: %3$s", 
@@ -193,6 +217,10 @@ public class Orders implements DBObject<Orders> {
 	this.orderID = orderID;
 	this.secOrderID = orderID;
 	this.clOrdID = clOrdID;
+
+	this.traderID = traderID;
+	this.brokerID = brokerID;
+	this.senderLocation = senderLct;
 
 	switch(orderType){
 	case Limit:
@@ -298,11 +326,12 @@ public class Orders implements DBObject<Orders> {
 		this.orderStatus = status;
 		invalidState = false;
 	    }			
-
+	    break;
 	case NEW:
 	    if(status == OrderStatus.REPLACED || 
 	    status == OrderStatus.EXPIRED || 
 	    status == OrderStatus.FILLED || 
+	    status == OrderStatus.PARTIALLY_FILLED ||
 	    status == OrderStatus.CANCELED) {
 		this.orderStatus = status;
 		invalidState = false;
@@ -353,16 +382,16 @@ public class Orders implements DBObject<Orders> {
 	}
 
     }
-    
-    
-    
+
+
+
     /**
      * @return the orderID
      */
     public Long getOrderID() {
 	return orderID;
     }
-    
+
     /**
      * Adjusts orderID only if orderID has not been adjusted yet. 
      * @param orderID the orderID to set
@@ -373,28 +402,28 @@ public class Orders implements DBObject<Orders> {
 	}
     }
 
-    
+
     /**
      * @return the secOrderID
      */
     public Long getSecOrderID() {
 	return secOrderID;
     }
-    
+
     /**
      * @param secOrderID the secOrderID to set
      */
     public void setSecOrderID(Long secOrderID) {
 	this.secOrderID = secOrderID;
     }
-    
+
     /**
      * @return the traderID
      */
     public String getTraderID() {
 	return this.traderID;
     }
-    
+
     /**
      * @param traderID the traderID to set
      */
@@ -437,9 +466,19 @@ public class Orders implements DBObject<Orders> {
     public void setBrokerID(String brokerID) {
 	this.brokerID = brokerID;
     }
-    
-    
-    
+
+    /**
+     * @return the account
+     */
+    public String getAccount() {
+	return account;
+    }
+    /**
+     * @param account the account to set
+     */
+    public void setAccount(String account) {
+	this.account = account;
+    }
 
 
     public double getOrderValue() {
@@ -453,7 +492,7 @@ public class Orders implements DBObject<Orders> {
     /**
      * @return the price
      */
-    public Double getPrice() {
+    public double getPrice() {
 	return this.price;
     }
 
@@ -464,14 +503,14 @@ public class Orders implements DBObject<Orders> {
     public double getVolume() {
 	return volume;
     }
-    
+
     /**
      * @return the minVolume
      */
     public double getMinVolume() {
 	return minVolume;
     }
-    
+
     /**
      * @param minVolume the minVolume to set
      */
@@ -598,7 +637,7 @@ public class Orders implements DBObject<Orders> {
 	return this.senderLocation;
     }
 
-    
+
     /**
      * @param senderLocation the senderLocation to set
      */
@@ -640,32 +679,21 @@ public class Orders implements DBObject<Orders> {
     public void setVolume(double volume) {
 	this.volume = volume;
     }
-
+    
     /**
-     * @return the insertDate
+     * @return the insertDateTime
      */
-    public Date getInsertDate() {
-	return insertDate;
+    public Date getInsertDateTime() {
+	return insertDateTime;
     }
+    
     /**
-     * @return the insertTime
+     * @param insertDateTime the insertDateTime to set
      */
-    public Date getInsertTime() {
-	return insertTime;
+    public void setInsertDateTime(Date insertDateTime) {
+	this.insertDateTime = insertDateTime;
     }
-    /**
-     * @param insertDate the insertDate to set
-     */
-    public void setInsertDate(Date insertDate) {
-	this.insertDate = insertDate;
-    }
-
-    /**
-     * @param insertTime the insertTime to set
-     */
-    public void setInsertTime(Date insertTime) {
-	this.insertTime = insertTime;
-    }
+    
 
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
@@ -687,42 +715,24 @@ public class Orders implements DBObject<Orders> {
     }
 
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
-	return "Orders ["
-		+ (orderID != null ? "orderID=" + orderID + ", " : "")
-		+ "price="
-		+ price
-		+ ", stopPrice="
-		+ stopPrice
-		+ ", "
-		+ ("volume=" + volume + ", ")
-		+ "leavesVolume="
-		+ leavesVolume
-		+ ", "
-		+ "avgPrice=" + avgPrice + ", "
-		+ "protectionPrice="
-		+ protectionPrice
-		+ ", maxFloor="
-		+ maxFloor
-		+ ", "
-		+ (executedVolume != null ? "executedVolume=" + executedVolume
-			+ ", " : "")
-		+ (duration != null ? "duration=" + duration + ", " : "")
-		+ (orderDateTime != null ? "orderDateTime=" + new SimpleDateFormat("hh:MM:ss,S").format(orderDateTime)
-			+ ", " : "")
-		+ (orderStatus != null ? "orderStatus=" + orderStatus + ", "
-			: "")
-		+ (validityType != null ? "validityType=" + validityType + ", "
-			: "")
-		+ (orderType != null ? "orderType=" + orderType + ", " : "")
-		+ (tradeType != null ? "tradeType=" + tradeType + ", " : "")
-		+ (side != null ? "side=" + side + ", " : "")
-		+ (comment != null ? "comment=" + comment + ", " : "")
+	return "Orders [" + (orderID != null ? "orderID=" + orderID + ", " : "")
+		+ (secOrderID != null ? "secOrderID=" + secOrderID + ", " : "")
 		+ (clOrdID != null ? "clOrdID=" + clOrdID + ", " : "")
 		+ (origClOrdID != null ? "origClOrdID=" + origClOrdID + ", " : "")
-		+ (securityID != null ? "securityID=" + securityID + ", " : "")
-		+ (eventsList != null ? "eventsList=" + eventsList : "") + "]";
+		+ (traderID != null ? "traderID=" + traderID + ", " : "")
+		+ (brokerID != null ? "brokerID=" + brokerID + ", " : "") + (side != null ? "side=" + side + ", " : "")
+		+ (account != null ? "account=" + account + ", " : "") + "price=" + price + ", stopPrice=" + stopPrice
+		+ ", volume=" + volume + ", "
+		+ (executedVolume != null ? "executedVolume=" + executedVolume + ", " : "") + "leavesVolume="
+		+ leavesVolume + ", maxFloor=" + maxFloor + ", minVolume=" + minVolume + ", "
+		+ (orderDateTime != null ? "orderDateTime=" + orderDateTime + ", " : "")
+		+ (insertDateTime != null ? "insertDatetime=" + insertDateTime + ", " : "")
+		+ (orderStatus != null ? "orderStatus=" + orderStatus : "") + "]";
     }
 
     /**
@@ -785,6 +795,7 @@ public class Orders implements DBObject<Orders> {
     private void expireOrder(OrderEvent execution) throws OrderException {
 
 	setOrderStatus(OrderStatus.EXPIRED);
+	workingIndicator = WorkingIndicator.No_Working;
 	refreshOrder();
 
     }
@@ -799,6 +810,7 @@ public class Orders implements DBObject<Orders> {
     private void rejectOrder(OrderEvent execution) throws OrderException {
 
 	setOrderStatus(OrderStatus.REJECTED);
+	workingIndicator = WorkingIndicator.No_Working;
 	refreshOrder();
 
     }
@@ -811,16 +823,44 @@ public class Orders implements DBObject<Orders> {
 	    this.orderType = replace.getOrderType();
 	}
 
+	if(replace.getValidity() != null) {
+	    this.validityType = replace.getValidity();
+	}
+
+
+
 	if(replace.getPrice() > 0 && replace.getPrice() != price) {
-	    changePrice(replace.getPrice());
+	    this.price = replace.getPrice();
+	    this.orderDateTime = replace.getEventDateTime();
+	}
+
+	if(replace.getStopPrice() >0) {
+	    this.stopPrice = replace.getStopPrice();
+	    this.orderDateTime = replace.getEventDateTime();
 	}
 
 	if(replace.getVolume() >0 && replace.getVolume() != volume) {
-	    changeVolume(replace.getVolume());
+	    // verifica se o volume esta de acordo com o lote padrao do simbolo,
+	    // caso n esteja, lanca exception
+	    if (volume < securityID.getSecurityInfoID().getMinVolume() || 
+		    volume > securityID.getSecurityInfoID().getMaxVolume()) {
+		throw new OrderException("Invalid Volume:" + volume);
+	    }else {
+		if(replace.getVolume() > this.volume) {
+		    this.orderDateTime = replace.getEventDateTime();
+		}
+		this.volume = replace.getVolume();
+	    }
 	}
+	
+	if(replace.getMinQty() > 0 || (replace.getMinQty() != minVolume && minVolume >0)) {
+	    this.minVolume = replace.getMinQty();
+	    this.orderDateTime = replace.getEventDateTime();
+	}
+	
 	refreshOrder();
     }
-    
+
     private void restateOrder(OrderEvent restate) {
 	this.secOrderID++;
 	this.orderDateTime = restate.getExecutionDateTime();
@@ -831,7 +871,6 @@ public class Orders implements DBObject<Orders> {
 	if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED || orderStatus == OrderStatus.REPLACED){
 	    //volume executado eh menor que o volume total e menor que o volume atual
 	    if(execution.getVolume() <= volume && execution.getVolume() <= (volume-executedVolume)){
-		eventsList.add(execution);
 		//ajusta o estado da ordem
 		refreshOrder();
 	    } else {
@@ -845,52 +884,10 @@ public class Orders implements DBObject<Orders> {
     }
 
     private void cancelTrade(OrderEvent execution) throws OrderException {
-	setOrderStatus(OrderStatus.NEW);
+	setOrderStatus(OrderStatus.CANCELED);
 	refreshOrder();
     }
 
-    private boolean changePrice(double price) throws OrderException {
-	boolean ret = false;
-	try {
-	    OrderEvent oe = new OrderEvent(ExecutionTypes.REPLACE, new Date(), 0, price);
-	    oe.setMessage(String.format("Price replaced from %.4f to %.4f", this.price, price));
-
-	    setOrderStatus(OrderStatus.REPLACED);
-	    this.price = price;
-
-	    eventsList.add(oe);
-	    ret = true;
-	}catch(OrderException e) {
-	    throw e;
-	}
-
-	return ret;
-    }
-
-    private boolean changeVolume(double volume) throws OrderException {
-	boolean ret = false;
-	try {
-	    // verifica se o volume esta de acordo com o lote padrao do simbolo,
-	    // caso n esteja, lanca exception
-	    if (volume < securityID.getSecurityInfoID().getMinVolume() || 
-		    volume > securityID.getSecurityInfoID().getMaxVolume()) {
-		throw new OrderException("Invalid Volume:" + volume);
-	    }
-
-	    OrderEvent oe = new OrderEvent(ExecutionTypes.REPLACE, new Date(), 0, volume);
-	    oe.setMessage(String.format("Volume replaced from %.3f to %.3f", this.volume, volume));
-	    eventsList.add(oe);
-
-	    setOrderStatus(OrderStatus.REPLACED);
-	    this.volume = volume;
-	    ret = true;
-	}catch(OrderException e) {
-	    throw e;
-	}
-
-	return ret;
-    }
-    
     public void changeToMarket() throws OrderException {
 	setOrderType(OrderTypes.Market);
 	setPrice(0);
