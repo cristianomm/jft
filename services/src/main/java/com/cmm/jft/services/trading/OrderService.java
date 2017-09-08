@@ -35,6 +35,7 @@ public class OrderService {
     private long orderID;
     private String brokerID;
     private String traderID;
+    private String senderLocation;
     private String clOrderIDPrefix;
 
     private static OrderService instance;
@@ -42,6 +43,7 @@ public class OrderService {
     private OrderService() {
 	this.brokerID = Configuration.getInstance().getConfiguration("brokerID").toString();
 	this.traderID = Configuration.getInstance().getConfiguration("traderID").toString();
+	this.senderLocation = Configuration.getInstance().getConfiguration("senderLocation").toString();
 	this.clOrderIDPrefix = Configuration.getInstance().getConfiguration("clOrderIDPrefix").toString();
 
     }
@@ -71,11 +73,10 @@ public class OrderService {
 	Orders ordr = null;
 
 	String clOrdID = String.format("%1$s.%2$s-%3$06d", clOrderIDPrefix, brokerID, orderID++);
-	ordr = new Orders(clOrdID, security, side, price, volume, orderType, tradeType);
-
-	ordr.setBrokerID(brokerID);
-	ordr.setTraderID(traderID);
-
+	
+	ordr = new Orders(0, clOrdID, security, side, price, volume, orderType, traderID, brokerID, senderLocation);
+	ordr.setTradeType(tradeType);
+	
 	return ordr;
     }
 

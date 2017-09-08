@@ -147,7 +147,6 @@ public class OrderManagerForm extends AbstractForm {
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
 	}
 
-
     }
 
 

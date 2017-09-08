@@ -82,6 +82,7 @@ import com.cmm.jft.messaging.MessageCounter;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
+import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.RejectTypes;
 
 
@@ -429,11 +430,14 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	    cancelReject.set(new SecondaryClOrdID(order.getSecOrderID().toString()));
 	    cancelReject.set(new ClOrdID(order.getClOrdID()));
 	    cancelReject.set(new OrigClOrdID(order.getOrigClOrdID()));
-	    cancelReject.set(new OrdStatus(order.getOrderStatus().getValue()));
+	    
 	    cancelReject.set(new CxlRejResponseTo(rejectTypes.getValue()));
 	    if(rejReason>0) {
 		cancelReject.set(new CxlRejReason(rejReason));
 		cancelReject.set(new Text(message));
+		cancelReject.set(new OrdStatus(OrderStatus.REJECTED.getValue()));
+	    }else {
+		cancelReject.set(new OrdStatus(order.getOrderStatus().getValue()));
 	    }
 	    cancelReject.setString(55, order.getSecurityID().getSymbol());
 	    addIdFields(cancelReject, order.getTraderID(), order.getBrokerID());

@@ -47,7 +47,7 @@ public interface MarketDataMessageEncoder extends MessageEncoder {
     
     MarketDataIncrementalRefresh.NoMDEntries tradeEntryInc(
 	    UpdateActions updateAction, Security security, String buyer, String seller, double price,
-	    int size, Date tradeDate, Date tradeTime, String tradeID, int tradeVolume, int rptSeq);
+	    int size, Date tradeDateTime, String tradeID, int tradeVolume, int rptSeq);
     MarketDataIncrementalRefresh.NoMDEntries openPriceEntryInc(UpdateActions updateAction, Security security, double openPrice, int rptSeq);
     MarketDataIncrementalRefresh.NoMDEntries closePriceEntryInc(Security security, double closePrice, int rptSeq);
     MarketDataIncrementalRefresh.NoMDEntries highPriceEntryInc(UpdateActions updateAction, Security security, double highPrice, int rptSeq);
@@ -59,9 +59,9 @@ public interface MarketDataMessageEncoder extends MessageEncoder {
     Message mdIncrementalRefresh(Queue<MarketDataIncrementalRefresh.NoMDEntries> entries);
     
     
-    MarketDataSnapshotFullRefresh.NoMDEntries bidEntrySnp(double price, int volume, Date insertDt, Date insertTime, String orderID, String brokerID, int positionNo);
-    MarketDataSnapshotFullRefresh.NoMDEntries offerEntrySnp(double price, int volume, Date insertDt, Date insertTime, String orderID, String brokerID, int positionNo);
-    MarketDataSnapshotFullRefresh.NoMDEntries tradeEntrySnp(String buyer, String seller, double price, int volume, Date tradeDate, Date tradeTime, String tradeID, int tradeVolume);
+    MarketDataSnapshotFullRefresh.NoMDEntries bidEntrySnp(double price, int volume, Date insertDtTime, String orderID, String brokerID, int positionNo);
+    MarketDataSnapshotFullRefresh.NoMDEntries offerEntrySnp(double price, int volume, Date insertDtTime, String orderID, String brokerID, int positionNo);
+    MarketDataSnapshotFullRefresh.NoMDEntries tradeEntrySnp(String buyer, String seller, double price, int volume, Date tradeDateTime, String tradeID, int tradeVolume);
     MarketDataSnapshotFullRefresh.NoMDEntries openPriceEntrySnp(double openPrice);
     MarketDataSnapshotFullRefresh.NoMDEntries closePriceEntrySnp(double closePrice);
     MarketDataSnapshotFullRefresh.NoMDEntries highPriceEntrySnp(double highPrice);
