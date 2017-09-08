@@ -170,7 +170,7 @@ public class EngineConnector extends MessageCracker implements Application, Rout
     @Override
     public void onMessage(ExecutionReport message, SessionID sessionID)
 	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-	// TODO Auto-generated method stub
+	System.out.println(message);
 
     }
 
@@ -181,7 +181,7 @@ public class EngineConnector extends MessageCracker implements Application, Rout
     @Override
     public void onMessage(OrderCancelReject message, SessionID sessionID)
 	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-	// TODO Auto-generated method stub
+	System.out.println(message);
 
     }
 
