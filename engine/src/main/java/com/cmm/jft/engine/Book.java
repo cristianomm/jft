@@ -384,7 +384,7 @@ public class Book implements MessageSender {
 		orderMatcher.cancelOrder(bookOrder, CancelTypes.Requested);
 	    }else {
 		sendMessage(((Fix44EngineMessageEncoder)MessageEncoder.getEncoder(null)).
-			orderCancelReject(order, 989001, ErrorCodes.getInstance().getMessage(989001))
+			orderCancelReject(order, RejectTypes.OrderCancelRequest, 989001, ErrorCodes.getInstance().getMessage(989001))
 			, SessionRepository.getInstance().getTraderSession(order.getTraderID()));
 	    }
 
@@ -411,37 +411,60 @@ public class Book implements MessageSender {
 	    }
 
 	    if(bookOrder != null) {		
+		//verifica a mudanca a realizar
+		/*
+		 * Caso a alteracao cause perda de prioridade:
+		 * -remove a ordem do book
+		 * -gera umdf
+		 * -ajusta os valores
+		 * -adiciona novamente no book
+		 * -gera umdf
+		 */
 		
-	    }else {
+		/*
+		 * Caso a alteracao mantenha a prioridade
+		 * -ajusta os valores
+		 * -gera umdf da ordem alterada
+		 */
+		
+		//price and stopLimitPrice
+		if(order.getPrice() != bookOrder.getPrice()) {
+		    
+		}
+		//stopPrice
+		if(order.getStopPrice() != bookOrder.getStopPrice()) {
+		    
+		}
+		
+		
+		//increase Qty
+		if(order.getVolume() > bookOrder.getVolume()) {
+		    
+		}
+		//decrease Qty
+		else if(order.getVolume() < bookOrder.getVolume()) {
+		    
+		}
+		
+		//min Qty
+		if(order.getMinVolume() != bookOrder.getMinVolume()) {
+		    
+		}
+		//order type
+		if(order.getOrderType() != bookOrder.getOrderType()) {
+		    
+		}
+		//validity
+		if(order.getValidityType() != bookOrder.getValidityType()) {
+		    
+		}
+		
+	    }else {//ordem desconhecida
 		sendMessage(((Fix44EngineMessageEncoder)MessageEncoder.getEncoder(null)).
 			orderCancelReject(order, RejectTypes.OrderCancelReplaceRequest, 
 				989001, ErrorCodes.getInstance().getMessage(989001))
 			, SessionRepository.getInstance().getTraderSession(order.getTraderID()));
 	    }
-	    
-	    adjustOrderParameters(ordr);
-	    if (ordr.getSide() == Side.BUY) {
-		//buyTable.update(ordr);
-	    } else {
-		//entries = sellTable.update(ordr);
-	    }
-
-	    sendExecutionReport(ordr, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000);
-
-	    MDEntry[] entries = null;
-	    if (ordr.getSide() == Side.BUY) {
-		//entries = buyTable.update(ordr);
-	    } else {
-		//entries = sellTable.update(ordr);
-	    }
-
-	    if(entries == null) {
-		sendExecutionReport(ordr, ExecutionTypes.REJECTED, errCodes.getMessage(7000), 7000);
-	    }
-
-	    // TODO: enviar o estado atual do book com o que mudou do estado anterior
-
-
 
 	}catch(OrderException e) {
 	    Logging.getInstance().log(getClass(), e, Level.ERROR);
