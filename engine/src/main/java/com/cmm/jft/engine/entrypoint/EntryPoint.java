@@ -5,6 +5,8 @@ package com.cmm.jft.engine.entrypoint;
 
 import java.util.HashMap;
 
+import org.apache.log4j.Level;
+
 import com.cmm.jft.engine.BookRepository;
 import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.engine.message.EngineHandler;
@@ -14,6 +16,7 @@ import com.cmm.jft.messaging.enums.FIXProtocols;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.messaging.handlers.MessageHandler;
 import com.cmm.jft.trading.enums.StreamTypes;
+import com.cmm.logging.Logging;
 
 import quickfix.Application;
 import quickfix.ConfigError;
@@ -77,6 +80,8 @@ public class EntryPoint extends MessageCracker implements Application {
      */
     public void onLogon(SessionID sessionId) {
 	if (verifyLogon(sessionId)) {
+	    System.out.println("onLogon:" + sessionId.getTargetCompID());
+	    Logging.getInstance().log(getClass(), "onLogon: " + sessionId.getTargetCompID(), Level.INFO);
 	    SessionRepository.getInstance().addSession(StreamTypes.ENTRYPOINT, sessionId);
 	}
 
@@ -88,6 +93,7 @@ public class EntryPoint extends MessageCracker implements Application {
      * @see quickfix.Application#onLogout(quickfix.SessionID)
      */
     public void onLogout(SessionID sessionId) {
+	Logging.getInstance().log(getClass(), "onLogout: " + sessionId.getTargetCompID(), Level.INFO);
 	SessionRepository.getInstance().removeSession(StreamTypes.ENTRYPOINT, sessionId);
     }
 

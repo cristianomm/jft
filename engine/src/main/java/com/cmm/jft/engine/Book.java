@@ -156,7 +156,7 @@ public class Book implements MessageSender {
 
 	this.bandLimits = new BandLimits(0, auctionBand, rejectHiBand, rejectLoBand, qtyLimit);
 
-	this.umdf = new MarketDataChannel(security);
+	this.umdf = MarketDataChannel.getInstance();
 	this.snpr = SnapshotRecoveryChannel.getInstance();
 
 	this.orderMatcher = new OrderMatcher(this.protectionLevel, umdf, buyTable, sellTable);
@@ -306,9 +306,7 @@ public class Book implements MessageSender {
 	order.setOrderStatus(OrderStatus.SUSPENDED);
 
 	//ajusta parametros da ordem no recebimento da oferta
-	Date insertDt = new Date();
-	order.setInsertDate(insertDt);
-	order.setInsertTime(insertDt);
+	order.setInsertDateTime(new Date());
 
 	order.setOrderID(orderIDs.nextLong());
     }
@@ -399,7 +397,7 @@ public class Book implements MessageSender {
     public void replaceOrder(Orders order) {
 	try {
 	    umdf.openNewPacket();
-	    
+
 	    Orders bookOrder = null;
 	    OrdersTable table = order.getSide() == Side.BUY?buyTable:sellTable;
 
@@ -420,45 +418,66 @@ public class Book implements MessageSender {
 		 * -adiciona novamente no book
 		 * -gera umdf
 		 */
-		
+
 		/*
 		 * Caso a alteracao mantenha a prioridade
 		 * -ajusta os valores
 		 * -gera umdf da ordem alterada
 		 */
-		
+
+		OrderEvent change = new OrderEvent();
+		change.setExecutionType(ExecutionTypes.REPLACE);
+
+
 		//price and stopLimitPrice
 		if(order.getPrice() != bookOrder.getPrice()) {
-		    
+		    change.setPrice(order.getPrice());
 		}
 		//stopPrice
 		if(order.getStopPrice() != bookOrder.getStopPrice()) {
-		    
+		    change.setPrice(order.getStopPrice());
 		}
-		
-		
+
+
 		//increase Qty
 		if(order.getVolume() > bookOrder.getVolume()) {
-		    
+		    change.setVolume(order.getVolume());
 		}
 		//decrease Qty
 		else if(order.getVolume() < bookOrder.getVolume()) {
-		    
+		    change.setVolume(order.getVolume());
 		}
-		
+
 		//min Qty
-		if(order.getMinVolume() != bookOrder.getMinVolume()) {
-		    
+		if(order.getMinVolume() >=0 && order.getMinVolume() != bookOrder.getMinVolume()) {
+		    change.setMinQty(order.getMinVolume());
 		}
 		//order type
-		if(order.getOrderType() != bookOrder.getOrderType()) {
-		    
+		if(order.getOrderType() != null && order.getOrderType() != bookOrder.getOrderType()) {
+		    change.setOrderType(order.getOrderType());
 		}
 		//validity
-		if(order.getValidityType() != bookOrder.getValidityType()) {
-		    
+		if(order.getValidityType() != null && order.getValidityType() != bookOrder.getValidityType()) {
+		    change.setValidity(order.getValidityType());
 		}
-		
+		Date priority = bookOrder.getOrderDateTime();
+		bookOrder.addExecution(change);
+
+		//caso a ordem tenha a prioridade alterada
+		if(bookOrder.getOrderDateTime().after(priority)) {
+		    //altera a prioridade da ordem, remove do book e re-insere
+		    umdf.informDeleteOrder(bookOrder, table.getOrderPosition(bookOrder.getOrderID()));
+		    table.remove(bookOrder.getOrderID());
+		    
+		    table.add(bookOrder);
+		    umdf.informNewOrder(bookOrder, table.getOrderPosition(bookOrder.getOrderID()), null, 0);
+		    
+		}else {
+		    //envia a alteracao da ordem
+		    umdf.informChangeOrder(bookOrder, table.getOrderPosition(bookOrder.getOrderID()));
+		}
+
+
 	    }else {//ordem desconhecida
 		sendMessage(((Fix44EngineMessageEncoder)MessageEncoder.getEncoder(null)).
 			orderCancelReject(order, RejectTypes.OrderCancelReplaceRequest, 

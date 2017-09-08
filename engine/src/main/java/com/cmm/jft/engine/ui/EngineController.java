@@ -89,6 +89,8 @@ public class EngineController implements Initializable {
     private NewsService newsService;
     
     
+    
+    
 
     /*
      * (non-Javadoc)

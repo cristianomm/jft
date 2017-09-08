@@ -205,18 +205,15 @@ public class OrderMatcher implements MessageSender {
 	}
 	ordr.addExecution(oe);
 	int orderPos = table.getOrderPosition(ordr.getOrderID());
-	int pricePos = table.getPricePosition(ordr.getPrice());
+	//int pricePos = table.getPricePosition(ordr.getPrice());
 	
 	//remove da tabela do book
 	table.remove(ordr.getOrderID());
 
-	Summary sm = table.findSummary(ordr.getPrice());
-	UpdateActions mbpAction = sm == null || sm.getOrderCount() == 0? UpdateActions.Delete:UpdateActions.Change;
+	//Summary sm = table.findSummary(ordr.getPrice());
+	//UpdateActions mbpAction = sm == null || sm.getOrderCount() == 0? UpdateActions.Delete:UpdateActions.Change;
 	
-	
-	umdf.informDeleteOrder(
-		umdf.createMBOEntry(ordr, UpdateActions.Delete, orderPos), 
-		umdf.createMBPEntry(mbpAction, sm, pricePos));
+	umdf.informDeleteOrder(ordr, orderPos);
 
     }
 
@@ -237,6 +234,7 @@ public class OrderMatcher implements MessageSender {
 		bookOrder.getOrderStatus() == OrderStatus.PARTIALLY_FILLED || 
 		bookOrder.getOrderStatus() == OrderStatus.REPLACED)
 		) {
+	    String symbol = bookOrder.getSecurityID().getSymbol();
 	    OrderEvent orderFill = new OrderEvent(ExecutionTypes.TRADE, qtyToFill, priceToFill);
 	    OrderEvent bookFill = new OrderEvent(ExecutionTypes.TRADE, qtyToFill, priceToFill);
 	    try {
@@ -253,12 +251,12 @@ public class OrderMatcher implements MessageSender {
 
 		    if(highPrice < priceToFill){
 			highPrice = priceToFill;
-			umdf.informHighPrice(highPrice);
+			umdf.informHighPrice(symbol, highPrice);
 		    }
 
 		    if(lowPrice < priceToFill){
 			lowPrice = priceToFill;
-			umdf.informLowPrice(lowPrice);
+			umdf.informLowPrice(symbol, lowPrice);
 		    }
 
 		    //orderFill.setCumQty(newOrder.getExecutedVolume());
@@ -280,6 +278,7 @@ public class OrderMatcher implements MessageSender {
 
 		    MDEntry trade = new MDEntry();
 		    trade.setTradeID(tradeIds.nextNumericString());
+		    trade.setSymbol(symbol);
 		    if(newOrder.getSide() == Side.BUY){
 			trade.setMdEntryBuyer(newOrder.getBrokerID());
 			trade.setMdEntrySeller(bookOrder.getBrokerID());
@@ -294,8 +293,8 @@ public class OrderMatcher implements MessageSender {
 
 		    // cria um evento de trade e um de vwap para enviar o MD
 		    umdf.informTrade(trade);
-		    umdf.informVWAPPrice(vwapPrice);
-		    umdf.informTradeVolume(totalTrades, financialVolume, totalVolume);
+		    umdf.informVWAPPrice(symbol, vwapPrice);
+		    umdf.informTradeVolume(symbol, totalTrades, financialVolume, totalVolume);
 		    fill = true;
 		} else {
 		    fill = false;

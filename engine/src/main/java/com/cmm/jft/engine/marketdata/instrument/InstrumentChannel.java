@@ -119,7 +119,7 @@ public class InstrumentChannel extends MessageCracker implements Application {
      */
     @Override
     public void onCreate(SessionID sessionId) {
-	System.out.println("oncreate: Instrument Channel");
+	System.out.println("onCreate: Instrument Channel");
 	// Session.lookupSession(sessionId).generateHeartbeat();
     }
 
@@ -130,8 +130,8 @@ public class InstrumentChannel extends MessageCracker implements Application {
      */
     @Override
     public void onLogon(SessionID sessionId) {
-	System.out.println("onLogon: " + sessionId.getSenderCompID());
-	Logging.getInstance().log(getClass(), "onLogon: " + sessionId.getSenderCompID(), Level.INFO);
+	System.out.println("onLogon: " + sessionId.getTargetCompID());
+	Logging.getInstance().log(getClass(), "onLogon: " + sessionId.getTargetCompID(), Level.INFO);
 	SessionRepository.getInstance().addSession(StreamTypes.INSTRUMENT, sessionId);
 	//MessageRepository.getInstance().addMessage(Fix50SP2MDMessageEncoder.getInstance().sequenceReset(), sessionId);
     }
@@ -143,7 +143,7 @@ public class InstrumentChannel extends MessageCracker implements Application {
      */
     @Override
     public void onLogout(SessionID sessionId) {
-	Logging.getInstance().log(getClass(), "onLogout: " + sessionId.getSenderCompID(), Level.INFO);
+	Logging.getInstance().log(getClass(), "onLogout: " + sessionId.getTargetCompID(), Level.INFO);
 	SessionRepository.getInstance().removeSession(StreamTypes.INSTRUMENT, sessionId);
     }
 

@@ -31,7 +31,7 @@ public class MarketDataService extends EngineService {
 	    SessionSettings settings = new SessionSettings(
 		    Thread.currentThread().getContextClassLoader().getResourceAsStream("MarketDataService.cfg"));
 	    log = LoggerFactory.getLogger(MarketDataService.class);
-	    init(settings, new EntryPoint(settings));
+	    init(settings, MarketDataChannel.getInstance());
 	} catch (ConfigError | FieldConvertError | JMException e) {
 	    log.error(e.getMessage());
 	    e.printStackTrace();

@@ -92,8 +92,7 @@ public class BookTable {
 	}else{
 	    mboEntry.setMdEntrySeller(order.getBrokerID());
 	}
-	mboEntry.setMdEntryDate(order.getInsertDate());
-	mboEntry.setMdEntryTime(order.getInsertTime());
+	mboEntry.setMdEntryDateTime(order.getInsertDateTime());
 	mboEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
 
 	if(updtAction != null) {
@@ -117,8 +116,7 @@ public class BookTable {
 	    
 	    Summary sum = orders.findSummary(order.getPrice());
 	    MDEntry mbpEntry = new MDEntry();
-	    mbpEntry.setMdEntryDate(order.getInsertDate());
-	    mbpEntry.setMdEntryTime(order.getInsertTime());
+	    mbpEntry.setMdEntryDateTime(order.getInsertDateTime());
 	    mbpEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
 	    mbpEntry.setMdUpdateAction(UpdateActions.New);
 	    mbpEntry.setMdEntryPx(order.getPrice());
@@ -146,8 +144,7 @@ public class BookTable {
 
 	    //--------------------------------------------------MBP
 	    MDEntry mbpEntry = new MDEntry();
-	    mbpEntry.setMdEntryDate(order.getInsertDate());
-	    mbpEntry.setMdEntryTime(order.getInsertTime());
+	    mbpEntry.setMdEntryDateTime(order.getInsertDateTime());
 	    mbpEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
 	    mbpEntry.setMdUpdateAction(UpdateActions.Delete);
 	    mbpEntry.setMdEntryPosNo(orders.getPricePosition(order.getPrice()));
@@ -168,8 +165,7 @@ public class BookTable {
 	    mbpEntry.setMdEntryPx(sum.getPrice());
 	    mbpEntry.setMdEntrySize(sum.getOrderVolume());
 	    mbpEntry.setNumberOfOrders(sum.getOrderCount());
-	    mbpEntry.setMdEntryDate(order.getInsertDate());
-	    mbpEntry.setMdEntryTime(order.getInsertTime());
+	    mbpEntry.setMdEntryDateTime(order.getInsertDateTime());
 	    mbpEntry.setMdEntryType(side == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
 	    mbpEntry.setMdUpdateAction(UpdateActions.Change);
 	    mbpEntry.setMdEntryPosNo(orders.getPricePosition(order.getPrice()));

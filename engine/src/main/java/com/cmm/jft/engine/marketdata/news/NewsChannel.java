@@ -5,11 +5,14 @@ package com.cmm.jft.engine.marketdata.news;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
+import org.apache.log4j.Level;
+
 import com.cmm.jft.data.files.CSV;
 import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
 import com.cmm.jft.trading.enums.StreamTypes;
+import com.cmm.logging.Logging;
 
 import quickfix.Application;
 import quickfix.DoNotSend;
@@ -127,7 +130,7 @@ public class NewsChannel extends MessageCracker implements Application {
      */
     @Override
     public void onLogon(SessionID sessionId) {
-	System.out.println("onLogon: " + sessionId.getSenderCompID());
+	System.out.println("onLogon: " + sessionId.getTargetCompID());
 	SessionRepository.getInstance().addSession(StreamTypes.NEWS, sessionId);
 	MessageRepository.getInstance().addMessage(Fix50SP2MDMessageEncoder.getInstance().sequenceReset(), sessionId);
 	
@@ -157,6 +160,7 @@ public class NewsChannel extends MessageCracker implements Application {
      */
     @Override
     public void onLogout(SessionID sessionId) {
+	Logging.getInstance().log(getClass(), "onLogout: " + sessionId.getTargetCompID(), Level.INFO);
 	SessionRepository.getInstance().removeSession(StreamTypes.NEWS, sessionId);
     }
 

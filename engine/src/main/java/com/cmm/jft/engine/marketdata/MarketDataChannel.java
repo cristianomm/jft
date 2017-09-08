@@ -5,6 +5,7 @@ package com.cmm.jft.engine.marketdata;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
@@ -20,6 +21,7 @@ import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.MessageSender;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
 import com.cmm.jft.security.Security;
+import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.MDEntryTypes;
@@ -28,9 +30,17 @@ import com.cmm.jft.trading.enums.StreamTypes;
 import com.cmm.jft.trading.enums.UpdateActions;
 import com.cmm.logging.Logging;
 
+import quickfix.Application;
+import quickfix.DoNotSend;
+import quickfix.FieldNotFound;
 import quickfix.Group;
+import quickfix.IncorrectDataFormat;
+import quickfix.IncorrectTagValue;
 import quickfix.Message;
+import quickfix.MessageCracker;
+import quickfix.RejectLogon;
 import quickfix.SessionID;
+import quickfix.UnsupportedMessageType;
 import quickfix.field.NoMDEntries;
 import quickfix.field.SecurityExchange;
 import quickfix.field.SecurityID;
@@ -38,6 +48,7 @@ import quickfix.field.SecurityIDSource;
 import quickfix.fix44.MarketDataIncrementalRefresh;
 import quickfix.fix44.MarketDataSnapshotFullRefresh;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import sun.security.jca.GetInstance;
 
 /**
  * <p>
@@ -48,7 +59,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * @version Feb 26, 2016 3:57:55 PM
  *
  */
-public class MarketDataChannel implements MessageSender {
+public class MarketDataChannel extends MessageCracker implements Application, MessageSender {
 
 
     private enum IncrementalStates{
@@ -57,11 +68,10 @@ public class MarketDataChannel implements MessageSender {
 
     private int openCont;
     private int sequence;
-    private IdGenerator idGen;
-    private Security security;
-    private SecurityID securityID;
-    private SecurityIDSource securityIDSrc;
-    private SecurityExchange exchangeID;
+//    private IdGenerator idGen;
+//    private SecurityID securityID;
+//    private SecurityIDSource securityIDSrc;
+//    private SecurityExchange exchangeID;
 
     private IncrementalStates packState;
 
@@ -70,22 +80,38 @@ public class MarketDataChannel implements MessageSender {
     private static SimpleDateFormat stf = new SimpleDateFormat("HH:mm:ss");
 
     private MarketDataMessageEncoder encoder;
-
+    
+    private HashMap<String, IdGenerator> generators;
+    
     private LinkedBlockingQueue<MarketDataIncrementalRefresh.NoMDEntries> mbpPackets;
     private LinkedBlockingQueue<MarketDataIncrementalRefresh.NoMDEntries> mboPackets;
 
-    public MarketDataChannel(Security security) {
+    private static MarketDataChannel instance;
+    
+    private MarketDataChannel() {
 	encoder = Fix50SP2MDMessageEncoder.getInstance();
-	this.security = security;
-	securityID = new SecurityID(security.getSecurityID()+"");
-	securityIDSrc = new SecurityIDSource(security.getSecurityIDSrc()+"");
-	exchangeID = new SecurityExchange(security.getSecurityExchange());
+//	this.security = security;
+//	securityID = new SecurityID(security.getSecurityID()+"");
+//	securityIDSrc = new SecurityIDSource(security.getSecurityIDSrc()+"");
+//	exchangeID = new SecurityExchange(security.getSecurityExchange());
 
 	packState = IncrementalStates.OPEN;
 	mbpPackets = new LinkedBlockingQueue<>(1000);
 	mboPackets = new LinkedBlockingQueue<>(1000);
 
-	idGen = new IdGenerator(security, new Date());
+	generators = new HashMap<>();
+	
+	for(Security security : SecurityService.getInstance().getSecurityList()) {
+	    generators.put(security.getSymbol(), new IdGenerator(security, new Date()));
+	}
+	
+    }
+    
+    public static synchronized MarketDataChannel getInstance() {
+	if(instance == null) {
+	    instance = new MarketDataChannel();
+	}
+	return instance;
     }
 
 
@@ -118,6 +144,13 @@ public class MarketDataChannel implements MessageSender {
 	openCont--;
     }
 
+    
+    private int getRptSeq(String symbol) {
+	if(generators.containsKey(symbol)) {
+	    return generators.get(symbol).nextInt();
+	}
+	return -1;
+    }
 
     public MDEntry createMBOEntry(Orders order, UpdateActions updtAction, int position){
 	MDEntry mboEntry = new MDEntry();
@@ -129,8 +162,7 @@ public class MarketDataChannel implements MessageSender {
 	    }else{
 		mboEntry.setMdEntrySeller(order.getBrokerID());
 	    }
-	    mboEntry.setMdEntryDate(order.getInsertDate());
-	    mboEntry.setMdEntryTime(order.getInsertTime());
+	    mboEntry.setMdEntryDateTime(order.getInsertDateTime());
 	    mboEntry.setMdEntryType(order.getSide() == Side.BUY? MDEntryTypes.BID: MDEntryTypes.OFFER);
 
 	    //para MD Inc refresh
@@ -164,14 +196,16 @@ public class MarketDataChannel implements MessageSender {
 	    try {
 		MarketDataIncrementalRefresh.NoMDEntries entry = null;
 		if(order.getSide() == Side.BUY) {
-		    mboPackets.put(encoder.bidEntryIncMBO(order, posMBO, UpdateActions.New, idGen.nextInt()));
+		    mboPackets.put(encoder.bidEntryIncMBO(order, posMBO, UpdateActions.New, 
+			    getRptSeq(order.getSecurityID().getSymbol())));
 		    /*
 		    mbpPackets.put(encoder.bidEntryIncMBP(
 			    summary.getPrice(), summary.getOrderVolume(), summary.getOrderCount(), 
 			    order.getSecurityID(), posMBO, UpdateActions.New, idGen.actualInt())
 			    );*/
 		}else {
-		    mboPackets.put(encoder.offerEntryIncMBO(order, posMBO, UpdateActions.New, idGen.nextInt()));
+		    mboPackets.put(encoder.offerEntryIncMBO(order, posMBO, UpdateActions.New, 
+			    getRptSeq(order.getSecurityID().getSymbol())));
 		    /*
 		    mbpPackets.put(encoder.bidEntryIncMBP(
 			    summary.getPrice(), summary.getOrderVolume(), summary.getOrderCount(), 
@@ -185,20 +219,53 @@ public class MarketDataChannel implements MessageSender {
 	}
     }
 
-    public void informChangeOrder(MDEntry mboInfo, MDEntry mbpInfo) {
+    public void informChangeOrder(Orders order, int posMBO) {
+	try {
+	    if(order.getSide() == Side.BUY) {
+		mboPackets.put(encoder.bidEntryIncMBO(order, posMBO, UpdateActions.Change, 
+			getRptSeq(order.getSecurityID().getSymbol())));
+		/*
+	    mbpPackets.put(encoder.bidEntryIncMBP(
+		    summary.getPrice(), summary.getOrderVolume(), summary.getOrderCount(), 
+		    order.getSecurityID(), posMBO, UpdateActions.New, idGen.actualInt())
+		    );*/
+	    }else {
+		mboPackets.put(encoder.offerEntryIncMBO(order, posMBO, UpdateActions.Change, 
+			getRptSeq(order.getSecurityID().getSymbol())));
+		/*
+	    mbpPackets.put(encoder.bidEntryIncMBP(
+		    summary.getPrice(), summary.getOrderVolume(), summary.getOrderCount(), 
+		    order.getSecurityID(), posMBO, UpdateActions.New, idGen.actualInt())
+		    );*/
+	    }
+	}catch(InterruptedException e) {
 
+	}
     }
 
 
-    public void informDeleteOrder(MDEntry mboInfo, MDEntry mbpInfo){
+    public void informDeleteOrder(Orders order, int posMBO){
+	try {
+	    if(order.getSide() == Side.BUY) {
+		mboPackets.put(encoder.bidEntryIncMBO(order, posMBO, UpdateActions.Delete, 
+			getRptSeq(order.getSecurityID().getSymbol())));
+		/*
+	    mbpPackets.put(encoder.bidEntryIncMBP(
+		    summary.getPrice(), summary.getOrderVolume(), summary.getOrderCount(), 
+		    order.getSecurityID(), posMBO, UpdateActions.New, idGen.actualInt())
+		    );*/
+	    }else {
+		mboPackets.put(encoder.offerEntryIncMBO(order, posMBO, UpdateActions.Delete, 
+			getRptSeq(order.getSecurityID().getSymbol())));
+		/*
+	    mbpPackets.put(encoder.bidEntryIncMBP(
+		    summary.getPrice(), summary.getOrderVolume(), summary.getOrderCount(), 
+		    order.getSecurityID(), posMBO, UpdateActions.New, idGen.actualInt())
+		    );*/
+	    }
+	}catch(InterruptedException e) {
 
-	//delete pode conter duas entradas, o proprio delete e um new 
-	//para indicar qual ordem tomou o lugar da que foi deletada 
-	//somente ordens no topo sao 
-	//1128=935=X34=175353552=20140610-13:26:15.95175=20140610268=2
-	//279=2269=122=8207=BVMF48=383975083=2039273=61:59:51272=2014061037=90507497239289=63290=2
-	//279=0269=122=8207=BVMF48=383975083=2040270=11.26273=61:59:51271=97272=2014061037016=2014061037017=61:59:5137=90507497242289=63290=2
-
+	}
     }
 
     //---------------------------------------/BID OFFER packets
@@ -210,10 +277,12 @@ public class MarketDataChannel implements MessageSender {
     public void informTrade(MDEntry trade) {
 	try{
 	    MarketDataIncrementalRefresh.NoMDEntries entry = encoder.tradeEntryInc(
-		    trade.getMdUpdateAction(), security, trade.getMdEntryBuyer(), trade.getMdEntrySeller(), 
+		    trade.getMdUpdateAction(), 
+		    SecurityService.getInstance().provideSecurity(trade.getSymbol()), 
+		    trade.getMdEntryBuyer(), trade.getMdEntrySeller(), 
 		    trade.getMdEntryPx(), trade.getMdEntrySize(), 
-		    trade.getMdEntryDate(), trade.getMdEntryTime(), trade.getTradeID(), 
-		    trade.getTradeVolume(), idGen.nextInt()
+		    trade.getMdEntryDateTime(), trade.getTradeID(), 
+		    trade.getTradeVolume(), getRptSeq(trade.getSymbol())
 		    );
 	    mboPackets.put(entry);
 	    mbpPackets.put(entry);
@@ -228,10 +297,12 @@ public class MarketDataChannel implements MessageSender {
 	throw new NotImplementedException();
     }
 
-    public void informOpenPrice(double openPrice){
+    public void informOpenPrice(String symbol, double openPrice){
 	try{
 	    MarketDataIncrementalRefresh.NoMDEntries entry = 
-		    encoder.openPriceEntryInc(UpdateActions.New, security, openPrice, idGen.nextInt());
+		    encoder.openPriceEntryInc(UpdateActions.New, 
+			    SecurityService.getInstance().provideSecurity(symbol), openPrice, 
+			    getRptSeq(symbol));
 
 	    mboPackets.put(entry);
 	    mbpPackets.put(entry);
@@ -240,10 +311,12 @@ public class MarketDataChannel implements MessageSender {
 	}
     }
 
-    public void informClosePrice(double closePrice){
+    public void informClosePrice(String symbol, double closePrice){
 	try{
 	    MarketDataIncrementalRefresh.NoMDEntries entry = 
-		    encoder.closePriceEntryInc(security, closePrice, idGen.nextInt());
+		    encoder.closePriceEntryInc(
+			    SecurityService.getInstance().provideSecurity(symbol), 
+			    closePrice, getRptSeq(symbol));
 
 	    mboPackets.put(entry);
 	    mbpPackets.put(entry);
@@ -256,10 +329,13 @@ public class MarketDataChannel implements MessageSender {
 	throw new NotImplementedException();
     }
 
-    public void informHighPrice(double highPrice){
+    public void informHighPrice(String symbol, double highPrice){
 	try{
 	    MarketDataIncrementalRefresh.NoMDEntries entry = 
-		    encoder.highPriceEntryInc(UpdateActions.New, security, highPrice, idGen.nextInt());
+		    encoder.highPriceEntryInc(
+			    UpdateActions.New, 
+			    SecurityService.getInstance().provideSecurity(symbol), 
+			    highPrice, getRptSeq(symbol));
 
 	    mboPackets.put(entry);
 	    mbpPackets.put(entry);
@@ -268,10 +344,13 @@ public class MarketDataChannel implements MessageSender {
 	}
     }
 
-    public void informLowPrice(double lowPrice){
+    public void informLowPrice(String symbol, double lowPrice){
 	try{
 	    MarketDataIncrementalRefresh.NoMDEntries entry = 
-		    encoder.lowPriceEntryInc(UpdateActions.New, security, lowPrice, idGen.nextInt());
+		    encoder.lowPriceEntryInc(
+			    UpdateActions.New, 
+			    SecurityService.getInstance().provideSecurity(symbol), 
+			    lowPrice, getRptSeq(symbol));
 
 	    mboPackets.put(entry);
 	    mbpPackets.put(entry);
@@ -280,10 +359,13 @@ public class MarketDataChannel implements MessageSender {
 	}
     }
 
-    public void informVWAPPrice(double vwapPrice){
+    public void informVWAPPrice(String symbol, double vwapPrice){
 	try{
 	    MarketDataIncrementalRefresh.NoMDEntries entry = 
-		    encoder.vwapPriceEntryInc(UpdateActions.New, security, vwapPrice, idGen.nextInt());
+		    encoder.vwapPriceEntryInc(
+			    UpdateActions.New, 
+			    SecurityService.getInstance().provideSecurity(symbol), 
+			    vwapPrice, getRptSeq(symbol));
 
 	    mboPackets.put(entry);
 	    mbpPackets.put(entry);
@@ -296,11 +378,12 @@ public class MarketDataChannel implements MessageSender {
 	throw new NotImplementedException();
     }
 
-    public void informTradeVolume(int numOfTrades, double financialVolume, double tradedVolume){
+    public void informTradeVolume(String symbol, int numOfTrades, double financialVolume, double tradedVolume){
 	try{
 	    MarketDataIncrementalRefresh.NoMDEntries entry = 
 		    encoder.tradeVolumeEntryInc(
-			    security, numOfTrades, financialVolume, tradedVolume, idGen.nextInt());
+			    SecurityService.getInstance().provideSecurity(symbol), 
+			    numOfTrades, financialVolume, tradedVolume, getRptSeq(symbol));
 
 	    mboPackets.put(entry);
 	    mbpPackets.put(entry);
@@ -313,10 +396,12 @@ public class MarketDataChannel implements MessageSender {
 	throw new NotImplementedException();
     }
 
-    public void informEmptyBook(){
+    public void informEmptyBook(String symbol){
 	try{
 	    MarketDataIncrementalRefresh.NoMDEntries entry = 
-		    encoder.emptyBookEntryInc(security, idGen.nextInt());
+		    encoder.emptyBookEntryInc(
+			    SecurityService.getInstance().provideSecurity(symbol), 
+			    getRptSeq(symbol));
 
 	    mboPackets.put(entry);
 	    mbpPackets.put(entry);
@@ -402,6 +487,77 @@ public class MarketDataChannel implements MessageSender {
     @Override
     public boolean sendMessage(Message message, SessionID sessionID) {
 	return MessageRepository.getInstance().addMessage(message, sessionID);
+    }
+
+    
+    
+    
+    /* (non-Javadoc)
+     * @see quickfix.Application#onCreate(quickfix.SessionID)
+     */
+    @Override
+    public void onCreate(SessionID sessionId) {
+	System.out.println("onCreate: MarketDataChannel");
+	
+    }
+
+    /* (non-Javadoc)
+     * @see quickfix.Application#onLogon(quickfix.SessionID)
+     */
+    @Override
+    public void onLogon(SessionID sessionId) {
+	System.out.println("onLogon:" + sessionId.getTargetCompID());
+	Logging.getInstance().log(getClass(), "onLogon: " + sessionId.getTargetCompID(), Level.INFO);
+	SessionRepository.getInstance().addSession(StreamTypes.MARKET_DATA, sessionId);
+	
+    }
+
+    /* (non-Javadoc)
+     * @see quickfix.Application#onLogout(quickfix.SessionID)
+     */
+    @Override
+    public void onLogout(SessionID sessionId) {
+	Logging.getInstance().log(getClass(), "onLogout: " + sessionId.getTargetCompID(), Level.INFO);
+	SessionRepository.getInstance().removeSession(StreamTypes.MARKET_DATA, sessionId);
+	
+    }
+
+    /* (non-Javadoc)
+     * @see quickfix.Application#toAdmin(quickfix.Message, quickfix.SessionID)
+     */
+    @Override
+    public void toAdmin(Message message, SessionID sessionId) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    /* (non-Javadoc)
+     * @see quickfix.Application#fromAdmin(quickfix.Message, quickfix.SessionID)
+     */
+    @Override
+    public void fromAdmin(Message message, SessionID sessionId)
+	    throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, RejectLogon {
+	// TODO Auto-generated method stub
+	
+    }
+
+    /* (non-Javadoc)
+     * @see quickfix.Application#toApp(quickfix.Message, quickfix.SessionID)
+     */
+    @Override
+    public void toApp(Message message, SessionID sessionId) throws DoNotSend {
+	// TODO Auto-generated method stub
+	
+    }
+
+    /* (non-Javadoc)
+     * @see quickfix.Application#fromApp(quickfix.Message, quickfix.SessionID)
+     */
+    @Override
+    public void fromApp(Message message, SessionID sessionId)
+	    throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
+	// TODO Auto-generated method stub
+	
     }
 
 }

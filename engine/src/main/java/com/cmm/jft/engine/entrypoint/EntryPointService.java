@@ -24,15 +24,25 @@ import quickfix.SessionSettings;
  */
 public class EntryPointService extends EngineService {
 
+    private EntryPoint entryPoint;
+    
     public EntryPointService() {
 	try {
 	    SessionSettings settings = new SessionSettings(
 		    Thread.currentThread().getContextClassLoader().getResourceAsStream("EntryPointService.cfg"));
 	    log = LoggerFactory.getLogger(EntryPointService.class);
-	    init(settings, new EntryPoint(settings));
+	    entryPoint = new EntryPoint(settings);
+	    init(settings, entryPoint);
 	} catch (ConfigError | FieldConvertError | JMException e) {
 	    e.printStackTrace();
 	}
+    }
+    
+    /**
+     * @return the entryPoint
+     */
+    public EntryPoint getEntryPoint() {
+	return entryPoint;
     }
 
     public static void main(String[] args) {

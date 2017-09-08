@@ -111,7 +111,7 @@ public class SnapshotRecoveryChannel extends MessageCracker implements Applicati
      */
     @Override
     public void onLogon(SessionID sessionId) {
-	System.out.println("onLogon: " + sessionId.getSenderCompID());
+	System.out.println("onLogon: " + sessionId.getTargetCompID());
 	Logging.getInstance().log(getClass(), "onLogon: " + sessionId.getSenderCompID(), Level.INFO);
 	SessionRepository.getInstance().addSession(StreamTypes.SNAPSHOT, sessionId);
     }
@@ -123,7 +123,7 @@ public class SnapshotRecoveryChannel extends MessageCracker implements Applicati
      */
     @Override
     public void onLogout(SessionID sessionId) {
-	Logging.getInstance().log(getClass(), "onLogout: " + sessionId.getSenderCompID(), Level.INFO);
+	Logging.getInstance().log(getClass(), "onLogout: " + sessionId.getTargetCompID(), Level.INFO);
 	SessionRepository.getInstance().removeSession(StreamTypes.SNAPSHOT, sessionId);
     }
 
@@ -172,14 +172,14 @@ public class SnapshotRecoveryChannel extends MessageCracker implements Applicati
 	for(MDEntry et : snap.getBuyEntries()) {
 	    snpfr.addGroup(
 		    encoder.bidEntrySnp(et.getMdEntryPx(), et.getMdEntrySize(),
-			    et.getMdEntryDate(),et.getMdEntryTime(),
+			    et.getMdEntryDateTime(),
 			    et.getOrderID(),et.getMdEntryBuyer(),et.getMdEntryPosNo()));
 	}
 	
 	for(MDEntry et : snap.getSellEntries()) {
 	    snpfr.addGroup(
 		    encoder.offerEntrySnp(et.getMdEntryPx(), et.getMdEntrySize(),
-			    et.getMdEntryDate(),et.getMdEntryTime(),
+			    et.getMdEntryDateTime(),
 			    et.getOrderID(),et.getMdEntrySeller(),et.getMdEntryPosNo()));
 	}
 
