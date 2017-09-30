@@ -156,7 +156,7 @@ public class MarketDataChannel extends MessageCracker implements Application, Me
 	MDEntry mboEntry = new MDEntry();
 
 	if(position >0) {
-	    mboEntry.setOrderID(order.getOrderID().toString());
+	    mboEntry.setOrderID(order.getOrderID());
 	    if(order.getSide() == Side.BUY){
 		mboEntry.setMdEntryBuyer(order.getBrokerID());
 	    }else{

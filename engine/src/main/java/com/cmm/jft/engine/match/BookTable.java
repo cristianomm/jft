@@ -86,7 +86,7 @@ public class BookTable {
     private MDEntry createMBOEntry(Orders order, UpdateActions updtAction){
 	MDEntry mboEntry = new MDEntry();
 
-	mboEntry.setOrderID(order.getOrderID().toString());
+	mboEntry.setOrderID(order.getOrderID());
 	if(side == Side.BUY){
 	    mboEntry.setMdEntryBuyer(order.getBrokerID());
 	}else{
