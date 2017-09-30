@@ -19,7 +19,6 @@ import quickfix.fix44.News;
 import quickfix.fix44.SecurityList;
 import quickfix.fix44.SecurityStatus;
 
-import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.cmm.jft.messaging.handlers.MarketDataMessageHandler;

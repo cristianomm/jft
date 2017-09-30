@@ -43,7 +43,7 @@ import quickfix.fix44.SecurityDefinition;
 public class EngineConnector extends MessageCracker implements Application, RouterMessageHandler{
 
     private SessionID sessionID;
-    ConcurrentLinkedQueue<Message> messages;
+    private ConcurrentLinkedQueue<Message> messages;
     private static EngineConnector instance;
 
     private EngineConnector() {
@@ -87,8 +87,6 @@ public class EngineConnector extends MessageCracker implements Application, Rout
     @Override
     public void fromAdmin(Message message, SessionID sessionID)
 	    throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, RejectLogon {
-
-
 
     }
 
@@ -171,7 +169,7 @@ public class EngineConnector extends MessageCracker implements Application, Rout
     public void onMessage(ExecutionReport message, SessionID sessionID)
 	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 	System.out.println(message);
-
+	//TradingService.getInstance().onExecutionReport(message);
     }
 
 
@@ -182,6 +180,7 @@ public class EngineConnector extends MessageCracker implements Application, Rout
     public void onMessage(OrderCancelReject message, SessionID sessionID)
 	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 	System.out.println(message);
+	//TradingService.getInstance().onOrderCancelReject(message);
 
     }
 

@@ -108,19 +108,14 @@ public class MarketDataStarter implements Service {
 	for (SessionID sessionId : initiator.getSessions()) {
 	    if (sessionId.getTargetCompID().equalsIgnoreCase(StreamTypes.MARKET_DATA.name())) {
 		connector.setMarketDataStreamSID(sessionId);
-		connector.joinMarketDataStream();
 	    } else if (sessionId.getTargetCompID().equalsIgnoreCase(StreamTypes.INSTRUMENT.name())) {
 		connector.setInstrumentStreamSID(sessionId);
-		connector.joinInstrumentStream();
 	    } else if (sessionId.getTargetCompID().equalsIgnoreCase(StreamTypes.NEWS.name())) {
 		connector.setNewsStreamSID(sessionId);
-		connector.joinNewsStream();
 	    } else if (sessionId.getTargetCompID().equalsIgnoreCase(StreamTypes.RECOVERY.name())) {
 		connector.setRecoveryStreamSID(sessionId);
-		connector.joinRecoveryStream();
 	    } else if (sessionId.getTargetCompID().equalsIgnoreCase(StreamTypes.SNAPSHOT.name())) {
 		connector.setSnapshotStreamSID(sessionId);
-		connector.joinSnapshotStream();
 	    }
 	}
 
