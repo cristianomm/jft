@@ -3,28 +3,43 @@ package com.cmm.jft.marketdata;
 import java.util.Date;
 
 import com.cmm.jft.trading.enums.MDEntryTypes;
+import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.enums.UpdateActions;
+import com.cmm.jft.vo.Extractable;
 
 
-public class MDEntry {
+public class MDEntry implements Extractable{
 
     /**
      * Market Data fields
      */
-    private String mdEntryID;
+    private long mdEntryID;
     private UpdateActions mdUpdateAction;
     private MDEntryTypes mdEntryType;
+    private Side side;
     private double mdEntryPx;
     private int mdEntrySize;
     private int numberOfOrders;
+    private Date entryDate;
     private Date mdEntryDateTime;
     private char securityTradingStatus;
-    private String orderID;
+    private long orderID;
     private String tradeID;
     private String mdEntrySeller;
     private String mdEntryBuyer;
     private int mdEntryPosNo;
     private int tradeVolume;
+    private int orderEvent;
+    private int orderStatus;
+    private Date orderDate;
+    private int orderCondition;
+    private char agressor;
+    
+    private long buyOrdID;
+    private long buySecOrdID;
+    private long sellOrdID;
+    private long sellSecOrdID;
+    
 
     /**
      * Instrument identification block
@@ -44,10 +59,10 @@ public class MDEntry {
     }
     
     
-    public String getMdEntryID() {
+    public long getMdEntryID() {
 	return mdEntryID;
     }
-    public void setMdEntryID(String mdEntryID) {
+    public void setMdEntryID(long mdEntryID) {
 	this.mdEntryID = mdEntryID;
     }
     public UpdateActions getMdUpdateAction() {
@@ -98,10 +113,10 @@ public class MDEntry {
     public void setSecurityTradingStatus(char securityTradingStatus) {
 	this.securityTradingStatus = securityTradingStatus;
     }
-    public String getOrderID() {
+    public long getOrderID() {
 	return orderID;
     }
-    public void setOrderID(String orderID) {
+    public void setOrderID(long orderID) {
 	this.orderID = orderID;
     }
     public String getTradeID() {
@@ -166,5 +181,158 @@ public class MDEntry {
     public void setSymbol(String symbol) {
 	this.symbol = symbol;
     }
+    
+    /**
+     * @return the side
+     */
+    public Side getSide() {
+	return side;
+    }
+    
+    /**
+     * @param side the side to set
+     */
+    public void setSide(Side side) {
+	this.side = side;
+    }
+    
+    /**
+     * @return the orderEvent
+     */
+    public int getOrderEvent() {
+	return orderEvent;
+    }
+    
+    /**
+     * @param orderEvent the orderEvent to set
+     */
+    public void setOrderEvent(int orderEvent) {
+	this.orderEvent = orderEvent;
+    }
 
+    /**
+     * @return the orderStatus
+     */
+    public int getOrderStatus() {
+	return orderStatus;
+    }
+    
+    /**
+     * @param orderStatus the orderStatus to set
+     */
+    public void setOrderStatus(int orderStatus) {
+	this.orderStatus = orderStatus;
+    }
+    
+    /**
+     * @return the orderDate
+     */
+    public Date getOrderDate() {
+	return orderDate;
+    }
+    
+    /**
+     * @param orderDate the orderDate to set
+     */
+    public void setOrderDate(Date orderDate) {
+	this.orderDate = orderDate;
+    }
+    
+    /**
+     * @return the orderCondition
+     */
+    public int getOrderCondition() {
+	return orderCondition;
+    }
+    
+    /**
+     * @param orderCondition the orderCondition to set
+     */
+    public void setOrderCondition(int orderCondition) {
+	this.orderCondition = orderCondition;
+    }
+    
+    /**
+     * @return the buyOrdID
+     */
+    public long getBuyOrdID() {
+	return buyOrdID;
+    }
+    
+    /**
+     * @return the buySecOrdID
+     */
+    public long getBuySecOrdID() {
+	return buySecOrdID;
+    }
+    
+    /**
+     * @return the sellOrdID
+     */
+    public long getSellOrdID() {
+	return sellOrdID;
+    }
+    
+    /**
+     * @return the sellSecOrdID
+     */
+    public long getSellSecOrdID() {
+	return sellSecOrdID;
+    }
+    
+    /**
+     * @param buyOrdID the buyOrdID to set
+     */
+    public void setBuyOrdID(long buyOrdID) {
+	this.buyOrdID = buyOrdID;
+    }
+    
+    /**
+     * @param buySecOrdID the buySecOrdID to set
+     */
+    public void setBuySecOrdID(long buySecOrdID) {
+	this.buySecOrdID = buySecOrdID;
+    }
+    
+    /**
+     * @param sellOrdID the sellOrdID to set
+     */
+    public void setSellOrdID(long sellOrdID) {
+	this.sellOrdID = sellOrdID;
+    }
+    
+    /**
+     * @param sellSecOrdID the sellSecOrdID to set
+     */
+    public void setSellSecOrdID(long sellSecOrdID) {
+	this.sellSecOrdID = sellSecOrdID;
+    }
+    
+    /**
+     * @return the agressor
+     */
+    public char getAgressor() {
+	return agressor;
+    }
+    
+    /**
+     * @param agressor the agressor to set
+     */
+    public void setAgressor(char agressor) {
+	this.agressor = agressor;
+    }
+    
+    /**
+     * @return the entryDate
+     */
+    public Date getEntryDate() {
+	return entryDate;
+    }
+    
+    /**
+     * @param entryDate the entryDate to set
+     */
+    public void setEntryDate(Date entryDate) {
+	this.entryDate = entryDate;
+    }
 }

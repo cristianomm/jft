@@ -607,13 +607,15 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 
     //-----------------------------------------------------------------SNAPSHOT
         
-    /*
-     * (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#bidEntrySnp(double, int, java.util.Date, java.util.Date, java.lang.String, java.lang.String, int)
+    
+    
+    /* (non-Javadoc)
+     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#bidEntrySnp(double, int, java.util.Date, long, java.lang.String, int)
      */
     @Override
-    public MarketDataSnapshotFullRefresh.NoMDEntries bidEntrySnp(double price, int volume, Date insertDtTime, String orderID, String brokerID, int positionNo) {
-
+    public MarketDataSnapshotFullRefresh.NoMDEntries bidEntrySnp(double price, int volume,
+            Date insertDtTime, long orderID, String brokerID, int positionNo) {
+        
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
 	Date d = Date.from(Instant.now());
@@ -625,7 +627,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	entry.set(new MDEntryTime(d));
 	entry.setUtcDateOnly(37016, insertDtTime);
 	entry.setUtcTimeOnly(37017, insertDtTime);
-	entry.set(new OrderID(orderID));
+	entry.set(new OrderID(orderID+""));
 	entry.set(new MDEntryBuyer(brokerID));
 	entry.set(new MDEntryPositionNo(positionNo));
 
@@ -633,13 +635,14 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
     }
 
 
-    /*
-     * (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#offerEntrySnp(double, int, java.util.Date, java.util.Date, java.lang.String, java.lang.String, int)
+    
+    /* (non-Javadoc)
+     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#offerEntrySnp(double, int, java.util.Date, long, java.lang.String, int)
      */
     @Override
-    public MarketDataSnapshotFullRefresh.NoMDEntries offerEntrySnp(double price, int volume, Date insertDtTime, String orderID, String brokerID, int positionNo) {
-	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
+    public quickfix.fix44.MarketDataSnapshotFullRefresh.NoMDEntries offerEntrySnp(double price, int volume,
+            Date insertDtTime, long orderID, String brokerID, int positionNo) {
+        MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
 	Date d = Date.from(Instant.now());
 
@@ -650,7 +653,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	entry.set(new MDEntryTime(d));
 	entry.setUtcDateOnly(37016, insertDtTime);
 	entry.setUtcTimeOnly(37017, insertDtTime);
-	entry.set(new OrderID(orderID));
+	entry.set(new OrderID(orderID+""));
 	entry.set(new MDEntryBuyer(brokerID));
 	entry.set(new MDEntryPositionNo(positionNo));
 

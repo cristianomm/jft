@@ -33,6 +33,7 @@ import com.cmm.jft.security.Security;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.ExecutionTypes;
+import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
@@ -45,8 +46,8 @@ import com.cmm.logging.Logging;
  */
 public class Fix44EngineMessageDecoder implements MessageDecoder {
 
-    
-    
+
+
     private void addPartyIDs(Orders order, Message message) throws FieldNotFound {
 	for(Group g: message.getGroups(453)) {
 	    String partyID = g.getString(448);
@@ -66,7 +67,6 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 	    case 4:
 		break;
 	    case 5:
-		order.setTraderID(partyID);
 		break;
 	    case 7:
 		order.setBrokerID(partyID);
@@ -74,6 +74,7 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 	    case 12:
 		break;
 	    case 36:
+		order.setTraderID(partyID);
 		break;
 	    case 54:
 		order.setSenderLocation(partyID);
@@ -86,13 +87,13 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 
 	}
     }
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     /* (non-Javadoc)
      * @see com.cmm.jft.engine.message.MessageDecoder#heartbeat()
      */
@@ -200,6 +201,49 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 			er.getTransactTime().getValue(), 
 			er.getOrderQty().getValue(), er.getPrice().getValue()
 			);
+		event.setOrderStatus(OrderStatus.getByValue(er.getChar(39)));
+		
+		ExecutionTypes execType = event.getExecutionType();
+
+		switch(execType) {
+		case NEW:
+		case CANCELED:
+		    break;
+		case REPLACE:
+		    if(er.isSetField(40)) {
+			
+		    }
+		    if(er.isSetField(99)) {
+			event.setStopPrice(er.getDouble(99));
+		    }
+		    
+		    if(er.isSetField(110)) {
+			event.setMinQty(er.getDouble(110));
+		    }
+		    if(er.isSetField(111)) {
+			event.setMaxFloor(er.getDouble(111));
+		    }
+		    break;
+		case REJECTED:
+		    event.setOrdRejReason(er.getInt(103));
+		    break;
+		case SUSPENDED:
+		    break;
+		case EXPIRED:
+		    break;
+		case RESTATED:
+		    break;
+		case TRADE:
+		    event.setContraBroker(er.getString(375));
+		    event.setCumQty(er.getDouble(14));
+		    event.setLastQty(er.getDouble(32));
+		    event.setLeavesQty(er.getDouble(151));
+		    event.setTradeID(er.getString(6032));
+		    break;
+		case TRADE_CANCEL:
+		    break;
+		}
+
 	    }catch(FieldNotFound e) {
 
 	    }
@@ -302,9 +346,9 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 	try{
 	    ordr.setClOrdID(request.getClOrdID().getValue());
 	    ordr.setOrigClOrdID(request.getOrigClOrdID().getValue());
-	    
+
 	    addPartyIDs(ordr, request);
-	    
+
 	    //ordr.setSecurityID(SecurityService.getInstance().provideSecurity(request.getSymbol().getValue()));
 	    ordr.setSide(Side.getByValue(request.getSide().getValue()));
 	    ordr.setVolume(request.getOrderQty().getValue());

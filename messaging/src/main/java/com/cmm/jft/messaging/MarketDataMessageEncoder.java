@@ -59,8 +59,8 @@ public interface MarketDataMessageEncoder extends MessageEncoder {
     Message mdIncrementalRefresh(Queue<MarketDataIncrementalRefresh.NoMDEntries> entries);
     
     
-    MarketDataSnapshotFullRefresh.NoMDEntries bidEntrySnp(double price, int volume, Date insertDtTime, String orderID, String brokerID, int positionNo);
-    MarketDataSnapshotFullRefresh.NoMDEntries offerEntrySnp(double price, int volume, Date insertDtTime, String orderID, String brokerID, int positionNo);
+    MarketDataSnapshotFullRefresh.NoMDEntries bidEntrySnp(double price, int volume, Date insertDtTime, long orderID, String brokerID, int positionNo);
+    MarketDataSnapshotFullRefresh.NoMDEntries offerEntrySnp(double price, int volume, Date insertDtTime, long orderID, String brokerID, int positionNo);
     MarketDataSnapshotFullRefresh.NoMDEntries tradeEntrySnp(String buyer, String seller, double price, int volume, Date tradeDateTime, String tradeID, int tradeVolume);
     MarketDataSnapshotFullRefresh.NoMDEntries openPriceEntrySnp(double openPrice);
     MarketDataSnapshotFullRefresh.NoMDEntries closePriceEntrySnp(double closePrice);

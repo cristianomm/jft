@@ -3,21 +3,36 @@
  */
 package com.cmm.jft.services.marketdata;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.log4j.Level;
+import javax.xml.namespace.QName;
 
+import org.apache.log4j.Level;
+import org.openfast.template.MessageTemplate;
+import org.openfast.template.Scalar;
+import org.openfast.template.loader.MessageTemplateLoader;
+import org.openfast.template.loader.XMLMessageTemplateLoader;
+
+import quickfix.DataDictionary;
 import quickfix.FieldException;
 import quickfix.FieldNotFound;
 import quickfix.Group;
 import quickfix.Message;
+import quickfix.field.MsgSeqNum;
 import quickfix.field.MsgType;
 import quickfix.fix44.Heartbeat;
 import quickfix.fix44.SequenceReset;
+import quickfix.mina.message.FIXMessageDecoder;
 import quickfix.fix44.MarketDataIncrementalRefresh;
 import quickfix.fix44.MarketDataSnapshotFullRefresh;
 import quickfix.fix44.News;
@@ -28,6 +43,7 @@ import com.cmm.jft.connector.enums.MDSynchronizationSteps;
 import com.cmm.jft.connector.marketdata.MarketDataConnector;
 import com.cmm.jft.connector.marketdata.MarketDataStarter;
 import com.cmm.jft.marketdata.MDNews;
+import com.cmm.jft.messaging.LogFile;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.security.SecurityInfo;
 import com.cmm.jft.services.security.SecurityService;
@@ -48,6 +64,7 @@ public class MarketDataService {
     private boolean started;
     private boolean connected;
     private boolean receivingInstruments;
+    private boolean receivingSnapshots;
 
     private long lstSnapshotHbt;
     private long lstRecoveryHbt;
@@ -55,32 +72,71 @@ public class MarketDataService {
     private long lstMarketDataHbt;
     private long lstInstrumentHbt;
 
-    private int lstSnapshotMsgSecNum;
-    private int lstRecoveryMsgSecNum;
-    private int lstNewsMsgSecNum;
-    private int lstMarketDataMsgSecNum;
-    private int lstInstrumentMsgSecNum;
+    private int lstSnapshotMsgSeqNum;
+    private int lstRecoveryMsgSeqNum;
+    private int lstNewsMsgSeqNum;
+    private int lstMarketDataMsgSeqNum;
+    private int lstInstrumentMsgSeqNum;
 
     private MarketDataConnector connector;
+    private List<Integer> subscrSecurities;
     private LinkedHashMap<Integer, Market> markets;
 
     private LinkedList<MDNews> newsFeed;
     private static MarketDataService instance;
-    private ConcurrentLinkedQueue<Message> snapshots;
+    private ConcurrentLinkedQueue<MarketDataSnapshotFullRefresh> snapshots;
 
 
     public static void main(String[] args){
 	try{
+	    
+	    String path = "D:\\Disco\\Estudo\\Bovespa\\Mensagens\\UMDF Sinal de Difusão\\UMDFPUMA2.0\\UMDF20_FIXFAST-051_052-2013-07-10\\Production\\";
+	    
+	    byte[] msgHeader = new byte[10];
+	    InputStream fst = new FileInputStream(new File(path + "51_Inc_FAST.bin"));
+	    boolean loop = true;
+	    int offset = 0;
+	    while(loop) {
+		fst.read(msgHeader, 0, 10);
+		offset += 10;
+		long msgSeqNum = msgHeader[0] | msgHeader[1] | msgHeader[2] | msgHeader[3];
+		int noChunks = msgHeader[4] | msgHeader[5];
+		int currChunk = msgHeader[6] | msgHeader[7];;
+		int msgLength = msgHeader[8] | msgHeader[9];;
+		System.out.println(msgHeader);
+	    }
+	    
+	    
+	    
+	    
 	    //(\d+)+=([\w|.|,|:|\-|\s]+)
-	    //String msg = "8=FIX.4.49=43335=X34=249=TradingEngineDerivativesA52=20071106-19:12:48.06356=FIXGatewayDerivatives_MD10016=BMFBR9200444_175=20071106268=3279=1269=c278=155=COTZ0748=BMFBR920044422=8272=20071106273=19:12:19336=TradingSessionID326=101279=1269=b278=255=COTZ0748=BMFBR920044422=8272=20071106273=19:12:23336=TradingSessionID625=S279=0269=555=COTZ0748=BMFBR920044422=8270=0272=20071106273=19:12:38336=TradingSessionID10=161";
-	    //msg = "35=y1128=934=252=20140610132615107393=111893=N146=555=FESA448=380342622=8207=BVMF1351=31180=MBO511180=MBP1511141=11022=STD264=101180=TOB2511141=11022=STD264=1454=2455=BMFBR3803426456=8455=BRFESAACNPR5456=4870=2871=34872=1871=24872=1980=M1234=11093=21231=100969=0.015151=29749=1009748=588800015=BRL120=BRL460=5167=PS762=10046937=FESA107=FERBASA     PN      N17595=58880000541=99991231200=999912231=1667=201404461=EPNEFR470=BR225=2014042963=D164=999912316938=99991231-22:59:59.0001300=8037011=N137010=461151=0755=FBMC348=380347522=8207=BVMF1351=31180=MBO511180=MBP1511141=11022=STD264=101180=TOB2511141=11022=STD264=1454=2455=BMFBR3803475456=8455=BRFBMCACNOR3456=4870=2871=34872=1871=24872=1980=M1234=11093=21231=100969=0.015151=29749=1009748=2651615=BRL120=BRL460=5167=CS762=10036937=FBMC107=FIBAM       ON7595=265160541=99991231200=999912231=1667=201312461=ESVUFR470=BR225=2013122663=D164=999912316938=99991231-22:59:59.0001300=8037010=1381151=0155=FESA348=380353322=8207=BVMF1351=31180=MBO511180=MBP1511141=11022=STD264=101180=TOB2511141=11022=STD264=1454=2455=BMFBR3803533456=8455=BRFESAACNOR8456=4870=2871=34872=1871=24872=1980=M1234=11093=21231=100969=0.015151=29749=1009748=294400015=BRL120=BRL460=5167=CS762=10036937=FESA107=FERBASA     ON      N17595=29440000541=99991231200=999912231=1667=201404461=ESVUFR470=BR225=2014042963=D164=999912316938=99991231-22:59:59.0001300=8037011=N137010=1501151=0155=FBMC448=380357422=8207=BVMF1351=31180=MBO511180=MBP1511141=11022=STD264=101180=TOB2511141=11022=STD264=1454=2455=BMFBR3803574456=8455=BRFBMCACNPR0456=4870=2871=34872=1871=24872=1980=M1234=11093=21231=100969=0.015151=29749=1009748=4613515=BRL120=BRL460=5167=PS762=10046937=FBMC107=FIBAM       PN7595=461354541=99991231200=999912231=1667=201312461=EPNEFR470=BR225=2013122663=D164=999912316938=99991231-22:59:59.0001300=8037010=1501151=0155=GGBR348=380388922=8207=BVMF1351=31180=MBO511180=MBP1511141=11022=STD264=101180=TOB2511141=11022=STD264=1454=2455=BMFBR3803889456=8455=BRGGBRACNOR1456=4870=2871=34872=1871=24872=1980=M1234=11093=21231=100969=0.015151=29749=1009748=5736274815=BRL120=BRL460=5167=CS762=10036937=GGBR107=GERDAU      ON      N17595=573627483541=99991231200=999912231=1667=201405461=ESVUFR470=BR225=2014052263=D164=999912316938=99991231-22:59:59.0001300=8037011=N137010=1541151=07";
-	    //LogFile lf = new LogFile(new DataDictionary("FIX44.xml"));
-	    //Message p = lf.parseTextMessage(msg);
-	    //lf.parseNewMessages();
-	    //Message m = (Message) lf.getMessages().get(4);// parseTextMessage(msg);
-	    //System.out.println(lf.getGroups(m).size());
-
-	    MarketDataService.getInstance().start();
+	    //"D:\\Disco\\Disco\\Estudo\\Bovespa\\Manuais e kits de desenvolvimento\\UMDF\\FIXFAST\\templates\\Production\\templates-PUMA.xml"
+	    String templateURL = "ftp://ftp.bmf.com.br/FIXFAST/templates/Production/templates-PUMA.xml";
+	    URL url = new URL(templateURL);
+	    InputStream templateSource = url.openStream(); //new FileInputStream(templateURL);
+	    MessageTemplateLoader templateLoader = new XMLMessageTemplateLoader();
+	    MessageTemplate[] templates = templateLoader.load(templateSource);
+	    
+	    for (int i = 0; i < templates.length; i++) {
+		//templates[i].
+		//System.out.println(templates[i].getName() +" " + templates[i].getId() + " "+((Scalar)templates[i].getFieldById("35")).getDefaultValue());
+	    }
+	    
+	    
+	    //String path = "D:\\Disco\\Disco\\Estudo\\Bovespa\\Mensagens\\UMDF Sinal de Difusão\\UMDFPUMA2.0\\testMSG\\";
+	    File snap = new File(path + "fix.051.snap.log");
+	    DataDictionary dd = new DataDictionary("D:\\Disco\\Workspaces\\git\\jft\\engine\\src\\main\\resources\\DICT_FIX44.xml");
+	    Scanner sc = new Scanner(snap);
+	    while(sc.hasNextLine()) {
+		String msg = sc.nextLine();
+		System.out.println(Message.identifyType(msg));
+		Message fixMsg = new Message();
+		
+		fixMsg.fromString(msg, dd, false);
+		
+		System.out.println(fixMsg.getGroupCount(268));
+	    }
+	    
 	}
 	catch (Exception e) {
 	    e.printStackTrace();
@@ -92,14 +148,15 @@ public class MarketDataService {
 	this.connected = false;
 	this.receivingInstruments = false;
 
-	this.lstMarketDataMsgSecNum = -1;
-	this.lstInstrumentMsgSecNum = -1;
-	this.lstNewsMsgSecNum = -1;
-	this.lstRecoveryMsgSecNum = -1;
-	this.lstSnapshotMsgSecNum = -1;
+	this.lstMarketDataMsgSeqNum = -1;
+	this.lstInstrumentMsgSeqNum = -1;
+	this.lstNewsMsgSeqNum = -1;
+	this.lstRecoveryMsgSeqNum = -1;
+	this.lstSnapshotMsgSeqNum = -1;
 
 	this.newsFeed = new LinkedList<MDNews>();
 	this.markets = new LinkedHashMap<>();
+	this.subscrSecurities = new ArrayList<>();
 	this.connector = MarketDataConnector.getInstance();
     }
 
@@ -113,117 +170,183 @@ public class MarketDataService {
 	return instance;
     }
 
-    public void start(){
-	startConnector();
-	mdSynchronizationProcedure();
-	started = true;
-    }
-
-    private void startConnector(){
+    public void connect() {
 	try {
 	    MarketDataStarter mds = new MarketDataStarter();
 	    boolean bol = mds.start();
-	    System.out.println("startConector: " + bol);
+	    mdSynchronizationProcedure();
+	    System.out.println("start MD Conector: " + bol);
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
     }
 
+
     /**
      * startup process for MD synchronization
      */
-    private void mdSynchronizationProcedure() {
+    private boolean mdSynchronizationProcedure() {
+
+	boolean appReady = false;
+	step = MDSynchronizationSteps.RECOVERY_STEP;
+	connector.joinRecoveryStream();
+
+	step = MDSynchronizationSteps. INCREMENTAL_STEP;
+	connector.joinMarketDataStream();
+	connector.joinNewsStream();
 
 	step = MDSynchronizationSteps.INSTRUMENT_STEP;
+	connector.joinInstrumentStream();
+	consumeInstrumentStream();
 
-	System.out.println("mdSynchronizationProcedure: " + step);
+	if(step == MDSynchronizationSteps.MARKETRECOVERY_STEP) {
+	    connector.joinSnapshotStream();
 
-	new Thread(new Runnable() {
-	    @Override
-	    public void run() {
-//		try {
-		    while(true) {
-//			Thread.sleep(500);
-			consumeInstrumentStream();
-		    }
-//		} catch (InterruptedException e) {
-//		    e.printStackTrace();
-//		}
+	    while(step == MDSynchronizationSteps.MARKETRECOVERY_STEP){
+		consumeSnapshotStream();
 	    }
-	}).start();
 
-	new Thread(new Runnable() {
-	    @Override
-	    public void run() {
-		//try {
-		    while(true) {
-			//Thread.sleep(500);
-			consumeSnapshotStream();
-		    }
-		//} catch (InterruptedException e) {
-		    // TODO Auto-generated catch block
-		    //e.printStackTrace();
-		//}
+	    //constroi os books que devem receber atualizacao
+	    for(int secid : subscrSecurities) {
+		buildBook(secid);
 	    }
-	}).start();
+	    //sincroniza as mensagens conforme o ultimo snapshot salvo e as atualizacoes incrementais
+	    synchronizeBooks();
 
-	new Thread(new Runnable() {
-	    @Override
-	    public void run() {
-//		try {
-		    while(true) {
-//			Thread.sleep(500);
-			consumeMarketDataStream();
-		    }
-//		} catch (InterruptedException e) {
-//		    // TODO Auto-generated catch block
-//		    e.printStackTrace();
-//		}
+	    //processa as mensagens de noticia
+	    while(!connector.getNewsStream().isEmpty()) {
+		consumeNewsStream();
 	    }
-	}).start();
 
-	new Thread(new Runnable() {
-	    @Override
-	    public void run() {
-//		try {
-		    while(true) {
-//			Thread.sleep(500);
-			consumeNewsStream();
-		    }
-//		} catch (InterruptedException e) {
-//		    // TODO Auto-generated catch block
-//		    e.printStackTrace();
-//		}
+	    appReady = true;
+	}
+
+	return appReady;
+    }
+
+
+
+
+    private void synchronizeBooks() {
+	try {
+	    //remove as mensagens desnecessarias da fila de MD incremental
+	    int lstMsgSeqNumProc = connector.getSnapshotStream().peek().getInt(369);
+	    while(connector.getMarketDataStream().peek().getHeader().getInt(34) <= lstMsgSeqNumProc) {
+		connector.getMarketDataStream().poll();
 	    }
-	}).start();
+	    //processa as mensagens restantes
+	    while(!connector.getMarketDataStream().isEmpty()) {
+		consumeMarketDataStream();
+	    }
+	}
+	catch(FieldNotFound e) {
+
+	}
+    }
+
+
+    /**
+     * Adiciona na tabela de instrumentos um instrumento para receber a 
+     * atualizacao de market data.
+     * @param securityID ID do instrumento
+     * @param secIDSrc 
+     * @param securityExchange 
+     * @return <code>int</code> indicando o status, <code>-1</code> erro ao adicionar o instrumento, 
+     * <code>0</code> caso adicione o instrumento sem erros. 
+     */
+    public int subscribeInstrument(int securityID, char secIDSrc, String securityExchange){
+
+	int ret = -1;
+	buildBook(securityID);
+	synchronizeBook(securityID);
+	ret = 0;
+	
+	return ret;
+    }
+
+    private void buildBook(int securityID) {
+	try {
+	    Security security = SecurityService.getInstance().findSecurity(securityID, '8', "BVMF");
+	    Market mrkt = new Market(security);
+	    markets.put(security.getSecurityID(), mrkt);
+	    refreshSnapshot();
+	    for(Message msg : snapshots) {
+		MarketDataSnapshotFullRefresh snapshotFullRefresh = (MarketDataSnapshotFullRefresh) msg;
+		if(snapshotFullRefresh.getInt(48) == security.getSecurityID()) {
+		    List<Group> grps = snapshotFullRefresh.getGroups(268);
+		    
+		    markets.get(security.getSecurityID()).resetMarketData(
+			    snapshotFullRefresh.getInt(369), snapshotFullRefresh.getInt(83));
+		    for(Group g : grps){
+			markets.get(security.getSecurityID()).addMDEntry(g);
+		    }
+		}
+	    }
+	}catch(FieldNotFound e) {
+	    e.printStackTrace();
+	}
+
+    }
+
+    public void synchronizeBook(int securityID) {
+	try {
+	    if(markets.containsKey(securityID)) {
+		for(Message mdinc : connector.getRecoveryStream()) {
+		    if(mdinc.getInt(48) == securityID) {
+			processMDIncrRefresh((MarketDataIncrementalRefresh) mdinc);
+			
+			//processa as mensagens restantes
+			while(!connector.getMarketDataStream().isEmpty()) {
+			    consumeMarketDataStream();
+			}
+
+		    }
+		}
+	    }
+	}catch(FieldNotFound e) {
+
+	}
+    }
+
+
+    public void refreshSnapshot() {
+	try {
+	    int lstMsgPrc = snapshots.peek().getInt(369);
+
+	    if((lstMarketDataMsgSeqNum - lstMsgPrc)>=50) {
+		connector.joinSnapshotStream();
+		consumeSnapshotStream();
+		connector.exitSnapshotStream();
+	    }
+
+	}catch(FieldNotFound e) {
+	    e.printStackTrace();
+	}
 
     }
 
 
+    /**
+     * 
+     */
     private void consumeInstrumentStream() {
-	while(started){
+	while(step == MDSynchronizationSteps.INSTRUMENT_STEP){
 	    try {
-		if(step == MDSynchronizationSteps.INSTRUMENT_STEP){
-		    //Logging.getInstance().log(getClass(), "retrieving instrument messages: " + step, Level.INFO);
-		    //System.out.println("retrieving instrument messages: " + step);
-		    Message m = connector.getInstrumentStream().take();
-		    
-		    switch(m.getHeader().getString(35)){
+		Message m = connector.getInstrumentStream().take();
 
-		    case MsgType.HEARTBEAT:
-			consumeHeartbeat((Heartbeat) m, StreamTypes.INSTRUMENT);
-			break;
+		switch(m.getHeader().getString(35)){
+		case MsgType.HEARTBEAT:
+		    processHeartbeat((Heartbeat) m, StreamTypes.INSTRUMENT);
+		    break;
 
-		    case MsgType.SEQUENCE_RESET:
-			consumeSequenceReset((SequenceReset) m, StreamTypes.INSTRUMENT);
-			break;
+		case MsgType.SEQUENCE_RESET:
+		    processSequenceReset((SequenceReset) m, StreamTypes.INSTRUMENT);
+		    break;
 
-		    case MsgType.SECURITY_LIST:
-			consumeSecurityList((SecurityList) m, StreamTypes.INSTRUMENT);
-			break;
-		    }
+		case MsgType.SECURITY_LIST:
+		    processSecurityList((SecurityList) m);
+		    break;
 		}
-		Thread.sleep(1000);
 
 	    } catch (InterruptedException | FieldNotFound e) {
 		e.printStackTrace();
@@ -233,27 +356,24 @@ public class MarketDataService {
     }
 
     private void consumeSnapshotStream() {
-	while(started){
+	while(!connector.getSnapshotStream().isEmpty()) {
 	    try {
-		if(step == MDSynchronizationSteps.MARKETRECOVERY_STEP){
-		    System.out.println("retrieving recovery messages: " + step);
-		    Message m = connector.getSnapshotStream().take();
-		    switch(m.getHeader().getString(35)){
+		System.out.println("retrieving snapshot messages: " + step);
+		Message m = connector.getSnapshotStream().take();
+		switch(m.getHeader().getString(35)){
 
-		    case MsgType.HEARTBEAT:
-			consumeHeartbeat((Heartbeat) m, StreamTypes.SNAPSHOT);
-			break;
+		case MsgType.HEARTBEAT:
+		    processHeartbeat((Heartbeat) m, StreamTypes.SNAPSHOT);
+		    break;
 
-		    case MsgType.SEQUENCE_RESET:
-			consumeSequenceReset((SequenceReset) m, StreamTypes.SNAPSHOT);
-			break;
+		case MsgType.SEQUENCE_RESET:
+		    processSequenceReset((SequenceReset) m, StreamTypes.SNAPSHOT);
+		    break;
 
-		    case MsgType.MARKET_DATA_SNAPSHOT_FULL_REFRESH:
-			consumeMDSnapshotFullRefresh((MarketDataSnapshotFullRefresh) m);
-			break;
-		    }
+		case MsgType.MARKET_DATA_SNAPSHOT_FULL_REFRESH:
+		    processMDSnapshotFullRefresh((MarketDataSnapshotFullRefresh) m);
+		    break;
 		}
-		Thread.sleep(1000);
 
 	    } catch (InterruptedException | FieldNotFound e) {
 		e.printStackTrace();
@@ -262,97 +382,83 @@ public class MarketDataService {
     }
 
     private void consumeMarketDataStream() {
-	while(started){
-	    try {
-		if(step == MDSynchronizationSteps.INCREMENTAL_STEP){
-		    System.out.println("retrieving incremental messages: " + step);
-		    Message m = connector.getMarketDataStream().take();
-		    switch(m.getHeader().getString(35)){
+	try {
+	    if(step == MDSynchronizationSteps.MARKETRECOVERY_STEP || step == MDSynchronizationSteps.READY_STEP){
+		System.out.println("retrieving incremental messages: " + step);
+		Message m = connector.getMarketDataStream().take();
+		switch(m.getHeader().getString(35)){
 
-		    case MsgType.HEARTBEAT:
-			consumeHeartbeat((Heartbeat) m, StreamTypes.MARKET_DATA);
-			break;
+		case MsgType.HEARTBEAT:
+		    processHeartbeat((Heartbeat) m, StreamTypes.MARKET_DATA);
+		    break;
 
-		    case MsgType.SEQUENCE_RESET:
-			consumeSequenceReset((SequenceReset) m, StreamTypes.MARKET_DATA);
-			break;
+		case MsgType.SEQUENCE_RESET:
+		    processSequenceReset((SequenceReset) m, StreamTypes.MARKET_DATA);
+		    break;
 
-		    case MsgType.MARKET_DATA_INCREMENTAL_REFRESH:
-			consumeMDIncrRefresh((MarketDataIncrementalRefresh) m);
-			break;
+		case MsgType.MARKET_DATA_INCREMENTAL_REFRESH:
+		    processMDIncrRefresh((MarketDataIncrementalRefresh) m);
+		    break;
 
-		    case MsgType.SECURITY_LIST:
-			consumeSecurityList((SecurityList) m, StreamTypes.MARKET_DATA);
-			break;
-
-		    case MsgType.SECURITY_STATUS:
-			consumeSecurityStatus((SecurityStatus) m);
-			break;
-		    }	
-		}
-		Thread.sleep(1000);
-
-	    } catch (InterruptedException | FieldNotFound e) {
-		e.printStackTrace();
+		case MsgType.SECURITY_STATUS:
+		    processSecurityStatus((SecurityStatus) m);
+		    break;
+		}	
 	    }
 
+	} catch (InterruptedException | FieldNotFound e) {
+	    e.printStackTrace();
 	}
     }
 
     private void consumeNewsStream() {
-	while(started){
-	    try {
-		if(step == MDSynchronizationSteps.INCREMENTAL_STEP){
-		    System.out.println("retrieving news messages: " + step);
-		    Message m = connector.getNewsStream().take();
-		    switch(m.getHeader().getString(35)){
+	try {
+	    if(step == MDSynchronizationSteps.MARKETRECOVERY_STEP || step == MDSynchronizationSteps.READY_STEP){
+		System.out.println("retrieving news messages: " + step);
+		Message m = connector.getNewsStream().take();
+		switch(m.getHeader().getString(35)){
 
-		    case MsgType.HEARTBEAT:
-			consumeHeartbeat((Heartbeat) m, StreamTypes.NEWS);
-			break;
+		case MsgType.HEARTBEAT:
+		    processHeartbeat((Heartbeat) m, StreamTypes.NEWS);
+		    break;
 
-		    case MsgType.SEQUENCE_RESET:
-			consumeSequenceReset((SequenceReset) m, StreamTypes.NEWS);
-			break;
+		case MsgType.SEQUENCE_RESET:
+		    processSequenceReset((SequenceReset) m, StreamTypes.NEWS);
+		    break;
 
-		    case MsgType.NEWS:
-			consumeNews((News) m);
-			break;
-		    }	
-		}
-		Thread.sleep(1000);
-
-	    } catch (InterruptedException | FieldNotFound e) {
-		e.printStackTrace();
+		case MsgType.NEWS:
+		    processNews((News) m);
+		    break;
+		}	
 	    }
 
+	} catch (InterruptedException | FieldNotFound e) {
+	    e.printStackTrace();
 	}
     }
 
     private void consumeRecoveryStream() {
-	while(started){
-	    try {
-		if(step == MDSynchronizationSteps.RECOVERY_STEP){
-		    System.out.println("retrieving recovery messages: " + step);
-		    Message m = connector.getRecoveryStream().take();
-		    switch(m.getString(35)){
+	try {
+	    if(step == MDSynchronizationSteps.RECOVERY_STEP){
+		System.out.println("retrieving recovery messages: " + step);
+		Message m = connector.getRecoveryStream().take();
+		switch(m.getString(35)){
 
-		    case MsgType.HEARTBEAT:
-			consumeHeartbeat((Heartbeat) m, StreamTypes.RECOVERY);
-			break;
-		    }
+		case MsgType.HEARTBEAT:
+		    processHeartbeat((Heartbeat) m, StreamTypes.RECOVERY);
+		    break;
 		}
-		Thread.sleep(1000);
-
-	    } catch (InterruptedException | FieldNotFound e) {
-		e.printStackTrace();
 	    }
+
+	} catch (InterruptedException | FieldNotFound e) {
+	    e.printStackTrace();
 	}
+
     }
 
 
 
-    private void consumeHeartbeat(Heartbeat heartbeat, StreamTypes stream) {
+    private void processHeartbeat(Heartbeat heartbeat, StreamTypes stream) {
 	long aux = System.currentTimeMillis();
 
 	if(stream == StreamTypes.INSTRUMENT) {
@@ -364,7 +470,7 @@ public class MarketDataService {
 	    if(lstMarketDataHbt > 0) {
 		//caso tenha passado o tempo, reset no book 
 		if((aux - lstMarketDataHbt)>30000) {
-		    resetBooks(-1);
+		    resetBooks(1,0);
 		}
 		lstMarketDataHbt = aux;
 	    }
@@ -385,21 +491,21 @@ public class MarketDataService {
     }
 
     /**
-     * Realiza o tratamento da atualizacao incremental. Cada mensagem corresponda a 
-     * atualizacao de multiplos instrumentos.
+     * Realiza o tratamento da atualizacao incremental. 
+     * Cada mensagem corresponde a atualizacao de multiplos instrumentos.
      * @param incrRefresh
      */
-    private void consumeMDIncrRefresh(MarketDataIncrementalRefresh incrRefresh){
-
+    private void processMDIncrRefresh(MarketDataIncrementalRefresh incrRefresh){
 	try {
 	    //repeating groups
 	    for(Group group : incrRefresh.getGroups(268)) {
 		int securityID = group.getInt(48);
-		char secIDSrc = group.getChar(22);
-		String securityExchange = group.getString(207);
-		//Security sec = SecurityService.getInstance().findSecurity(securityID, secIDSrc, securityExchange);
-
-		markets.get(securityID).addMDEntry(group);
+		
+		
+		
+		if(markets.containsKey(securityID)) {
+		    markets.get(securityID).addMDEntry(group);
+		}
 	    }
 
 	}catch(FieldNotFound e) {
@@ -410,36 +516,26 @@ public class MarketDataService {
 
     /**
      * Realiza o tratamento do snapshot full refresh. O snapshot eh enviado por 
-     * instrumento. Cada mensagem independente coresponde a atualizacao completa de um instrumento.
+     * instrumento. Cada mensagem independente coresponde a atualizacao completa de um instrumento,
+     * bem como a configuracao inicial do Book.
      * @param snapshotFullRefresh
      */
-    private void consumeMDSnapshotFullRefresh(MarketDataSnapshotFullRefresh snapshotFullRefresh){
+    private void processMDSnapshotFullRefresh(MarketDataSnapshotFullRefresh snapshotFullRefresh){
 	try{
-	    int msgSecNum = snapshotFullRefresh.getHeader().getInt(34);
-	    if(msgSecNum == (lstSnapshotMsgSecNum+1)){
-		lstSnapshotMsgSecNum = msgSecNum;
-		int totNumReports = snapshotFullRefresh.getInt(911);
-
-		int secID = snapshotFullRefresh.getInt(48);
-		char secIDSrc = snapshotFullRefresh.getSecurityIDSource().getValue().charAt(0);
-		String securityExchange = snapshotFullRefresh.getSecurityExchange().getValue();
-
-		//Security sec = SecurityService.getInstance().findSecurity(secID, secIDSrc, securityExchange);
-		//buscar o market por SecurityID
-		List<Group> grps = snapshotFullRefresh.getGroups(268);
-		for(Group g : grps){
-		    markets.get(secID).addMDEntry(g);
-		}
-
-		//caso seja a ultima msg fecha a stream
-		if(totNumReports == lstSnapshotMsgSecNum){
-		    connector.exitSnapshotStream();
-		    //avanca para o recebimento da stream incremental
-		    step = MDSynchronizationSteps.INCREMENTAL_STEP;
-		}
+	    int msgSeqNum = snapshotFullRefresh.getHeader().getInt(34);
+	    int totNumReports = snapshotFullRefresh.getInt(911);
+	    if(msgSeqNum == 1) {
+		snapshots.clear();
+		receivingSnapshots = true;
 	    }
-	    else if(msgSecNum == 1){
-		lstSnapshotMsgSecNum = msgSecNum;
+
+	    if(msgSeqNum <= totNumReports && receivingSnapshots) {
+		snapshots.offer(snapshotFullRefresh);
+	    }
+
+	    if(msgSeqNum == totNumReports && receivingSnapshots) {
+		receivingSnapshots = false;
+		connector.exitSnapshotStream();
 	    }
 
 	}catch(FieldNotFound e){
@@ -448,7 +544,7 @@ public class MarketDataService {
 
     }
 
-    private void consumeNews(News news){
+    private void processNews(News news){
 	try{
 	    String text="";
 	    int lines = news.getInt(33);
@@ -470,18 +566,18 @@ public class MarketDataService {
 
     }
 
-    private void consumeSecurityList(SecurityList securityList, StreamTypes stream){
+    private void processSecurityList(SecurityList securityList){
 	try {
 	    int mdMsgSeq = securityList.getHeader().getInt(34);
 	    boolean lstFrag = securityList.getLastFragment().getValue();
-	    
+
 	    if(mdMsgSeq == 1) {
 		receivingInstruments = true;
 		SecurityService.getInstance().restartSecurityList();
 	    }
-	    
+
 	    if(mdMsgSeq >= 1 && receivingInstruments){
-		
+
 		//verifica se recebeu todos instrumentos
 		int totNumRelSym = securityList.getTotNoRelatedSym().getValue();
 		if(totNumRelSym > SecurityService.getInstance().getSecurityList().size()) {
@@ -516,7 +612,7 @@ public class MarketDataService {
 		    connector.exitInstrumentDefinition();
 		    receivingInstruments = false;
 		}
-		
+
 		System.out.println("SecurityList size: " + SecurityService.getInstance().getSecurityList().size());
 	    }
 
@@ -526,7 +622,7 @@ public class MarketDataService {
 
     }
 
-    private void consumeSecurityStatus(SecurityStatus securityStatus){
+    private void processSecurityStatus(SecurityStatus securityStatus){
 	try {
 	    //tratamento de status para securityGroup
 	    if(securityStatus.isSetField(1151) &&
@@ -536,9 +632,11 @@ public class MarketDataService {
 	    else if(securityStatus.isSetField(48) && securityStatus.isSetField(22) && 
 		    securityStatus.isSetField(207) && securityStatus.isSetField(326) && 
 		    securityStatus.isSetField(1174)) {
-		String symbol = securityStatus.getString(55);
-		markets.get(symbol).setPhase(
-			MarketPhase.getByValue(securityStatus.getSecurityTradingStatus().getValue()));
+		int securityID = Integer.parseInt(securityStatus.getSecurityID().getValue());
+		if(markets.containsKey(securityID)) {
+		    markets.get(securityID).setPhase(
+			    MarketPhase.getByValue(securityStatus.getSecurityTradingStatus().getValue()));
+		}
 	    }
 	}catch(FieldNotFound e) {
 	    e.printStackTrace();
@@ -546,30 +644,32 @@ public class MarketDataService {
 
     }
 
-    private void consumeSequenceReset(SequenceReset sequenceReset, StreamTypes stream) {
+    private void processSequenceReset(SequenceReset sequenceReset, StreamTypes stream) {
 	try {
 	    if(stream == StreamTypes.INSTRUMENT) {
 		//instrument definition loop...
-		lstInstrumentMsgSecNum = -1;
+		lstInstrumentMsgSeqNum = -1;
+		receivingInstruments = false;
 		connector.getInstrumentStream().clear();
 	    }
 	    else if(stream == StreamTypes.SNAPSHOT) {
 		//snapshot recovery is restarting...
-		lstSnapshotMsgSecNum = -1;
+		lstSnapshotMsgSeqNum = -1;
+		receivingSnapshots = false;
 		connector.getSnapshotStream().clear();
 	    }
 	    else if(stream == StreamTypes.MARKET_DATA) {
 		//reset the incremental stream
 		connector.getMarketDataStream().clear();
 		int newSeqNum = sequenceReset.getNewSeqNo().getValue();
-		lstMarketDataMsgSecNum = newSeqNum;
-		resetBooks(newSeqNum);
+		lstMarketDataMsgSeqNum = newSeqNum;
+		resetBooks(newSeqNum, 0);
 	    }
 	    else if(stream == StreamTypes.NEWS) {
 		//reset the incremental stream
 		connector.getNewsStream().clear();
 		int newSeqNum = sequenceReset.getNewSeqNo().getValue();
-		lstNewsMsgSecNum = newSeqNum;
+		lstNewsMsgSeqNum = newSeqNum;
 	    }
 
 	}catch(FieldNotFound e) {
@@ -579,28 +679,7 @@ public class MarketDataService {
     }
 
 
-    /**
-     * Adiciona na tabela de instrumentos um instrumento para receber a 
-     * atualizacao de market data.
-     * @param securityID ID do instrumento
-     * @param secIDSrc 
-     * @param securityExchange 
-     * @return <code>int</code> indicando o status, <code>-1</code> erro ao adicionar o instrumento, 
-     * <code>0</code> caso adicione o instrumento sem erros. 
-     */
-    public int subscribeInstrument(int securityID, char secIDSrc, String securityExchange){
 
-	int ret = -1;
-	Security sec = SecurityService.getInstance().findSecurity(securityID, secIDSrc, securityExchange);
-
-	if(sec != null){
-	    Market mrkt = new Market(sec);
-	    markets.put(securityID, mrkt);
-	    ret = 0;
-	}
-
-	return ret;
-    }
 
     /**
      * @return the newsFeed
@@ -625,8 +704,8 @@ public class MarketDataService {
     }
 
 
-    private void resetBooks(int newSeqNum) {
-	markets.forEach((k, m) -> m.resetMarketData(newSeqNum));
+    private void resetBooks(int newSeqNum, int rptSec) {
+	markets.forEach((k, m) -> m.resetMarketData(newSeqNum, rptSec));
     }
 
 }

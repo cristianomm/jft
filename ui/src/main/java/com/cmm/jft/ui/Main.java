@@ -29,7 +29,7 @@ public class Main {
 
 	    //inicializa a conexao
 	    DBFacade.getInstance();
-	    MarketDataService.getInstance().start();
+	    MarketDataService.getInstance().connect();
 	    SecurityService.getInstance();
 	    
 

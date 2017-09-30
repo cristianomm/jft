@@ -13,6 +13,8 @@ import java.util.List;
 
 import quickfix.FieldNotFound;
 import quickfix.Group;
+import quickfix.fix44.MarketDataIncrementalRefresh;
+import quickfix.fix44.MarketDataSnapshotFullRefresh;
 
 import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.security.Security;
@@ -34,7 +36,7 @@ public class Market {
     private class MBP {
 	private List<MDEntry> buyOrders;
 	private List<MDEntry> sellOrders;
-	
+
 	/**
 	 * 
 	 */
@@ -42,7 +44,7 @@ public class Market {
 	    this.buyOrders = Collections.synchronizedList(new ArrayList<>(500));
 	    this.sellOrders = Collections.synchronizedList(new ArrayList<>(500));
 	}
-	
+
     }
 
     private class MBO {
@@ -77,7 +79,7 @@ public class Market {
 		MDEntry entry = new MDEntry();
 		entry.setMdEntryPx(message.getDouble(270));// MDEntryPx
 		entry.setMdEntrySize(message.getInt(271));// MDEntrySize
-		entry.setOrderID(message.getString(37));// OrderID
+		entry.setOrderID(Long.parseLong(message.getString(37)));// OrderID
 		entry.setMdEntryPosNo(message.getInt(290));// MDEntryPosNo
 
 		entry.setMdEntryType(MDEntryTypes.BID);
@@ -94,7 +96,7 @@ public class Market {
 		MDEntry entry = new MDEntry();
 		entry.setMdEntryPx(message.getDouble(270));// MDEntryPx
 		entry.setMdEntrySize(message.getInt(271));// MDEntrySize
-		entry.setOrderID(message.getString(37));// OrderID
+		entry.setOrderID(Long.parseLong(message.getString(37)));// OrderID
 		entry.setMdEntryPosNo(message.getInt(290));// MDEntryPosNo
 
 		entry.setMdEntryType(MDEntryTypes.OFFER);
@@ -204,6 +206,7 @@ public class Market {
 
     }
 
+    private int rptSeq;
     private int msgSeqNum;
 
     private Security security;
@@ -264,23 +267,38 @@ public class Market {
     private SimpleDateFormat dateFormat;
 
     private static Market instance;
-    
-    
+
+
     private ArrayList<MDListener> listeners;
 
     public Market(Security security) {
 	this.dateFormat = new SimpleDateFormat("yyyyMMdd");
 	this.phase = MarketPhase.Close;
 	this.security = security;
-	resetMarketData(msgSeqNum);
     }
 
-    public void resetMarketData(int newSeqNum) {
-	this.msgSeqNum = newSeqNum >= 1 ? newSeqNum : 1;
+    public void resetMarketData(int newSeqNum, int newRptSeq) {
+	this.msgSeqNum = newSeqNum;
+	this.rptSeq = newRptSeq;
 	this.mbo = new MBO();
 	this.mbp = new MBP();
 	this.listeners = new ArrayList<>();
 	this.trades = (ArrayList<TradeVO>) Collections.synchronizedList(new ArrayList<TradeVO>(100000));
+    }
+
+    public void addSnapshot(MarketDataSnapshotFullRefresh fullRefresh) {
+	try {
+	    if(Integer.parseInt(fullRefresh.getSecurityID().getValue()) == security.getSecurityID()) {
+		//ajusta as colecoes e os indices de sequencia
+		//MDIncRefresh recebidos sera a partir de msgSeqNum e maior que rptSeq ajustados aqui
+		resetMarketData(fullRefresh.getInt(369), fullRefresh.getInt(83));
+		for(Group g : fullRefresh.getGroups(268)) {
+		    addMDEntry(g);
+		}
+	    }
+	}catch(FieldNotFound e) {
+
+	}
     }
 
     public void addMDEntry(Group entry) {
@@ -330,7 +348,7 @@ public class Market {
 		treatEmptyBook(entry);
 		break;
 	    }
-	    
+
 	    notifyListeners(entry);
 
 	} catch (FieldNotFound e) {
@@ -338,15 +356,15 @@ public class Market {
 	}
 
     }
-    
-    
+
+
     private void notifyListeners(Group entry) {
-	
-	
-	
-	
+
+
+
+
     }
-    
+
 
     // -----------------------------------------------------MBO
     /**
@@ -522,7 +540,7 @@ public class Market {
     private void treatEmptyBook(Group message) {
 	try {
 	    if (message.getChar(269) == 'J') {
-		resetMarketData(0);
+		resetMarketData(0, 0);
 	    }
 	} catch (FieldNotFound e) {
 	    e.printStackTrace();
@@ -705,29 +723,29 @@ public class Market {
     public void setPhase(MarketPhase phase) {
 	this.phase = phase;
     }
-    
+
     public List<MDEntry> getBidMBO(){
 	return mbo.buyOrders;
     }
-    
+
     public List<MDEntry> getAskMBO(){
 	return mbo.sellOrders;
     }
-    
+
     public List<MDEntry> getBidMBP(){
 	return mbp.buyOrders;
     }
-    
+
     public List<MDEntry> getAskMBP(){
 	return mbp.sellOrders;
     }
-    
+
     /**
      * @return the trades
      */
     public ArrayList<TradeVO> getTrades() {
 	return trades;
     }
-    
+
 
 }

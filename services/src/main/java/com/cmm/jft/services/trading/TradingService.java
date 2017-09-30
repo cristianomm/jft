@@ -27,6 +27,7 @@ import com.cmm.jft.financial.JournalEntry;
 import com.cmm.jft.financial.Rule;
 import com.cmm.jft.financial.exceptions.RegistrationException;
 import com.cmm.jft.financial.services.JournalService;
+import com.cmm.jft.messaging.fix44.Fix44EngineMessageDecoder;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.trading.OrderEvent;
@@ -42,6 +43,9 @@ import com.cmm.logging.Logging;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import quickfix.FieldNotFound;
+import quickfix.fix44.ExecutionReport;
+import quickfix.fix44.OrderCancelReject;
 
 /**
  * <p>
@@ -82,10 +86,13 @@ public class TradingService {
      */
     private ConcurrentHashMap<String, Position> positions;
 
+    private Fix44EngineMessageDecoder decoder;
+
     /**
      * 
      */
     private TradingService() {
+	decoder = new Fix44EngineMessageDecoder();
 	String strBroker = (String) Configuration.getInstance().getConfiguration("brokerID");
 	brokerID = (Broker) DBFacade.getInstance().findObject("Broker.findByBrokerCode", "brokerCode", strBroker);
 
@@ -393,29 +400,50 @@ public class TradingService {
 	// }
     }
 
-    /**
-     * Cria o evento de execucao e a execucao e os adiciona na ordem passada por
-     * parametro.
-     * 
-     * @param order
-     * @param executionDateTime
-     * @param execVolume
-     * @param execPrice
-     * @return Ordem adicionada da Execucao e Evento de Execucao
-     */
-    public boolean addExecution(String clOrderID, Date executionDateTime, int execVolume, double execPrice) {
-	boolean ret = false;
+
+    public void onExecutionReport(ExecutionReport report) {
 	try {
-	    if (orders.contains(clOrderID)) {
-		ret = orders.get(clOrderID)
-			.addExecution(new OrderEvent(ExecutionTypes.TRADE, executionDateTime, execVolume, execPrice));
+	    String clOrdID = report.getString(11);
+	    if(orders.containsKey(clOrdID)) {
+		OrderEvent oe = decoder.executionReport(report);
+		orders.get(clOrdID).addExecution(oe);
 	    }
-	} catch (Exception e) {
-	    Logging.getInstance().log(getClass(), "Erro ao criar execucao de ordem: " + e.getMessage(), e, Level.ERROR,
-		    false);
+	}catch(FieldNotFound | OrderException e) {
+
 	}
-	return ret;
+
     }
+
+    public void onOrderCancelReject(OrderCancelReject cancelReject) {
+
+    }
+
+    //    /**
+    //     * Cria o evento de execucao e a execucao e os adiciona na ordem passada por
+    //     * parametro.
+    //     * 
+    //     * @param order
+    //     * @param executionDateTime
+    //     * @param execVolume
+    //     * @param execPrice
+    //     * @return Ordem adicionada da Execucao e Evento de Execucao
+    //     */
+    //    public boolean addExecution(String clOrderID, Date executionDateTime, int execVolume, double execPrice) {
+    //	boolean ret = false;
+    //	try {
+    //	    if (orders.contains(clOrderID)) {
+    //		ret = orders.get(clOrderID)
+    //			.addExecution(new OrderEvent(ExecutionTypes.TRADE, executionDateTime, execVolume, execPrice));
+    //	    }
+    //	} catch (Exception e) {
+    //	    Logging.getInstance().log(getClass(), "Erro ao criar execucao de ordem: " + e.getMessage(), e, Level.ERROR,
+    //		    false);
+    //	}
+    //	return ret;
+    //    }
+
+
+
 
     /**
      * Realiza a contabilidade de uma posicao zerada

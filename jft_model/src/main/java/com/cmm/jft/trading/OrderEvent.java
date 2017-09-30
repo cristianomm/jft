@@ -23,6 +23,7 @@ import javax.persistence.TemporalType;
 
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.trading.enums.ExecutionTypes;
+import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 
@@ -59,6 +60,9 @@ public class OrderEvent implements DBObject<OrderEvent> {
     @Column(name = "MinQty")
     private double minQty;
     
+    @Column(name = "MaxFloor")
+    private double maxFloor;
+
     @Column(name = "CumQty")
     private double cumQty;
     
@@ -71,6 +75,10 @@ public class OrderEvent implements DBObject<OrderEvent> {
     @Enumerated(EnumType.STRING)
     @Column(name="ExecutionType", length=30)
     private ExecutionTypes executionType;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name="OrderStatus", length=30)
+    private OrderStatus orderStatus;
 
     @Enumerated(EnumType.STRING)
     @Basic(optional = false)
@@ -350,6 +358,34 @@ public class OrderEvent implements DBObject<OrderEvent> {
      */
     public void setLeavesQty(double leavesQty) {
 	this.leavesQty = leavesQty;
+    }
+    
+    /**
+     * @return the orderStatus
+     */
+    public OrderStatus getOrderStatus() {
+	return orderStatus;
+    }
+    
+    /**
+     * @param orderStatus the orderStatus to set
+     */
+    public void setOrderStatus(OrderStatus orderStatus) {
+	this.orderStatus = orderStatus;
+    }
+    
+    /**
+     * @return the maxFloor
+     */
+    public double getMaxFloor() {
+        return maxFloor;
+    }
+
+    /**
+     * @param maxFloor the maxFloor to set
+     */
+    public void setMaxFloor(double maxFloor) {
+        this.maxFloor = maxFloor;
     }
 
 }
