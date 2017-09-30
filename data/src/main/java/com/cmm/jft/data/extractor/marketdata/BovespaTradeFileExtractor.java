@@ -19,6 +19,7 @@ import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.core.format.IntFormatter;
 import com.cmm.jft.data.files.CSV;
+import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.vo.Extractable;
 import com.cmm.jft.vo.OrderEventVO;
 import com.cmm.jft.vo.TradeVO;
@@ -54,8 +55,8 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 		if (vs != null && vs[0] != null) {
 		    
 
-		    TradeVO eventVO = new TradeVO();
-		    eventVO.sessionDate = dtmf.parse(vs[0]);
+		    MDEntry entry = new MDEntry();
+		    entry.setEntryDate(dtmf.parse(vs[0]));
 
 		    // layout dos arquivos foi alterado devido a mudanca para o
 		    // sistema de negociacao Puma
@@ -75,14 +76,13 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 			//[9]Data Oferta Venda              148       10  Data da oferta de venda
 			//[10]Seq.Oferta Venda               159       10  Número sequencial da oferta de venda
 
-			eventVO.securityID = vs[1];
-			eventVO.tradeID = String.format("%1$07d", Integer.parseInt(vs[2]));
-			eventVO.price = Double.parseDouble(vs[3]);
-			eventVO.volume = Integer.parseInt(vs[4]);
-			eventVO.tradeTime = tf.parse(vs[5]);
-			eventVO.tradeDate = eventVO.sessionDate;
-			eventVO.buyOrderID = vs[8];
-			eventVO.sellOrderID = vs[10];
+			entry.setSymbol(vs[1]);
+			entry.setTradeID(String.format("%1$07d", Integer.parseInt(vs[2])));
+			entry.setMdEntryPx(Double.parseDouble(vs[3]));
+			entry.setMdEntrySize(Integer.parseInt(vs[4]));
+			entry.setMdEntryDateTime(tf.parse(vs[5]));
+			entry.setMdEntryBuyer(vs[8]);
+			entry.setMdEntrySeller(vs[10]);
 
 		    } else if (vs.length >= 15) {
 			//-----------------------------------------------------------
@@ -107,29 +107,29 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 			//[16]Corretora Compra                  221        8   Codigo de identificaco da corretora de compra - Dispon�vel a partir de 03/2014
 			//[17]Corretora Venda                   230        8   Codigo de identificaco da corretora de venda - Dispon�vel a partir de 03/2014
 
-			eventVO.securityID = vs[1];
-			eventVO.tradeID = String.format("%1$07d", Integer.parseInt(vs[2]));
-			eventVO.price = Double.parseDouble(vs[3]);
-			eventVO.volume = Integer.parseInt(vs[4]);
-			eventVO.tradeTime = tf.parse(vs[5]);
-			eventVO.tradeDate = eventVO.sessionDate;
-			eventVO.buyOrderID = vs[8];
-			eventVO.buySecOrderID = vs[9];
+			entry.setSymbol(vs[1]);
+			entry.setTradeID(String.format("%1$07d", Integer.parseInt(vs[2])));
+			entry.setMdEntryPx(Double.parseDouble(vs[3]));
+			entry.setMdEntrySize(Integer.parseInt(vs[4]));
+			entry.setMdEntryDateTime(tf.parse(vs[5]));
+			
+			entry.setBuyOrdID(Long.parseLong(vs[8]));
+			entry.setBuySecOrdID(Long.parseLong(vs[9]));
 			if(vs[10].equals("1")) {
-			    eventVO.agressor = 'B';
+			    entry.setAgressor('B');
 			}
 			else if(vs[14].equals("1")){
-			    eventVO.agressor = 'S';
+			    entry.setAgressor('S');
 			}
 			
-			eventVO.sellOrderID = vs[12];
-			eventVO.sellSecOrderID = vs[13];
+			entry.setSellOrdID(Long.parseLong(vs[12]));
+			entry.setSellSecOrdID(Long.parseLong(vs[13]));
 			
-			eventVO.buyBroker = String.format("%1$04d", Integer.parseInt(vs[16]));
-			eventVO.sellBroker = String.format("%1$04d", Integer.parseInt(vs[17]));
+			entry.setMdEntryBuyer(String.format("%1$04d", Integer.parseInt(vs[16])));
+			entry.setMdEntrySeller(String.format("%1$04d", Integer.parseInt(vs[17])));
 		    }
 
-		    bsEvents.add(eventVO);
+		    bsEvents.add(entry);
 
 		}
 	    }

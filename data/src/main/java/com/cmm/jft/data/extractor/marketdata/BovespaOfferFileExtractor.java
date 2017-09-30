@@ -43,7 +43,10 @@ import com.cmm.logging.Logging;
  *
  */
 public class BovespaOfferFileExtractor extends BovespaFileExtractor {
-
+    
+    
+    private static long clOrdID = System.currentTimeMillis();
+    
     public static void main(String[] args) {
 
 	BovespaOfferFileExtractor bfe = new BovespaOfferFileExtractor();
@@ -51,11 +54,11 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 	List<Extractable>ls = bfe.extract();
 	System.out.println("Events: " + ls.size());
 
-	List<OrderEventVO> events = new ArrayList(ls.size());
-	ls.forEach(ex -> events.add((OrderEventVO) ex));
+	List<MDEntry> events = new ArrayList(ls.size());
+	ls.forEach(ex -> events.add((MDEntry) ex));
 
-	Map<Long,List<OrderEventVO>> orders = 
-		events.stream().collect(Collectors.groupingByConcurrent(OrderEventVO::getOrderID));
+	Map<Long,List<MDEntry>> orders = 
+		events.stream().collect(Collectors.groupingByConcurrent(MDEntry::getOrderID));
 	
 	System.out.println("Orders: " + orders.size());
 
@@ -65,44 +68,49 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 
     }
 
-    private static void processEvents(List<OrderEventVO> events) {
+    private static void processEvents(List<MDEntry> events) {
+	
+	MDEntry entry = events.get(0);
+	Date time = entry.getMdEntryDateTime();
+	boolean sameTime = events.parallelStream().allMatch(evt -> evt.getMdEntryDateTime().equals(time));
 
-	Date time = events.get(0).eventTime;
-	boolean sameTime = events.parallelStream().allMatch(evt -> evt.eventTime.equals(time));
-
-	OrderEventVO oevo = events.get(0);
 	Fix44EngineMessageEncoder encoder = Fix44EngineMessageEncoder.getInstance();
-
+	
+	String senderLct = "";
+	String brokerID = "";
+	String traderID = "";
+	
+	
 	try {
-	    Orders o = new Orders("" + oevo.orderID, new Security(oevo.securityID), oevo.side, 
-		    oevo.price, oevo.volume, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+	    Orders o = new Orders(entry.getOrderID(), clOrdID+"", new Security(entry.getSymbol()), entry.getSide(), 
+		    entry.getMdEntryPx(), entry.getMdEntrySize(), OrderTypes.Limit, traderID, brokerID, senderLct);
 
 	    //no mesmo tempo, pode ser  FOK/ IOC
 	    if(sameTime) {
 
-		OrderEventVO lstEvt = events.get(events.size()-1); 
+		MDEntry lstEvt = events.get(events.size()-1); 
 
 		//caso a ordem tenha sido enviada e nao tenha sido executada, sera uma ordem FOK
-		if(lstEvt.orderEvent == 3 && lstEvt.orderStatus == 0 && lstEvt.orderStatus == 4) {
+		if(lstEvt.getOrderEvent() == 3 && lstEvt.getOrderStatus() == 0 && lstEvt.getOrderStatus() == 4) {
 		    o.setValidityType(OrderValidityTypes.FOK);
 
 
 		}
 		//ordem enviada e totamente executada no instante que eh disponibilizada
-		else if(lstEvt.orderEvent == 4 && lstEvt.orderStatus == 2) {
+		else if(lstEvt.getOrderEvent() == 4 && lstEvt.getOrderStatus() == 2) {
 		    o.setValidityType(OrderValidityTypes.FOK);
 
 		}
 
 		//caso a ordem seja enviada e nao tenha sido completamente executada, sera uma ordem FAK
-		else if(lstEvt.orderEvent == 3 && lstEvt.orderStatus == 1) {
+		else if(lstEvt.getOrderEvent() == 3 && lstEvt.getOrderStatus() == 1) {
 		    o.setValidityType(OrderValidityTypes.IOC);
 		}
 
 		//caso a ordem seja executada em mais de um nivel de preco, sera uma ordem a mercado 
 		else {
 		    o.setOrderType(OrderTypes.Market);
-		    o.setLimitPrice(lstEvt.getPrice());
+		    o.setPrice(lstEvt.getMdEntryPx());
 		}
 	    }
 	    else {
@@ -145,9 +153,7 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 
 		if (vs != null && vs[0] != null) {
 		    MDEntry entry = new MDEntry();
-		    OrderEventVO eventVO = new OrderEventVO();
-		    eventVO.sessionDate = dtmf.parse(vs[0]);
-
+		    entry.setEntryDate(dtmf.parse(vs[0]));
 		    matcher = pTime.matcher(vs[6]);
 		    if (matcher.find()) {
 			vs[6] = matcher.group();
@@ -190,16 +196,15 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 			// Tratamento (contem Hora da Anulacao quando Indicador
 			// de Estado da Orderm for igual a "A")
 
-			eventVO.securityID = vs[1];
-			eventVO.side = Side.getByValue(vs[2]);
-			eventVO.orderID = Long.parseLong(vs[3]);
-			eventVO.eventID = Long.parseLong(vs[4]);
-			eventVO.orderEvent = Integer.parseInt(vs[5]);
-			eventVO.eventTime = tf.parse(vs[6]);
-			eventVO.eventDate = eventVO.sessionDate;
-			eventVO.price = Double.parseDouble(vs[8]);
-			eventVO.volume = Integer.parseInt(vs[9]);
-			eventVO.tradedVolume = Double.parseDouble(vs[10]);
+			entry.setSymbol(vs[1]);
+			entry.setSide(Side.getByValue(vs[2]));
+			entry.setOrderID(Long.parseLong(vs[3]));
+			entry.setMdEntryID(Long.parseLong(vs[4]));
+			entry.setOrderEvent(Integer.parseInt(vs[5]));
+			entry.setMdEntryDateTime(tf.parse(vs[6]));
+			entry.setMdEntryPx(Double.parseDouble(vs[8]));
+			entry.setMdEntrySize(Integer.parseInt(vs[9]));
+			entry.setTradeVolume(Integer.parseInt(vs[10]));
 
 		    } else if (vs.length >= 14 && vs.length < 16) {
 			// -----------------------------------------------------------
@@ -241,19 +246,18 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 			// 0 - Oferta Neutra - e aquela que entra no mercado e nao fecha com oferta existente. 
 			// 1 - Oferta Agressora - e aquela que ingressa no mercado para fechar com uma oferta existente.
 			// 2 - Oferta Agredida - e a oferta (existente) que e fechada com uma oferta agressora.
-
-			eventVO.securityID = vs[1];
-			eventVO.side = Side.getByValue(vs[2]);
-			eventVO.orderID = Long.parseLong(vs[3]);
-			eventVO.eventID = Long.parseLong(vs[4]);
-			eventVO.orderEvent = Integer.parseInt(vs[5]);
-			eventVO.eventTime = tf.parse(vs[6]);
-			eventVO.eventDate = eventVO.sessionDate;
-			eventVO.price = Double.parseDouble(vs[8]);
-			eventVO.volume = Integer.parseInt(vs[9]);
-			eventVO.tradedVolume = Double.parseDouble(vs[10]);
-			eventVO.orderDate = dtf.parse(vs[12]);
-			eventVO.orderStatus = vs[13].charAt(0);
+			
+			entry.setSymbol(vs[1]);
+			entry.setSide(Side.getByValue(vs[2]));
+			entry.setOrderID(Long.parseLong(vs[3]));
+			entry.setMdEntryID(Long.parseLong(vs[4]));
+			entry.setOrderEvent(Integer.parseInt(vs[5]));
+			entry.setMdEntryDateTime(tf.parse(vs[6]));
+			entry.setMdEntryPx(Double.parseDouble(vs[8]));
+			entry.setMdEntrySize(Integer.parseInt(vs[9]));
+			entry.setTradeVolume(Integer.parseInt(vs[10]));
+			entry.setOrderDate(dtf.parse(vs[12]));
+			entry.setOrderStatus(vs[13].charAt(0));
 
 		    } else if (vs.length >= 16) {
 			// -----------------------------------------------------------
@@ -275,24 +279,23 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 			// [13]Estado Of.Compra 218 1 Indicador de estado da ordem: 0 - Novo / 1 - Negociada parcialmente / 2 - Totalmente executada / 4 - Cancelada / 5 - Modificada / 8 - Rejeitada / C - Expirada
 			// [14]Condicao Oferta 220 1 Codigo que identifica a condicao da oferta. Pode ser: 0 - Oferta Neutra - e aquela que entra no mercado e nao fecha com oferta existente. / 1 - Oferta Agressora - e aquela que ingressa no mercado para fechar com uma oferta existente. / 2 - Oferta Agredida - e a oferta (existente) que e fechada com uma oferta agressora.
 			// [15]Corretora 222 8 Codigo que identifica univocamente a corretora - Disponivel a partir de 03/2014
-
-			eventVO.securityID = vs[1];
-			eventVO.side = Side.getByValue(vs[2]);
-			eventVO.orderID = Long.parseLong(vs[3]);
-			eventVO.eventID = Long.parseLong(vs[4]);
-			eventVO.orderEvent = Integer.parseInt(vs[5]);
-			eventVO.eventTime = tf.parse(vs[6]);
-			eventVO.eventDate = eventVO.sessionDate;
-			eventVO.price = Double.parseDouble(vs[8]);
-			eventVO.volume = Integer.parseInt(vs[9]);
-			eventVO.tradedVolume = Double.parseDouble(vs[10]);
-			eventVO.orderDate = dtf.parse(vs[12]);
-			eventVO.orderStatus = vs[13].charAt(0);
-			eventVO.orderCondition = Integer.parseInt(vs[14]);
+			
+			entry.setSymbol(vs[1]);
+			entry.setSide(Side.getByValue(vs[2]));
+			entry.setOrderID(Long.parseLong(vs[3]));
+			entry.setMdEntryID(Long.parseLong(vs[4]));
+			entry.setOrderEvent(Integer.parseInt(vs[5]));
+			entry.setMdEntryDateTime(tf.parse(vs[6]));
+			entry.setMdEntryPx(Double.parseDouble(vs[8]));
+			entry.setMdEntrySize(Integer.parseInt(vs[9]));
+			entry.setTradeVolume(Integer.parseInt(vs[10]));
+			entry.setOrderDate(dtf.parse(vs[12]));
+			entry.setOrderStatus(vs[13].charAt(0));
+			entry.setOrderCondition(Integer.parseInt(vs[14]));
 
 		    }
 
-		    bsEvents.add(eventVO);
+		    bsEvents.add(entry);
 		}
 	    }
 

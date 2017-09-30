@@ -29,15 +29,12 @@ import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.data.connection.Events;
 import com.cmm.jft.data.extractor.marketdata.BovespaOfferFileExtractor;
 import com.cmm.jft.data.extractor.marketdata.BovespaTradeFileExtractor;
+import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.vo.Extractable;
-import com.cmm.jft.vo.OrderEventVO;
-import com.cmm.jft.vo.OrdersVO;
-import com.cmm.jft.vo.TradeVO;
-
 
 /**
  * <p>
@@ -53,21 +50,12 @@ public class FIXLogCreator {
 
     private class EventsEntry implements Comparable<EventsEntry>{
 	private Date datetime;
-	private Date date;
-	private Date time;
-	private List<OrderEventVO> buy;
-	private List<OrderEventVO> sell;
-	private List<TradeVO> trade;
+	private List<MDEntry> buy;
+	private List<MDEntry> sell;
+	private List<MDEntry> trade;
 
-	public  EventsEntry(Date date, Date time){
-	    this.date = date;
-	    this.time = time;
-	    try {
-		datetime = sdtf.parse(sdf.format(date) + " " + stf.format(time));
-	    } catch (ParseException e) {
-		e.printStackTrace();
-	    }
-
+	public  EventsEntry(Date dateTime){
+	    this.datetime = dateTime;
 	    this.buy = new ArrayList<>();
 	    this.sell = new ArrayList<>();
 	    this.trade = new ArrayList<>();
@@ -92,7 +80,6 @@ public class FIXLogCreator {
 
 	public List<Orders> toOrders(){
 
-	    OrdersVO v;
 
 	    return null;
 	    //			NewOrderSingle orderSingle = new NewOrderSingle(
@@ -151,26 +138,26 @@ public class FIXLogCreator {
 
 	// para eventos em tempos diferentes separar cada um em um MDIR
 
-	PriorityQueue<OrderEventVO> buyEvents = new PriorityQueue<>();
-	PriorityQueue<OrderEventVO> sellEvents = new PriorityQueue<>();
-	PriorityQueue<TradeVO> tradeEvents = new PriorityQueue<>();
+	PriorityQueue<MDEntry> buyEvents = new PriorityQueue<>();
+	PriorityQueue<MDEntry> sellEvents = new PriorityQueue<>();
+	PriorityQueue<MDEntry> tradeEvents = new PriorityQueue<>();
 
 	if (symbol != null || !symbol.isEmpty()) {
 	    buyOrders.stream()
-	    .filter(bo -> ((OrderEventVO)bo).securityID.equalsIgnoreCase(symbol))
-	    .forEach(bo -> buyEvents.add((OrderEventVO) bo));
-	    buyEvents.stream().forEach(b -> b.side = Side.BUY);
+	    .filter(bo -> ((MDEntry)bo).getSymbol().equalsIgnoreCase(symbol))
+	    .forEach(bo -> buyEvents.add((MDEntry) bo));
+	    buyEvents.stream().forEach(b -> b.setSide(Side.BUY));
 	    buyOrders.clear();
 
 	    sellOrders.stream()
-	    .filter(so -> ((OrderEventVO)so).securityID.equalsIgnoreCase(symbol))
-	    .forEach(so -> sellEvents.add((OrderEventVO) so));
-	    sellEvents.stream().forEach(s -> s.side = Side.SELL);
+	    .filter(so -> ((MDEntry)so).getSymbol().equalsIgnoreCase(symbol))
+	    .forEach(so -> sellEvents.add((MDEntry) so));
+	    sellEvents.stream().forEach(s -> s.setSide(Side.SELL));
 	    sellOrders.clear();
 
 	    trades.stream()
-	    .filter(t -> ((TradeVO)t).securityID.equalsIgnoreCase(symbol))
-	    .forEach(t -> tradeEvents.add((TradeVO) t));
+	    .filter(t -> ((MDEntry)t).getSymbol().equalsIgnoreCase(symbol))
+	    .forEach(t -> tradeEvents.add((MDEntry) t));
 	    trades.clear();
 	}
 
@@ -179,8 +166,8 @@ public class FIXLogCreator {
 	sellOrders = null;
 
 	while (!buyEvents.isEmpty()) {
-	    OrderEventVO buy = buyEvents.poll();
-	    EventsEntry entry = new EventsEntry(buy.eventDate, buy.eventTime);
+	    MDEntry buy = buyEvents.poll();
+	    EventsEntry entry = new EventsEntry(buy.getMdEntryDateTime());
 	    if(mapentries.containsKey(entry.datetime)){
 		mapentries.get(entry.datetime).buy.add(buy);
 	    }else{
@@ -190,8 +177,8 @@ public class FIXLogCreator {
 	}
 
 	while (!sellEvents.isEmpty()) {
-	    OrderEventVO sell = sellEvents.poll();
-	    EventsEntry entry = new EventsEntry(sell.eventDate, sell.eventTime);
+	    MDEntry sell = sellEvents.poll();
+	    EventsEntry entry = new EventsEntry(sell.getMdEntryDateTime());
 	    if(mapentries.containsKey(entry.datetime)){
 		mapentries.get(entry.datetime).sell.add(sell);
 	    }else{
@@ -201,8 +188,8 @@ public class FIXLogCreator {
 	}
 
 	while (!tradeEvents.isEmpty()) {
-	    TradeVO trade = tradeEvents.poll();
-	    EventsEntry entry = new EventsEntry(trade.tradeDate, trade.tradeTime);
+	    MDEntry trade = tradeEvents.poll();
+	    EventsEntry entry = new EventsEntry(trade.getMdEntryDateTime());
 	    if(mapentries.containsKey(entry.datetime)){
 		mapentries.get(entry.datetime).trade.add(trade);
 	    }else{
@@ -230,12 +217,12 @@ public class FIXLogCreator {
 
 	for(EventsEntry ee : mapentries.values()){
 	    //agrupa por tipo de evento
-	    Map<String, List<OrderEventVO>> resB = ee.buy.stream().collect(
-		    Collectors.groupingBy(OrderEventVO::getOrderEvent)
+	    Map<Integer, List<MDEntry>> resB = ee.buy.stream().collect(
+		    Collectors.groupingBy(MDEntry::getOrderEvent)
 		    );
 
-	    Map<String, List<OrderEventVO>> resS = ee.sell.stream().collect(
-		    Collectors.groupingBy(OrderEventVO::getOrderEvent)
+	    Map<Integer, List<MDEntry>> resS = ee.sell.stream().collect(
+		    Collectors.groupingBy(MDEntry::getOrderEvent)
 		    );
 
 	    if(resB.size() > 0){

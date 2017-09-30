@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,64 +44,70 @@ public class FTPBMFBovespa {
     private static final String TEMP_DIR = "/MarketData/Temp/";
 
     public static void main(String[] args) {
-//	int size = 200_000_000;
-//	final Random rand = new Random();
-//	final double[] elements = new double[size];
-//
-//	System.out.println("creating elements list...");
-//
-//	int part=8;
-//	boolean[] status = new boolean[part];
-//	for(int i=0;i<part;i++){
-//	    final int p=i;
-//	    int partSize=size/part;
-//	    int partInit = partSize*i;
-//	    int partEnd = partInit + partSize;
-//	    System.out.println(partSize + " - " + partInit + "-> "+ partEnd);
-//
-//	    new Thread(new Runnable(){
-//		@Override
-//		public void run() {
-//		    for(int i=partInit;i<partEnd;i++){
-//			elements[i] = rand.nextDouble();
-//		    }
-//		    System.out.println(p + " done!");
-//		    status[p] = true;
-//		}
-//	    }).start();
-//	}
-//	System.out.println(status[0]);
-//	boolean end = status[0];
-//	while(!end){
-//	    end = status[0];
-//	    for(boolean b:status){
-//		end = end && b;
-//	    }
-//	    try {
-//		Thread.sleep(500);
-//	    } catch (InterruptedException e) {
-//		e.printStackTrace();
-//	    }
-//
-//	}
-//
-//	System.out.println("done!");
-//
-//	System.exit(0);
+	//	int size = 200_000_000;
+	//	final Random rand = new Random();
+	//	final double[] elements = new double[size];
+	//
+	//	System.out.println("creating elements list...");
+	//
+	//	int part=8;
+	//	boolean[] status = new boolean[part];
+	//	for(int i=0;i<part;i++){
+	//	    final int p=i;
+	//	    int partSize=size/part;
+	//	    int partInit = partSize*i;
+	//	    int partEnd = partInit + partSize;
+	//	    System.out.println(partSize + " - " + partInit + "-> "+ partEnd);
+	//
+	//	    new Thread(new Runnable(){
+	//		@Override
+	//		public void run() {
+	//		    for(int i=partInit;i<partEnd;i++){
+	//			elements[i] = rand.nextDouble();
+	//		    }
+	//		    System.out.println(p + " done!");
+	//		    status[p] = true;
+	//		}
+	//	    }).start();
+	//	}
+	//	System.out.println(status[0]);
+	//	boolean end = status[0];
+	//	while(!end){
+	//	    end = status[0];
+	//	    for(boolean b:status){
+	//		end = end && b;
+	//	    }
+	//	    try {
+	//		Thread.sleep(500);
+	//	    } catch (InterruptedException e) {
+	//		e.printStackTrace();
+	//	    }
+	//
+	//	}
+	//
+	//	System.out.println("done!");
+	//
+	//	System.exit(0);
 
-//H:/Disco/Bancos/BM&FBovespa/MarketData/BMF
-	final String saveDir = "H:/Disco/Bancos/BM&FBovespa";
+	//H:/Disco/Bancos/BM&FBovespa/MarketData/BMF
+	final String saveDir = "D:/Disco/Bancos/BM&FBovespa";
+
+	FTPBMFBovespa ftp = new FTPBMFBovespa();
+	if(ftp.connect("anonymous", "", FTP_BMFBovespa)) {
+	    List<String> dFiles = ftp.getInexistentLocalFiles(BMF_DIR, saveDir + BMF_DIR);
+	    ftp.downloadFiles(dFiles, BMF_DIR, saveDir, TEMP_DIR);
+	}
 
 	//anonymous
 	new Thread(new Runnable() {
 	    public void run() {
-		FTPBMFBovespa ftp = new FTPBMFBovespa();
- 		if(ftp.connect("anonymous", "", FTP_BMFBovespa)) {
- 		    
- 		    List<String> dFiles = ftp.getInexistentLocalFiles(BMF_DIR, saveDir + BMF_DIR);
- 		    
- 		    ftp.downloadFiles(dFiles, BMF_DIR, saveDir, TEMP_DIR);
- 		}
+		//		FTPBMFBovespa ftp = new FTPBMFBovespa();
+		//		if(ftp.connect("anonymous", "", FTP_BMFBovespa)) {
+		//
+		//		    List<String> dFiles = ftp.getInexistentLocalFiles(BMF_DIR, saveDir + BMF_DIR);
+		//
+		//		    ftp.downloadFiles(dFiles, BMF_DIR, saveDir, TEMP_DIR);
+		//		}
 	    }
 	}).start();
 
@@ -187,6 +194,7 @@ public class FTPBMFBovespa {
 		FTPFile[] files = ftp.list();
 
 		File dir = new File(localDir);
+		dir.mkdirs();
 		HashMap<String, File> localFiles = new HashMap<String, File>();
 		for(File f:dir.listFiles()){
 		    localFiles.put(f.getName(), f);
@@ -194,7 +202,8 @@ public class FTPBMFBovespa {
 
 		//adiciona na lista de retorno os arquivos do ftp que nao existem localmente
 		for(FTPFile f:files){
-		    if(!localFiles.containsKey(f.getName())){
+		    //System.out.println(f.getName() +": " + (f.getModifiedDate().getYear()+1900) + " -> " + (f.getModifiedDate().getYear() == 2017));
+		    if(!localFiles.containsKey(f.getName()) &&  (f.getModifiedDate().getYear() == 117)){
 			lst.add(f.getName());
 		    }
 		}
@@ -236,8 +245,9 @@ public class FTPBMFBovespa {
 		if (!f.exists()) {
 		    System.out.println("Dowloading: " + fileName);
 		    try {
-			
+			//connect("anonymous", "", FTP_BMFBovespa);
 			ftp.download(fileName, temp);
+			//ftp.disconnect(true);
 			Files.move(temp.toPath(), f.toPath(), StandardCopyOption.ATOMIC_MOVE);
 			System.out.println(fileName + "... Done!");
 		    } catch (FTPException e) {
@@ -246,13 +256,11 @@ public class FTPBMFBovespa {
 		    } catch (SocketTimeoutException e) {
 			System.out.println("Error dowloading the file: "
 				+ fileName + ": " + e.getMessage());
+		    } catch(FTPIllegalReplyException e) {
+			e.printStackTrace();
 		    } 
-
 		}
-
 	    }
-
-	    ftp.disconnect(true);
 
 	} catch (IllegalStateException e) {
 	    e.printStackTrace();
