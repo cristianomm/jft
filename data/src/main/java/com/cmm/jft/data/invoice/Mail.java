@@ -91,7 +91,7 @@ public class Mail {
 	public static void main(String args[]) throws MessagingException,
 			IOException {
 		Mail m = new Mail("imap.gmail.com");
-		m.connect("cristranus", "JfD!347>61&<52");
+		m.connect("cristranus", "pass");
 		Message[] msgs = m.listMails("INBOX", "");
 		System.out.println("Found: " + msgs.length);
 		for (int i = msgs.length - 1; i >= 0; i--) {
@@ -99,7 +99,7 @@ public class Mail {
 
 			if (msg.getSubject() != null
 					&& msg.getSubject().contains(
-							"Relatório diário de Day Trade")) {
+							"Relatï¿½rio diï¿½rio de Day Trade")) {
 				String path = "C:/Disco/Workspaces/JFT/jft_data/file/relatoriosDT/"
 						+ msg.getFrom()[0].toString().replace(".", "-")
 								.replace("@", "").trim()
