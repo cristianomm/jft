@@ -12,18 +12,22 @@
     <module>logging</module>
     <module>db</module>
     <module>data</module>
-    <module>ui</module>
     <module>init</module>
     <module>jft_model</module>
     <module>engine</module>
     <module>conector</module>
     <module>messaging</module>
     <module>searchbox</module>
-    <module>marketdata_connector</module>
+    
     <module>services</module>
-    <module>market_data</module>
+    
     <module>client</module>
     <module>analisis</module>
+    <module>ui</module>
     <module>test</module>
   </modules>
+  <properties>
+  	<maven.compiler.source>1.8</maven.compiler.source>
+  	<maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
 </project>

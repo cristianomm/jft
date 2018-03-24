@@ -87,18 +87,23 @@ public class BookTest {
 
 	try {
 	    long orderID = 123456;
+	    String clOrdID = "10";
+	    String traderID = "21";
+	    String brokerID = "22";
+	    String senderLct = "00";
+	    
 	    Orders ord = new Orders(orderID++, "123456", security, Side.BUY, 
-		    3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+		    3321.5, 2, OrderTypes.Limit, traderID, brokerID, senderLct);
 	    ord.setBrokerID("308");
 	    
-	    boolean added = book.addOrder(ord, sessionID);
+	    boolean added = book.addOrder(ord);
 	    
 	    for(int i=0;i<10000;i++) {
 		ord = new Orders(orderID++, "123457"+i, security, Side.BUY, 
-			3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+			3321.5, 2, OrderTypes.Limit, traderID, brokerID, senderLct);
 		ord.setBrokerID("308");
 		
-		added = added && book.addOrder(ord, sessionID);
+		added = added && book.addOrder(ord);
 	    }
 
 	    assertTrue(added);
@@ -113,17 +118,22 @@ public class BookTest {
 
 	try {
 	    long orderID = 123456;
-	    Orders ord = new Orders(orderID++, "123456", security, Side.BUY, 
-		    3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+	    String clOrdID = "10";
+	    String traderID = "20";
+	    String brokerID = "21";
+	    String senderLct = "00";
+	    
+	    Orders ord = new Orders(orderID++, clOrdID, security, Side.BUY, 
+		    3321.5, 2, OrderTypes.Limit, traderID, brokerID, senderLct);
 	    ord.setBrokerID("308");
 	    
-	    boolean added = book.addOrder(ord, sessionID);
+	    boolean added = book.addOrder(ord);
 	    
-	    ord = new Orders(orderID++, "123457", security, Side.SELL, 
-			3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+	    ord = new Orders(orderID++, clOrdID, security, Side.SELL, 
+			3321.5, 2, OrderTypes.Limit, traderID, brokerID, senderLct);
 	    ord.setBrokerID("308");
 		
-	    added = added && book.addOrder(ord, sessionID);
+	    added = added && book.addOrder(ord);
 	    
 
 	    assertTrue(added);

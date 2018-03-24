@@ -1,29 +1,7 @@
 package com.cmm.jft.ui.forms;
 
-import com.cmm.jft.ui.ObjectForms;
-import com.cmm.jft.ui.Program;
-import com.cmm.jft.ui.analysis.NeuralNetForm;
-import com.cmm.jft.ui.chart.ChartForm;
-import com.cmm.jft.ui.configuration.DBInitializationForm;
-import com.cmm.jft.ui.financial.DistributionRuleForm;
-import com.cmm.jft.ui.financial.JournalEntryForm;
-import com.cmm.jft.ui.financial.RuleForm;
-import com.cmm.jft.ui.financial.TaxSetupForm;
-import com.cmm.jft.ui.masterdata.BrokerForm;
-import com.cmm.jft.ui.masterdata.CompanyForm;
-import com.cmm.jft.ui.masterdata.CurrencyForm;
-import com.cmm.jft.ui.masterdata.CurrencyQuoteForm;
-import com.cmm.jft.ui.simulation.BacktestForm;
-import com.cmm.jft.ui.trading.BookForm;
-import com.cmm.jft.ui.trading.MarketResumeForm;
-import com.cmm.jft.ui.trading.MarketTradesForm;
-import com.cmm.jft.ui.trading.NewsDetailsForm;
-import com.cmm.jft.ui.trading.NewsForm;
-import com.cmm.jft.ui.trading.OrderForm;
-import com.cmm.jft.ui.trading.OrderManagerForm;
-import com.cmm.jft.ui.trading.PlaceOrderForm;
-import com.cmm.jft.ui.trading.TradeForm;
-import com.cmm.jft.ui.trading.TradeManagerForm;
+import com.cmm.jft.ui.forms.ObjectForms;
+import com.cmm.jft.ui.forms.trading.DOMForm;
 import com.cmm.jft.ui.utils.GenericTableModel;
 
 import java.awt.EventQueue;
@@ -44,131 +22,12 @@ public class FormsFactory {
     private static Forms getForm(ObjectForms objForm) {
 	Forms frm = null;
 	switch (objForm) {
-	case ABOUT:
-	    break;
-	case ACCOUNT:
-
-	    break;
-	case BACKTEST:
-	    frm = new BacktestForm();
-	    break;
-	case BROKER:
-	    frm = new BrokerForm();
-	    break;
-	case CHART:
-	    frm = new ChartForm();
-	    break;
-	case CHART_OPTIONS:
-	    break;
-	case COMPANY:
-	    frm = new CompanyForm();
-	    break;
-	case CONFIGURATION:
-	    break;
-	case CONNECTIONS:
-	    break;
-	case COUNTRY:
-	    break;
-	case COST:
-	    break;
-	case CURRENCY:
-	    frm = new CurrencyForm();
-	    break;
-	case CURRENCY_QUOTES:
-	    frm = new CurrencyQuoteForm();
-	    break;
-	case DATA_IMPORT:
-	    break;
-	case DBINITIALIZATION:
-	    frm = new DBInitializationForm();
-	    break;
-	case DEPOSIT:
-	    break;
-	case DISTRIBUTION_RULE:
-	    frm = new DistributionRuleForm();
-	    break;
-	case HELP:
-	    break;
-	case JOURNAL_ENTRY:
-	    frm = new JournalEntryForm();
-	    break;
-	case NEURAL_NETWORK:
-	    frm = new NeuralNetForm();
-	    break;
-	case ORDER:
-	    frm = new OrderForm();
-	    break;    
-	case ORDER_MANAGEMENT:
-	    frm = new OrderManagerForm();
-	    break;
-	case PLACE_ORDER:
-	    frm = new PlaceOrderForm();
-	    break;
-	case POSITION:
+	case DOM:
+	    frm = new DOMForm();
 	    break;
 	case PROGRAM:
-	    frm = new Program();
-	    break;
-	case REPORTS:
-	    break;
-	case RULE:
-	    frm = new RuleForm();
-	    break;
-	case SECTORS:
-	    break;
-	case SEGMENTS:
-	    break;
-	case SETUPS:
-	    break;
-	case STATISTICS:
-	    break;
-	case STOCK_EXCHANGE:
-	    break;
-	case SUBSECTORS:
-	    break;
-	case TAX:
-	    break;
-	case TAX_SETUP:
-	    frm = new TaxSetupForm();
-	    break;
-
+	    frm = new ProgramForm();
 	    
-	    
-	    
-	case BOOK:
-	    frm = new BookForm();
-	    break;
-	case TIME_SALES:
-	    frm = new MarketTradesForm();
-	    break;
-	case TRADE:
-	    frm = new TradeForm();
-	    break;
-	case TRADE_MANAGER:
-	    frm = new TradeManagerForm();
-	    break;
-	case MARKET_RESUME:
-	    frm = new MarketResumeForm();
-	    break;
-	case NEWS:
-	    frm = new NewsForm();
-	    break;
-	case NEWS_DETAILS:
-	    frm = new NewsDetailsForm();
-	    break;
-	    
-	    
-	    
-	    
-	case SIMULATION:
-	    break;
-	case STRATEGY:
-	    break;
-	case STRATEGY_BUILDER:
-	    break;
-	default:
-	    break;
-
 	}
 
 	return frm;

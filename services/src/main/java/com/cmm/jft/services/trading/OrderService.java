@@ -145,7 +145,7 @@ public class OrderService {
 	    break;
 
 	case Stop:
-	    orders = newStopOrder(security, side, volume, stopLoss);
+	    orders = newStopOrder(security, side, volume, price);
 	    if (orders != null) {
 		ordrs.add(orders);
 		createLA = false;
@@ -201,10 +201,10 @@ public class OrderService {
 	Orders ordr = null;
 	try {
 	    // calcula o valor maximo limite que a ordem podera ser executada
-	    Object obj = Configuration.getInstance().getConfiguration("MarketDiscount");
-	    double discount = (stopPrice * (obj == null ? 0 : Double.parseDouble(obj.toString())));
-	    discount = side == Side.BUY ? discount : -discount;
-	    stopPrice = stopPrice + discount;
+	    //Object obj = Configuration.getInstance().getConfiguration("MarketDiscount");
+	    //double discount = (stopPrice * (obj == null ? 0 : Double.parseDouble(obj.toString())));
+	    //discount = side == Side.BUY ? discount : -discount;
+	    //stopPrice = stopPrice + discount;
 	    ordr = createOrder(security, side, stopPrice, volume, OrderTypes.Stop, TradeTypes.DAY_TRADE);
 	} catch (OrderException e) {
 	    // e.printStackTrace();

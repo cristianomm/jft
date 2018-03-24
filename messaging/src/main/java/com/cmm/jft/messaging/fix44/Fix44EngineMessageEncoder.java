@@ -42,6 +42,7 @@ import quickfix.field.ResetSeqNumFlag;
 import quickfix.field.SecondaryClOrdID;
 import quickfix.field.SecurityExchange;
 import quickfix.field.Side;
+import quickfix.field.StopPx;
 import quickfix.field.Symbol;
 import quickfix.field.TestReqID;
 import quickfix.field.Text;
@@ -83,6 +84,7 @@ import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderStatus;
+import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.RejectTypes;
 
 
@@ -147,7 +149,7 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
      */
     public void addIdFields(Message message) {
 
-	Group ids = new Group(453,453);
+	Group ids = new AllocationInstruction.NoPartyIDs();
 	ids.setString(448, partyIDSL.getValue());
 	ids.setChar(447, partyIDSrc.getValue());
 	ids.setInt(452, partyRoleSL.getValue());
@@ -409,11 +411,25 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	orderSingle.set(exchange);
 
 	orderSingle.set(new OrderQty(order.getVolume()));
-	orderSingle.set(new Price(order.getPrice()));
+	
+	switch(order.getOrderType()) {
+	case Market:
+	    break;
+	case Limit:
+	    orderSingle.set(new Price(order.getPrice()));
+	break;
+	case Stop:
+	case StopLimit:
+	    orderSingle.set(new StopPx(order.getStopPrice()));
+	    break;
+	}
+	
 	orderSingle.set(new TimeInForce(order.getValidityType().getValue()));
-
 	orderSingle.set(new ExpireDate(((DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).format(order.getDuration())));
-	orderSingle.setString(5149, order.getComment());
+	
+	if(order.getComment() != null && !order.getComment().isEmpty()) {
+	    orderSingle.setString(5149, order.getComment());
+	}
 
 	return orderSingle;
     }

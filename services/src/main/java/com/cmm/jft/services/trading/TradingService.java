@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.log4j.Level;
 
 import com.cmm.jft.connector.engine.EngineConnector;
+import com.cmm.jft.connector.engine.EngineStarter;
+import com.cmm.jft.connector.marketdata.MarketDataStarter;
 import com.cmm.jft.core.Configuration;
 import com.cmm.jft.core.enums.Objects;
 import com.cmm.jft.db.DBFacade;
@@ -33,7 +35,6 @@ import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.Position;
-import com.cmm.jft.trading.enums.ExecutionTypes;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
@@ -111,6 +112,18 @@ public class TradingService {
 	}
 	return instance;
     }
+    
+    public void connect() {
+	try {
+	    EngineStarter es = new EngineStarter();
+	    es.start();
+	    
+	    System.out.println("start Engine Conector: ");
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+    }
+    
 
     /**
      * @return the ordersData
@@ -134,6 +147,11 @@ public class TradingService {
     public int getOrderCount() {
 	return orders.size();
     }
+
+    public int getOrderCount(double price) {
+	return (int) orders.values().stream().filter(o -> o.getPrice() == price).count();
+    }
+
 
     public double getPositionValue() {
 	double val = 0;
@@ -220,6 +238,21 @@ public class TradingService {
     //
     // }
 
+    /**
+     * 
+     * @param orderType
+     * @param side
+     * @param symbol
+     * @param volume
+     * @param price
+     * @param stopLoss
+     * @param stopGain
+     * @param duration
+     * @param tradeType
+     * @param validityType
+     * @param comment
+     * @return
+     */
     public int newOrder(OrderTypes orderType, Side side, String symbol, int volume, double price, double stopLoss,
 	    double stopGain, Date duration, TradeTypes tradeType, OrderValidityTypes validityType, String comment) {
 
@@ -551,6 +584,15 @@ public class TradingService {
     private void storeOrder(Orders order) {
 	orders.put(order.getClOrdID(), order);
 	ordersData.add(order);
+
+	try {
+	    DBFacade.getInstance()._persist(order);
+	} catch (DataBaseException e) {
+	    Logging.getInstance().log(getClass(),
+		    "Erro ao atualizar Ordem: " + order.getClOrdID(), e,
+		    Level.ERROR, false);
+	}
+
     }
 
     // -------------------------------------------------------------------------

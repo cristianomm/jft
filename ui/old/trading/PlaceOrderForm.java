@@ -521,7 +521,7 @@ public class PlaceOrderForm extends AbstractForm {
 	btnCancel.addActionListener(new GerEvents(this));
 	btnBuyOrder.addActionListener(new GerEvents(this));
 	btnSellOrder.addActionListener(new GerEvents(this));
-	cmbOrderTypes.addItemListener(new GerEvents(this));
+	//cmbOrderTypes.addItemListener(new GerEvents(this));
 	cmbExpirationType.addItemListener(new GerEvents(this));
     }
 
@@ -535,10 +535,10 @@ public class PlaceOrderForm extends AbstractForm {
 	ots[p++] = OrderTypes.Stop;
 	ots[p++] = OrderTypes.StopLimit;
 
-	FormUtils.getInstance().addItensToCombo(cmbOrderTypes, ots);
+	//FormUtils.getInstance().addItensToCombo(cmbOrderTypes, ots);
 	FormUtils.getInstance().addItensToCombo(cmbExpirationType, OrderValidityTypes.values());
 	cmbExpirationType.setSelectedIndex(0);
-	cmbOrderTypes.setSelectedIndex(0);
+	///cmbOrderTypes.setSelectedIndex(0);
     }
 
     private class GerEvents extends Events{
@@ -598,43 +598,43 @@ public class PlaceOrderForm extends AbstractForm {
 		}
 	    }
 
-	    else if(e.getSource() == cmbOrderTypes) {
-		OrderTypes ot = (OrderTypes) cmbOrderTypes.getSelectedItem();
-		if(ot==null) {
-		    spnPxLmt.setEnabled(true);
-		    spnPxSLmt.setEnabled(true);
-		    spnPxOTO.setEnabled(true);
-		    spnPxStp.setEnabled(true);
-		}
-		else {
-		    switch(ot) {
-		    case Limit:
-			spnPxLmt.setEnabled(true);
-			spnPxSLmt.setEnabled(false);
-			spnPxOTO.setEnabled(false);
-			spnPxStp.setEnabled(false);
-			break;
-		    case Market:
-			spnPxLmt.setEnabled(false);
-			spnPxSLmt.setEnabled(false);
-			spnPxOTO.setEnabled(false);
-			spnPxStp.setEnabled(false);
-			break;
-		    case Stop:
-			spnPxLmt.setEnabled(false);
-			spnPxSLmt.setEnabled(false);
-			spnPxOTO.setEnabled(false);
-			spnPxStp.setEnabled(true);
-			break;
-		    case StopLimit:
-			spnPxLmt.setEnabled(true);
-			spnPxSLmt.setEnabled(true);
-			spnPxOTO.setEnabled(true);
-			spnPxStp.setEnabled(true);
-			break;
-		    }
-		}
-	    }
+//	    else if(e.getSource() == cmbOrderTypes) {
+//		OrderTypes ot = (OrderTypes) cmbOrderTypes.getSelectedItem();
+//		if(ot==null) {
+//		    spnPxLmt.setEnabled(true);
+//		    spnPxSLmt.setEnabled(true);
+//		    spnPxOTO.setEnabled(true);
+//		    spnPxStp.setEnabled(true);
+//		}
+//		else {
+//		    switch(ot) {
+//		    case Limit:
+//			spnPxLmt.setEnabled(true);
+//			spnPxSLmt.setEnabled(false);
+//			spnPxOTO.setEnabled(false);
+//			spnPxStp.setEnabled(false);
+//			break;
+//		    case Market:
+//			spnPxLmt.setEnabled(false);
+//			spnPxSLmt.setEnabled(false);
+//			spnPxOTO.setEnabled(false);
+//			spnPxStp.setEnabled(false);
+//			break;
+//		    case Stop:
+//			spnPxLmt.setEnabled(false);
+//			spnPxSLmt.setEnabled(false);
+//			spnPxOTO.setEnabled(false);
+//			spnPxStp.setEnabled(true);
+//			break;
+//		    case StopLimit:
+//			spnPxLmt.setEnabled(true);
+//			spnPxSLmt.setEnabled(true);
+//			spnPxOTO.setEnabled(true);
+//			spnPxStp.setEnabled(true);
+//			break;
+//		    }
+//		}
+//	    }
 
 	}
 
@@ -666,28 +666,28 @@ public class PlaceOrderForm extends AbstractForm {
 
 	private void sendOrder(Side side){
 
-	    try{
-		OrderTypes orderType = (OrderTypes)cmbOrderTypes.getSelectedItem();
-		String symbol = txtSecurity.getText().trim();
-
-		double price = (double)spnPxLmt.getValue();
-		double limitPrice = (double)spnPxSLmt.getValue();
-		double stopPrice = (double)spnPxStp.getValue();
-		double stopGain = (double)spnPxOTO.getValue();
-		int volume = (int)spnVolMkt.getValue();
-
-		Date duration = dtExpiration.getDate();
-		boolean day = duration.toInstant().isAfter(new Date().toInstant());
-		TradeTypes tradeType = day?TradeTypes.DAY_TRADE:TradeTypes.NORMAL;
-
-		//				TradingService.getInstance().newOrder(
-		//						orderType, side, symbol, volume, 
-		//						price, limitPrice, stopPrice, stopGain, 
-		//						duration, tradeType);
-
-	    }catch(Exception ex){
-
-	    }
+//	    try{
+//		OrderTypes orderType = (OrderTypes)cmbOrderTypes.getSelectedItem();
+//		String symbol = txtSecurity.getText().trim();
+//
+//		double price = (double)spnPxLmt.getValue();
+//		double limitPrice = (double)spnPxSLmt.getValue();
+//		double stopPrice = (double)spnPxStp.getValue();
+//		double stopGain = (double)spnPxOTO.getValue();
+//		int volume = (int)spnVolMkt.getValue();
+//
+//		Date duration = dtExpiration.getDate();
+//		boolean day = duration.toInstant().isAfter(new Date().toInstant());
+//		TradeTypes tradeType = day?TradeTypes.DAY_TRADE:TradeTypes.NORMAL;
+//
+//		//				TradingService.getInstance().newOrder(
+//		//						orderType, side, symbol, volume, 
+//		//						price, limitPrice, stopPrice, stopGain, 
+//		//						duration, tradeType);
+//
+//	    }catch(Exception ex){
+//
+//	    }
 
 	}
 

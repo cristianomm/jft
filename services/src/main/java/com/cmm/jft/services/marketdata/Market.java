@@ -285,6 +285,13 @@ public class Market {
 	this.listeners = new ArrayList<>();
 	this.trades = (ArrayList<TradeVO>) Collections.synchronizedList(new ArrayList<TradeVO>(100000));
     }
+    
+    
+    public void addListener(MDListener listener) {
+	if(listener != null) {
+	    listeners.add(listener);
+	}
+    }
 
     public void addSnapshot(MarketDataSnapshotFullRefresh fullRefresh) {
 	try {
@@ -349,7 +356,7 @@ public class Market {
 		break;
 	    }
 
-	    notifyListeners(entry);
+	    notifyListeners();
 
 	} catch (FieldNotFound e) {
 	    e.printStackTrace();
@@ -358,11 +365,12 @@ public class Market {
     }
 
 
-    private void notifyListeners(Group entry) {
-
-
-
-
+    private void notifyListeners() {
+	
+	for (MDListener mdListener : listeners) {
+	    mdListener.marketDataEvent();
+	}
+	
     }
 
 

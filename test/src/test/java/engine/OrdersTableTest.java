@@ -61,10 +61,14 @@ public class OrdersTableTest {
     public void testAdd() {
 
 	long orderID = 1;
+	String clOrdID = "10";
+	String traderID = "21";
+	String brokerID = "22";
+	String senderLct = "00";
 	Orders ord = null;
 	try {
-	    ord = new Orders(orderID++, "123456", security, Side.BUY, 
-		    3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+	    ord = new Orders(orderID++, clOrdID, security, Side.BUY, 
+		    3321.5, 2, OrderTypes.Limit, traderID, brokerID, senderLct);
 	    ord.setBrokerID("308");
 
 	    OrdersTable ot = new OrdersTable(Side.BUY);
@@ -106,11 +110,15 @@ public class OrdersTableTest {
 	System.out.println("testPerformance()");
 	OrdersTable ot = new OrdersTable(Side.BUY);
 	long orderID = 1;
+	String clOrdID = "10";
+	String traderID = "21";
+	String brokerID = "22";
+	String senderLct = "00";
 	Orders ord = null;
 	try {
 	    for(int i=0;i<1000000;i++) {
-		ord = new Orders(orderID++, "123457"+i, security, Side.BUY, 
-			3321.5, 2, OrderTypes.Limit, TradeTypes.DAY_TRADE);
+		ord = new Orders(orderID++, clOrdID+i, security, Side.BUY, 
+			3321.5, 2, OrderTypes.Limit, traderID, brokerID, senderLct);
 		ord.setBrokerID("308");
 		ot.add(ord);
 	    }

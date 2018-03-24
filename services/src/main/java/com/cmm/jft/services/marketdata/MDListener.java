@@ -16,6 +16,5 @@ import com.cmm.jft.marketdata.MDEntry;
  */
 public interface MDListener {
     
-    void marketDataEvent(MDEntry entry);
-    
+    void marketDataEvent();
 }

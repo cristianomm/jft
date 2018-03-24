@@ -3,7 +3,6 @@ package com.cmm.jft.ui.forms;
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.db.exceptions.DataBaseException;
-import com.cmm.jft.ui.forms.binding.Binder;
 
 import java.awt.event.ActionEvent;
 
@@ -23,7 +22,7 @@ import org.apache.log4j.Level;
 public abstract class AbstractForm extends JFrame implements Forms {
 
     protected DBObject data;
-    protected Binder binder;
+    //protected Binder binder;
     protected JButton btnOK;
     protected JButton btnCancel;
     protected FormStates state;
@@ -86,7 +85,7 @@ public abstract class AbstractForm extends JFrame implements Forms {
      */
     @Override
     public void parseData() {
-	binder.updateModel(data);
+//	binder.updateModel(data);
     }
 
     /* (non-Javadoc)
@@ -108,9 +107,9 @@ public abstract class AbstractForm extends JFrame implements Forms {
      */
     @Override
     public void loadData() {
-	if(binder!=null){
-	    binder.updateView(data);
-	}
+//	if(binder!=null){
+//	    binder.updateView(data);
+//	}
     }
 
     /* (non-Javadoc)

@@ -27,6 +27,7 @@ import quickfix.DataDictionary;
 import quickfix.FieldException;
 import quickfix.FieldNotFound;
 import quickfix.Group;
+import quickfix.ListenerSupport;
 import quickfix.Message;
 import quickfix.field.MsgSeqNum;
 import quickfix.field.MsgType;
@@ -82,6 +83,8 @@ public class MarketDataService {
     private List<Integer> subscrSecurities;
     private LinkedHashMap<Integer, Market> markets;
 
+    private ArrayList<MDListener> listeners;
+    
     private LinkedList<MDNews> newsFeed;
     private static MarketDataService instance;
     private ConcurrentLinkedQueue<MarketDataSnapshotFullRefresh> snapshots;
@@ -154,6 +157,7 @@ public class MarketDataService {
 	this.lstRecoveryMsgSeqNum = -1;
 	this.lstSnapshotMsgSeqNum = -1;
 
+	this.listeners = new ArrayList<>();
 	this.newsFeed = new LinkedList<MDNews>();
 	this.markets = new LinkedHashMap<>();
 	this.subscrSecurities = new ArrayList<>();
@@ -704,6 +708,10 @@ public class MarketDataService {
     }
 
 
+    public void addListener(MDListener listener){
+	listeners.add(listener);
+    }
+    
     private void resetBooks(int newSeqNum, int rptSec) {
 	markets.forEach((k, m) -> m.resetMarketData(newSeqNum, rptSec));
     }

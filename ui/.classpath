@@ -25,5 +25,12 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/searchbox"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/stockchartsfx"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HSQLDB"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JDBC"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
