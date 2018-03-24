@@ -20,7 +20,7 @@ import quickfix.SessionSettings;
  * <code>MarketDataService.java</code>
  * </p>
  * 
- * @author cristiano
+ * @author Cristiano M Martins
  * @version Mar 3, 2016 5:05:45 PM
  *
  */

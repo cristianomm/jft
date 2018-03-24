@@ -3,6 +3,7 @@
  */
 package com.cmm.jft.engine;
 
+import java.util.Scanner;
 import java.util.TreeMap;
 
 /**
@@ -10,7 +11,7 @@ import java.util.TreeMap;
  * <code>ErrorCodes.java</code>
  * </p>
  *
- * @author cristiano
+ * @author Cristiano M Martins
  * @version 25/08/2017 02:58:59
  *
  */
@@ -24,6 +25,7 @@ public class ErrorCodes {
      */
     private ErrorCodes() {
 	this.messages = new TreeMap<>();
+	loadMessages();
     }
     
     /**
@@ -38,6 +40,27 @@ public class ErrorCodes {
     
     public String getMessage(int errorCode) {
 	return messages.get(errorCode);
+    }
+    
+    private void loadMessages() {
+	
+	Scanner sc = null;
+	try {
+	    sc = new Scanner(Thread.currentThread().getContextClassLoader().getResourceAsStream("EntryPointErrorCodes.csv"));
+	    sc.nextLine();
+	    while(sc.hasNext()) {
+		String line = sc.nextLine();
+		String[] dec = line.split(";");
+		messages.put(Integer.parseInt(dec[0]), dec[1]);
+	    }
+	} catch (NullPointerException e) {
+	    e.printStackTrace();
+	}finally {
+	    if(sc!=null) {
+		sc.close();
+	    }
+	}
+	
     }
     
 }

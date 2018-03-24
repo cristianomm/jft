@@ -31,7 +31,11 @@ public class EntryPointService extends EngineService {
 	    SessionSettings settings = new SessionSettings(
 		    Thread.currentThread().getContextClassLoader().getResourceAsStream("EntryPointService.cfg"));
 	    log = LoggerFactory.getLogger(EntryPointService.class);
+	    
 	    entryPoint = new EntryPoint(settings);
+	    
+	    //EntryPoint_ ep = new EntryPoint_();
+	    
 	    init(settings, entryPoint);
 	} catch (ConfigError | FieldConvertError | JMException e) {
 	    e.printStackTrace();
@@ -48,7 +52,6 @@ public class EntryPointService extends EngineService {
     public static void main(String[] args) {
 	EntryPointService listener = new EntryPointService();
 	listener.start();
-
     }
 
 }

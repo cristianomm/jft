@@ -3,17 +3,20 @@ package com.cmm.jft.engine.message;
 import com.cmm.jft.engine.Book;
 import com.cmm.jft.engine.BookRepository;
 import com.cmm.jft.engine.SessionRepository;
+import com.cmm.jft.engine.entrypoint.EntryPoint;
 import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageDecoder;
 import com.cmm.jft.messaging.handlers.EngineMessageHandler;
 import com.cmm.jft.trading.Orders;
 
+import quickfix.Application;
 import quickfix.FieldNotFound;
 import quickfix.IncorrectTagValue;
 import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
 import quickfix.field.Symbol;
 import quickfix.fix44.AllocationInstruction;
+import quickfix.fix44.MessageCracker;
 import quickfix.fix44.NewOrderCross;
 import quickfix.fix44.NewOrderSingle;
 import quickfix.fix44.OrderCancelReplaceRequest;
@@ -25,7 +28,7 @@ import quickfix.fix44.QuoteRequest;
 import quickfix.fix44.QuoteRequestReject;
 import quickfix.fix44.SecurityDefinitionRequest;
 
-public class EngineHandler implements EngineMessageHandler {
+public class EngineHandler implements  EngineMessageHandler {
 
     private Fix44EngineMessageDecoder decoder;
 
@@ -34,6 +37,8 @@ public class EngineHandler implements EngineMessageHandler {
 	this.decoder = new Fix44EngineMessageDecoder();
 	System.out.println(this.getClass() + " initialized.");
     }
+    
+    
 
     public void onMessage(NewOrderSingle message, SessionID sessionID)
 	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {

@@ -61,7 +61,7 @@ public class BookRepository {
 		String line = sc.next().trim();
 
 		String[] vals = line.split(";");
-
+		
 		HashSet<String> validOrderTypes = new HashSet<>();
 		List<String> orderTypes = Arrays.asList(vals[1].split("\\s*,\\s*"));
 		validOrderTypes.addAll(orderTypes);
