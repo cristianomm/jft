@@ -10,7 +10,6 @@
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">org.postgresql.Driver</property>
 		<property name="connection.url">jdbc:postgresql://localhost:5432/jft</property>
-		<!-- <property name="connection.url">jdbc:hsqldb:file:data/database/jft;hsqldb.lock_file=false</property>-->
 		<property name="connection.username">jft</property>
 		<property name="connection.password">287463</property>
 
