@@ -35,6 +35,7 @@ public class MDEntry implements Extractable{
     private int orderCondition;
     private char agressor;
     
+    
     private long buyOrdID;
     private long buySecOrdID;
     private long sellOrdID;
@@ -335,4 +336,5 @@ public class MDEntry implements Extractable{
     public void setEntryDate(Date entryDate) {
 	this.entryDate = entryDate;
     }
+        
 }

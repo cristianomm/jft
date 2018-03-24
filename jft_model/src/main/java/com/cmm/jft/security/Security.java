@@ -181,26 +181,13 @@ public class Security implements DBObject<Security> {
 		this.securityInfoID = securityInfoID;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		final int maxLen = 10;
-		return "Security [securityID=" + this.securityID
-				+ ", symbol=" + this.symbol
-				+ ", ordersSet=" 
-				+ (this.ordersSet != null ? this.toString(this.ordersSet, maxLen) : null)
-				+ ", marketOrderSet="
-				+ (this.marketOrderSet != null ? this.toString(
-						this.marketOrderSet, maxLen) : null)
-				+ ", historicalQuoteSet="
-				+ (this.historicalQuoteSet != null ? this.toString(
-						this.historicalQuoteSet, maxLen) : null)
-				+", description=" + this.description
-				+ "]";
+	    return "Security [securityID=" + securityID + ", securityIDSrc=" + securityIDSrc + ", symbol=" + symbol
+		    + ", securityExchange=" + securityExchange + "]";
 	}
 
 	private String toString(Collection<?> collection, int maxLen) {

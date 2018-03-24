@@ -139,7 +139,7 @@ public class Orders implements DBObject<Orders> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDateTime;
 
-    @Column(name = "InsertDateTime", nullable = false)
+    @Column(name = "InsertDateTime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date insertDateTime;
 
@@ -206,12 +206,13 @@ public class Orders implements DBObject<Orders> {
     public Orders(long orderID, String clOrdID, Security security,  Side side, double price, int volume, 
 	    OrderTypes orderType, String traderID, String brokerID, String senderLct) throws OrderException {
 
-	if(clOrdID == null || security == null || side == null ||
+	if(clOrdID == null || security == null || side == null || volume <= 0 ||
 		traderID == null || brokerID == null || senderLct == null){
 	    throw new OrderException(
 		    String.format(
-			    "Invalid field value: orderID %4$d, clOrdID: %1$s, security: %2$s, side: %3$s", 
-			    clOrdID, security, side, orderID));
+			    "Invalid field value: clOrdID: %1$s, security: %2$s, side: %3$s, "
+			    + "volume: %7$d, traderID: %4$s, brokerID: %5$s, senderLct: %6$s", 
+			    clOrdID, security, side, traderID, brokerID, senderLct, volume));
 	}
 
 	this.orderID = orderID;
