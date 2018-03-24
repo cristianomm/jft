@@ -12,6 +12,7 @@ import com.cmm.jft.messaging.handlers.RouterMessageHandler;
 import com.cmm.jft.trading.Orders;
 
 import quickfix.Application;
+import quickfix.DataDictionary;
 import quickfix.DoNotSend;
 import quickfix.FieldNotFound;
 import quickfix.IncorrectDataFormat;
@@ -87,7 +88,7 @@ public class EngineConnector extends MessageCracker implements Application, Rout
     @Override
     public void fromAdmin(Message message, SessionID sessionID)
 	    throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, RejectLogon {
-
+	System.out.println("fromAdmin:" + message);
     }
 
 
@@ -97,6 +98,7 @@ public class EngineConnector extends MessageCracker implements Application, Rout
     @Override
     public void fromApp(Message message, SessionID sessionID)
 	    throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
+	//System.out.println("fromApp:" + message);
 	crack(message, sessionID);
     }
 
@@ -107,7 +109,7 @@ public class EngineConnector extends MessageCracker implements Application, Rout
     @Override
     public void onCreate(SessionID sessionID) {
 	// TODO Auto-generated method stub
-
+	//System.out.println("onCreate:");
     }
 
 
@@ -118,6 +120,7 @@ public class EngineConnector extends MessageCracker implements Application, Rout
     public void onLogon(SessionID sessionID) {
 	if(Session.doesSessionExist(sessionID)){
 	    this.sessionID = sessionID;
+	    Session.lookupSession(sessionID).logon();
 	}
     }
 
@@ -147,7 +150,7 @@ public class EngineConnector extends MessageCracker implements Application, Rout
     @Override
     public void toApp(Message message, SessionID sessionID) throws DoNotSend {
 	// TODO Auto-generated method stub
-
+	
     }
 
 
@@ -168,7 +171,7 @@ public class EngineConnector extends MessageCracker implements Application, Rout
     @Override
     public void onMessage(ExecutionReport message, SessionID sessionID)
 	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-	System.out.println(message);
+	System.out.println("ExecutionReport: " + message);
 	//TradingService.getInstance().onExecutionReport(message);
     }
 

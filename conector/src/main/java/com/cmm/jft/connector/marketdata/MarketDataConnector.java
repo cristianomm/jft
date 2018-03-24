@@ -102,7 +102,11 @@ public class MarketDataConnector extends MessageCracker implements Application, 
     }
 
     public void joinRecoveryStream() {
-	Session.lookupSession(recoveryStreamSID).logon();
+	try {
+	    Session.lookupSession(recoveryStreamSID).logon();
+	}catch(NullPointerException e) {
+	    
+	}
     }
 
     public void joinSnapshotStream() {

@@ -35,22 +35,11 @@ public class EngineStarter {
     private Initiator initiator = null;
     private boolean initiatorStarted = false;
 
-
-    public static void main(String[] args) {
-	try {
-	    new EngineStarter().start();
-	} catch (Exception e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-    }
-
     public void start() throws Exception {
 	init();
 	if (!System.getProperties().containsKey("openfix")) {
 	    logon();
 	}
-
     }
 
 
@@ -69,7 +58,6 @@ public class EngineStarter {
 
 	JmxExporter exporter = new JmxExporter();
 	exporter.register(initiator);
-
     }
 
     private synchronized void logon() {
