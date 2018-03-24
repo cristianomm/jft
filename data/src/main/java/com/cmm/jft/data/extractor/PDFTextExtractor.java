@@ -5,7 +5,9 @@ package com.cmm.jft.data.extractor;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -28,83 +30,85 @@ import com.cmm.logging.Logging;
  */
 public class PDFTextExtractor implements Extractor {
 
-	private String fileName;
-	private PDDocument pdDocument;
-	private PDFTextStripper stripper;
+    private String fileName;
+    private PDDocument pdDocument;
+    private PDFTextStripper stripper;
 
 
-	/* (non-Javadoc)
-	 * @see com.cmm.jft.data.extractor.Extractor#config(java.util.Properties)
-	 */
-	@Override
-	public boolean config(Properties properties) {
+    /* (non-Javadoc)
+     * @see com.cmm.jft.data.extractor.Extractor#config(java.util.Properties)
+     */
+    @Override
+    public boolean config(Properties properties) {
 
-		boolean ret = false;
+	boolean ret = false;
 
-		try{
+	try{
+	    if(!Extractor.checkKeyWords(properties, new String[]{"filename"})){
+		throw new Exception(); 
+	    }
 
-			if(!Extractor.checkKeyWords(properties, new String[]{"filename"})){
-				throw new Exception(); 
-			}
-			
-			this.fileName = properties.getProperty("filename");
-			
-			File pdfFile = new File(fileName);
-			PDFParser parser = new PDFParser(new FileInputStream(pdfFile));
-			parser.parse();
+	    this.fileName = properties.getProperty("filename");
 
-			pdDocument = PDDocument.load(pdfFile);
+	    File pdfFile = new File(fileName);
+	    PDFParser parser = new PDFParser(new FileInputStream(pdfFile));
+	    parser.parse();
 
-			stripper = new PDFTextStripper();
-			stripper.setSortByPosition(true);
+	    pdDocument = PDDocument.load(pdfFile);
 
-		}catch(IOException e){
-			Logging.getInstance().log(getClass(), "Erro ao realizar configuracao", Level.ERROR);
-		} catch(Exception e){
-			Logging.getInstance().log(getClass(), "Erro ao realizar configuracao", Level.ERROR);
-		}
+	    stripper = new PDFTextStripper();
+	    stripper.setSortByPosition(true);
 
-		return ret;
+	}catch(IOException e){
+	    Logging.getInstance().log(getClass(), "Erro ao realizar configuracao: " + e.getMessage(), Level.ERROR);
+	} catch(Exception e){
+	    Logging.getInstance().log(getClass(), "Erro ao realizar configuracao: " + e.getMessage(), Level.ERROR);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.cmm.jft.data.extractor.Extractor#extract()
-	 */
-	@Override
-	public List<Extractable> extract() {
-		List<Extractable> extr = new ArrayList<Extractable>();
+	return ret;
+    }
 
-		try {
-			for(int page=1; page<pdDocument.getNumberOfPages(); page++){
-				stripper.setStartPage(page);
-				stripper.setEndPage(page);
-				String t = stripper.getText(pdDocument);
-				if(t!=null)	extr.add(new Text(t));
-			}
-		} catch (Exception e) {
-			Logging.getInstance().log(getClass(), "Erro ao extrair", Level.ERROR);
+    /* (non-Javadoc)
+     * @see com.cmm.jft.data.extractor.Extractor#extract()
+     */
+    @Override
+    public List<Extractable> extract() {
+	List<Extractable> extr = new ArrayList<Extractable>();
+	
+	try {
+	    for(int page=1; page<=pdDocument.getNumberOfPages(); page++){
+		stripper.setStartPage(page);
+		stripper.setEndPage(page);
+		
+		String t = stripper.getText(pdDocument);
+		if(t!=null) {
+		    extr.add(new Text(t));
 		}
+	    }
+	} catch (Exception e) {
+	    Logging.getInstance().log(getClass(), "Erro ao extrair: " + e.getMessage(), Level.ERROR);
+	}
 
-		return extr;
+	return extr;
+    }
+
+
+    public static void main(String[] args){
+
+	PDFTextExtractor pdext = new PDFTextExtractor();
+
+	String path = "D:\\Development\\git\\jft\\doc\\process\\bmfbovespa\\";;//"C:/Disco/Users/Cristiano M Martins/Google Drive/Documentos/Notas de Corretagem/";
+	String nm = (path + "EntryPointErrorCodes.pdf"/*"12560 - Bovespa.pdf"*/);
+
+	Properties p = new Properties();
+	p.put("filename", nm);
+	pdext.config(p);
+	List<Extractable> exts = pdext.extract();
+	for (int i = 0; i < exts.size(); i++) {
+	    System.out.println("PAGE:");
+	    System.out.println(((Text)exts.get(i)).getText());
 	}
-	
-	
-	public static void main(String[] args){
-		
-		PDFTextExtractor pdext = new PDFTextExtractor();
-		
-		String path = "D:\\Development\\git\\jft\\doc\\process\\bmfbovespa\\";;//"C:/Disco/Users/Cristiano M Martins/Google Drive/Documentos/Notas de Corretagem/";
-		String nm = (path + "EntryPointErrorCodes.pdf"/*"12560 - Bovespa.pdf"*/);
-		
-		Properties p = new Properties();
-		p.put("filename", nm);
-		pdext.config(p);
-		List<Extractable> exts = pdext.extract();
-		for (int i = 0; i < exts.size(); i++) {
-			System.out.println("PAGE:");
-			System.out.println(((Text)exts.get(i)).getText());
-		}
-		
-	}
-	
+
+    }
+
 }

@@ -31,125 +31,125 @@ import com.cmm.jft.vo.Extractable;
  */
 public class CVMCiasExtractor implements Extractor {
 
-	private int timeout;
-	private String urlBase;
+    private int timeout;
+    private String urlBase;
 
-	private static final char[] alf = { 
-		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 
-		'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 
-		'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' 
-	};
+    private static final char[] alf = { 
+	    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 
+	    'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 
+	    'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' 
+    };
 
 
-	public static void main(String[] args){
+    public static void main(String[] args){
 
-		Properties pp = new Properties();
-		pp.put("timeout", 1000);
-		pp.put("urlbase", "http://cvmweb.cvm.gov.br/SWB/Sistemas/SCW/CPublica/CiaAb/FormBuscaCiaAbOrdAlf.aspx?LetraInicial=");
+	Properties pp = new Properties();
+	pp.put("timeout", 1000);
+	pp.put("urlbase", "http://cvmweb.cvm.gov.br/SWB/Sistemas/SCW/CPublica/CiaAb/FormBuscaCiaAbOrdAlf.aspx?LetraInicial=");
 
-		CVMCiasExtractor ex = new CVMCiasExtractor();
-		ex.config(pp);
-		List<Extractable> s = ex.extract();
-		System.out.println(s.size());
-//		for (Extractable ext : s) {
-//			System.out.println(ext);
-//		}
+	CVMCiasExtractor ex = new CVMCiasExtractor();
+	ex.config(pp);
+	List<Extractable> s = ex.extract();
+	System.out.println(s.size());
+	//		for (Extractable ext : s) {
+	//			System.out.println(ext);
+	//		}
 
+    }
+
+
+    /* (non-Javadoc)
+     * @see com.cmm.jft.data.extractor.Extractor#config(java.util.Properties)
+     */
+    @Override
+    public boolean config(Properties properties) {
+
+	boolean ret = false;
+	try{
+
+	    if(properties.containsKey("timeout") && properties.containsKey("urlbase")){
+		//"http://cvmweb.cvm.gov.br/SWB/Sistemas/SCW/CPublica/CiaAb/FormBuscaCiaAbOrdAlf.aspx?LetraInicial=";
+		timeout = (int) properties.get("timeout");
+		urlBase = properties.getProperty("urlbase");
+		ret = true;
+	    }
+	}catch(NumberFormatException e){
+	    ret = false;
 	}
 
+	return ret;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.cmm.jft.data.extractor.Extractor#config(java.util.Properties)
-	 */
-	@Override
-	public boolean config(Properties properties) {
+    /* (non-Javadoc)
+     * @see com.cmm.jft.data.extractor.Extractor#extract()
+     */
+    @Override
+    public List<Extractable> extract() {
 
-		boolean ret = false;
-		try{
+	List<Extractable> comps = new ArrayList<Extractable>();
+	for(char c:alf){
+	    try {
+		List<Extractable> aux = extractLetter(c, new URL(urlBase+c), timeout);
+		if(!aux.isEmpty())comps.addAll(aux);
+	    } catch (MalformedURLException e) {
 
-			if(properties.containsKey("timeout") && properties.containsKey("urlbase")){
-				//"http://cvmweb.cvm.gov.br/SWB/Sistemas/SCW/CPublica/CiaAb/FormBuscaCiaAbOrdAlf.aspx?LetraInicial=";
-				timeout = (int) properties.get("timeout");
-				urlBase = properties.getProperty("urlbase");
-				ret = true;
-			}
-		}catch(NumberFormatException e){
-			ret = false;
-		}
-
-		return ret;
+	    }
 	}
 
-	/* (non-Javadoc)
-	 * @see com.cmm.jft.data.extractor.Extractor#extract()
-	 */
-	@Override
-	public List<Extractable> extract() {
+	return comps;
+    }
 
-		List<Extractable> comps = new ArrayList<Extractable>();
-		for(char c:alf){
-			try {
-				List<Extractable> aux = extractLetter(c, new URL(urlBase+c), timeout);
-				if(!aux.isEmpty())comps.addAll(aux);
-			} catch (MalformedURLException e) {
+    private List<Extractable> extractLetter(char param, URL url, int timeoutMillis) {
 
-			}
-		}
+	List<Extractable> extracted = new ArrayList<Extractable>();
+	try {
 
-		return comps;
-	}
+	    Document doc = Jsoup.parse(url, timeoutMillis);
 
-	private List<Extractable> extractLetter(char param, URL url, int timeoutMillis) {
+	    Element table = doc.getElementById("dlCiasCdCVM");
+	    if (Objects.nonNull(table)) {
 
-		List<Extractable> extracted = new ArrayList<Extractable>();
-		try {
+		for (Element trs : table.getElementsByTag("tr")) {
+		    int col = 0;
+		    String[] cols = new String[4];
+		    for (Element r : trs.getElementsByTag("td")) {
+			cols[col++] = r.text();
+		    }
 
-			Document doc = Jsoup.parse(url, timeoutMillis);
+		    if(!(cols[0].equalsIgnoreCase("cnpj") || cols[3].equalsIgnoreCase("situação registro"))){
 
-			Element table = doc.getElementById("dlCiasCdCVM");
-			if (Objects.nonNull(table)) {
+			Date statusDate = null;
+			GeneralStatus status = null;
 
-				for (Element trs : table.getElementsByTag("tr")) {
-					int col = 0;
-					String[] cols = new String[4];
-					for (Element r : trs.getElementsByTag("td")) {
-						cols[col++] = r.text();
-					}
-
-					if(!(cols[0].equalsIgnoreCase("cnpj") || cols[3].equalsIgnoreCase("situa��o registro"))){
-
-						Date statusDate = null;
-						GeneralStatus status = null;
-
-						Matcher m = Pattern.compile("([\\d]+/[\\d]+/[\\d]+)").matcher(cols[3]);
-						if(m.find()){
-							statusDate = (Date) FormatterFactory.getFormatter(FormatterTypes.DATE_F10).parse(m.group());
-							cols[3] = cols[3].split(" em ")[0];
-						}
-
-						switch(cols[3]){
-						case "Cancelado":
-							status = GeneralStatus.CANCELED;
-							break;
-						case "Concedido":
-							status = GeneralStatus.ACTIVE;
-							break;
-						}
-
-						CVMCia cia = new CVMCia(cols[0], cols[1], cols[2], statusDate, status);
-						extracted.add(cia);
-					}
-				}
-
+			Matcher m = Pattern.compile("([\\d]+/[\\d]+/[\\d]+)").matcher(cols[3]);
+			if(m.find()){
+			    statusDate = (Date) FormatterFactory.getFormatter(FormatterTypes.DATE_F10).parse(m.group());
+			    cols[3] = cols[3].split(" em ")[0];
 			}
 
-		} catch(SocketTimeoutException e){
-			//Logging.getInstance().log(this.getClass(), "Too short timeout:", e, Level.ERROR);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return extracted;
+			switch(cols[3]){
+			case "Cancelado":
+			    status = GeneralStatus.CANCELED;
+			    break;
+			case "Concedido":
+			    status = GeneralStatus.ACTIVE;
+			    break;
+			}
 
+			CVMCia cia = new CVMCia(cols[0], cols[1], cols[2], statusDate, status);
+			extracted.add(cia);
+		    }
+		}
+
+	    }
+
+	} catch(SocketTimeoutException e){
+	    //Logging.getInstance().log(this.getClass(), "Too short timeout:", e, Level.ERROR);
+	} catch (Exception e) {
+	    e.printStackTrace();
 	}
+	return extracted;
+
+    }
 
 }
