@@ -1,0 +1,5 @@
+/event_log_table.sql
+/messages_log_table.sql
+/messages_table.sql
+/sessions_table.sql
+/quickfix_database.sql
