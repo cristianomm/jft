@@ -11,7 +11,7 @@ import javax.mail.URLName;
 public class JavaMailApp {
 	public static void main(String[] args) {
 		Properties props = new Properties();
-		/** Parâmetros de conexão com servidor Gmail */
+		/** Parï¿½metros de conexï¿½o com servidor Gmail */
 		props.put("mail.smtp.host", "imap.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
 		props.put("mail.smtp.socketFactory.class",
@@ -23,11 +23,11 @@ public class JavaMailApp {
 				new javax.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(
-								"cristranus@gmail.com", "JfD!347>61&<52");
+								"cristranus@gmail.com", "pass");
 					}
 				});
 
-		/** Ativa Debug para sessão */
+		/** Ativa Debug para sessï¿½o */
 		session.setDebug(true);
 
 		try {
@@ -38,13 +38,13 @@ public class JavaMailApp {
 			// message.setFrom(new InternetAddress("seuemail@gmail.com"));
 			// //Remetente
 			//
-			// Address[] toUser = InternetAddress //Destinatário(s)
+			// Address[] toUser = InternetAddress //Destinatï¿½rio(s)
 			// .parse("seuamigo@gmail.com, seucolega@hotmail.com, seuparente@yahoo.com.br");
 			//
 			// message.setRecipients(Message.RecipientType.TO, toUser);
 			// message.setSubject("Enviando email com JavaMail");//Assunto
 			// message.setText("Enviei este email utilizando JavaMail com minha conta GMail!");
-			// /**Método para enviar a mensagem criada*/
+			// /**Mï¿½todo para enviar a mensagem criada*/
 			// Transport.send(message);
 			//
 			// System.out.println("Feito!!!");
