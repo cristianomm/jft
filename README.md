@@ -1,7 +1,9 @@
 # jft
 O objetivo deste projeto é a construção de uma matching engine para a realização de testes e validação de sistemas de negociação.
 O projeto foi dividido em módulos que contém funcionalidades específicas e auxiliam na construção de dois sistemas: Matching Engine e Sistema cliente.
+
 A Matching Engine está sendo construida tendo como referência o [PUMA Trading System](http://www.bmfbovespa.com.br/pt_br/servicos/negociacao/puma-trading-system-bm-fbovespa/) e toda a documentação fornecida pelo site da B3 [Entry Point](http://www.bmfbovespa.com.br/pt_br/servicos/negociacao/puma-trading-system-bm-fbovespa/para-desenvolvedores-e-vendors/entrypoint-entrada-de-ofertas/) e [UMDF](http://www.bmfbovespa.com.br/pt_br/servicos/negociacao/puma-trading-system-bm-fbovespa/para-desenvolvedores-e-vendors/umdf-sinal-de-difusao/) como base de conhecimento para a costrução do sistema.
+
 O Sistema cliente tem por finalidade oferecer uma plataforma básica e simplificada de negociação para treinamento e validação de sistemas de negociação.
 
 ## Módulos
@@ -26,9 +28,12 @@ O Sistema cliente tem por finalidade oferecer uma plataforma básica e simplific
 Utiliza a API QuickFIX/J para auxiliar no processo de codificação e decodificação de mensagens no protocolo FIX.
 * **services**
 > Disponibiliza 3 serviços básicos para realizar negociação:
-  - Trading: Gerenciamento de ordens (inserção, cancelamento e atualização de ordens, bem como o tratamento de mensagens do tipo ExecutionReport).
-  - Security: Mantém dados sobre os instrumentos que podem ser negociados.
-  - MarketData: Processa todas mensagens de MarketData e as mantém disponíveis para utilização pelo cliente.
+
+> *Trading:* Gerenciamento de ordens (inserção, cancelamento e atualização de ordens, bem como o tratamento de mensagens do tipo ExecutionReport).
+
+> *Security:* Mantém dados sobre os instrumentos que podem ser negociados.
+
+> *MarketData:* Processa todas mensagens de MarketData e as mantém disponíveis para utilização pelo cliente.
 * **ui**
 > Interface cliente com telas básicas para envio de ordens e acompanhamento do mercado.
 
