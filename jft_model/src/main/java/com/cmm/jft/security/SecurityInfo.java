@@ -26,9 +26,7 @@ import javax.persistence.TemporalType;
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.financial.Currency;
 import com.cmm.jft.trading.enums.AssetTypes;
-import com.cmm.jft.trading.enums.FutureSeries;
 import com.cmm.jft.trading.enums.OptionRights;
-import com.cmm.jft.trading.enums.OptionSeries;
 import com.cmm.jft.trading.enums.OptionStyles;
 import com.cmm.jft.trading.enums.SecurityCategory;
 
@@ -115,12 +113,12 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
     @Column(name="AuctionBand")
     private double auctionBand;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ObjectAsset", length = 30)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "ObjectAsset")
     private AssetTypes objectAsset;	
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "Category", length = 30)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "Category")
     private SecurityCategory category;	
 
     /**
@@ -138,15 +136,15 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
     private Date expirationDate;
 
     //-------------------------------OptionSpecific
-    @Enumerated(EnumType.STRING)
-    @Column(name = "OptionStyle", length = 30)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "OptionStyle")
     private OptionStyles optionStyle;
 
     /**
      * Option right (Call/Put)
      */
-    @Enumerated(EnumType.STRING)
-    @Column(name="OptionRight", length=30)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name="OptionRight")
     private OptionRights optionRight;
 
     /**

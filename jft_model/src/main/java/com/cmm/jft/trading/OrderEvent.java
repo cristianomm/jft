@@ -47,6 +47,12 @@ public class OrderEvent implements DBObject<OrderEvent> {
     @Basic(optional = false)
     @Column(name = "orderEventID", nullable = false)
     private Long orderEventID;
+    
+    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+    private Orders orderID;
+    
+    @Column(name="tradeID", length=32)
+    private String tradeID;
 
     @Column(name = "Price", precision = 19, scale = 6)
     private double price;
@@ -72,43 +78,35 @@ public class OrderEvent implements DBObject<OrderEvent> {
     @Column(name = "LastQty")
     private double lastQty;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name="ExecutionType", length=30)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name="ExecutionType")
     private ExecutionTypes executionType;
     
-    @Enumerated(EnumType.STRING)
-    @Column(name="OrderStatus", length=30)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name="OrderStatus")
     private OrderStatus orderStatus;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Basic(optional = false)
-    @Column(name = "OrderType", length=30)
+    @Column(name = "OrderType")
     private OrderTypes orderType;
     
-    @Enumerated(EnumType.STRING)
-    @Column(name="Validity", length=30)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name="Validity")
     private OrderValidityTypes validity;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "EventDateTime")
     private Date eventDateTime;
-
+    
+    @Column(name="ContraBroker", length=5)
+    private String contraBroker;
+    
     @Column(name = "Message", length = 255)
     private String message;
 
     @Column(name="OrdRejReason")
     private int ordRejReason;
-
-    @Column(name="tradeID", length=32)
-    private String tradeID;
-
-
-    @Column(name="ContraBroker", length=5)
-    private String contraBroker;
-
-    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-    private Orders orderID;
-
 
     /**
      * 

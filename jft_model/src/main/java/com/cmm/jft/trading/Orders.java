@@ -5,7 +5,6 @@
 
 package com.cmm.jft.trading;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,40 +25,38 @@ import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
 
-import quickfix.SessionID;
-
 /**
  *
  * <p>
  * <code>Orders</code>
  * </p>
- * Any Order is identified by three identifiers when is created:
- * <code>brokerID</code> Entering Firm: 
- * <code>traderID</code> Entering Trader: 
- * <code>senderLocation</code> Sender Location
- * this fields are required and are used to identify market participants.
+ * Any Order is identified by three identifiers when it is created:
+ * <code>brokerID</code> Entering Firm: <code>traderID</code> Entering Trader:
+ * <code>senderLocation</code> Sender Location this fields are required and are
+ * used to identify market participants.
  * 
- * After that, orders can be identified as a group of orders related to an trader. 
- * To address this, fields are used:  
+ * After that, orders can be identified as a group of orders related to an
+ * trader. To address this, fields are used:
  * 
- * <code>clOrdID</code>
- * <code>origClOrdID</code>
+ * <code>clOrdID</code> <code>origClOrdID</code>
  * 
  * 
  * @author Cristiano M Martins
  * @version Aug 6, 2013 2:00:40 AM
  */
 @Entity
-@Table(name = "Orders", schema="Trading"/*, uniqueConstraints = { @UniqueConstraint(columnNames = { "OrderSerial" }) }*/)
-@NamedQueries({
-    @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
-    @NamedQuery(name = "Orders.findByOrderID", query = "SELECT o FROM Orders o WHERE o.orderID = :orderID"),
-})
+@Table(name = "Orders", schema = "Trading"/*
+					   * , uniqueConstraints = { @UniqueConstraint(columnNames = { "OrderSerial" })
+					   * }
+					   */)
+@NamedQueries({ @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
+	@NamedQuery(name = "Orders.findByOrderID", query = "SELECT o FROM Orders o WHERE o.orderID = :orderID"), })
 public class Orders implements DBObject<Orders> {
     private static final long serialVersionUID = 1L;
 
-    //@SequenceGenerator(name = "ORDERS_SEQ", sequenceName = "ORDERS_SEQ", allocationSize = 1, initialValue = 1)
-    //@GeneratedValue(generator = "ORDERS_SEQ", strategy = GenerationType.AUTO)
+    // @SequenceGenerator(name = "ORDERS_SEQ", sequenceName = "ORDERS_SEQ",
+    // allocationSize = 1, initialValue = 1)
+    // @GeneratedValue(generator = "ORDERS_SEQ", strategy = GenerationType.AUTO)
     @Id
     @Basic(optional = false)
     @Column(name = "orderID", nullable = false)
@@ -71,33 +68,36 @@ public class Orders implements DBObject<Orders> {
     /**
      * Unique identifier of the order as assigned by the market participant
      */
-    @Column(name="ClOrdID", length=50, updatable=false, nullable=false)
+    @Column(name = "ClOrdID", length = 50, updatable = false, nullable = false)
     private String clOrdID;
 
     /**
-     * Contains the ClOrdID of the replacement order. 
-     * Conditionally required when ExecType = 5 (Replace).
+     * Contains the ClOrdID of the replacement order. Conditionally required when
+     * ExecType = 5 (Replace).
      */
-    @Column(name="OrigClOrdID", length=50, updatable=false)
+    @Column(name = "OrigClOrdID", length = 50, updatable = false)
     private String origClOrdID;
 
-
     /**
-     * Identification of trader 
+     * Identification of trader
      */
-    @Column(name="traderID", updatable=false, length=50)
+    @Column(name = "traderID", updatable = false, length = 50)
     private String traderID;
 
     /**
      * Broker's identification
      */
-    @Column(name="brokerID", length=5, updatable=false)
+    @Column(name = "brokerID", length = 5, updatable = false)
     private String brokerID;
 
-    @Column(name="senderLocation", length=50, updatable=false)
+    @JoinColumn(name = "securityID", referencedColumnName = "securityID", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Security securityID;
+    
+    @Column(name = "senderLocation", length = 50, updatable = false)
     private String senderLocation;
 
-    @Column(name="Account", length=10, updatable=false)
+    @Column(name = "Account", length = 10, updatable = false)
     private String account;
 
     @Column(name = "Price", precision = 19, scale = 6)
@@ -113,7 +113,7 @@ public class Orders implements DBObject<Orders> {
     @Column(name = "ExecutedVolume")
     private Integer executedVolume;
 
-    @Column(name="LeavesVolume")
+    @Column(name = "LeavesVolume")
     private double leavesVolume;
 
     @Column(name = "MaxFloor")
@@ -121,7 +121,6 @@ public class Orders implements DBObject<Orders> {
 
     @Column(name = "MinVolume")
     private double minVolume;
-
 
     // @Max(value=?) @Min(value=?)//if you know range of your decimal fields
     // consider using these annotations to enforce field validation
@@ -143,51 +142,44 @@ public class Orders implements DBObject<Orders> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date insertDateTime;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "OrderStatus", nullable = false, length=50)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "OrderStatus", nullable = false)
     private OrderStatus orderStatus;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "WorkingIndicator", nullable = false,length=50)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "WorkingIndicator", nullable = false)
     private WorkingIndicator workingIndicator;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "OrderValidityType", nullable = false, length=50)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "OrderValidityType", nullable = false)
     private OrderValidityTypes validityType;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Basic(optional = false)
-    @Column(name = "OrderType", nullable = false, length=50)
+    @Column(name = "OrderType", nullable = false)
     private OrderTypes orderType;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Basic(optional = false)
     @Column(name = "TradeType", nullable = false, updatable = false)
     private TradeTypes tradeType;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Basic(optional = false)
-    @Column(name = "Side", nullable = false, updatable = false, length=10)
+    @Column(name = "Side", nullable = false, updatable = false)
     private Side side;
 
-    @Column(name="Comment", length=250)
+    @Column(name = "Comment", length = 250)
     private String comment;
-
-    @JoinColumn(name = "securityID", referencedColumnName = "securityID", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Security securityID;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orderID")
     private List<OrderEvent> eventsList;
 
-
-
     public Orders() {
-	this.price =  0d;
+	this.price = 0d;
 	this.duration = new Date();
 	init();
     }
-
 
     /**
      * 
@@ -203,16 +195,15 @@ public class Orders implements DBObject<Orders> {
      * @param senderLct
      * @throws OrderException
      */
-    public Orders(long orderID, String clOrdID, Security security,  Side side, double price, int volume, 
+    public Orders(long orderID, String clOrdID, Security security, Side side, double price, int volume,
 	    OrderTypes orderType, String traderID, String brokerID, String senderLct) throws OrderException {
 
-	if(clOrdID == null || security == null || side == null || volume <= 0 ||
-		traderID == null || brokerID == null || senderLct == null){
-	    throw new OrderException(
-		    String.format(
-			    "Invalid field value: clOrdID: %1$s, security: %2$s, side: %3$s, "
-			    + "volume: %7$d, traderID: %4$s, brokerID: %5$s, senderLct: %6$s", 
-			    clOrdID, security, side, traderID, brokerID, senderLct, volume));
+	if (clOrdID == null || security == null || side == null || volume <= 0 || traderID == null || brokerID == null
+		|| senderLct == null) {
+	    throw new OrderException(String.format(
+		    "Invalid field value: clOrdID: %1$s, security: %2$s, side: %3$s, "
+			    + "volume: %7$d, traderID: %4$s, brokerID: %5$s, senderLct: %6$s",
+		    clOrdID, security, side, traderID, brokerID, senderLct, volume));
 	}
 
 	this.orderID = orderID;
@@ -223,7 +214,7 @@ public class Orders implements DBObject<Orders> {
 	this.brokerID = brokerID;
 	this.senderLocation = senderLct;
 
-	switch(orderType){
+	switch (orderType) {
 	case Limit:
 	    this.price = price;
 	    break;
@@ -231,9 +222,8 @@ public class Orders implements DBObject<Orders> {
 	    break;
 	case Stop:
 	case StopLimit:
-	    if(price <=0){
-		throw new OrderException(
-			String.format("Invalid price for type: %1$f %2$s", price, orderType));
+	    if (price <= 0) {
+		throw new OrderException(String.format("Invalid price for type: %1$f %2$s", price, orderType));
 	    }
 	    this.stopPrice = price;
 	}
@@ -247,8 +237,7 @@ public class Orders implements DBObject<Orders> {
 	init();
     }
 
-
-    private void init(){
+    private void init() {
 
 	this.avgPrice = 0;
 	this.executedVolume = 0;
@@ -261,20 +250,19 @@ public class Orders implements DBObject<Orders> {
 	this.eventsList = new ArrayList<OrderEvent>();
     }
 
-
-
     private void refreshOrder() throws OrderException {
 
 	try {
 	    // calculate the order avg price and adjusts the last executed price
 	    calculateOrderValues();
 
-	    //adjust the state in according to actual order state
-	    if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED || orderStatus == OrderStatus.REPLACED){
+	    // adjust the state in according to actual order state
+	    if (orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED
+		    || orderStatus == OrderStatus.REPLACED) {
 		// order have not yet been executed
 		if (leavesVolume > 0 && leavesVolume < volume) {
 		    setOrderStatus(OrderStatus.PARTIALLY_FILLED);
-		} else if (leavesVolume == 0) {//order was totally executed
+		} else if (leavesVolume == 0) {// order was totally executed
 		    setOrderStatus(OrderStatus.FILLED);
 		} else if (leavesVolume < 0) {// error!!!!!
 		    throw new OrderException("ExecutedVolume is greater than order volume: " + executedVolume);
@@ -292,7 +280,7 @@ public class Orders implements DBObject<Orders> {
 	int sumVolume = 0;
 	double sumTotal = 0d;
 	for (OrderEvent oe : eventsList) {
-	    if(oe.getExecutionType() == ExecutionTypes.TRADE) {
+	    if (oe.getExecutionType() == ExecutionTypes.TRADE) {
 		sumVolume += oe.getVolume();
 		sumTotal += oe.getPrice() * oe.getVolume();
 	    }
@@ -302,48 +290,42 @@ public class Orders implements DBObject<Orders> {
 	executedVolume = sumVolume;
 	leavesVolume = volume - executedVolume;
 
-	//only TRADE events are relevant
+	// only TRADE events are relevant
 	long execs = eventsList.stream().filter(e -> e.getExecutionType() == ExecutionTypes.TRADE).count();
 	execs = execs > 0 ? execs : 1;
-	avgPrice = (sumTotal/execs);
+	avgPrice = (sumTotal / execs);
 
 	return avgPrice;
-    }	
+    }
 
     public void setOrderStatus(OrderStatus status) throws OrderException {
 
 	boolean invalidState = true;
-	switch(this.orderStatus) {
+	switch (this.orderStatus) {
 	case CREATED:
-	    if(status == OrderStatus.SUSPENDED || 
-	    status == OrderStatus.REJECTED) {
+	    if (status == OrderStatus.SUSPENDED || status == OrderStatus.REJECTED) {
 		this.orderStatus = status;
 		invalidState = false;
 	    }
 	    break;
 
 	case SUSPENDED:
-	    if(status == OrderStatus.NEW || status == OrderStatus.REJECTED) {
+	    if (status == OrderStatus.NEW || status == OrderStatus.REJECTED) {
 		this.orderStatus = status;
 		invalidState = false;
-	    }			
+	    }
 	    break;
 	case NEW:
-	    if(status == OrderStatus.REPLACED || 
-	    status == OrderStatus.EXPIRED || 
-	    status == OrderStatus.FILLED || 
-	    status == OrderStatus.PARTIALLY_FILLED ||
-	    status == OrderStatus.CANCELED) {
+	    if (status == OrderStatus.REPLACED || status == OrderStatus.EXPIRED || status == OrderStatus.FILLED
+		    || status == OrderStatus.PARTIALLY_FILLED || status == OrderStatus.CANCELED) {
 		this.orderStatus = status;
 		invalidState = false;
 	    }
 	    break;
 
 	case REPLACED:
-	    if(status == OrderStatus.EXPIRED || 
-	    status == OrderStatus.FILLED ||
-	    status == OrderStatus.PARTIALLY_FILLED ||
-	    status == OrderStatus.CANCELED) {
+	    if (status == OrderStatus.EXPIRED || status == OrderStatus.FILLED || status == OrderStatus.PARTIALLY_FILLED
+		    || status == OrderStatus.CANCELED) {
 		this.orderStatus = status;
 		invalidState = false;
 	    }
@@ -365,10 +347,8 @@ public class Orders implements DBObject<Orders> {
 	    break;
 
 	case PARTIALLY_FILLED:
-	    if(status == OrderStatus.EXPIRED || 
-	    status == OrderStatus.FILLED ||
-	    status == OrderStatus.PARTIALLY_FILLED ||
-	    status == OrderStatus.CANCELED) {
+	    if (status == OrderStatus.EXPIRED || status == OrderStatus.FILLED || status == OrderStatus.PARTIALLY_FILLED
+		    || status == OrderStatus.CANCELED) {
 		this.orderStatus = status;
 		invalidState = false;
 	    }
@@ -378,13 +358,11 @@ public class Orders implements DBObject<Orders> {
 	    throw new OrderException("Invalid OrderStatus: " + status);
 	}
 
-	if(invalidState) {
+	if (invalidState) {
 	    throw new OrderException("Can't set status from: " + orderStatus + " to: " + status);
 	}
 
     }
-
-
 
     /**
      * @return the orderID
@@ -394,15 +372,16 @@ public class Orders implements DBObject<Orders> {
     }
 
     /**
-     * Adjusts orderID only if orderID has not been adjusted yet. 
-     * @param orderID the orderID to set
+     * Adjusts orderID only if orderID has not been adjusted yet.
+     * 
+     * @param orderID
+     *            the orderID to set
      */
     public void setOrderID(Long orderID) {
-	if(this.orderID <=0 && orderID >0) {
+	if (this.orderID <= 0 && orderID > 0) {
 	    this.orderID = orderID;
 	}
     }
-
 
     /**
      * @return the secOrderID
@@ -412,7 +391,8 @@ public class Orders implements DBObject<Orders> {
     }
 
     /**
-     * @param secOrderID the secOrderID to set
+     * @param secOrderID
+     *            the secOrderID to set
      */
     public void setSecOrderID(Long secOrderID) {
 	this.secOrderID = secOrderID;
@@ -426,7 +406,8 @@ public class Orders implements DBObject<Orders> {
     }
 
     /**
-     * @param traderID the traderID to set
+     * @param traderID
+     *            the traderID to set
      */
     public void setTraderID(String traderID) {
 	this.traderID = traderID;
@@ -440,7 +421,8 @@ public class Orders implements DBObject<Orders> {
     }
 
     /**
-     * @param clOrdID the clOrdID to set
+     * @param clOrdID
+     *            the clOrdID to set
      */
     public void setClOrdID(String clOrdID) {
 	this.clOrdID = clOrdID;
@@ -462,7 +444,8 @@ public class Orders implements DBObject<Orders> {
     }
 
     /**
-     * @param brokerID the brokerID to set
+     * @param brokerID
+     *            the brokerID to set
      */
     public void setBrokerID(String brokerID) {
 	this.brokerID = brokerID;
@@ -474,13 +457,14 @@ public class Orders implements DBObject<Orders> {
     public String getAccount() {
 	return account;
     }
+
     /**
-     * @param account the account to set
+     * @param account
+     *            the account to set
      */
     public void setAccount(String account) {
 	this.account = account;
     }
-
 
     public double getOrderValue() {
 	return price * volume;
@@ -513,7 +497,8 @@ public class Orders implements DBObject<Orders> {
     }
 
     /**
-     * @param minVolume the minVolume to set
+     * @param minVolume
+     *            the minVolume to set
      */
     public void setMinVolume(double minVolume) {
 	this.minVolume = minVolume;
@@ -539,11 +524,11 @@ public class Orders implements DBObject<Orders> {
 	this.protectionPrice = protectionPrice;
     }
 
-    public double getMaxFloor(){
+    public double getMaxFloor() {
 	return this.maxFloor;
     }
 
-    public void setMaxFloor(double maxFloor){
+    public void setMaxFloor(double maxFloor) {
 	this.maxFloor = maxFloor;
     }
 
@@ -638,65 +623,72 @@ public class Orders implements DBObject<Orders> {
 	return this.senderLocation;
     }
 
-
     /**
-     * @param senderLocation the senderLocation to set
+     * @param senderLocation
+     *            the senderLocation to set
      */
     public void setSenderLocation(String senderLocation) {
 	this.senderLocation = senderLocation;
     }
 
     /**
-     * @param orderType the orderType to set
+     * @param orderType
+     *            the orderType to set
      */
     public void setOrderType(OrderTypes orderType) {
 	this.orderType = orderType;
     }
 
     /**
-     * @param price the price to set
+     * @param price
+     *            the price to set
      */
     public void setPrice(double price) {
 	this.price = price;
     }
 
     /**
-     * @param securityID the securityID to set
+     * @param securityID
+     *            the securityID to set
      */
     public void setSecurityID(Security securityID) {
 	this.securityID = securityID;
     }
 
     /**
-     * @param side the side to set
+     * @param side
+     *            the side to set
      */
     public void setSide(Side side) {
 	this.side = side;
     }
 
     /**
-     * @param volume the volume to set
+     * @param volume
+     *            the volume to set
      */
     public void setVolume(double volume) {
 	this.volume = volume;
     }
-    
+
     /**
      * @return the insertDateTime
      */
     public Date getInsertDateTime() {
 	return insertDateTime;
     }
-    
+
     /**
-     * @param insertDateTime the insertDateTime to set
+     * @param insertDateTime
+     *            the insertDateTime to set
      */
     public void setInsertDateTime(Date insertDateTime) {
 	this.insertDateTime = insertDateTime;
     }
-    
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -708,15 +700,16 @@ public class Orders implements DBObject<Orders> {
     @Override
     public boolean equals(Object otherOrder) {
 	boolean eq = false;
-	if(otherOrder instanceof Orders) {
-	    eq = this.clOrdID == ((Orders)otherOrder).clOrdID;
+	if (otherOrder instanceof Orders) {
+	    eq = this.clOrdID == ((Orders) otherOrder).clOrdID;
 	}
 
 	return eq;
     }
 
-
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -747,7 +740,7 @@ public class Orders implements DBObject<Orders> {
 	boolean added = true;
 
 	try {
-	    switch(execution.getExecutionType()) {
+	    switch (execution.getExecutionType()) {
 	    case CANCELED:
 		cancelOrder(execution);
 		break;
@@ -774,10 +767,9 @@ public class Orders implements DBObject<Orders> {
 	    case TRADE_CANCEL:
 		cancelTrade(execution);
 		break;
-	    }	
+	    }
 	    eventsList.add(execution);
-	}
-	catch(OrderException e) {
+	} catch (OrderException e) {
 	    added = false;
 	    throw e;
 	}
@@ -820,45 +812,43 @@ public class Orders implements DBObject<Orders> {
 
 	setOrderStatus(OrderStatus.REPLACED);
 
-	if(replace.getOrderType() != null) {
+	if (replace.getOrderType() != null) {
 	    this.orderType = replace.getOrderType();
 	}
 
-	if(replace.getValidity() != null) {
+	if (replace.getValidity() != null) {
 	    this.validityType = replace.getValidity();
 	}
 
-
-
-	if(replace.getPrice() > 0 && replace.getPrice() != price) {
+	if (replace.getPrice() > 0 && replace.getPrice() != price) {
 	    this.price = replace.getPrice();
 	    this.orderDateTime = replace.getEventDateTime();
 	}
 
-	if(replace.getStopPrice() >0) {
+	if (replace.getStopPrice() > 0) {
 	    this.stopPrice = replace.getStopPrice();
 	    this.orderDateTime = replace.getEventDateTime();
 	}
 
-	if(replace.getVolume() >0 && replace.getVolume() != volume) {
+	if (replace.getVolume() > 0 && replace.getVolume() != volume) {
 	    // verifica se o volume esta de acordo com o lote padrao do simbolo,
 	    // caso n esteja, lanca exception
-	    if (volume < securityID.getSecurityInfoID().getMinVolume() || 
-		    volume > securityID.getSecurityInfoID().getMaxVolume()) {
+	    if (volume < securityID.getSecurityInfoID().getMinVolume()
+		    || volume > securityID.getSecurityInfoID().getMaxVolume()) {
 		throw new OrderException("Invalid Volume:" + volume);
-	    }else {
-		if(replace.getVolume() > this.volume) {
+	    } else {
+		if (replace.getVolume() > this.volume) {
 		    this.orderDateTime = replace.getEventDateTime();
 		}
 		this.volume = replace.getVolume();
 	    }
 	}
-	
-	if(replace.getMinQty() > 0 || (replace.getMinQty() != minVolume && minVolume >0)) {
+
+	if (replace.getMinQty() > 0 || (replace.getMinQty() != minVolume && minVolume > 0)) {
 	    this.minVolume = replace.getMinQty();
 	    this.orderDateTime = replace.getEventDateTime();
 	}
-	
+
 	refreshOrder();
     }
 
@@ -869,18 +859,18 @@ public class Orders implements DBObject<Orders> {
 
     private void tradeOrder(OrderEvent execution) throws OrderException {
 
-	if(orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED || orderStatus == OrderStatus.REPLACED){
-	    //volume executado eh menor que o volume total e menor que o volume atual
-	    if(execution.getVolume() <= volume && execution.getVolume() <= (volume-executedVolume)){
-		//ajusta o estado da ordem
+	if (orderStatus == OrderStatus.NEW || orderStatus == OrderStatus.PARTIALLY_FILLED
+		|| orderStatus == OrderStatus.REPLACED) {
+	    // volume executado eh menor que o volume total e menor que o volume atual
+	    if (execution.getVolume() <= volume && execution.getVolume() <= (volume - executedVolume)) {
+		// ajusta o estado da ordem
 		refreshOrder();
 	    } else {
 		throw new OrderException("Invalid volume: " + execution.getVolume());
-	    }			
+	    }
 	} else {
 	    throw new OrderException("");
 	}
-
 
     }
 
