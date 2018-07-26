@@ -1,9 +1,10 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="732FF53B-7037-527E-EB57-193855E181A0" name="StockExchange">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="732FF53B-7037-527E-EB57-193855E181A0" schemaObject="B563C57E-FB72-43A9-0A56-5A2A13D3C2DD" name="StockExchange">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
-<schemaObject>B563C57E-FB72-43A9-0A56-5A2A13D3C2DD</schemaObject>
+<usedAsRemoteObject>true</usedAsRemoteObject>
+<parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
 <Column name="stockExchangeID" id="E7991A1F-AEAE-5FEE-7EF1-F8DFFD2C8BCA">
 <createdBy>Cristiano</createdBy>
@@ -13,6 +14,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>15</dataTypeSize>
+<ownDataTypeParameters>15,,</ownDataTypeParameters>
 </Column>
 <Column name="ExchangeName" id="F4BC0917-D6A1-30A5-CB7A-5174E8FE443B">
 <createdBy>Cristiano</createdBy>
@@ -23,6 +25,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
 </Column>
 <Column name="countryID" id="B3F37658-15D5-7BB9-2E1A-689128C924C0">
 <createdBy>Cristiano</createdBy>
@@ -33,7 +36,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>3</dataTypeSize>
-<delegate>E5BCD2A0-EB24-3864-B46E-13963440091B</delegate>
+<ownDataTypeParameters>3,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="36B7E672-FCCF-0D27-72DE-67FADE2DA656" referredColumn="E5BCD2A0-EB24-3864-B46E-13963440091B"/>

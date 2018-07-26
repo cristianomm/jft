@@ -1,11 +1,12 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="FE501EC5-AB9A-CB5B-2B85-36AABCC91756" name="Country">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="FE501EC5-AB9A-CB5B-2B85-36AABCC91756" schemaObject="B563C57E-FB72-43A9-0A56-5A2A13D3C2DD" name="Country">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-09 21:26:07 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
-<schemaObject>B563C57E-FB72-43A9-0A56-5A2A13D3C2DD</schemaObject>
+<usedAsRemoteObject>true</usedAsRemoteObject>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
 <Column name="countryID" id="E5BCD2A0-EB24-3864-B46E-13963440091B">
 <createdBy>Cristiano</createdBy>
@@ -15,6 +16,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>3</dataTypeSize>
+<ownDataTypeParameters>3,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="CountryName" id="661A2ED6-BFAB-2F89-3C70-7A581CC2740C">
@@ -26,6 +28,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Area" id="BC05E06E-0BCD-4B92-F556-18A1BFAFDF9A">
@@ -38,6 +41,7 @@
 <logicalDatatype>LOGDT019</logicalDatatype>
 <dataTypePrecision>12</dataTypePrecision>
 <dataTypeScale>2</dataTypeScale>
+<ownDataTypeParameters>,12,2</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Population" id="18FF57E6-7F61-963C-3310-850864017BC2">
@@ -48,6 +52,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Continent" id="8F3E017A-4736-7EBA-20BE-3815B039FBE6">
@@ -59,6 +64,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>2</dataTypeSize>
+<ownDataTypeParameters>2,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>

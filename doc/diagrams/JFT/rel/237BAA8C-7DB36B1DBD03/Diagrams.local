@@ -1,8 +1,8 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <oracle.dbtools.crest.model.design.relational.RelationalDesign>
    <object objectType="main_view" objectID="03ABA111-96BA-7A02-99BD-1B5F2D8740EB" name="JFT" visible="true"/>
-   <object objectType="sub_view" objectID="1815A5D5-6A58-6C75-7DB9-5395B389F7C0" name="JFT - Accounting" visible="false"/>
+   <object objectType="sub_view" objectID="1815A5D5-6A58-6C75-7DB9-5395B389F7C0" name="JFT - Accounting" visible="true"/>
    <object objectType="sub_view" objectID="467E5B74-AC67-7068-19E3-BD09B535687B" name="JFT - MarketData" visible="true"/>
-   <object objectType="sub_view" objectID="BCFD2453-409A-CABF-5D44-6FCCA043D513" name="JFT - Security" visible="false"/>
+   <object objectType="sub_view" objectID="BCFD2453-409A-CABF-5D44-6FCCA043D513" name="JFT - Security" visible="true"/>
    <object objectType="sub_view" objectID="D96AA1A2-2849-1DFC-E7DB-4AA01FB1D7CF" name="JFT - Trading" visible="true"/>
 </oracle.dbtools.crest.model.design.relational.RelationalDesign>

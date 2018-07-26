@@ -5,4 +5,9 @@
 <ownerDesignName>JFER</ownerDesignName>
 <capitalNames>false</capitalNames>
 <designId>C60EDC1C-CEE2-5293-995B-B589C78F6769</designId>
+<usedDesignStorageDescriptors>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="C60EDC1C-CEE2-5293-995B-B589C78F6769">
+<designStoragePath>D:\Disco\Workspaces\git\jft\doc\diagrams\JFT</designStoragePath>
+</designDescr>
+</usedDesignStorageDescriptors>
 </OSDM_Design>

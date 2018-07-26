@@ -1,12 +1,13 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="D5C64FFC-A18E-D07A-08EB-91A25F3A357B" name="Security">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="D5C64FFC-A18E-D07A-08EB-91A25F3A357B" schemaObject="B563C57E-FB72-43A9-0A56-5A2A13D3C2DD" name="Security">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <generatorID>Gerado pelo usuário</generatorID>
 <ownerDesignName>JFT</ownerDesignName>
-<schemaObject>B563C57E-FB72-43A9-0A56-5A2A13D3C2DD</schemaObject>
+<usedAsRemoteObject>true</usedAsRemoteObject>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
 <Column name="securityID" id="37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14">
 <createdBy>Cristiano</createdBy>
@@ -16,6 +17,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="stockExchangeID" id="95818216-B66F-52AD-7F91-126F07ADF724">
@@ -27,7 +29,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>15</dataTypeSize>
-<delegate>E7991A1F-AEAE-5FEE-7EF1-F8DFFD2C8BCA</delegate>
+<ownDataTypeParameters>15,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="6863F71F-3D5A-E4FB-0484-1AA6E009D0E3" referredColumn="E7991A1F-AEAE-5FEE-7EF1-F8DFFD2C8BCA"/>
@@ -42,6 +44,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Description" id="E934AADB-5FF7-D442-1E46-6D12DA4B849A">
@@ -53,6 +56,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>

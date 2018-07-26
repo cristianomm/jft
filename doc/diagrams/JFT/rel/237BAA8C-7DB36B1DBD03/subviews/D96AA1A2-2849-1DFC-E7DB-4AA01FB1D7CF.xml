@@ -1,12 +1,14 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <Diagram class="oracle.dbtools.crest.swingui.relational.DPVRelationalSubView" name="JFT - Trading" id="D96AA1A2-2849-1DFC-E7DB-4AA01FB1D7CF">
 <createdBy>Cristiano</createdBy>
+<modifiedBy>crist</modifiedBy>
 <createdTime>2015-09-10 02:48:13 UTC</createdTime>
 <autoRoute>false</autoRoute>
 <boxInbox>true</boxInbox>
 <showLegend>false</showLegend>
 <showLabels>false</showLabels>
 <showRelAttributes>false</showRelAttributes>
+<gridEnabled>false</gridEnabled>
 <showGrid>false</showGrid>
 <diagramColor>-1</diagramColor>
 <display>false</display>
@@ -14,20 +16,21 @@
 <objectViews>
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="16DF40E0-F6F4-BD3F-C496-5ED12BD94083" otype="Table" vid="E456D8ED-8B84-D9FB-FF74-169E35D4FA29">
 <hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
-<bounds x="401" y="57" width="223" height="420"/>
+<bounds x="401" y="57" width="223" height="471"/>
 </OView>
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="94C36974-55DF-2582-12E8-3550813024E1" otype="Table" vid="0F52CAF3-16BC-EA90-5DE4-E61F7167387F">
 <hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
-<bounds x="96" y="115" width="205" height="208"/>
+<bounds x="96" y="115" width="205" height="335"/>
 </OView>
 </objectViews>
 <connectors>
 <Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="EF30FA89-EF8B-F2AB-BDE5-A28309C2AE24" otype="FKIndexAssociation" vid_source="E456D8ED-8B84-D9FB-FF74-169E35D4FA29" vid_target="0F52CAF3-16BC-EA90-5DE4-E61F7167387F">
 <hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
+<backgroundColor>-16777216</backgroundColor>
 <lineWidth>1</lineWidth>
 <points>
-<point x="401" y="219"/>
-<point x="301" y="219"/>
+<point x="401" y="282"/>
+<point x="301" y="282"/>
 </points>
 </Connector>
 </connectors>

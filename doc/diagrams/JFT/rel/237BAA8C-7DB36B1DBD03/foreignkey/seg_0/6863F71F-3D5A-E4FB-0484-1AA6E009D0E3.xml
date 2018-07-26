@@ -1,13 +1,17 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="6863F71F-3D5A-E4FB-0484-1AA6E009D0E3" name="Security_StockExchange_FK">
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="6863F71F-3D5A-E4FB-0484-1AA6E009D0E3" containerWithKeyObject="D5C64FFC-A18E-D07A-08EB-91A25F3A357B" localFKIndex="7F0CA2C9-3B4D-4FEE-7E5B-F307927050C8" name="Security_StockExchange_FK">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-09-10 03:55:58 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
-<containerWithKeyObject>D5C64FFC-A18E-D07A-08EB-91A25F3A357B</containerWithKeyObject>
+<usedAsRemoteObject>true</usedAsRemoteObject>
+<referredTableLongName>Security.StockExchange</referredTableLongName>
 <deleteRule>NO ACTION</deleteRule>
-<localFKIndex>7F0CA2C9-3B4D-4FEE-7E5B-F307927050C8</localFKIndex>
+<referredTableID>732FF53B-7037-527E-EB57-193855E181A0</referredTableID>
 <keyObject>0AEB2EDC-2A6E-DF75-0EE6-3FAE9B017341</keyObject>
+<referredKeyID>0AEB2EDC-2A6E-DF75-0EE6-3FAE9B017341</referredKeyID>
 <mandatory>true</mandatory>
+<refColNames>stockExchangeID</refColNames>
 <transferable>true</transferable>
+<rely>false</rely>
 <columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
 </FKIndexAssociation>

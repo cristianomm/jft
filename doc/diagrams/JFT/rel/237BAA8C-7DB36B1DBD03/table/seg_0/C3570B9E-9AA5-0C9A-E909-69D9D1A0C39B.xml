@@ -1,11 +1,12 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="C3570B9E-9AA5-0C9A-E909-69D9D1A0C39B" name="SecurityInfo">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="C3570B9E-9AA5-0C9A-E909-69D9D1A0C39B" schemaObject="B563C57E-FB72-43A9-0A56-5A2A13D3C2DD" name="SecurityInfo">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
-<schemaObject>B563C57E-FB72-43A9-0A56-5A2A13D3C2DD</schemaObject>
+<usedAsRemoteObject>true</usedAsRemoteObject>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
 <Column name="securityInfoID" id="DCB10BE5-FDF6-2447-47F6-710B4CA45C50">
 <createdBy>Cristiano</createdBy>
@@ -14,6 +15,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="securityID" id="CDD44F26-ACCE-4687-DE59-9325E77A2968">
@@ -23,7 +25,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT027</logicalDatatype>
-<delegate>37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14</delegate>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="027CACD8-FFD6-3D16-195D-1C2F3B87EA5C" referredColumn="37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14"/>
@@ -37,7 +39,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>5</dataTypeSize>
-<delegate>97E7232E-411E-0848-46E1-75AE8FE7FD6E</delegate>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="BCB5B403-8F38-0EBC-6103-0DE328BF8D14" referredColumn="97E7232E-411E-0848-46E1-75AE8FE7FD6E"/>
@@ -51,6 +53,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>12</dataTypeSize>
+<ownDataTypeParameters>12,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="ContractSize" id="167F45A5-3EAB-5C02-3E4A-21F3F6A9F0A4">
@@ -61,6 +64,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="TickSize" id="F0A9D8D2-1C61-57F0-5D37-DF060AB04F72">
@@ -73,6 +77,7 @@
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="TickValue" id="8724B384-A3F7-B8B9-1FB9-919898DDDB29">
@@ -85,6 +90,7 @@
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Digits" id="110E1573-6A50-6E57-C0D8-251EA37B45B1">
@@ -95,6 +101,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="MinimalVolume" id="E6A87AE3-FCB2-0C78-45B7-A1AECAB6A4BE">
@@ -105,6 +112,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT020</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="StepVolume" id="56065479-2204-EC17-6ABC-5B8BAC5714E2">
@@ -115,6 +123,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT020</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="ObjectAsset" id="46B444C8-4FF1-A1BB-0A00-A997C5B00C68">
@@ -126,6 +135,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>25</dataTypeSize>
+<ownDataTypeParameters>25,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Category" id="509749B1-83E1-5893-8E85-6BB27EE7BE18">
@@ -137,6 +147,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="EmissionDate" id="A320D77A-937C-32ED-FFB4-0B1244140A11">
@@ -147,6 +158,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="ExpirationDate" id="D0156E85-2CE1-F42C-D0F6-3A4ED9D63694">
@@ -157,6 +169,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="OptionStyle" id="161EE2F2-6E72-C30D-5238-5D00A688A371">
@@ -168,6 +181,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="OptionRight" id="AC73D8FA-64E5-A881-CA60-1B1645CC718D">
@@ -179,6 +193,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="StrikePrice" id="20B1DBF6-DAAF-DFBA-9F41-47B1084955A3">
@@ -191,6 +206,7 @@
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>
@@ -201,6 +217,16 @@
 <ownerDesignName>JFT</ownerDesignName>
 <pk>true</pk>
 <indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DCB10BE5-FDF6-2447-47F6-710B4CA45C50"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B3C103F4-C1BC-60F1-B8EB-68279ECD14B3" name="SecurityInfo_StockExchange_FK">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-09-10 02:56:43 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="DCB10BE5-FDF6-2447-47F6-710B4CA45C50"/>
@@ -226,13 +252,6 @@
 <indexColumnUsage>
 <colUsage columnID="CDD44F26-ACCE-4687-DE59-9325E77A2968"/>
 </indexColumnUsage>
-</ind_PK_UK>
-<ind_PK_UK id="B3C103F4-C1BC-60F1-B8EB-68279ECD14B3" name="SecurityInfo_StockExchange_FK">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-09-10 02:56:43 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<indexState>Foreign Key</indexState>
-<isSurrogateKey>false</isSurrogateKey>
 </ind_PK_UK>
 </indexes>
 </Table>

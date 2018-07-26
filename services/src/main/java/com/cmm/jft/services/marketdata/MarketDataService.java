@@ -15,11 +15,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Level;
 import org.openfast.template.MessageTemplate;
-import org.openfast.template.Scalar;
 import org.openfast.template.loader.MessageTemplateLoader;
 import org.openfast.template.loader.XMLMessageTemplateLoader;
 
@@ -27,13 +24,10 @@ import quickfix.DataDictionary;
 import quickfix.FieldException;
 import quickfix.FieldNotFound;
 import quickfix.Group;
-import quickfix.ListenerSupport;
 import quickfix.Message;
-import quickfix.field.MsgSeqNum;
 import quickfix.field.MsgType;
 import quickfix.fix44.Heartbeat;
 import quickfix.fix44.SequenceReset;
-import quickfix.mina.message.FIXMessageDecoder;
 import quickfix.fix44.MarketDataIncrementalRefresh;
 import quickfix.fix44.MarketDataSnapshotFullRefresh;
 import quickfix.fix44.News;
@@ -44,7 +38,6 @@ import com.cmm.jft.connector.enums.MDSynchronizationSteps;
 import com.cmm.jft.connector.marketdata.MarketDataConnector;
 import com.cmm.jft.connector.marketdata.MarketDataStarter;
 import com.cmm.jft.marketdata.MDNews;
-import com.cmm.jft.messaging.LogFile;
 import com.cmm.jft.security.Security;
 import com.cmm.jft.security.SecurityInfo;
 import com.cmm.jft.services.security.SecurityService;
