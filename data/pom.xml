@@ -72,6 +72,11 @@
 			<artifactId>icu4j</artifactId>
 			<version>60.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.cloud.bigtable</groupId>
+			<artifactId>bigtable-hbase-1.x</artifactId>
+			<version>1.4.0</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>
