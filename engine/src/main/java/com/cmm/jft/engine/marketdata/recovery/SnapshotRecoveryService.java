@@ -5,13 +5,14 @@ package com.cmm.jft.engine.marketdata.recovery;
 
 import javax.management.JMException;
 
+import org.apache.log4j.Level;
 import org.slf4j.LoggerFactory;
 
 import quickfix.ConfigError;
 import quickfix.FieldConvertError;
 import quickfix.SessionSettings;
 
-import com.cmm.jft.engine.EngineService;
+import com.cmm.jft.engine.Service;
 
 /**
  * <p>
@@ -22,7 +23,7 @@ import com.cmm.jft.engine.EngineService;
  * @version 13 de jul de 2015 00:05:40
  *
  */
-public class SnapshotRecoveryService extends EngineService {
+public class SnapshotRecoveryService extends Service {
     
     private SnapshotRecoveryChannel channel;
     
@@ -33,10 +34,10 @@ public class SnapshotRecoveryService extends EngineService {
 	    
 	    SessionSettings settings = new SessionSettings(Thread.currentThread().getContextClassLoader()
 		    .getResourceAsStream("SnapshotRecoveryService.cfg"));
-	    log = LoggerFactory.getLogger(SnapshotRecoveryService.class);
+	    
 	    init(settings, channel);
 	} catch (ConfigError | FieldConvertError | JMException e) {
-	    log.error(e.getMessage());
+	    logger.log(getClass(), e, Level.ERROR);
 	    e.printStackTrace();
 	}
     }
@@ -44,7 +45,7 @@ public class SnapshotRecoveryService extends EngineService {
     
 
     /* (non-Javadoc)
-     * @see com.cmm.jft.engine.EngineService#start()
+     * @see com.cmm.jft.engine.Service#start()
      */
     @Override
     public boolean start() {

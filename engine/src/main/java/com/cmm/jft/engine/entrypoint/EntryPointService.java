@@ -7,7 +7,7 @@ import javax.management.JMException;
 
 import org.slf4j.LoggerFactory;
 
-import com.cmm.jft.engine.EngineService;
+import com.cmm.jft.engine.Service;
 
 import quickfix.ConfigError;
 import quickfix.FieldConvertError;
@@ -22,7 +22,7 @@ import quickfix.SessionSettings;
  * @version 13 de jul de 2015 00:05:40
  *
  */
-public class EntryPointService extends EngineService {
+public class EntryPointService extends Service {
 
     private EntryPoint entryPoint;
     
@@ -30,12 +30,9 @@ public class EntryPointService extends EngineService {
 	try {
 	    SessionSettings settings = new SessionSettings(
 		    Thread.currentThread().getContextClassLoader().getResourceAsStream("EntryPointService.cfg"));
-	    log = LoggerFactory.getLogger(EntryPointService.class);
-	    
+	    	    
 	    entryPoint = new EntryPoint(settings);
-	    
-	    //EntryPoint_ ep = new EntryPoint_();
-	    
+	    	    
 	    init(settings, entryPoint);
 	} catch (ConfigError | FieldConvertError | JMException e) {
 	    e.printStackTrace();

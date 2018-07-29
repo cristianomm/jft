@@ -10,7 +10,7 @@ import java.util.SortedMap;
 
 import org.apache.log4j.Level;
 
-import com.cmm.jft.engine.marketdata.MarketDataChannel;
+import com.cmm.jft.engine.marketdata.incrementals.MarketDataChannel;
 import com.cmm.jft.engine.marketdata.recovery.SnapshotRecoveryChannel;
 import com.cmm.jft.engine.match.OrderMatcher;
 import com.cmm.jft.engine.match.OrdersTable;

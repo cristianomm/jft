@@ -5,13 +5,14 @@ package com.cmm.jft.engine.marketdata.news;
 
 import javax.management.JMException;
 
+import org.apache.log4j.Level;
 import org.slf4j.LoggerFactory;
 
 import quickfix.ConfigError;
 import quickfix.FieldConvertError;
 import quickfix.SessionSettings;
 
-import com.cmm.jft.engine.EngineService;
+import com.cmm.jft.engine.Service;
 
 /**
  * <p>
@@ -22,16 +23,16 @@ import com.cmm.jft.engine.EngineService;
  * @version 23/02/2017 00:13:56
  *
  */
-public class NewsService extends EngineService {
+public class NewsService extends Stream {
 
     public NewsService() {
 	try {
 	    SessionSettings settings = new SessionSettings(Thread.currentThread().getContextClassLoader()
 		    .getResourceAsStream("NewsService.cfg"));
-	    log = LoggerFactory.getLogger(NewsService.class);
+	    
 	    init(settings, NewsChannel.getInstance());
 	} catch (ConfigError | FieldConvertError | JMException e) {
-	    log.error(e.getMessage());
+	    logger.log(getClass(), e, Level.ERROR);
 	    e.printStackTrace();
 	}
     }

@@ -9,6 +9,7 @@ import org.apache.log4j.Level;
 
 import com.cmm.jft.data.files.CSV;
 import com.cmm.jft.engine.SessionRepository;
+import com.cmm.jft.engine.Stream;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
 import com.cmm.jft.trading.enums.StreamTypes;
@@ -37,7 +38,7 @@ import quickfix.fix44.News;
  * @version 23/02/2017 00:30:17
  *
  */
-public class NewsChannel extends MessageCracker implements Application {
+public class NewsChannel extends Stream {
 
     private static NewsChannel instance;
     private int newsID;

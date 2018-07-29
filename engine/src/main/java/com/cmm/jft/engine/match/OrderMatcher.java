@@ -14,7 +14,7 @@ import quickfix.SessionID;
 
 import com.cmm.jft.engine.IdGenerator;
 import com.cmm.jft.engine.SessionRepository;
-import com.cmm.jft.engine.marketdata.MarketDataChannel;
+import com.cmm.jft.engine.marketdata.incrementals.MarketDataChannel;
 import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageRepository;

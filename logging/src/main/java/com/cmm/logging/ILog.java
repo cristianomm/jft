@@ -13,13 +13,13 @@ import org.apache.log4j.Level;
  */
 public interface ILog {
 
-	public abstract void printStackTrace(boolean print);
+	abstract void printStackTrace(boolean print);
 
-	public abstract void log(Class<?> cls, String message, Level level);
+	abstract void log(Class<?> cls, String message, Level level);
 
-	public abstract void log(Class<?> cls, Throwable throww, Level level);
+	abstract void log(Class<?> cls, Throwable throww, Level level);
 
-	public abstract void log(Class<?> cls, String message, Throwable throww,
-			Level level, boolean showMessage);
-
+	abstract void log(Class<?> cls, String message, Throwable throww, Level level);
+	
+	abstract void log(Class<?> cls, String message, Throwable throww, Level level, boolean showMessage);
 }

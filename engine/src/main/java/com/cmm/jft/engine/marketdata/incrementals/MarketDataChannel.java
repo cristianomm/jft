@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.engine.marketdata;
+package com.cmm.jft.engine.marketdata.incrementals;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
