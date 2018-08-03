@@ -50,7 +50,6 @@ public class InstrumentStream extends Stream {
     private InstrumentStream() {
 	super();
 	securities = new ArrayList<>();
-	createSessionSettings();
     }
 
     /**
@@ -213,7 +212,6 @@ public class InstrumentStream extends Stream {
     public void sendInstruments() {
 	
 	Collection<SessionID> connections = SessionRepository.getInstance().getSessions(StreamTypes.INSTRUMENT).values();
-	
 	logger.log(getClass(), "Sending SecurityList to " + connections.size() + " connections.", Level.INFO);
 	
 	for (SessionID sid : connections) {
@@ -226,6 +224,7 @@ public class InstrumentStream extends Stream {
 	    try {
 		Session.lookupSession(sid).setNextSenderMsgSeqNum(1);
 	    } catch (IOException e) {
+		logger.log(getClass(), e, Level.ERROR);
 		e.printStackTrace();
 	    }
 	    MessageRepository.getInstance().addMessage(Fix50SP2MDMessageEncoder.getInstance().sequenceReset(), sid);
@@ -243,8 +242,7 @@ public class InstrumentStream extends Stream {
 	} catch (ConfigError e) {
 	    logger.log(getClass(), e, Level.ERROR);
 	}
-    }
-    
+    }    
     
     /* (non-Javadoc)
      * @see com.cmm.jft.engine.marketdata.Service#start()
@@ -255,8 +253,15 @@ public class InstrumentStream extends Stream {
         loadSecurities();
 	createSecurityList();
         super.start();
-        
-        while (started) {
+        logger.log(getClass(), "Instruments Stream started successfully", Level.INFO);
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
+    @Override
+    public void run() {
+	while (started) {
             sendInstruments();
 	    try {
 		Thread.sleep(1000);

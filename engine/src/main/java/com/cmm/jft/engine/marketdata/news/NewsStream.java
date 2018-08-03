@@ -3,6 +3,7 @@
  */
 package com.cmm.jft.engine.marketdata.news;
 
+import java.util.Collection;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.apache.log4j.Level;
@@ -15,78 +16,115 @@ import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
 import com.cmm.jft.trading.enums.StreamTypes;
 import com.cmm.logging.Logging;
 
-import quickfix.Application;
+import quickfix.ConfigError;
 import quickfix.DoNotSend;
 import quickfix.FieldNotFound;
 import quickfix.IncorrectDataFormat;
 import quickfix.IncorrectTagValue;
 import quickfix.Message;
-import quickfix.MessageCracker;
 import quickfix.RejectLogon;
 import quickfix.SessionID;
+import quickfix.SessionSettings;
 import quickfix.UnsupportedMessageType;
-import quickfix.field.Headline;
-import quickfix.field.Text;
 import quickfix.fix44.News;
 
 /**
  * <p>
- * <code>NewsChannel.java</code>
+ * <code>NewsStream.java</code>
  * </p>
  * 
  * @author Cristiano M Martins
  * @version 23/02/2017 00:30:17
  *
  */
-public class NewsChannel extends Stream {
+public class NewsStream extends Stream {
 
-    private static NewsChannel instance;
+    private static NewsStream instance;
     private int newsID;
     private ArrayBlockingQueue<News> newsQueue;
 
-    private NewsChannel() {
+    private NewsStream() {
+	super();
 	this.newsID = 1;
 	newsQueue = new ArrayBlockingQueue<>(1000);
-	loadNews();
     }
-    
+
     /**
      * @return the instance
      */
-    public static synchronized NewsChannel getInstance() {
+    public static synchronized NewsStream getInstance() {
 	if(instance == null) {
-	    instance = new NewsChannel();
+	    instance = new NewsStream();
 	}
 	return instance;
+    }
+
+    /* (non-Javadoc)
+     * @see com.cmm.jft.engine.Stream#createSessionSettings()
+     */
+    @Override
+    public void createSessionSettings() {
+	try {
+	    sessionSettings = new SessionSettings(Thread.currentThread().getContextClassLoader().getResourceAsStream("NewsService.cfg"));
+	} catch (ConfigError e) {
+	    logger.log(getClass(), e, Level.ERROR);
+	}
     }
 
     public void addNews(String source, String headLine, String text){
 	try {
 	    News n = Fix50SP2MDMessageEncoder.getInstance().news(headLine, text, source, newsID++);
-	    
+
 	    newsQueue.put(n);
 	} catch (InterruptedException e) {
 	    e.printStackTrace();
 	}
-
     }
 
     private void loadNews() {
 	try{
-	CSV csv = new CSV(Thread.currentThread().getContextClassLoader().
-		getResource("News.csv").getPath(), ";", "#");
-	while (csv.hasNext()) {
-	    String[] line = csv.readLine();
+	    logger.log(getClass(), "Loading existent news", Level.INFO);
+	    CSV csv = new CSV(Thread.currentThread().getContextClassLoader().
+		    getResource("News.csv").getPath(), ";", "#");
+	    while (csv.hasNext()) {
+		String[] line = csv.readLine();
 
-	    String newsSrc = "18";
-	    String headLine = line[0];
-	    String text = line[1];
+		String newsSrc = "18";
+		String headLine = line[0];
+		String text = line[1];
 
-	    addNews(newsSrc, headLine, text);
-	}
+		addNews(newsSrc, headLine, text);
+	    }
 	}catch(Exception e){
+	    logger.log(getClass(), e, Level.ERROR);
 	    e.printStackTrace();
 	}
+    }
+
+    /* (non-Javadoc)
+     * @see com.cmm.jft.engine.Stream#start()
+     */
+    @Override
+    public void start() {
+	logger.log(getClass(), "Starting News Stream...", Level.INFO);
+	loadNews();
+	super.start();
+	logger.log(getClass(), "News Stream started successfully", Level.INFO);
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
+    @Override
+    public void run() {
+        while(started) {
+            try {
+        	sendNews();
+        	Thread.sleep(10000);
+            }catch(InterruptedException e) {
+        	logger.log(getClass(), e, Level.ERROR);
+            }
+        }
     }
 
     /*
@@ -110,7 +148,6 @@ public class NewsChannel extends Stream {
     public void fromApp(Message message, SessionID sessionId)
 	    throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
 	crack(message, sessionId);
-
     }
 
     /*
@@ -134,12 +171,12 @@ public class NewsChannel extends Stream {
 	System.out.println("onLogon: " + sessionId.getTargetCompID());
 	SessionRepository.getInstance().addSession(StreamTypes.NEWS, sessionId);
 	MessageRepository.getInstance().addMessage(Fix50SP2MDMessageEncoder.getInstance().sequenceReset(), sessionId);
-	
+
+	//TODO: temp for tests
 	new Thread(new Runnable() {
 	    @Override
 	    public void run() {
 		while (true) {
-		    sendNews();
 		    //adiciona mensagem de teste
 		    addNews("18", "Test", "test text.");
 		    try {
@@ -150,8 +187,6 @@ public class NewsChannel extends Stream {
 		}
 	    }
 	}).start();
-
-	
     }
 
     /*
@@ -184,7 +219,6 @@ public class NewsChannel extends Stream {
     @Override
     public void toApp(Message message, SessionID sessionId) throws DoNotSend {
 	// TODO Auto-generated method stub
-
     }
 
     /*
@@ -200,6 +234,9 @@ public class NewsChannel extends Stream {
     }
 
     private void sendNews() {
+	Collection<SessionID> connections = SessionRepository.getInstance().getSessions(StreamTypes.NEWS).values();
+	logger.log(getClass(), "Sending News to " + connections.size() + " connections.", Level.INFO);
+	
 	for (SessionID sid : SessionRepository.getInstance().getSessions(StreamTypes.NEWS).values()) {
 	    while(!newsQueue.isEmpty()){
 		try {

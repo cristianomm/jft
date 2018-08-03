@@ -19,7 +19,7 @@ import quickfix.SessionSettings;
  * @version 25/07/2018 11:54:34
  *
  */
-public abstract class Stream extends MessageCracker implements Application {
+public abstract class Stream extends MessageCracker implements Application, Runnable {
     
     protected boolean started;
     protected int port;
@@ -29,6 +29,7 @@ public abstract class Stream extends MessageCracker implements Application {
     
     protected Stream() {
 	logger = Logging.getInstance();
+	createSessionSettings();
     }
     
     /**

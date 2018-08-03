@@ -10,8 +10,8 @@ import java.util.SortedMap;
 
 import org.apache.log4j.Level;
 
-import com.cmm.jft.engine.marketdata.incrementals.MarketDataChannel;
-import com.cmm.jft.engine.marketdata.recovery.SnapshotRecoveryChannel;
+import com.cmm.jft.engine.marketdata.incrementals.MarketDataStream;
+import com.cmm.jft.engine.marketdata.recovery.SnapshotRecoveryStream;
 import com.cmm.jft.engine.match.OrderMatcher;
 import com.cmm.jft.engine.match.OrdersTable;
 import com.cmm.jft.engine.match.Summary;
@@ -59,8 +59,8 @@ public class Book implements MessageSender {
     private double adjustPrice;
     private Security security;
     private OrderMatcher orderMatcher;
-    private MarketDataChannel umdf;
-    private SnapshotRecoveryChannel snpr;
+    private MarketDataStream umdf;
+    private SnapshotRecoveryStream snpr;
 
     private BandLimits bandLimits;
 
@@ -156,8 +156,8 @@ public class Book implements MessageSender {
 
 	this.bandLimits = new BandLimits(0, auctionBand, rejectHiBand, rejectLoBand, qtyLimit);
 
-	this.umdf = MarketDataChannel.getInstance();
-	this.snpr = SnapshotRecoveryChannel.getInstance();
+	this.umdf = MarketDataStream.getInstance();
+	this.snpr = SnapshotRecoveryStream.getInstance();
 
 	this.orderMatcher = new OrderMatcher(this.protectionLevel, umdf, buyTable, sellTable);
 

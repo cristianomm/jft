@@ -11,6 +11,7 @@ import org.apache.log4j.Level;
 
 import com.cmm.jft.data.files.CSV;
 import com.cmm.jft.engine.SessionRepository;
+import com.cmm.jft.engine.Stream;
 import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.marketdata.MDSnapshot;
 import com.cmm.jft.messaging.MessageRepository;
@@ -21,6 +22,7 @@ import com.cmm.jft.trading.enums.StreamTypes;
 import com.cmm.logging.Logging;
 
 import quickfix.Application;
+import quickfix.ConfigError;
 import quickfix.DoNotSend;
 import quickfix.FieldNotFound;
 import quickfix.IncorrectDataFormat;
@@ -30,42 +32,42 @@ import quickfix.MessageCracker;
 import quickfix.RejectLogon;
 import quickfix.Session;
 import quickfix.SessionID;
+import quickfix.SessionSettings;
 import quickfix.UnsupportedMessageType;
 import quickfix.fix44.MarketDataSnapshotFullRefresh;
 import quickfix.fix44.SecurityList;
 
 /**
  * <p>
- * <code>SnapshotRecoveryChannel.java</code>
+ * <code>SnapshotRecoveryStream.java</code>
  * </p>
  * 
  * @author Cristiano M Martins
  * @version 2017-07-27 09:07:30
  *
  */
-public class SnapshotRecoveryChannel extends MessageCracker implements Application {
+public class SnapshotRecoveryStream extends Stream {
 
-    private static SnapshotRecoveryChannel instance;
-    
+    private static SnapshotRecoveryStream instance;
+
     private Fix50SP2MDMessageEncoder encoder;
 
     private TreeMap<String, MarketDataSnapshotFullRefresh> snapshots;
 
-    private SnapshotRecoveryChannel() {
+    private SnapshotRecoveryStream() {
+	super();
 	encoder = Fix50SP2MDMessageEncoder.getInstance();
 	snapshots = new TreeMap<String, MarketDataSnapshotFullRefresh>();
     }
-    
-    
-    
+
     /**
      * @return the instance
      */
-    public static synchronized SnapshotRecoveryChannel getInstance() {
+    public static synchronized SnapshotRecoveryStream getInstance() {
 	if(instance == null) {
-	    instance = new SnapshotRecoveryChannel();
+	    instance = new SnapshotRecoveryStream();
 	}
-	
+
 	return instance;
     }
 
@@ -162,8 +164,6 @@ public class SnapshotRecoveryChannel extends MessageCracker implements Applicati
     }
 
 
-
-
     public void updateSnapshot(MDSnapshot snap) {
 	MarketDataSnapshotFullRefresh snpfr = 
 		(MarketDataSnapshotFullRefresh) encoder.mdSnapShotFullRefresh(
@@ -175,14 +175,13 @@ public class SnapshotRecoveryChannel extends MessageCracker implements Applicati
 			    et.getMdEntryDateTime(),
 			    et.getOrderID(),et.getMdEntryBuyer(),et.getMdEntryPosNo()));
 	}
-	
+
 	for(MDEntry et : snap.getSellEntries()) {
 	    snpfr.addGroup(
 		    encoder.offerEntrySnp(et.getMdEntryPx(), et.getMdEntrySize(),
 			    et.getMdEntryDateTime(),
 			    et.getOrderID(),et.getMdEntrySeller(),et.getMdEntryPosNo()));
 	}
-
 
 	//encoder.tradeEntrySnp(buyer, seller, price, volume, tradeDate, tradeTime, tradeID, tradeVolume)
 	snpfr.addGroup(encoder.openPriceEntrySnp(snap.getOpenPrice()));
@@ -218,7 +217,43 @@ public class SnapshotRecoveryChannel extends MessageCracker implements Applicati
 	    MessageRepository.getInstance().addMessage(Fix50SP2MDMessageEncoder.getInstance().sequenceReset(), sid);
 	}
 
+    }
 
+    /* (non-Javadoc)
+     * @see com.cmm.jft.engine.Stream#createSessionSettings()
+     */
+    @Override
+    public void createSessionSettings() {
+	try {
+	    sessionSettings = new SessionSettings(Thread.currentThread().getContextClassLoader()
+		    .getResourceAsStream("SnapshotRecoveryService.cfg"));
+	} catch (ConfigError e) {
+	    logger.log(getClass(), e, Level.ERROR);
+	}
+    }
+
+    /* (non-Javadoc)
+     * @see com.cmm.jft.engine.Stream#start()
+     */
+    @Override
+    public void start() {
+	logger.log(getClass(), "Starting Snapshot Recovery Stream...", Level.INFO);
+	super.start();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
+    @Override
+    public void run() {
+	while (started) {
+	    sendSnapshot();
+	    try {
+		Thread.sleep(1000);
+	    } catch (InterruptedException e) {
+		logger.log(getClass(), e, Level.ERROR);
+	    }
+	}
     }
 
 }

@@ -150,5 +150,12 @@ public class Service {
 	    logger.log(getClass(), "Failed to unregister acceptor from JMX", e, Level.ERROR, false);
 	}
     }
+    
+    /**
+     * @return the streamApplication
+     */
+    public Stream getStreamApplication() {
+	return streamApplication;
+    }
 
 }

@@ -13,6 +13,7 @@ import org.apache.log4j.Level;
 
 import com.cmm.jft.engine.IdGenerator;
 import com.cmm.jft.engine.SessionRepository;
+import com.cmm.jft.engine.Stream;
 import com.cmm.jft.engine.match.Summary;
 import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.marketdata.MDSnapshot;
@@ -31,6 +32,7 @@ import com.cmm.jft.trading.enums.UpdateActions;
 import com.cmm.logging.Logging;
 
 import quickfix.Application;
+import quickfix.ConfigError;
 import quickfix.DoNotSend;
 import quickfix.FieldNotFound;
 import quickfix.Group;
@@ -40,6 +42,7 @@ import quickfix.Message;
 import quickfix.MessageCracker;
 import quickfix.RejectLogon;
 import quickfix.SessionID;
+import quickfix.SessionSettings;
 import quickfix.UnsupportedMessageType;
 import quickfix.field.NoMDEntries;
 import quickfix.field.SecurityExchange;
@@ -52,14 +55,14 @@ import sun.security.jca.GetInstance;
 
 /**
  * <p>
- * <code>MarketDataChannel.java</code>
+ * <code>MarketDataStream.java</code>
  * </p>
  * 
  * @author Cristiano M Martins
  * @version Feb 26, 2016 3:57:55 PM
  *
  */
-public class MarketDataChannel extends MessageCracker implements Application, MessageSender {
+public class MarketDataStream extends Stream {
 
 
     private enum IncrementalStates{
@@ -86,9 +89,9 @@ public class MarketDataChannel extends MessageCracker implements Application, Me
     private LinkedBlockingQueue<MarketDataIncrementalRefresh.NoMDEntries> mbpPackets;
     private LinkedBlockingQueue<MarketDataIncrementalRefresh.NoMDEntries> mboPackets;
 
-    private static MarketDataChannel instance;
+    private static MarketDataStream instance;
     
-    private MarketDataChannel() {
+    private MarketDataStream() {
 	encoder = Fix50SP2MDMessageEncoder.getInstance();
 //	this.security = security;
 //	securityID = new SecurityID(security.getSecurityID()+"");
@@ -107,9 +110,9 @@ public class MarketDataChannel extends MessageCracker implements Application, Me
 	
     }
     
-    public static synchronized MarketDataChannel getInstance() {
+    public static synchronized MarketDataStream getInstance() {
 	if(instance == null) {
-	    instance = new MarketDataChannel();
+	    instance = new MarketDataStream();
 	}
 	return instance;
     }
@@ -470,7 +473,36 @@ public class MarketDataChannel extends MessageCracker implements Application, Me
 	tob();
 
     }
-
+       
+    
+    /* (non-Javadoc)
+     * @see com.cmm.jft.engine.Stream#createSessionSettings()
+     */
+    @Override
+    public void createSessionSettings() {
+	try {
+	    sessionSettings = new SessionSettings(Thread.currentThread().getContextClassLoader().getResourceAsStream("MarketDataService.cfg"));
+	} catch (ConfigError e) {
+	    logger.log(getClass(), e, Level.ERROR);
+	}
+    }
+    
+    /* (non-Javadoc)
+     * @see com.cmm.jft.engine.Stream#start()
+     */
+    @Override
+    public void start() {
+        super.start();
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
+        
+    }
 
     private void sendUMDF(Message message) {
 	for (SessionID sid : SessionRepository.getInstance().getSessions(StreamTypes.MARKET_DATA).values()) {
@@ -484,27 +516,21 @@ public class MarketDataChannel extends MessageCracker implements Application, Me
      * @see com.cmm.jft.messaging.MessageSender#sendMessage(quickfix.Message,
      * quickfix.SessionID)
      */
-    @Override
     public boolean sendMessage(Message message, SessionID sessionID) {
 	return MessageRepository.getInstance().addMessage(message, sessionID);
     }
-
-    
-    
     
     /* (non-Javadoc)
      * @see quickfix.Application#onCreate(quickfix.SessionID)
      */
-    @Override
     public void onCreate(SessionID sessionId) {
-	System.out.println("onCreate: MarketDataChannel");
+	System.out.println("onCreate: MarketDataStream");
 	
     }
 
     /* (non-Javadoc)
      * @see quickfix.Application#onLogon(quickfix.SessionID)
      */
-    @Override
     public void onLogon(SessionID sessionId) {
 	System.out.println("onLogon:" + sessionId.getTargetCompID());
 	Logging.getInstance().log(getClass(), "onLogon: " + sessionId.getTargetCompID(), Level.INFO);
@@ -515,7 +541,6 @@ public class MarketDataChannel extends MessageCracker implements Application, Me
     /* (non-Javadoc)
      * @see quickfix.Application#onLogout(quickfix.SessionID)
      */
-    @Override
     public void onLogout(SessionID sessionId) {
 	Logging.getInstance().log(getClass(), "onLogout: " + sessionId.getTargetCompID(), Level.INFO);
 	SessionRepository.getInstance().removeSession(StreamTypes.MARKET_DATA, sessionId);
@@ -525,7 +550,6 @@ public class MarketDataChannel extends MessageCracker implements Application, Me
     /* (non-Javadoc)
      * @see quickfix.Application#toAdmin(quickfix.Message, quickfix.SessionID)
      */
-    @Override
     public void toAdmin(Message message, SessionID sessionId) {
 	// TODO Auto-generated method stub
 	
@@ -534,7 +558,6 @@ public class MarketDataChannel extends MessageCracker implements Application, Me
     /* (non-Javadoc)
      * @see quickfix.Application#fromAdmin(quickfix.Message, quickfix.SessionID)
      */
-    @Override
     public void fromAdmin(Message message, SessionID sessionId)
 	    throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, RejectLogon {
 	// TODO Auto-generated method stub
@@ -544,7 +567,6 @@ public class MarketDataChannel extends MessageCracker implements Application, Me
     /* (non-Javadoc)
      * @see quickfix.Application#toApp(quickfix.Message, quickfix.SessionID)
      */
-    @Override
     public void toApp(Message message, SessionID sessionId) throws DoNotSend {
 	// TODO Auto-generated method stub
 	
@@ -553,7 +575,6 @@ public class MarketDataChannel extends MessageCracker implements Application, Me
     /* (non-Javadoc)
      * @see quickfix.Application#fromApp(quickfix.Message, quickfix.SessionID)
      */
-    @Override
     public void fromApp(Message message, SessionID sessionId)
 	    throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
 	// TODO Auto-generated method stub

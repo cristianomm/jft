@@ -14,7 +14,7 @@ import quickfix.SessionID;
 
 import com.cmm.jft.engine.IdGenerator;
 import com.cmm.jft.engine.SessionRepository;
-import com.cmm.jft.engine.marketdata.incrementals.MarketDataChannel;
+import com.cmm.jft.engine.marketdata.incrementals.MarketDataStream;
 import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageRepository;
@@ -55,12 +55,12 @@ public class OrderMatcher implements MessageSender {
     private IdGenerator tradeIds;
     private IdGenerator eventIds;
 
-    private MarketDataChannel umdf;
+    private MarketDataStream umdf;
 
     private OrdersTable buyTable;
     private OrdersTable sellTable;
 
-    public OrderMatcher(double protectionLevel, MarketDataChannel umdf, 
+    public OrderMatcher(double protectionLevel, MarketDataStream umdf, 
 	    OrdersTable buyTable, OrdersTable sellTable) {
 	this.umdf = umdf;
 	this.protectionLevel = protectionLevel;
