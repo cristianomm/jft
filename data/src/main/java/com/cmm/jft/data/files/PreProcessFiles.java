@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -33,7 +33,7 @@ public class PreProcessFiles {
     private class CD {
 	String symbol;
 	String code;
-	Date date;
+	LocalDateTime date;
     }
 
     public static void main(String[] args) {
@@ -150,7 +150,7 @@ public class PreProcessFiles {
 		String[] vs = csv.readLine();
 
 		if (vs != null && vs[0] != null) {
-		    Date sessionDate = dtf.parse(vs[0]);
+		    LocalDateTime sessionDate = dtf.parse(vs[0]);
 		    String securityID = "";
 		    String price = "";
 		    String volume = "";
@@ -324,7 +324,7 @@ public class PreProcessFiles {
 		String[] vs = csv.readLine();
 
 		if (vs != null && vs[0] != null) {
-		    Date sessionDate = dtf.parse(vs[0]);
+		    LocalDateTime sessionDate = dtf.parse(vs[0]);
 		    String price = "";
 		    String externalID = "";
 		    String securityID = "";
@@ -565,7 +565,7 @@ public class PreProcessFiles {
 
 				String QDatetime = String.format("%02d-%02d-%02d", year, month, day);
 
-				// Date QDateTime = (new GregorianCalendar(year,
+				// LocalDateTime QDateTime = (new GregorianCalendar(year,
 				// month-1, day).getTime());
 				Integer Fatquote = (Integer.parseInt(line.substring(210, 217)));
 
@@ -696,11 +696,11 @@ public class PreProcessFiles {
 
 	    CD cd = new CD();
 	    cd.code = line[1];
-	    cd.date = (Date) FormatterFactory.getFormatter(FormatterTypes.DATE_F8).parse(line[6]);
+	    cd.date = (LocalDateTime) FormatterFactory.getFormatter(FormatterTypes.DATE_F8).parse(line[6]);
 	    cd.symbol = line[0];
 
 	    if (codes.containsKey(cd.symbol)) {
-		if (codes.get(cd.symbol).date.after(cd.date)) {
+		if (codes.get(cd.symbol).date.isAfter(cd.date)) {
 		    codes.put(cd.symbol, cd);
 		}
 	    } else {

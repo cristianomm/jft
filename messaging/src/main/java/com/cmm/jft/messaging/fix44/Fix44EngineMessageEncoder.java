@@ -3,6 +3,8 @@
  */
 package com.cmm.jft.messaging.fix44;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import quickfix.Group;
@@ -76,7 +78,6 @@ import quickfix.fix44.SequenceReset;
 import quickfix.fix44.TestRequest;
 
 import com.cmm.jft.core.Configuration;
-import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.messaging.MessageCounter;
@@ -86,6 +87,8 @@ import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderStatus;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.RejectTypes;
+
+import javafx.util.converter.DateTimeStringConverter;
 
 
 /**
@@ -425,7 +428,7 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	}
 	
 	orderSingle.set(new TimeInForce(order.getValidityType().getValue()));
-	orderSingle.set(new ExpireDate(((DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).format(order.getDuration())));
+	orderSingle.set(new ExpireDate(((com.cmm.jft.core.format.DateTimeFormatter)FormatterFactory.getFormatter(FormatterTypes.DATE_F9)).format(order.getDuration())));
 	
 	if(order.getComment() != null && !order.getComment().isEmpty()) {
 	    orderSingle.setString(5149, order.getComment());
@@ -499,7 +502,7 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	cancelRequest.set(new ClOrdID(order.getClOrdID()));
 	cancelRequest.set(new Symbol(order.getSecurityID().getSymbol()));
 	cancelRequest.set(new Side(order.getSide().getValue()));
-	cancelRequest.set(new TransactTime(new Date()));
+	cancelRequest.set(new TransactTime(LocalDateTime.now()));
 	cancelRequest.set(new OrderQty(order.getVolume()));
 	cancelRequest.setString(5149, order.getComment());
 

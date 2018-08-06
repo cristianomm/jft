@@ -1,0 +1,54 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="FC5D6E0B-E170-0AB6-05C3-BDAF72380130" schemaObject="084913E8-993D-0721-3CEB-1F3072652214" name="StockExchange">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="stockExchangeID" id="844E69DE-6C4D-1B0C-C576-4A5356BC7FB4">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>15</dataTypeSize>
+<ownDataTypeParameters>15,,</ownDataTypeParameters>
+</Column>
+<Column name="ExchangeName" id="D8E0D2F1-D5E3-3FA0-F326-AF726D307619">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Column>
+<Column name="countryID" id="0ADD2564-2DC4-B20C-A602-80E5D0F6F499">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>3</dataTypeSize>
+<ownDataTypeParameters>3,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="D0E541D8-9C2F-C8EA-C662-D434B5140907" name="StockExchange_PK">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<indexColumnUsage>
+<colUsage columnID="844E69DE-6C4D-1B0C-C576-4A5356BC7FB4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

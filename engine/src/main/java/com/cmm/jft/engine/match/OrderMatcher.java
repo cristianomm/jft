@@ -3,6 +3,7 @@
  */
 package com.cmm.jft.engine.match;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
@@ -64,8 +65,8 @@ public class OrderMatcher implements MessageSender {
 	    OrdersTable buyTable, OrdersTable sellTable) {
 	this.umdf = umdf;
 	this.protectionLevel = protectionLevel;
-	this.tradeIds = new IdGenerator(new Date());
-	this.eventIds = new IdGenerator(new Date());
+	this.tradeIds = new IdGenerator(LocalDateTime.now());
+	this.eventIds = new IdGenerator(LocalDateTime.now());
 	this.buyTable = buyTable;
 	this.sellTable = sellTable;
     }
@@ -206,13 +207,13 @@ public class OrderMatcher implements MessageSender {
 	ordr.addExecution(oe);
 	int orderPos = table.getOrderPosition(ordr.getOrderID());
 	//int pricePos = table.getPricePosition(ordr.getPrice());
-	
+
 	//remove da tabela do book
 	table.remove(ordr.getOrderID());
 
 	//Summary sm = table.findSummary(ordr.getPrice());
 	//UpdateActions mbpAction = sm == null || sm.getOrderCount() == 0? UpdateActions.Delete:UpdateActions.Change;
-	
+
 	umdf.informDeleteOrder(ordr, orderPos);
 
     }
@@ -352,7 +353,7 @@ public class OrderMatcher implements MessageSender {
 
 		OrderEvent restate = new OrderEvent();
 		restate.setOrderID(order);
-		restate.setEventDateTime(new Date());
+		restate.setEventDateTime(LocalDateTime.now());
 		restate.setExecutionType(ExecutionTypes.RESTATED);
 
 		order.addExecution(restate);
@@ -682,7 +683,7 @@ public class OrderMatcher implements MessageSender {
     //    }
 
 
-    private void releaseStopOrders(SortedMap<Date, Orders> stops) throws OrderException {
+    private void releaseStopOrders(SortedMap<LocalDateTime, Orders> stops) throws OrderException {
 	if(stops != null) {
 	    while(!stops.isEmpty()){
 
@@ -735,7 +736,7 @@ public class OrderMatcher implements MessageSender {
 	    validExecution = (c == ordr.getVolume());
 	    break;
 	case GTD:
-	    validExecution = new Date().compareTo(ordr.getDuration()) <= 0;
+	    validExecution = LocalDateTime.now().compareTo(ordr.getDuration()) <= 0;
 	    break;
 	case MOC:
 	    validExecution = true;

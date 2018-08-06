@@ -5,9 +5,6 @@ package com.cmm.jft.services.trading;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,7 +12,6 @@ import org.apache.log4j.Level;
 
 import com.cmm.jft.connector.engine.EngineConnector;
 import com.cmm.jft.connector.engine.EngineStarter;
-import com.cmm.jft.connector.marketdata.MarketDataStarter;
 import com.cmm.jft.core.Configuration;
 import com.cmm.jft.core.enums.Objects;
 import com.cmm.jft.db.DBFacade;
@@ -254,7 +250,7 @@ public class TradingService {
      * @return
      */
     public int newOrder(OrderTypes orderType, Side side, String symbol, int volume, double price, double stopLoss,
-	    double stopGain, Date duration, TradeTypes tradeType, OrderValidityTypes validityType, String comment) {
+	    double stopGain, LocalDateTime duration, TradeTypes tradeType, OrderValidityTypes validityType, String comment) {
 
 	int ret = -1;
 	try {
@@ -321,8 +317,7 @@ public class TradingService {
 		int volume = openPosition > 0 ? openPosition : openPosition * -1;
 
 		// calcula a duracao da ordem - ate o fim do dia
-		LocalDateTime ldt = LocalDate.now().atTime(23, 59, 50);
-		Date duration = Date.from(ZonedDateTime.of(ldt, ZoneId.systemDefault()).toInstant());
+		LocalDateTime duration = LocalDate.now().atTime(23, 59, 50);
 
 		// lanca ordem inversa(a posicao) a mercado do mesmo tipo do
 		// Position

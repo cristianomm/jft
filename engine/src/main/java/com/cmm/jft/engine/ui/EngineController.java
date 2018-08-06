@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.cmm.jft.core.services.Service;
-import com.cmm.jft.engine.entrypoint.EntryPointService;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -80,10 +79,10 @@ public class EngineController implements Initializable {
     private ToggleGroup newsGroup;
     
     
-    private EntryPointService entryService;
-    private MarketDataService mdService;
-    private InstrumentDefinitionService instrumentService;
-    private NewsService newsService;
+//    private EntryPointService entryService;
+//    private MarketDataService mdService;
+//    private InstrumentDefinitionService instrumentService;
+//    private NewsService newsService;
     
     
     
@@ -97,10 +96,10 @@ public class EngineController implements Initializable {
      */
     public void initialize(URL location, ResourceBundle resources) {
 
-	entryService = new EntryPointService();
-	mdService = new MarketDataService();
-	instrumentService = new InstrumentDefinitionService();
-	newsService = new NewsService();
+//	entryService = new EntryPointService();
+//	mdService = new MarketDataService();
+//	instrumentService = new InstrumentDefinitionService();
+//	newsService = new NewsService();
 
 	
 	entryGroup = new ToggleGroup();
@@ -121,33 +120,33 @@ public class EngineController implements Initializable {
 	tgbtnStopNews.setToggleGroup(newsGroup);
 	
 	
-	tgbtnStartEngine.setOnAction(event -> {
-	    startService(entryService);
-	});
-	tgbtnStopEngine.setOnAction(event -> {
-	    stopService(entryService);
-	});
-
-	tgbtnStartMD.setOnAction(event -> {
-	    startService(mdService);
-	});
-	tgbtnStopMD.setOnAction(event -> {
-	    stopService(mdService);
-	});
-
-	tgbtnStartInstrument.setOnAction(event -> {
-	    startService(instrumentService);
-	});
-	tgbtnStopInstrument.setOnAction(event -> {
-	    stopService(instrumentService);
-	});
-
-	tgbtnStartNews.setOnAction(event -> {
-	    startService(newsService);
-	});
-	tgbtnStopNews.setOnAction(event -> {
-	    stopService(newsService);
-	});
+//	tgbtnStartEngine.setOnAction(event -> {
+//	    startService(entryService);
+//	});
+//	tgbtnStopEngine.setOnAction(event -> {
+//	    stopService(entryService);
+//	});
+//
+//	tgbtnStartMD.setOnAction(event -> {
+//	    startService(mdService);
+//	});
+//	tgbtnStopMD.setOnAction(event -> {
+//	    stopService(mdService);
+//	});
+//
+//	tgbtnStartInstrument.setOnAction(event -> {
+//	    startService(instrumentService);
+//	});
+//	tgbtnStopInstrument.setOnAction(event -> {
+//	    stopService(instrumentService);
+//	});
+//
+//	tgbtnStartNews.setOnAction(event -> {
+//	    startService(newsService);
+//	});
+//	tgbtnStopNews.setOnAction(event -> {
+//	    stopService(newsService);
+//	});
 
     }
 

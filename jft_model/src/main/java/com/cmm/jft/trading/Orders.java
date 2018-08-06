@@ -5,6 +5,8 @@
 
 package com.cmm.jft.trading;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -132,15 +134,15 @@ public class Orders implements DBObject<Orders> {
 
     @Column(name = "Duration", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date duration;
+    private LocalDateTime duration;
 
     @Column(name = "OrderDateTime", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date orderDateTime;
+    private LocalDateTime orderDateTime;
 
     @Column(name = "InsertDateTime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date insertDateTime;
+    private LocalDateTime insertDateTime;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "OrderStatus", nullable = false)
@@ -177,7 +179,7 @@ public class Orders implements DBObject<Orders> {
 
     public Orders() {
 	this.price = 0d;
-	this.duration = new Date();
+	this.duration = LocalDateTime.now();
 	init();
     }
 
@@ -245,7 +247,7 @@ public class Orders implements DBObject<Orders> {
 	this.comment = "";
 	this.validityType = OrderValidityTypes.DAY;
 	this.workingIndicator = WorkingIndicator.No_Working;
-	this.orderDateTime = new Date();
+	this.orderDateTime = LocalDateTime.now();
 	this.orderStatus = OrderStatus.CREATED;
 	this.eventsList = new ArrayList<OrderEvent>();
     }
@@ -543,22 +545,22 @@ public class Orders implements DBObject<Orders> {
 	return executedVolume;
     }
 
-    public Date getDuration() {
+    public LocalDateTime getDuration() {
 	return duration;
     }
 
-    public void setDuration(Date duration) {
+    public void setDuration(LocalDateTime duration) {
 	this.duration = duration;
     }
 
     /**
      * @return the orderDateTime
      */
-    public Date getOrderDateTime() {
+    public LocalDateTime getOrderDateTime() {
 	return this.orderDateTime;
     }
 
-    public void setOrderDateTime(Date orderDateTime) {
+    public void setOrderDateTime(LocalDateTime orderDateTime) {
 	this.orderDateTime = orderDateTime;
     }
 
@@ -674,7 +676,7 @@ public class Orders implements DBObject<Orders> {
     /**
      * @return the insertDateTime
      */
-    public Date getInsertDateTime() {
+    public LocalDateTime getInsertDateTime() {
 	return insertDateTime;
     }
 
@@ -682,7 +684,7 @@ public class Orders implements DBObject<Orders> {
      * @param insertDateTime
      *            the insertDateTime to set
      */
-    public void setInsertDateTime(Date insertDateTime) {
+    public void setInsertDateTime(LocalDateTime insertDateTime) {
 	this.insertDateTime = insertDateTime;
     }
 
@@ -693,7 +695,7 @@ public class Orders implements DBObject<Orders> {
      */
     @Override
     public int hashCode() {
-	int hash = (int) (47 * (price + volume + orderDateTime.getTime()));
+	int hash = (int) (47 * (price + volume + orderID + orderDateTime.hashCode()));
 	return hash;
     }
 

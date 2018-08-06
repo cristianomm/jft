@@ -3,17 +3,15 @@
  */
 package com.cmm.jft.data.extractor.marketdata;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Level;
 
 import com.cmm.jft.core.format.DateTimeFormatter;
-import com.cmm.jft.core.format.DoubleFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.core.format.IntFormatter;
@@ -25,10 +23,8 @@ import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.jft.vo.Extractable;
-import com.cmm.jft.vo.OrderEventVO;
 import com.cmm.logging.Logging;
 
 
@@ -71,7 +67,7 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
     private static void processEvents(List<MDEntry> events) {
 	
 	MDEntry entry = events.get(0);
-	Date time = entry.getMdEntryDateTime();
+	LocalDateTime time = entry.getMdEntryDateTime();
 	boolean sameTime = events.parallelStream().allMatch(evt -> evt.getMdEntryDateTime().equals(time));
 
 	Fix44EngineMessageEncoder encoder = Fix44EngineMessageEncoder.getInstance();

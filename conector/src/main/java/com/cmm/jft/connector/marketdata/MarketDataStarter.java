@@ -37,7 +37,16 @@ public class MarketDataStarter implements Service {
     private boolean started;
     private boolean initiatorStarted = false;
     private static final CountDownLatch shutdownLatch = new CountDownLatch(1);
-
+    
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
+        
+    }
+    
     public boolean start() {
 	try {
 	    init();

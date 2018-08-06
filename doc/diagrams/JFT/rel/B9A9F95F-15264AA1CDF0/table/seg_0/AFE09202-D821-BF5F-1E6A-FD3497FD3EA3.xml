@@ -1,0 +1,86 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="AFE09202-D821-BF5F-1E6A-FD3497FD3EA3" schemaObject="084913E8-993D-0721-3CEB-1F3072652214" name="Security">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="securityID" id="64CD3D18-7381-FF14-5F7C-85416D793F13">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="stockExchangeID" id="27106BC7-D960-D428-9399-B52C526E0C1D">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>15</dataTypeSize>
+<ownDataTypeParameters>15,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="B444E7A5-774C-CCE3-3217-4C343AD88860" referredColumn="844E69DE-6C4D-1B0C-C576-4A5356BC7FB4"/>
+</associations>
+</Column>
+<Column name="Symbol" id="166C0953-0608-4FAF-4A3C-95321E49B7D8">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Description" id="7ECA7D39-80B9-054F-A515-94313584BB8A">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="7F596E8F-786F-82E7-971C-DE495862657F" name="ExchangeItem_PK">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="64CD3D18-7381-FF14-5F7C-85416D793F13"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B9894B12-AF20-D19F-2DBA-87D94FEE19E0" name="Security_StockExchange_FK">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="27106BC7-D960-D428-9399-B52C526E0C1D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

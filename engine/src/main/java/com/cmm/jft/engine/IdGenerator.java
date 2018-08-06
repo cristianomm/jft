@@ -4,11 +4,16 @@
 package com.cmm.jft.engine;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalField;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.cmm.jft.security.Security;
+import com.google.api.client.util.DateTime;
 
 /**
  * <p>
@@ -24,15 +29,15 @@ public class IdGenerator {
     private AtomicInteger seqNumericID;
 
     
-    public IdGenerator(Security security, Date date){
-	this.seqNumericID = new AtomicInteger(security.getSecurityID() + (int)date.getTime());
+    public IdGenerator(Security security, LocalDateTime dateTime){
+	this.seqNumericID = new AtomicInteger(security.getSecurityID() + dateTime.get(ChronoField.MILLI_OF_DAY));
     }
     
     /**
-     * @param date
+     * @param localDateTime
      */
-    public IdGenerator(Date date) {
-	this.seqNumericID = new AtomicInteger((int)date.getTime());
+    public IdGenerator(LocalDateTime localDateTime) {
+	this.seqNumericID = new AtomicInteger((int)localDateTime.get(ChronoField.MILLI_OF_DAY));
     }
 
     public int actualInt() {

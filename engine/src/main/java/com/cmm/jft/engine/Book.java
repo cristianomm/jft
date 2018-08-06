@@ -5,7 +5,7 @@ package com.cmm.jft.engine;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.SortedMap;
 
 import org.apache.log4j.Level;
@@ -16,7 +16,6 @@ import com.cmm.jft.engine.match.OrderMatcher;
 import com.cmm.jft.engine.match.OrdersTable;
 import com.cmm.jft.engine.match.Summary;
 import com.cmm.jft.marketdata.BandLimits;
-import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.marketdata.MDSnapshot;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageRepository;
@@ -34,7 +33,6 @@ import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.RejectTypes;
 import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.enums.UpdateActions;
 import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
@@ -142,8 +140,8 @@ public class Book implements MessageSender {
 	this.security = SecurityService.getInstance().provideSecurity(symbol);
 	this.phase = MarketPhase.Pause;
 
-	this.orderIDs = new IdGenerator(new Date());
-	this.eventIDs = new IdGenerator(new Date());
+	this.orderIDs = new IdGenerator(LocalDateTime.now());
+	this.eventIDs = new IdGenerator(LocalDateTime.now());
 
 	this.buyTable = new OrdersTable(Side.BUY);
 	this.sellTable = new OrdersTable(Side.SELL);
@@ -306,7 +304,7 @@ public class Book implements MessageSender {
 	order.setOrderStatus(OrderStatus.SUSPENDED);
 
 	//ajusta parametros da ordem no recebimento da oferta
-	order.setInsertDateTime(new Date());
+	order.setInsertDateTime(LocalDateTime.now());
 
 	order.setOrderID(orderIDs.nextLong());
     }
@@ -460,11 +458,11 @@ public class Book implements MessageSender {
 		if(order.getValidityType() != null && order.getValidityType() != bookOrder.getValidityType()) {
 		    change.setValidity(order.getValidityType());
 		}
-		Date priority = bookOrder.getOrderDateTime();
+		LocalDateTime priority = bookOrder.getOrderDateTime();
 		bookOrder.addExecution(change);
 
 		//caso a ordem tenha a prioridade alterada
-		if(bookOrder.getOrderDateTime().after(priority)) {
+		if(bookOrder.getOrderDateTime().isAfter(priority)) {
 		    //altera a prioridade da ordem, remove do book e re-insere
 		    umdf.informDeleteOrder(bookOrder, table.getOrderPosition(bookOrder.getOrderID()));
 		    table.remove(bookOrder.getOrderID());
@@ -512,14 +510,14 @@ public class Book implements MessageSender {
 	snapshot.resetSnapshot(0);
 
 	//add current orders in the snapshot
-	for(SortedMap<Date,Orders> orders : buyTable.getOrders().values()) {
+	for(SortedMap<LocalDateTime,Orders> orders : buyTable.getOrders().values()) {
 	    for (Orders ordr : orders.values()) {
 		int position = buyTable.getOrderPosition(ordr.getOrderID());
 		snapshot.addOffer(umdf.createMBOEntry(ordr, null, position));
 	    }
 	}
 
-	for(SortedMap<Date,Orders> orders : sellTable.getOrders().values()) {
+	for(SortedMap<LocalDateTime,Orders> orders : sellTable.getOrders().values()) {
 	    for (Orders ordr : orders.values()) {
 		int position = sellTable.getOrderPosition(ordr.getOrderID());
 		snapshot.addOffer(umdf.createMBOEntry(ordr, null, position));
@@ -552,9 +550,7 @@ public class Book implements MessageSender {
     private void sendExecutionReport(Orders order, ExecutionTypes exec, String message, int ordRejReason) {
 
 	try {
-	    OrderEvent oe = new OrderEvent(
-		    exec, new Date(), order.getVolume(), order.getPrice()
-		    );
+	    OrderEvent oe = new OrderEvent(exec, LocalDateTime.now(), order.getVolume(), order.getPrice());
 	    oe.setOrderEventID(eventIDs.nextLong());
 	    oe.setOrderID(order);
 	    oe.setMessage(message);

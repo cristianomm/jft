@@ -4,6 +4,9 @@
 package com.cmm.jft.messaging.fix50sp2;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Queue;
@@ -95,7 +98,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	return instance;
     }
 
-    private void putSecurity(Security security, FieldMap entry){
+    private void putSecurity(Security security, FieldMap entry) {
 	entry.setInt(48, security.getSecurityID());
 	entry.setString(22, "8");
 	entry.setString(207, "BVMF");
@@ -107,7 +110,6 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	message.setString(49, scid);
 
     }
-
 
     /*
      * (non-Javadoc)
@@ -162,8 +164,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * com.cmm.jft.messaging.MarketDataMessageEncoder#mdIncrementalRefresh()
+     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#mdIncrementalRefresh()
      */
     @Override
     public MarketDataIncrementalRefresh mdIncrementalRefresh(Queue<MarketDataIncrementalRefresh.NoMDEntries> entries) {
@@ -180,8 +181,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * com.cmm.jft.messaging.MarketDataMessageEncoder#mdSnapShotFullRefresh()
+     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#mdSnapShotFullRefresh()
      */
     @Override
     public MarketDataSnapshotFullRefresh mdSnapShotFullRefresh(Security security, int rptSeq, int lstMsgSeqNum) {
@@ -232,37 +232,36 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * com.cmm.jft.messaging.MarketDataMessageEncoder#news(java.lang.String)
+     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#news(java.lang.String)
      */
     @Override
     public News news(String title, String message, String source, int newsID) {
 	News news = new News(new Headline(title));
-	news.set(new OrigTime(new Date()));
+	news.set(new OrigTime(LocalDateTime.now()));
 	news.setString(6940, "18");
 	news.setString(1474, "pt");
 
-	news.setString(6940, source);//NewsSource
+	news.setString(6940, source);// NewsSource
 	news.setString(1472, String.format("%1$07d", newsID));
 
 	News.LinesOfText lines = new News.LinesOfText();
 	lines.set(new Text(message));
 	news.addGroup(lines);
 
-	//	try {
-	//	    dictionary.validate(news);
-	//	} catch (IncorrectTagValue | FieldNotFound | IncorrectDataFormat | FieldException e) {
-	//	    e.printStackTrace();
-	//	}
+	// try {
+	// dictionary.validate(news);
+	// } catch (IncorrectTagValue | FieldNotFound | IncorrectDataFormat |
+	// FieldException e) {
+	// e.printStackTrace();
+	// }
 
 	return news;
     }
 
-
-
-
-    //-----------------------------------------------------------------INCREMENTAL
-    /* (non-Javadoc)
+    // -----------------------------------------------------------------INCREMENTAL
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#bidEntryIncMBO(
      * com.cmm.jft.trading.Orders, int, com.cmm.jft.messaging.enums.UpdateActions)
      */
@@ -273,17 +272,18 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 
 	putSecurity(order.getSecurityID(), entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(updateAction.getValue());
 	entry.set(EntryTypes.Bid.getValue());
 	entry.set(new MDEntryPx(order.getPrice()));
 	entry.set(new MDEntrySize(order.getVolume()));
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
-	entry.setUtcDateOnly(37016, order.getInsertDateTime());
-	entry.setUtcTimeOnly(37017, order.getInsertDateTime());
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
+	entry.setUtcDateOnly(37016, order.getInsertDateTime().toLocalDate());
+	entry.setUtcTimeOnly(37017, order.getInsertDateTime().toLocalTime());
 
 	entry.set(new MDEntryBuyer(order.getBrokerID()));
 
@@ -293,9 +293,12 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	return entry;
     }
 
-    /* (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#bidEntryIncMBP(
-     * double, int, int, com.cmm.jft.security.Security, int, com.cmm.jft.messaging.enums.UpdateActions)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#bidEntryIncMBP( double,
+     * int, int, com.cmm.jft.security.Security, int,
+     * com.cmm.jft.messaging.enums.UpdateActions)
      */
     @Override
     public NoMDEntries bidEntryIncMBP(double price, int size, int numOrders, Security security, int positionNo,
@@ -304,23 +307,24 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 
 	putSecurity(security, entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(updateAction.getValue());
 	entry.set(EntryTypes.Bid.getValue());
-	if(price >0){
+	if (price > 0) {
 	    entry.set(new MDEntryPx(price));
 	}
 
-	if(size >0){
+	if (size > 0) {
 	    entry.set(new MDEntrySize(size));
 	}
 
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 
-	if(numOrders > 0){
+	if (numOrders > 0) {
 	    entry.set(new NumberOfOrders(numOrders));
 	}
 
@@ -329,7 +333,9 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#offerEntryIncMBO(
      * com.cmm.jft.trading.Orders, int, com.cmm.jft.messaging.enums.UpdateActions)
      */
@@ -340,17 +346,18 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 
 	putSecurity(order.getSecurityID(), entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(updateAction.getValue());
 	entry.set(EntryTypes.Offer.getValue());
 	entry.set(new MDEntryPx(order.getPrice()));
 	entry.set(new MDEntrySize(order.getVolume()));
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
-	entry.setUtcDateOnly(37016, order.getInsertDateTime());
-	entry.setUtcTimeOnly(37017, order.getInsertDateTime());
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
+	entry.setUtcDateOnly(37016, order.getInsertDateTime().toLocalDate());
+	entry.setUtcTimeOnly(37017, order.getInsertDateTime().toLocalTime());
 
 	entry.set(new MDEntryBuyer(order.getBrokerID()));
 
@@ -360,9 +367,12 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	return entry;
     }
 
-    /* (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#offerEntryIncMBP(
-     * double, int, int, com.cmm.jft.security.Security, int, com.cmm.jft.messaging.enums.UpdateActions)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#offerEntryIncMBP( double,
+     * int, int, com.cmm.jft.security.Security, int,
+     * com.cmm.jft.messaging.enums.UpdateActions)
      */
     @Override
     public NoMDEntries offerEntryIncMBP(double price, int size, int numOrders, Security security, int positionNo,
@@ -372,23 +382,24 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 
 	putSecurity(security, entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(updateAction.getValue());
 	entry.set(EntryTypes.Offer.getValue());
-	if(price >0){
+	if (price > 0) {
 	    entry.set(new MDEntryPx(price));
 	}
 
-	if(size >0){
+	if (size > 0) {
 	    entry.set(new MDEntrySize(size));
 	}
 
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 
-	if(numOrders > 0){
+	if (numOrders > 0) {
 	    entry.set(new NumberOfOrders(numOrders));
 	}
 
@@ -397,32 +408,36 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#tradeEntryInc(
-     * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security, 
-     * java.lang.String, java.lang.String, double, int, java.util.Date, java.util.Date, java.lang.String, int)
+     * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security,
+     * java.lang.String, java.lang.String, double, int, java.util.Date,
+     * java.util.Date, java.lang.String, int)
      */
     @Override
     public NoMDEntries tradeEntryInc(UpdateActions updateAction, Security security, String buyer, String seller,
-	    double price, int size, Date tradeDateTime, String tradeID, int tradeVolume, int rptSeq) {
+	    double price, int size, LocalDateTime tradeDateTime, String tradeID, int tradeVolume, int rptSeq) {
 
 	MarketDataIncrementalRefresh.NoMDEntries entry = new MarketDataIncrementalRefresh.NoMDEntries();
 
 	putSecurity(security, entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(EntryTypes.Trade.getValue());
 	entry.set(updateAction.getValue());
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 
 	entry.set(new MDEntryPx(price));
 	entry.set(new MDEntrySize(size));
 
-	entry.setUtcDateOnly(37016, tradeDateTime);
-	entry.setUtcTimeOnly(37017, tradeDateTime);
+	entry.setUtcDateOnly(37016, tradeDateTime.toLocalDate());
+	entry.setUtcTimeOnly(37017, tradeDateTime.toLocalTime());
 
 	entry.set(new MDEntryBuyer(buyer));
 	entry.set(new MDEntrySeller(seller));
@@ -432,147 +447,167 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	return entry;
     }
 
-
-
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#openPriceEntryInc(
-     * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security, double)
+     * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security,
+     * double)
      */
     @Override
-    public MarketDataIncrementalRefresh.NoMDEntries openPriceEntryInc(
-	    UpdateActions updateAction, Security security, double openPrice, int rptSeq) {
+    public MarketDataIncrementalRefresh.NoMDEntries openPriceEntryInc(UpdateActions updateAction, Security security,
+	    double openPrice, int rptSeq) {
 
 	MarketDataIncrementalRefresh.NoMDEntries entry = new MarketDataIncrementalRefresh.NoMDEntries();
 
 	putSecurity(security, entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(EntryTypes.OpeningPrice.getValue());
 	entry.set(updateAction.getValue());
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.set(new MDEntryPx(openPrice));
 
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#closePriceEntryInc(
      * com.cmm.jft.security.Security, double)
      */
     @Override
-    public MarketDataIncrementalRefresh.NoMDEntries closePriceEntryInc(
-	    Security security, double closePrice, int rptSeq) {
+    public MarketDataIncrementalRefresh.NoMDEntries closePriceEntryInc(Security security, double closePrice,
+	    int rptSeq) {
 
 	MarketDataIncrementalRefresh.NoMDEntries entry = new MarketDataIncrementalRefresh.NoMDEntries();
 
 	putSecurity(security, entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(EntryTypes.ClosingPrice.getValue());
-	entry.set(UpdateActions.New.getValue()); //No delete, aways new(replace)
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(UpdateActions.New.getValue()); // No delete, aways new(replace)
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.set(new MDEntryPx(closePrice));
 
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#highPriceEntryInc(
-     * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security, double)
+     * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security,
+     * double)
      */
     @Override
-    public MarketDataIncrementalRefresh.NoMDEntries highPriceEntryInc(
-	    UpdateActions updateAction, Security security, double highPrice, int rptSeq) {
+    public MarketDataIncrementalRefresh.NoMDEntries highPriceEntryInc(UpdateActions updateAction, Security security,
+	    double highPrice, int rptSeq) {
 
 	MarketDataIncrementalRefresh.NoMDEntries entry = new MarketDataIncrementalRefresh.NoMDEntries();
 
 	putSecurity(security, entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(EntryTypes.HighPrice.getValue());
-	entry.set(updateAction.getValue()); 
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(updateAction.getValue());
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.set(new MDEntryPx(highPrice));
 
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#lowPriceEntryInc(
-     * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security, double)
+     * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security,
+     * double)
      */
     @Override
-    public MarketDataIncrementalRefresh.NoMDEntries lowPriceEntryInc(
-	    UpdateActions updateAction, Security security, double lowPrice, int rptSeq) {
+    public MarketDataIncrementalRefresh.NoMDEntries lowPriceEntryInc(UpdateActions updateAction, Security security,
+	    double lowPrice, int rptSeq) {
 
 	MarketDataIncrementalRefresh.NoMDEntries entry = new MarketDataIncrementalRefresh.NoMDEntries();
 
 	putSecurity(security, entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(EntryTypes.LowPrice.getValue());
-	entry.set(updateAction.getValue()); 
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(updateAction.getValue());
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.set(new MDEntryPx(lowPrice));
 
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#vwapPriceEntryInc(
-     * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security, double)
+     * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security,
+     * double)
      */
     @Override
-    public MarketDataIncrementalRefresh.NoMDEntries vwapPriceEntryInc(
-	    UpdateActions updateAction, Security security, double vwapPrice, int rptSeq) {
+    public MarketDataIncrementalRefresh.NoMDEntries vwapPriceEntryInc(UpdateActions updateAction, Security security,
+	    double vwapPrice, int rptSeq) {
 
 	MarketDataIncrementalRefresh.NoMDEntries entry = new MarketDataIncrementalRefresh.NoMDEntries();
 
 	putSecurity(security, entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(EntryTypes.VWAPPrice.getValue());
-	entry.set(updateAction.getValue()); 
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(updateAction.getValue());
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.set(new MDEntryPx(vwapPrice));
 
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#tradeVolumeEntryInc(
      * com.cmm.jft.security.Security, double)
      */
     @Override
-    public MarketDataIncrementalRefresh.NoMDEntries tradeVolumeEntryInc(
-	    Security security, int numOfTrades, double financialVolume, double tradedVolume, int rptSeq) {
+    public MarketDataIncrementalRefresh.NoMDEntries tradeVolumeEntryInc(Security security, int numOfTrades,
+	    double financialVolume, double tradedVolume, int rptSeq) {
 
 	MarketDataIncrementalRefresh.NoMDEntries entry = new MarketDataIncrementalRefresh.NoMDEntries();
 
 	putSecurity(security, entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(EntryTypes.TradeVolume.getValue());
-	entry.set(UpdateActions.New.getValue()); 
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(UpdateActions.New.getValue());
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.set(new MDEntryPx(financialVolume));
 	entry.set(new MDEntrySize(numOfTrades));
 	entry.setDouble(1020, tradedVolume);
@@ -580,8 +615,12 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	return entry;
     }
 
-    /* (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#emptyBookEntryInc(com.cmm.jft.security.Security)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.cmm.jft.messaging.MarketDataMessageEncoder#emptyBookEntryInc(com.cmm.jft.
+     * security.Security)
      */
     @Override
     public MarketDataIncrementalRefresh.NoMDEntries emptyBookEntryInc(Security security, int rptSeq) {
@@ -590,96 +629,103 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 
 	putSecurity(security, entry);
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.setInt(83, rptSeq);
 	entry.set(EntryTypes.EmptyBook.getValue());
-	entry.set(UpdateActions.New.getValue()); 
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(UpdateActions.New.getValue());
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 
 	return entry;
 
     }
 
+    // -----------------------------------------------------------------SNAPSHOT
 
-
-
-    //-----------------------------------------------------------------SNAPSHOT
-        
-    
-    
-    /* (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#bidEntrySnp(double, int, java.util.Date, long, java.lang.String, int)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#bidEntrySnp(double, int,
+     * java.util.Date, long, java.lang.String, int)
      */
     @Override
-    public MarketDataSnapshotFullRefresh.NoMDEntries bidEntrySnp(double price, int volume,
-            Date insertDtTime, long orderID, String brokerID, int positionNo) {
-        
+    public MarketDataSnapshotFullRefresh.NoMDEntries bidEntrySnp(double price, int volume, LocalDateTime insertDtTime,
+	    long orderID, String brokerID, int positionNo) {
+
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.Bid.getValue());
 	entry.set(new MDEntryPx(price));
 	entry.set(new MDEntrySize(volume));
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
-	entry.setUtcDateOnly(37016, insertDtTime);
-	entry.setUtcTimeOnly(37017, insertDtTime);
-	entry.set(new OrderID(orderID+""));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
+	entry.setUtcDateOnly(37016, insertDtTime.toLocalDate());
+	entry.setUtcTimeOnly(37017, insertDtTime.toLocalTime());
+	entry.set(new OrderID(String.valueOf(orderID)));
 	entry.set(new MDEntryBuyer(brokerID));
 	entry.set(new MDEntryPositionNo(positionNo));
 
 	return entry;
     }
 
-
-    
-    /* (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#offerEntrySnp(double, int, java.util.Date, long, java.lang.String, int)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#offerEntrySnp(double,
+     * int, java.util.Date, long, java.lang.String, int)
      */
     @Override
     public quickfix.fix44.MarketDataSnapshotFullRefresh.NoMDEntries offerEntrySnp(double price, int volume,
-            Date insertDtTime, long orderID, String brokerID, int positionNo) {
-        MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
+	    LocalDateTime insertDtTime, long orderID, String brokerID, int positionNo) {
+	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.Offer.getValue());
 	entry.set(new MDEntryPx(price));
 	entry.set(new MDEntrySize(volume));
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
-	entry.setUtcDateOnly(37016, insertDtTime);
-	entry.setUtcTimeOnly(37017, insertDtTime);
-	entry.set(new OrderID(orderID+""));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
+	entry.setUtcDateOnly(37016, insertDtTime.toLocalDate());
+	entry.setUtcTimeOnly(37017, insertDtTime.toLocalTime());
+	entry.set(new OrderID(String.valueOf(orderID)));
 	entry.set(new MDEntryBuyer(brokerID));
 	entry.set(new MDEntryPositionNo(positionNo));
 
 	return entry;
     }
 
-    /* (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#tradeEntrySnp(java.lang.String, java.lang.String, double, int, java.util.Date, java.util.Date, java.lang.String, int)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#tradeEntrySnp(java.lang.
+     * String, java.lang.String, double, int, java.util.Date, java.util.Date,
+     * java.lang.String, int)
      */
     @Override
-    public MarketDataSnapshotFullRefresh.NoMDEntries tradeEntrySnp(String buyer, String seller,
-            double price, int volume, Date tradeDateTime, String tradeID, int tradeVolume) {
-        
+    public MarketDataSnapshotFullRefresh.NoMDEntries tradeEntrySnp(String buyer, String seller, double price,
+	    int volume, LocalDateTime tradeDateTime, String tradeID, int tradeVolume) {
+
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.Trade.getValue());
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 
 	entry.set(new MDEntryPx(price));
 	entry.set(new MDEntrySize(volume));
 
-	entry.setUtcDateOnly(37016, tradeDateTime);
-	entry.setUtcTimeOnly(37017, tradeDateTime);
+	entry.setUtcDateOnly(37016, tradeDateTime.toLocalDate());
+	entry.setUtcTimeOnly(37017, tradeDateTime.toLocalTime());
 
 	entry.set(new MDEntryBuyer(buyer));
 	entry.set(new MDEntrySeller(seller));
@@ -689,43 +735,52 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#openPriceEntrySnp(double)
      */
     @Override
     public MarketDataSnapshotFullRefresh.NoMDEntries openPriceEntrySnp(double openPrice) {
-	
+
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.OpeningPrice.getValue());
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.set(new MDEntryPx(openPrice));
 
 	return entry;
     }
 
-    /* (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#closePriceEntrySnp(double)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.cmm.jft.messaging.MarketDataMessageEncoder#closePriceEntrySnp(double)
      */
     @Override
     public MarketDataSnapshotFullRefresh.NoMDEntries closePriceEntrySnp(double closePrice) {
 
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.ClosingPrice.getValue());
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.set(new MDEntryPx(closePrice));
 
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#highPriceEntrySnp(double)
      */
     @Override
@@ -733,17 +788,20 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.HighPrice.getValue());
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.set(new MDEntryPx(highPrice));
 
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#lowPriceEntrySnp(double)
      */
     @Override
@@ -751,17 +809,20 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.LowPrice.getValue());
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.set(new MDEntryPx(lowPrice));
 
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#vwapPriceEntrySnp(double)
      */
     @Override
@@ -769,78 +830,95 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.VWAPPrice.getValue());
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.set(new MDEntryPx(vwapPrice));
 
 	return entry;
     }
 
-    /* (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#tradeVolumeEntrySnp(double, double)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.cmm.jft.messaging.MarketDataMessageEncoder#tradeVolumeEntrySnp(double,
+     * double)
      */
     @Override
     public MarketDataSnapshotFullRefresh.NoMDEntries tradeVolumeEntrySnp(double financialVolume, double totalVolume) {
 
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.TradeVolume.getValue());
 	entry.set(new Currency("BRL"));
 	entry.set(new MDEntryPx(financialVolume));
 	entry.set(new MDEntrySize(totalVolume));
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
-	
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
+
 	return entry;
     }
 
-    /* (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#securityTradingStateSnp(com.cmm.jft.trading.enums.MarketPhase)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.cmm.jft.messaging.MarketDataMessageEncoder#securityTradingStateSnp(com.
+     * cmm.jft.trading.enums.MarketPhase)
      */
     @Override
     public MarketDataSnapshotFullRefresh.NoMDEntries securityTradingStateSnp(MarketPhase phase) {
 
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.SecurityTradingState.getValue());
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.setInt(326, phase.getValue());
 	entry.setInt(336, 1);
 
 	return entry;
     }
 
-    /* (non-Javadoc)
-     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#priceBandSnp(double, double, int, int)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.cmm.jft.messaging.MarketDataMessageEncoder#priceBandSnp(double,
+     * double, int, int)
      */
     @Override
-    public MarketDataSnapshotFullRefresh.NoMDEntries priceBandSnp(double high, double low,
-	    int priceBandType, int priceLimitType) {
+    public MarketDataSnapshotFullRefresh.NoMDEntries priceBandSnp(double high, double low, int priceBandType,
+	    int priceLimitType) {
 
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.PriceBand.getValue());
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.setInt(6939, priceBandType);
-	entry.setInt(1306, priceLimitType);//PriceLimitType
-	entry.setDouble(1148, low);//LowLimitPrice
-	entry.setDouble(1149, high);//HighLimitPrice
-	
+	entry.setInt(1306, priceLimitType);// PriceLimitType
+	entry.setDouble(1148, low);// LowLimitPrice
+	entry.setDouble(1149, high);// HighLimitPrice
+
 	return entry;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.cmm.jft.messaging.MarketDataMessageEncoder#quantityBandSnp(int)
      */
     @Override
@@ -848,15 +926,15 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 
 	MarketDataSnapshotFullRefresh.NoMDEntries entry = new MarketDataSnapshotFullRefresh.NoMDEntries();
 
-	Date d = Date.from(Instant.now());
+	LocalDate ld = LocalDate.now();
+	LocalTime lt = LocalTime.now();
 
 	entry.set(EntryTypes.QuantityBand.getValue());
-	entry.set(new MDEntryDate(d));
-	entry.set(new MDEntryTime(d));
+	entry.set(new MDEntryDate(ld));
+	entry.set(new MDEntryTime(lt));
 	entry.setDouble(1140, quantity);
 
 	return entry;
     }
-
 
 }

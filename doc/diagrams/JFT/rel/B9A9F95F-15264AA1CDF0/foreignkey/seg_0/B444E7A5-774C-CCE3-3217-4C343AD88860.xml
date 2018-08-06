@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="B444E7A5-774C-CCE3-3217-4C343AD88860" containerWithKeyObject="AFE09202-D821-BF5F-1E6A-FD3497FD3EA3" localFKIndex="B9894B12-AF20-D19F-2DBA-87D94FEE19E0" name="Security_StockExchange_FK">
+<createdBy>crist</createdBy>
+<createdTime>2018-08-04 15:55:39 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<referredTableLongName>Security.StockExchange</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>FC5D6E0B-E170-0AB6-05C3-BDAF72380130</referredTableID>
+<keyObject>D0E541D8-9C2F-C8EA-C662-D434B5140907</keyObject>
+<referredKeyID>D0E541D8-9C2F-C8EA-C662-D434B5140907</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>stockExchangeID</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

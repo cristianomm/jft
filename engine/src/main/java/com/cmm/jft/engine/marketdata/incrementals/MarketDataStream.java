@@ -4,6 +4,7 @@
 package com.cmm.jft.engine.marketdata.incrementals;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -71,10 +72,10 @@ public class MarketDataStream extends Stream {
 
     private int openCont;
     private int sequence;
-//    private IdGenerator idGen;
-//    private SecurityID securityID;
-//    private SecurityIDSource securityIDSrc;
-//    private SecurityExchange exchangeID;
+    //    private IdGenerator idGen;
+    //    private SecurityID securityID;
+    //    private SecurityIDSource securityIDSrc;
+    //    private SecurityExchange exchangeID;
 
     private IncrementalStates packState;
 
@@ -83,33 +84,33 @@ public class MarketDataStream extends Stream {
     private static SimpleDateFormat stf = new SimpleDateFormat("HH:mm:ss");
 
     private MarketDataMessageEncoder encoder;
-    
+
     private HashMap<String, IdGenerator> generators;
-    
+
     private LinkedBlockingQueue<MarketDataIncrementalRefresh.NoMDEntries> mbpPackets;
     private LinkedBlockingQueue<MarketDataIncrementalRefresh.NoMDEntries> mboPackets;
 
     private static MarketDataStream instance;
-    
+
     private MarketDataStream() {
 	encoder = Fix50SP2MDMessageEncoder.getInstance();
-//	this.security = security;
-//	securityID = new SecurityID(security.getSecurityID()+"");
-//	securityIDSrc = new SecurityIDSource(security.getSecurityIDSrc()+"");
-//	exchangeID = new SecurityExchange(security.getSecurityExchange());
+	//	this.security = security;
+	//	securityID = new SecurityID(security.getSecurityID()+"");
+	//	securityIDSrc = new SecurityIDSource(security.getSecurityIDSrc()+"");
+	//	exchangeID = new SecurityExchange(security.getSecurityExchange());
 
 	packState = IncrementalStates.OPEN;
 	mbpPackets = new LinkedBlockingQueue<>(1000);
 	mboPackets = new LinkedBlockingQueue<>(1000);
 
 	generators = new HashMap<>();
-	
+
 	for(Security security : SecurityService.getInstance().getSecurityList()) {
-	    generators.put(security.getSymbol(), new IdGenerator(security, new Date()));
+	    generators.put(security.getSymbol(), new IdGenerator(security, LocalDateTime.now()));
 	}
-	
+
     }
-    
+
     public static synchronized MarketDataStream getInstance() {
 	if(instance == null) {
 	    instance = new MarketDataStream();
@@ -147,7 +148,7 @@ public class MarketDataStream extends Stream {
 	openCont--;
     }
 
-    
+
     private int getRptSeq(String symbol) {
 	if(generators.containsKey(symbol)) {
 	    return generators.get(symbol).nextInt();
@@ -473,8 +474,8 @@ public class MarketDataStream extends Stream {
 	tob();
 
     }
-       
-    
+
+
     /* (non-Javadoc)
      * @see com.cmm.jft.engine.Stream#createSessionSettings()
      */
@@ -486,22 +487,22 @@ public class MarketDataStream extends Stream {
 	    logger.log(getClass(), e, Level.ERROR);
 	}
     }
-    
+
     /* (non-Javadoc)
      * @see com.cmm.jft.engine.Stream#start()
      */
     @Override
     public void start() {
-        super.start();
+	super.start();
     }
-    
+
     /* (non-Javadoc)
      * @see java.lang.Runnable#run()
      */
     @Override
     public void run() {
-        // TODO Auto-generated method stub
-        
+	// TODO Auto-generated method stub
+
     }
 
     private void sendUMDF(Message message) {
@@ -519,13 +520,13 @@ public class MarketDataStream extends Stream {
     public boolean sendMessage(Message message, SessionID sessionID) {
 	return MessageRepository.getInstance().addMessage(message, sessionID);
     }
-    
+
     /* (non-Javadoc)
      * @see quickfix.Application#onCreate(quickfix.SessionID)
      */
     public void onCreate(SessionID sessionId) {
 	System.out.println("onCreate: MarketDataStream");
-	
+
     }
 
     /* (non-Javadoc)
@@ -535,7 +536,7 @@ public class MarketDataStream extends Stream {
 	System.out.println("onLogon:" + sessionId.getTargetCompID());
 	Logging.getInstance().log(getClass(), "onLogon: " + sessionId.getTargetCompID(), Level.INFO);
 	SessionRepository.getInstance().addSession(StreamTypes.MARKET_DATA, sessionId);
-	
+
     }
 
     /* (non-Javadoc)
@@ -544,7 +545,7 @@ public class MarketDataStream extends Stream {
     public void onLogout(SessionID sessionId) {
 	Logging.getInstance().log(getClass(), "onLogout: " + sessionId.getTargetCompID(), Level.INFO);
 	SessionRepository.getInstance().removeSession(StreamTypes.MARKET_DATA, sessionId);
-	
+
     }
 
     /* (non-Javadoc)
@@ -552,7 +553,7 @@ public class MarketDataStream extends Stream {
      */
     public void toAdmin(Message message, SessionID sessionId) {
 	// TODO Auto-generated method stub
-	
+
     }
 
     /* (non-Javadoc)
@@ -561,7 +562,7 @@ public class MarketDataStream extends Stream {
     public void fromAdmin(Message message, SessionID sessionId)
 	    throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, RejectLogon {
 	// TODO Auto-generated method stub
-	
+
     }
 
     /* (non-Javadoc)
@@ -569,7 +570,7 @@ public class MarketDataStream extends Stream {
      */
     public void toApp(Message message, SessionID sessionId) throws DoNotSend {
 	// TODO Auto-generated method stub
-	
+
     }
 
     /* (non-Javadoc)
@@ -578,7 +579,7 @@ public class MarketDataStream extends Stream {
     public void fromApp(Message message, SessionID sessionId)
 	    throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
 	// TODO Auto-generated method stub
-	
+
     }
 
 }

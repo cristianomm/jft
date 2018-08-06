@@ -4,7 +4,6 @@
 package com.cmm.jft.engine.marketdata.recovery;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.TreeMap;
 
 import org.apache.log4j.Level;
@@ -21,21 +20,18 @@ import com.cmm.jft.security.SecurityInfo;
 import com.cmm.jft.trading.enums.StreamTypes;
 import com.cmm.logging.Logging;
 
-import quickfix.Application;
 import quickfix.ConfigError;
 import quickfix.DoNotSend;
 import quickfix.FieldNotFound;
 import quickfix.IncorrectDataFormat;
 import quickfix.IncorrectTagValue;
 import quickfix.Message;
-import quickfix.MessageCracker;
 import quickfix.RejectLogon;
 import quickfix.Session;
 import quickfix.SessionID;
 import quickfix.SessionSettings;
 import quickfix.UnsupportedMessageType;
 import quickfix.fix44.MarketDataSnapshotFullRefresh;
-import quickfix.fix44.SecurityList;
 
 /**
  * <p>

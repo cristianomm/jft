@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -549,7 +550,7 @@ public class MarketDataService {
 		text += news.getString(58);
 	    }
 
-	    Date time = news.getOrigTime().getValue();
+	    LocalDateTime time = news.getOrigTime().getValue();
 	    MDNews mdNews = new MDNews(
 		    news.getString(1472), time, news.getString(6940),
 		    news.getHeadline().getValue(), text
