@@ -285,7 +285,7 @@ public class MarketDataStream extends Stream {
 	}
 
 	public void informIndexValue() {
-		
+
 	}
 
 	public void informOpenPrice(String symbol, double openPrice) {

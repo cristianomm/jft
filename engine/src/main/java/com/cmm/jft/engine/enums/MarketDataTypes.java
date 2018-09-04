@@ -13,5 +13,5 @@ package com.cmm.jft.engine.enums;
  *
  */
 public enum MarketDataTypes {
-    MBO, MBP, TOB
+	MBO, MBP, TOB
 }

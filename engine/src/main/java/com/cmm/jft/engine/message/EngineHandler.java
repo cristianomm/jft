@@ -28,90 +28,88 @@ import quickfix.fix44.QuoteRequest;
 import quickfix.fix44.QuoteRequestReject;
 import quickfix.fix44.SecurityDefinitionRequest;
 
-public class EngineHandler implements  EngineMessageHandler {
+public class EngineHandler implements EngineMessageHandler {
 
-    private Fix44EngineMessageDecoder decoder;
+	private Fix44EngineMessageDecoder decoder;
 
-    public EngineHandler() {
-	// initialize(this);
-	this.decoder = new Fix44EngineMessageDecoder();
-	System.out.println(this.getClass() + " initialized.");
-    }
-    
-    
-
-    public void onMessage(NewOrderSingle message, SessionID sessionID)
-	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-	// System.out.println("MH: " + message);
-	Book book = null;
-	if ((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null) {
-	    Orders order = decoder.newOrderSingle(message);
-	    SessionRepository.getInstance().addTraderSession(order.getTraderID(), sessionID);
-	    // try to add the order in the book
-	    book.addOrder(order);
+	public EngineHandler() {
+		// initialize(this);
+		this.decoder = new Fix44EngineMessageDecoder();
+		System.out.println(this.getClass() + " initialized.");
 	}
 
-    }
+	public void onMessage(NewOrderSingle message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		// System.out.println("MH: " + message);
+		Book book = null;
+		if ((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null) {
+			Orders order = decoder.newOrderSingle(message);
+			SessionRepository.getInstance().addTraderSession(order.getTraderID(), sessionID);
+			// try to add the order in the book
+			book.addOrder(order);
+		}
 
-    public void onMessage(OrderCancelReplaceRequest message, SessionID sessionID)
-	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-	Book book = null;
-	Orders ordr = MessageDecoder.getDecoder(sessionID).orderCancelReplaceRequest(message);
-	if ((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null) {
-	    
-	    book.replaceOrder(ordr);
 	}
 
-    }
+	public void onMessage(OrderCancelReplaceRequest message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		Book book = null;
+		Orders ordr = MessageDecoder.getDecoder(sessionID).orderCancelReplaceRequest(message);
+		if ((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null) {
 
-    public void onMessage(OrderCancelRequest message, SessionID sessionID)
-	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
-	Book book = null;
-	Orders ordr = MessageDecoder.getDecoder(sessionID).orderCancelRequest(message);
-	if ((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null) {
-	    book.cancelOrder(ordr);
+			book.replaceOrder(ordr);
+		}
+
 	}
 
-    }
+	public void onMessage(OrderCancelRequest message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		Book book = null;
+		Orders ordr = MessageDecoder.getDecoder(sessionID).orderCancelRequest(message);
+		if ((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null) {
+			book.cancelOrder(ordr);
+		}
 
-    public void onMessage(NewOrderCross message, SessionID sessionID)
-	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+	}
 
-    }
+	public void onMessage(NewOrderCross message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 
-    public void onMessage(SecurityDefinitionRequest message, SessionID sessionID)
-	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+	}
 
-    }
+	public void onMessage(SecurityDefinitionRequest message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 
-    public void onMessage(QuoteRequest message, SessionID sessionID)
-	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+	}
 
-    }
+	public void onMessage(QuoteRequest message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 
-    public void onMessage(Quote message, SessionID sessionID)
-	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+	}
 
-    }
+	public void onMessage(Quote message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 
-    public void onMessage(QuoteCancel message, SessionID sessionID)
-	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+	}
 
-    }
+	public void onMessage(QuoteCancel message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 
-    public void onMessage(QuoteRequestReject message, SessionID sessionID)
-	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+	}
 
-    }
+	public void onMessage(QuoteRequestReject message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 
-    public void onMessage(PositionMaintenanceRequest message, SessionID sessionID)
-	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+	}
 
-    }
+	public void onMessage(PositionMaintenanceRequest message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
 
-    public void onMessage(AllocationInstruction message, SessionID sessionID)
-	    throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+	}
 
-    }
+	public void onMessage(AllocationInstruction message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+
+	}
 
 }

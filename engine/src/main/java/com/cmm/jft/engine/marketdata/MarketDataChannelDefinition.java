@@ -33,45 +33,44 @@ import quickfix.FieldConvertError;
  *
  */
 public class MarketDataChannelDefinition {
-    
-    private int channel;
-    private ILog logger;
-    private List<Service> services;
-    private MarketDataTypes marketDataType;
-    private ExecutorService executorService;
-    
-    public MarketDataChannelDefinition(int channel, MarketDataTypes marketDataType) {
-	this.channel = channel;
-	this.logger = Logging.getInstance();
-	this.marketDataType = marketDataType;
-	this.services = new LinkedList<>();
-	this.executorService = Executors.newFixedThreadPool(4);
-    }
-    
-        
-    public void register(Stream stream) {
-	try {
-	    logger.log(getClass(), "Registering stream " + stream + "at channel " + channel, Level.INFO);
-	    services.add(new Service(stream));
-	} catch (ConfigError | FieldConvertError | JMException e) {
-	    logger.log(getClass(), e, Level.ERROR);
+
+	private int channel;
+	private ILog logger;
+	private List<Service> services;
+	private MarketDataTypes marketDataType;
+	private ExecutorService executorService;
+
+	public MarketDataChannelDefinition(int channel, MarketDataTypes marketDataType) {
+		this.channel = channel;
+		this.logger = Logging.getInstance();
+		this.marketDataType = marketDataType;
+		this.services = new LinkedList<>();
+		this.executorService = Executors.newFixedThreadPool(4);
 	}
-    }
-    
-    public void startServices() {
-	logger.log(getClass(), "Starting streams for channel " + channel, Level.INFO);
-	services.forEach(s -> s.start());
-	
-	services.forEach(s -> executorService.execute(s.getStreamApplication()));
-    }
-        
-    public static void main(String[] args) {
-	MarketDataChannelDefinition m051 = new MarketDataChannelDefinition(51, MarketDataTypes.MBO);
-	
-	m051.register(InstrumentStream.getInstance());
-	m051.register(NewsStream.getInstance());
-	m051.startServices();
-	
-    }
-    
+
+	public void register(Stream stream) {
+		try {
+			logger.log(getClass(), "Registering stream " + stream + "at channel " + channel, Level.INFO);
+			services.add(new Service(stream));
+		} catch (ConfigError | FieldConvertError | JMException e) {
+			logger.log(getClass(), e, Level.ERROR);
+		}
+	}
+
+	public void startServices() {
+		logger.log(getClass(), "Starting streams for channel " + channel, Level.INFO);
+		services.forEach(s -> s.start());
+
+		services.forEach(s -> executorService.execute(s.getStreamApplication()));
+	}
+
+	public static void main(String[] args) {
+		MarketDataChannelDefinition m051 = new MarketDataChannelDefinition(51, MarketDataTypes.MBO);
+
+		m051.register(InstrumentStream.getInstance());
+		m051.register(NewsStream.getInstance());
+		m051.startServices();
+
+	}
+
 }
