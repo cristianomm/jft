@@ -3,9 +3,6 @@ package com.cmm.jft.data.test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
-import java.net.URLConnection;
-
-import sun.awt.im.InputMethodContext;
 
 public class TestDDEIP {
 
