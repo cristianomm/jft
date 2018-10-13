@@ -8,7 +8,6 @@
 		<artifactId>jft_modules</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>jft</groupId>
 	<version>0.0.1-SNAPSHOT</version>
 	<artifactId>data</artifactId>
 	<name>data</name>
@@ -71,11 +70,6 @@
 			<groupId>com.ibm.icu</groupId>
 			<artifactId>icu4j</artifactId>
 			<version>60.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.cloud.bigtable</groupId>
-			<artifactId>bigtable-hbase-1.x</artifactId>
-			<version>1.4.0</version>
 		</dependency>
 	</dependencies>
 
