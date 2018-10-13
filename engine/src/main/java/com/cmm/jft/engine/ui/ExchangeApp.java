@@ -24,56 +24,57 @@ import javafx.stage.Stage;
  */
 public class ExchangeApp extends Application {
 
-    public static void main(String[] args) {
-	javafx.application.Application.launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) {
-	try {
-	    Pane g = FXMLLoader.load(ExchangeApp.class.getResource("../../../../../forms/EngineForm.fxml"));
-
-	    Scene scene = new Scene(g);
-	    scene.getStylesheets().add("file://" + ExchangeApp.class.getResource("../../../../../forms/forms.css").getFile());
-	    stage.setMaxWidth(g.getPrefWidth() + 15);
-	    stage.setScene(scene);
-	    //stage.getIcons().add(ImageIcons.getProgramImage().getImage());
-	    stage.show();
-
-	} catch (Exception e) {
-	    e.printStackTrace();
+	public static void main(String[] args) {
+		javafx.application.Application.launch(args);
 	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javafx.application.Application#init()
-     */
-    @Override
-    public void init() throws Exception {
-	// start database connection & services
-	try {
-	    
-	} catch (Exception e) {
+	@Override
+	public void start(Stage stage) {
+		try {
+			Pane g = FXMLLoader.load(ExchangeApp.class.getResource("../../../../../forms/EngineForm.fxml"));
 
+			Scene scene = new Scene(g);
+			scene.getStylesheets()
+					.add("file://" + ExchangeApp.class.getResource("../../../../../forms/forms.css").getFile());
+			stage.setMaxWidth(g.getPrefWidth() + 15);
+			stage.setScene(scene);
+			// stage.getIcons().add(ImageIcons.getProgramImage().getImage());
+			stage.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	super.init();
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javafx.application.Application#stop()
-     */
-    @Override
-    public void stop() throws Exception {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javafx.application.Application#init()
+	 */
+	@Override
+	public void init() throws Exception {
+		// start database connection & services
+		try {
+
+		} catch (Exception e) {
+
+		}
+		super.init();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javafx.application.Application#stop()
+	 */
+	@Override
+	public void stop() throws Exception {
 //	try {
 //	    DBFacade.getInstance().closeSession();
 //	} catch (DataBaseException e) {
 //	    e.printStackTrace();
 //	}
-	super.stop();
-    }
+		super.stop();
+	}
 
 }

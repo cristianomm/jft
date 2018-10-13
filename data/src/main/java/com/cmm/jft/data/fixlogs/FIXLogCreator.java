@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,12 +48,12 @@ public class FIXLogCreator {
 
 
     private class EventsEntry implements Comparable<EventsEntry>{
-	private Date datetime;
+	private LocalDateTime datetime;
 	private List<MDEntry> buy;
 	private List<MDEntry> sell;
 	private List<MDEntry> trade;
 
-	public  EventsEntry(Date dateTime){
+	public  EventsEntry(LocalDateTime dateTime){
 	    this.datetime = dateTime;
 	    this.buy = new ArrayList<>();
 	    this.sell = new ArrayList<>();
@@ -126,9 +125,9 @@ public class FIXLogCreator {
     }
 
 
-    private TreeMap<Date, EventsEntry> loadMDFiles(String buyFileName, String sellFileName, String tradeFileName, String symbol) {
+    private TreeMap<LocalDateTime, EventsEntry> loadMDFiles(String buyFileName, String sellFileName, String tradeFileName, String symbol) {
 
-	TreeMap<Date, EventsEntry> mapentries = new TreeMap<>();
+	TreeMap<LocalDateTime, EventsEntry> mapentries = new TreeMap<>();
 
 	List<Extractable> buyOrders = readOfferMDFile(buyFileName);
 	List<Extractable> sellOrders = readOfferMDFile(sellFileName);
@@ -212,7 +211,7 @@ public class FIXLogCreator {
 
 	// ordens que possuem dois eventos no mesmo tempo como por exemplo 1 e 3
 	// sao ordens do tipo Fill Or Kill
-	TreeMap<Date, EventsEntry> mapentries = loadMDFiles(buyFileName, sellFileName, tradeFileName, symbol);
+	TreeMap<LocalDateTime, EventsEntry> mapentries = loadMDFiles(buyFileName, sellFileName, tradeFileName, symbol);
 
 
 	for(EventsEntry ee : mapentries.values()){
@@ -249,7 +248,7 @@ public class FIXLogCreator {
      * @param tradeFileName
      */
     public void fromMDFile(String buyFileName, String sellFileName, String tradeFileName, String symbol){
-	TreeMap<Date, EventsEntry> mapentries = loadMDFiles(buyFileName, sellFileName, tradeFileName, symbol);
+	TreeMap<LocalDateTime, EventsEntry> mapentries = loadMDFiles(buyFileName, sellFileName, tradeFileName, symbol);
 
 
 

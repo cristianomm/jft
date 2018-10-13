@@ -19,11 +19,7 @@ import com.cmm.jft.trading.enums.WorkingIndicator;
 import com.cmm.jft.vo.OrderEventVO;
 import com.cmm.jft.vo.OrdersVO;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
-
+import javafx.beans.property.*;
 
 /**
  *

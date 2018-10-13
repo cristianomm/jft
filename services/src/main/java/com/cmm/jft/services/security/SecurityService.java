@@ -74,8 +74,12 @@ public class SecurityService {
 
     public Security findSecurity(int securityID, char secIDSrc, String securityExchange) {
 
-	Security sec = securities.values().parallelStream().filter(s -> s.getSecurityID() == securityID
-		&& s.getSecurityIDSrc() == secIDSrc && s.getSecurityExchange().equalsIgnoreCase(securityExchange))
+	Security sec = securities.values()
+		.parallelStream()
+		.filter(
+			s -> s.getSecurityID() == securityID
+			&& s.getSecurityIDSrc() == secIDSrc
+			&& s.getSecurityExchange().equalsIgnoreCase(securityExchange))
 		.findFirst().orElse(null);
 
 	return sec;

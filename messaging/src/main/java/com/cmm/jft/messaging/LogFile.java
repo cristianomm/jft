@@ -24,6 +24,7 @@ import quickfix.field.SendingTime;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -157,7 +158,7 @@ public class LogFile {
 	return messages;
     }
 
-    public ArrayList parseMessages( Date startTime, Date endTime ) throws IOException {
+    public ArrayList parseMessages( LocalDateTime startTime, LocalDateTime endTime ) throws IOException {
 	int startingPosition = findPositionByTime(startTime, 0, true );
 	int endingPosition = (int)logFile.length();
 	if( endTime != null )
@@ -175,7 +176,7 @@ public class LogFile {
 	return messages;
     }
 
-    private ArrayList trimMessages( ArrayList messages, Date startTime, Date endTime ) {
+    private ArrayList trimMessages( ArrayList messages, LocalDateTime startTime, LocalDateTime endTime ) {
 	SendingTime sendingTime = new SendingTime();
 
 	while( startTime != null && messages.size() > 0 ) {
@@ -210,7 +211,7 @@ public class LogFile {
 	return messages;
     }
 
-    private int findPositionByTime( Date time, int position, boolean before ) {
+    private int findPositionByTime( LocalDateTime time, int position, boolean before ) {
 	String line = null;
 	int bytesRead = 0;
 	int mark = position;

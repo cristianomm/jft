@@ -14,38 +14,38 @@ package com.cmm.jft.engine;
  */
 public class OrderValidationException extends Throwable {
 
-    
-    private int errorCode;
-    private String errorMsg;
-    
-    /**
-     * 
-     */
-    public OrderValidationException(int errorCode, String msg) {
-	this.errorCode = errorCode;
-	this.errorMsg = msg;
-    }
+	private int errorCode;
+	private String errorMsg;
 
-    /**
-     * @param arg0
-     */
-    public OrderValidationException(int errorCode, String errorMsg, Throwable thrw) {
-	super(thrw);
-	this.errorCode = errorCode;
-	this.errorMsg = errorMsg;
-    }
-    /**
-     * @return the errorCode
-     */
-    public int getErrorCode() {
-	return errorCode;
-    }
-    
-    /**
-     * @return the errorMsg
-     */
-    public String getErrorMsg() {
-	return errorMsg;
-    }
+	/**
+	 * 
+	 */
+	public OrderValidationException(int errorCode, String msg) {
+		this.errorCode = errorCode;
+		this.errorMsg = msg;
+	}
+
+	/**
+	 * @param arg0
+	 */
+	public OrderValidationException(int errorCode, String errorMsg, Throwable thrw) {
+		super(thrw);
+		this.errorCode = errorCode;
+		this.errorMsg = errorMsg;
+	}
+
+	/**
+	 * @return the errorCode
+	 */
+	public int getErrorCode() {
+		return errorCode;
+	}
+
+	/**
+	 * @return the errorMsg
+	 */
+	public String getErrorMsg() {
+		return errorMsg;
+	}
 
 }

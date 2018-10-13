@@ -19,39 +19,39 @@ import com.cmm.jft.trading.enums.Side;
  */
 public class PriceComparator implements Comparator<Double> {
 
+	private Side side;
 
-    private Side side;
-
-    /**
-     * 
-     */
-    public PriceComparator(Side side) {
-	this.side = side;
-    }
-
-
-    /* (non-Javadoc)
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-     */
-    @Override
-    public int compare(Double price1, Double price2) {
-	int comp = 0;
-
-	// a==b
-	if (price1 == price2) {
-	    comp = 0;
-	}
-	// a<b
-	else if (price1 < price2) {
-	    comp = side == Side.SELL? -1:1;
+	/**
+	 * 
+	 */
+	public PriceComparator(Side side) {
+		this.side = side;
 	}
 
-	// a>b
-	else if (price1 > price2) {
-	    comp = side == Side.SELL? 1: -1;
-	}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	public int compare(Double price1, Double price2) {
+		int comp = 0;
 
-	return comp;
-    }
+		// a==b
+		if (price1 == price2) {
+			comp = 0;
+		}
+		// a<b
+		else if (price1 < price2) {
+			comp = side == Side.SELL ? -1 : 1;
+		}
+
+		// a>b
+		else if (price1 > price2) {
+			comp = side == Side.SELL ? 1 : -1;
+		}
+
+		return comp;
+	}
 
 }

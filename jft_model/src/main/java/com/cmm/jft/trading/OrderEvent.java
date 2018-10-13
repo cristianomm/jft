@@ -3,6 +3,7 @@
  */
 package com.cmm.jft.trading;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -97,7 +98,7 @@ public class OrderEvent implements DBObject<OrderEvent> {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "EventDateTime")
-    private Date eventDateTime;
+    private LocalDateTime eventDateTime;
     
     @Column(name="ContraBroker", length=5)
     private String contraBroker;
@@ -118,7 +119,7 @@ public class OrderEvent implements DBObject<OrderEvent> {
     public OrderEvent(ExecutionTypes execType, double volume, double price) {
 	super();
 	this.executionType = execType;
-	this.eventDateTime = new Date();
+	this.eventDateTime = LocalDateTime.now();
 	this.volume = volume;
 	this.price = price;
     }
@@ -131,7 +132,7 @@ public class OrderEvent implements DBObject<OrderEvent> {
      * @param price
      * @param orderID
      */
-    public OrderEvent(ExecutionTypes execType, Date eventDateTime, double volume, double price) {
+    public OrderEvent(ExecutionTypes execType, LocalDateTime eventDateTime, double volume, double price) {
 	super();
 	this.executionType = execType;
 	this.eventDateTime = eventDateTime;
@@ -149,7 +150,7 @@ public class OrderEvent implements DBObject<OrderEvent> {
     /**
      * @return the executionDateTime
      */
-    public Date getExecutionDateTime() {
+    public LocalDateTime getExecutionDateTime() {
 	return this.eventDateTime;
     }
 
@@ -157,7 +158,7 @@ public class OrderEvent implements DBObject<OrderEvent> {
      * @param executionDateTime
      *            the executionDateTime to set
      */
-    public void setEventDateTime(Date eventDateTime) {
+    public void setEventDateTime(LocalDateTime eventDateTime) {
 	this.eventDateTime = eventDateTime;
     }
 
@@ -312,7 +313,7 @@ public class OrderEvent implements DBObject<OrderEvent> {
     /**
      * @return the eventDateTime
      */
-    public Date getEventDateTime() {
+    public LocalDateTime getEventDateTime() {
 	return eventDateTime;
     }
     

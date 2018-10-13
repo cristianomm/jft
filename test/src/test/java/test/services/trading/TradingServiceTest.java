@@ -6,6 +6,7 @@ package test.services.trading;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -88,7 +89,7 @@ public class TradingServiceTest {
 	    //double limitPrice = spnLimit.getValue();
 	    double stopLoss = 0;
 	    double stopGain = 0;
-	    Date duration = new Date();
+	    LocalDateTime duration = LocalDateTime.now();
 	    TradeTypes tradeType = TradeTypes.DAY_TRADE;
 	    OrderValidityTypes validityType = OrderValidityTypes.DAY;
 	    String comment = "";

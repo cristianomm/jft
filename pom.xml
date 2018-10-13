@@ -25,6 +25,7 @@
     <module>analisis</module>
     <module>ui</module>
     <module>test</module>
+    <module>oms</module>
   </modules>
   <properties>
   	<maven.compiler.source>1.8</maven.compiler.source>

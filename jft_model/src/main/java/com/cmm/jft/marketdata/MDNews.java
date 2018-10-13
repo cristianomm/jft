@@ -3,6 +3,7 @@
  */
 package com.cmm.jft.marketdata;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.cmm.jft.vo.Extractable;
@@ -16,7 +17,7 @@ import com.cmm.jft.vo.Extractable;
 public class MDNews implements Extractable {
 
 	private String newsID;
-	private Date origTime;
+	private LocalDateTime origTime;
 	private String newsSrc;
 	private String headLine;
 	private String text;
@@ -31,7 +32,7 @@ public class MDNews implements Extractable {
 	 * @param headLine
 	 * @param text
 	 */
-	public MDNews(String newsID, Date dateTime, String newsSrc, String headLine, String text) {
+	public MDNews(String newsID, LocalDateTime dateTime, String newsSrc, String headLine, String text) {
 		super();
 		this.newsID = newsID;
 		this.origTime = dateTime;
@@ -52,7 +53,7 @@ public class MDNews implements Extractable {
 		return newsID;
 	}
 
-	public Date getOrigTime() {
+	public LocalDateTime getOrigTime() {
 		return origTime;
 	}
 

@@ -1,6 +1,6 @@
 package com.cmm.jft.marketdata;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.cmm.jft.trading.enums.MDEntryTypes;
 import com.cmm.jft.trading.enums.Side;
@@ -20,8 +20,8 @@ public class MDEntry implements Extractable{
     private double mdEntryPx;
     private int mdEntrySize;
     private int numberOfOrders;
-    private Date entryDate;
-    private Date mdEntryDateTime;
+    private LocalDateTime entryDate;
+    private LocalDateTime mdEntryDateTime;
     private char securityTradingStatus;
     private long orderID;
     private String tradeID;
@@ -31,7 +31,7 @@ public class MDEntry implements Extractable{
     private int tradeVolume;
     private int orderEvent;
     private int orderStatus;
-    private Date orderDate;
+    private LocalDateTime orderDate;
     private int orderCondition;
     private char agressor;
     
@@ -56,7 +56,7 @@ public class MDEntry implements Extractable{
      * 
      */
     public MDEntry() {
-	this.mdEntryDateTime = new Date();
+	this.mdEntryDateTime = LocalDateTime.now();
     }
     
     
@@ -99,13 +99,13 @@ public class MDEntry implements Extractable{
     /**
      * @return the mdEntryDateTime
      */
-    public Date getMdEntryDateTime() {
+    public LocalDateTime getMdEntryDateTime() {
 	return mdEntryDateTime;
     }
     /**
      * @param mdEntryDateTime the mdEntryDateTime to set
      */
-    public void setMdEntryDateTime(Date mdEntryDateTime) {
+    public void setMdEntryDateTime(LocalDateTime mdEntryDateTime) {
 	this.mdEntryDateTime = mdEntryDateTime;
     }
     public char getSecurityTradingStatus() {
@@ -228,14 +228,14 @@ public class MDEntry implements Extractable{
     /**
      * @return the orderDate
      */
-    public Date getOrderDate() {
+    public LocalDateTime getOrderDate() {
 	return orderDate;
     }
     
     /**
      * @param orderDate the orderDate to set
      */
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(LocalDateTime orderDate) {
 	this.orderDate = orderDate;
     }
     
@@ -326,14 +326,14 @@ public class MDEntry implements Extractable{
     /**
      * @return the entryDate
      */
-    public Date getEntryDate() {
+    public LocalDateTime getEntryDate() {
 	return entryDate;
     }
     
     /**
      * @param entryDate the entryDate to set
      */
-    public void setEntryDate(Date entryDate) {
+    public void setEntryDate(LocalDateTime entryDate) {
 	this.entryDate = entryDate;
     }
         
