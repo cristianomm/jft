@@ -3,18 +3,11 @@
  */
 package com.cmm.jft.engine;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalField;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 import com.cmm.jft.security.Security;
-import com.google.api.client.util.DateTime;
-
 /**
  * <p>
  * <code>IdGenerator.java</code>
