@@ -16,7 +16,7 @@ import com.cmm.jft.ui.forms.model.DOMTableModel;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class DOMController {
@@ -176,7 +176,7 @@ public class DOMController {
 
             //envia a ordem
             int ret = TradingService.getInstance().newOrder(ordType, side, security.getSymbol(), 
-        	    qty, ordPrice, os.loss, os.gain, new Date(), 
+        	    qty, ordPrice, os.loss, os.gain, LocalDateTime.now(), 
         	    TradeTypes.DAY_TRADE, OrderValidityTypes.DAY, "");
 
             setOpenQty(TradingService.getInstance().getPosition());
