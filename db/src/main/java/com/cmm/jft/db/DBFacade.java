@@ -102,7 +102,7 @@ public class DBFacade {
     }
 
     //    /**
-    //     * M�todo que retorna a instancia da Sess�o utilizando o arquivo default do hibernate (/hibernate.cfg.xml).
+    //     * Metodo que retorna a instancia da Sessao utilizando o arquivo default do hibernate (/hibernate.cfg.xml).
     //     * @return Session
     //     * @throws SessionFactoryException
     //     */
@@ -138,7 +138,7 @@ public class DBFacade {
 
     int ss=0;
     /**
-     * M�todo que retorna a instancia da Sess�o.
+     * Metodo que retorna a instancia da Sessao.
      * @return Session
      * @throws SessionFactoryException
      */
@@ -160,7 +160,7 @@ public class DBFacade {
     }
 
     /**
-     * M�todo que fecha a sess�o do Hibernate.
+     * Metodo que fecha a sessao do Hibernate.
      * @throws SessionFactoryException
      */
     public synchronized void closeSession() throws DataBaseException {
@@ -191,7 +191,7 @@ public class DBFacade {
 
 
     /**
-     * M�todo que inicia a transa��o do Hibernate.
+     * Metodo que inicia a transacao do Hibernate.
      * @throws SessionFactoryException
      */
     public synchronized void beginTransaction() throws DataBaseException {
@@ -209,7 +209,7 @@ public class DBFacade {
     }
 
     /**
-     * M�todo que executa o rollback da transa��o.
+     * Metodo que executa o rollback da transacao.
      * @throws SessionFactoryException
      */
     public synchronized void rollback() throws DataBaseException {
@@ -229,7 +229,7 @@ public class DBFacade {
     }
 
     /**
-     * M�todo que commita a transa��o.
+     * Metodo que commita a transacao.
      * @throws SessionFactoryException
      */
     public synchronized void commit() throws DataBaseException {
