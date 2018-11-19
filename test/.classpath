@@ -35,7 +35,5 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JDBC"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/quickfixj"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HSQLDB"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

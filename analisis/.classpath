@@ -19,6 +19,5 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/talib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/openfast"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/quickfixj"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
