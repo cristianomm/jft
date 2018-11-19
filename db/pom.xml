@@ -8,9 +8,7 @@
 		<artifactId>jft_modules</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>jft</groupId>
 	<artifactId>db</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>db</name>
 	<url>http://maven.apache.org</url>
 	<properties>

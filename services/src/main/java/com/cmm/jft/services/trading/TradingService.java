@@ -278,7 +278,6 @@ public class TradingService {
 					// Cria o evento e adiciona no mercado
 					sendNewOrderEvent(ordr);
 				}
-
 				ret = 0;
 			}
 
@@ -289,8 +288,8 @@ public class TradingService {
 			ret = -1;
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
+		
 		return ret;
-
 	}
 
 	/**
@@ -482,7 +481,7 @@ public class TradingService {
 			// verifica se o trade esta aberto
 			JournalEntry je = JournalService.getInstance().createEntry();
 
-			// verifica se o trade esta fechado, caso esteja, a posizao ja foi
+			// verifica se o trade esta fechado, caso esteja, a posicao ja foi
 			// zerada e deve adicionar registro de lucro/perda e custos
 			if (position.getPosition() == 0) {
 
