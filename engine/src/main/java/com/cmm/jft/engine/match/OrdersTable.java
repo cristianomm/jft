@@ -28,7 +28,6 @@ import com.cmm.jft.trading.enums.Side;
 public class OrdersTable {
 
 	private class Row {
-
 		private Row next;
 		private Row prev;
 		private int position;
