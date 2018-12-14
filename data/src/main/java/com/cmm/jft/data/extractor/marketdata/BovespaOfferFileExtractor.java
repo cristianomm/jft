@@ -3,7 +3,9 @@
  */
 package com.cmm.jft.data.extractor.marketdata;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,7 @@ import com.cmm.jft.trading.enums.Side;
 import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.jft.vo.Extractable;
 import com.cmm.logging.Logging;
+import com.ibm.icu.text.SimpleDateFormat;
 
 /**
  * <p>
@@ -39,21 +42,49 @@ import com.cmm.logging.Logging;
 public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 
 	private static long clOrdID = System.currentTimeMillis();
-
+	private volatile static long rowCount; 
+	 
+	
 	public static void main(String[] args) {
 
 		BovespaOfferFileExtractor bfe = new BovespaOfferFileExtractor();
-		bfe.fileName = "D:\\Disco\\Users\\Cristiano\\Downloads\\BMF Files\\CPA_CONS_T1.csv";
+		bfe.fileName = "C:\\Temp\\B3\\output\\CPA_CONS.csv";
+		
+		/*
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true) {
+					try {
+						System.out.println(rowCount);
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
+		*/
+		
 		List<Extractable> ls = bfe.extract();
 		System.out.println("Events: " + ls.size());
 
-		List<MDEntry> events = new ArrayList(ls.size());
+		List<MDEntry> events = new ArrayList<MDEntry>(ls.size());
 		ls.forEach(ex -> events.add((MDEntry) ex));
 
 		Map<Long, List<MDEntry>> orders = events.stream().collect(Collectors.groupingByConcurrent(MDEntry::getOrderID));
 
 		System.out.println("Orders: " + orders.size());
-
+		/*
+		for(long orderid : orders.keySet()) {
+			System.out.println();
+			orders.get(orderid)
+			.forEach(m -> 
+				System.out.println(
+						String.format("order:%d date:%s price:%f size:%d tradeVolume:%d status:%d condition:%d", 
+								m.getOrderID(), m.getMdEntryDateTime(), m.getMdEntryPx(), m.getMdEntrySize(), m.getTradeVolume(), m.getOrderStatus(), m.getOrderCondition())));			
+		}
+		*/
 		// agrupa por sequenceid e cria ofertas baseado no comportamento registrado no
 		// log
 		orders.forEach((id, lst) -> processEvents(lst));
@@ -134,18 +165,21 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 
 		List<Extractable> bsEvents = new ArrayList<>(1000000);
 		try {
-			DateTimeFormatter dtmf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.DATE_F8);
-			DateTimeFormatter dtf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.DATE_TIME_F8);
-			DateTimeFormatter tf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.TIME_F4);
-			IntFormatter intf = (IntFormatter) FormatterFactory.getFormatter(FormatterTypes.INT);
-
+			java.time.format.DateTimeFormatter df = java.time.format.DateTimeFormatter.ofPattern(FormatterTypes.DATE_F8.getFormat());
+			java.time.format.DateTimeFormatter tf = java.time.format.DateTimeFormatter.ofPattern(FormatterTypes.TIME_F4.getFormat());
+			java.time.format.DateTimeFormatter dtf = java.time.format.DateTimeFormatter.ofPattern(FormatterTypes.DATE_TIME_F8.getFormat());
+						
 			CSV csv = new CSV(fileName, ";", "RT", "RH");
 			while (csv.hasNext()) {
 				String[] vs = csv.readLine();
-
+				
+				rowCount++;
+				
 				if (vs != null && vs[0] != null) {
 					MDEntry entry = new MDEntry();
-					entry.setEntryDate(dtmf.parse(vs[0]));
+					
+					var date = LocalDate.parse(vs[0], df);
+					entry.setEntryDate(date);
 					matcher = pTime.matcher(vs[6]);
 					if (matcher.find()) {
 						vs[6] = matcher.group();
@@ -193,7 +227,7 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 						entry.setOrderID(Long.parseLong(vs[3]));
 						entry.setMdEntryID(Long.parseLong(vs[4]));
 						entry.setOrderEvent(Integer.parseInt(vs[5]));
-						entry.setMdEntryDateTime(tf.parse(vs[6]));
+						entry.setMdEntryDateTime(LocalDateTime.of(date, LocalTime.parse(vs[6], tf)));
 						entry.setMdEntryPx(Double.parseDouble(vs[8]));
 						entry.setMdEntrySize(Integer.parseInt(vs[9]));
 						entry.setTradeVolume(Integer.parseInt(vs[10]));
@@ -256,11 +290,11 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 						entry.setOrderID(Long.parseLong(vs[3]));
 						entry.setMdEntryID(Long.parseLong(vs[4]));
 						entry.setOrderEvent(Integer.parseInt(vs[5]));
-						entry.setMdEntryDateTime(tf.parse(vs[6]));
+						entry.setMdEntryDateTime(LocalDateTime.of(date, LocalTime.parse(vs[6], tf)));
 						entry.setMdEntryPx(Double.parseDouble(vs[8]));
 						entry.setMdEntrySize(Integer.parseInt(vs[9]));
 						entry.setTradeVolume(Integer.parseInt(vs[10]));
-						entry.setOrderDate(dtf.parse(vs[12]));
+						entry.setOrderDate(LocalDateTime.parse(vs[12], dtf));
 						entry.setOrderStatus(vs[13].charAt(0));
 
 					} else if (vs.length >= 16) {
@@ -309,14 +343,13 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 						entry.setOrderID(Long.parseLong(vs[3]));
 						entry.setMdEntryID(Long.parseLong(vs[4]));
 						entry.setOrderEvent(Integer.parseInt(vs[5]));
-						entry.setMdEntryDateTime(tf.parse(vs[6]));
+						entry.setMdEntryDateTime(LocalDateTime.of(date, LocalTime.parse(vs[6], tf)));
 						entry.setMdEntryPx(Double.parseDouble(vs[8]));
 						entry.setMdEntrySize(Integer.parseInt(vs[9]));
 						entry.setTradeVolume(Integer.parseInt(vs[10]));
-						entry.setOrderDate(dtf.parse(vs[12]));
+						entry.setOrderDate(LocalDateTime.parse(vs[12], dtf));
 						entry.setOrderStatus(vs[13].charAt(0));
 						entry.setOrderCondition(Integer.parseInt(vs[14]));
-
 					}
 
 					bsEvents.add(entry);
