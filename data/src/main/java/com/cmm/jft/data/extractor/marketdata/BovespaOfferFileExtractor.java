@@ -41,7 +41,6 @@ import com.ibm.icu.text.SimpleDateFormat;
  */
 public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 
-	private static long clOrdID = System.currentTimeMillis();
 	private volatile static long rowCount; 
 	 
 	
@@ -96,7 +95,8 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 		MDEntry entry = events.get(0);
 		LocalDateTime time = entry.getMdEntryDateTime();
 		boolean sameTime = events.parallelStream().allMatch(evt -> evt.getMdEntryDateTime().equals(time));
-
+		long clOrdID = System.currentTimeMillis();
+		
 		Fix44EngineMessageEncoder encoder = Fix44EngineMessageEncoder.getInstance();
 
 		String senderLct = "";
@@ -104,8 +104,13 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 		String traderID = "";
 
 		try {
-			Orders o = new Orders(entry.getOrderID(), clOrdID + "", new Security(entry.getSymbol()), entry.getSide(),
-					entry.getMdEntryPx(), entry.getMdEntrySize(), OrderTypes.Limit, traderID, brokerID, senderLct);
+			Orders o = new Orders(
+					entry.getOrderID(), clOrdID + "", 
+					new Security(entry.getSymbol()), 
+					entry.getSide(),
+					entry.getMdEntryPx(), 
+					entry.getMdEntrySize(), 
+					OrderTypes.Limit, traderID, brokerID, senderLct);
 
 			// no mesmo tempo, pode ser FOK/ IOC
 			if (sameTime) {

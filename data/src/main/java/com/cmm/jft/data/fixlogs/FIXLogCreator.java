@@ -212,16 +212,17 @@ public class FIXLogCreator {
 		// ordens que possuem dois eventos no mesmo tempo como por exemplo 1 e 3
 		// sao ordens do tipo Fill Or Kill
 		TreeMap<LocalDateTime, EventsEntry> mapentries = loadMDFiles(buyFileName, sellFileName, tradeFileName, symbol);
-
-
+		
 		for(EventsEntry ee : mapentries.values()){
 			//agrupa por tipo de evento
-			Map<Integer, List<MDEntry>> resB = ee.buy.stream().collect(
-					Collectors.groupingBy(MDEntry::getOrderEvent)
+			Map<Integer, List<MDEntry>> resB = ee.buy.stream()
+					.collect(
+							Collectors.groupingBy(MDEntry::getOrderEvent)
 					);
 
-			Map<Integer, List<MDEntry>> resS = ee.sell.stream().collect(
-					Collectors.groupingBy(MDEntry::getOrderEvent)
+			Map<Integer, List<MDEntry>> resS = ee.sell.stream()
+					.collect(
+							Collectors.groupingBy(MDEntry::getOrderEvent)
 					);
 
 			if(resB.size() > 0){
@@ -229,13 +230,9 @@ public class FIXLogCreator {
 			}
 
 			if(resS.size() > 0){
-
+				resS.values().stream().count();
 			}
-
-
 		}
-
-
 	}
 
 	/**

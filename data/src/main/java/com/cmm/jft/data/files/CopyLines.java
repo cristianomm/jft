@@ -47,7 +47,8 @@ public class CopyLines {
 						while (csv.hasNext()) {
 							String[] line = csv.readLine();
 							for (String s : lineFilters) {
-								if ((line != null && line[0] != null) && line[1].startsWith(s)) {
+								s = s.toUpperCase();
+								if ((line != null && line[0] != null) && (line[1].contains(s) || line[1].toUpperCase().contains(s.toUpperCase()))) {
 									lineCount++;
 									for (int i = 0; i < line.length; i++) {
 										buffer.append(line[i] + ";");
@@ -100,8 +101,20 @@ public class CopyLines {
 	 * @throws FileNotFoundException
 	 */
 	public static void main(String[] args) {
-
-		String[] lineFilters = { "PETR4" };
+		
+		System.out.println("input symbol list separated by \',\':");
+		
+		String line = null;
+		try (Scanner sc = new Scanner(System.in)){
+			line = null;
+			while((line = sc.nextLine()) == null) {
+				System.out.println("input symbol list separated by \',\':");
+			}
+		}
+		
+		System.out.println("line read: " + line);
+		
+		String[] lineFilters = line.split(",");
 
 		FileFilter ff = new FileFilter() {
 			@Override
