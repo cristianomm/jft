@@ -1,0 +1,104 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E890B200-BD30-694F-25FD-BD873AB68864" schemaObject="9A22C48B-9F6D-F9CC-4C87-8045AC6B89B3" name="CustomerAccount">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-01-29 00:00:25 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<ordsAlias>table_22</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="accountId" id="EC1FA69A-F665-3D15-76DE-706D0072600B">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-01-29 00:01:12 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="customerId" id="D53E003A-5B58-85D8-000E-494A9E0B2784">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-01-29 00:00:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="175476FF-97F5-060F-9497-A2E6CB65ADAF" referredColumn="3296EA71-5E9F-8CA0-2236-B4E8E1562A73"/>
+</associations>
+</Column>
+<Column name="Agency" id="E8F640C2-4862-9A8F-8522-24E5AD91545A">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-01-29 00:02:19 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Digit" id="B74BEDDD-A862-FC68-FEEF-7FEB116908B2">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-01-29 00:02:33 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Account" id="726CDE0D-2A09-C003-7382-4713A99E96C9">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-01-29 00:02:55 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="bankId" id="A297279F-A10B-2B23-D84D-251667BB7571">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-01-29 00:03:13 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="526DF8DD-F149-674C-2DD2-5DA03DABA8FA" name="CustomerAccount_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-01-29 00:01:12 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="EC1FA69A-F665-3D15-76DE-706D0072600B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="559AEEF1-17F4-75D6-A581-6BFB2E3C6972" name="CustomerAccount_Customer_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-01-29 00:05:14 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D53E003A-5B58-85D8-000E-494A9E0B2784"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

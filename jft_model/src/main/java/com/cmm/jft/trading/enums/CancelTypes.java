@@ -16,5 +16,4 @@ public enum CancelTypes {
     
     Expiration, Trade, Invalid, Requested
     
-    
 }

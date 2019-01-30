@@ -41,19 +41,25 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 		@NamedQuery(name = "Account.findByBalance", query = "SELECT a FROM Account a WHERE a.balance = :balance"),
 		@NamedQuery(name = "Account.findByOpen", query = "SELECT a FROM Account a WHERE a.open = :open") })
 public class Account implements Serializable, DBObject<Account> {
+	
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@Basic(optional = false)
 	@Column(name = "accountID", nullable = false, length = 20)
 	private String accountID;
+	
 	@Column(name = "AccName", length = 100)
 	private String accName;
+	
 	@Column(name = "Description", length = 255)
 	private String description;
+	
 	// @Max(value=?) @Min(value=?)//if you know range of your decimal fields
 	// consider using these annotations to enforce field validation
 	@Column(name = "Balance", precision = 19, scale = 6)
 	private BigDecimal balance;
+	
 	@Column(name = "CreditLimit", precision = 19, scale = 6)
 	private BigDecimal creditLimit;
 
@@ -84,11 +90,13 @@ public class Account implements Serializable, DBObject<Account> {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "debitAccountID", fetch = FetchType.LAZY)
 	private Set<EntryRegister> entryRegisterDbtSet;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "creditAccountID", fetch = FetchType.LAZY)
 	private Set<EntryRegister> entryRegisterCrdtSet;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "debitAccountID", fetch = FetchType.LAZY)
 	private Set<Rule> ruleDbtAccSet;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "creditAccountID", fetch = FetchType.LAZY)
 	private Set<Rule> ruleCrdtAccSet;
 
@@ -294,26 +302,17 @@ public class Account implements Serializable, DBObject<Account> {
 		return "Account ["
 				+ (accountID != null ? "accountID=" + accountID + ", " : "")
 				+ (accName != null ? "accName=" + accName + ", " : "")
-				+ (description != null ? "description=" + description + ", "
-						: "")
+				+ (description != null ? "description=" + description + ", " : "")
 				+ (balance != null ? "balance=" + balance + ", " : "")
-				+ (creditLimit != null ? "creditLimit=" + creditLimit + ", "
-						: "")
-				+ "open="
-				+ open
-				+ ", "
+				+ (creditLimit != null ? "creditLimit=" + creditLimit + ", " : "")
+				+ "open=" + open + ", "
 				+ (currencyID != null ? "currencyID=" + currencyID + ", " : "")
-				+ (accountType != null ? "accountType=" + accountType + ", "
-						: "")
+				+ (accountType != null ? "accountType=" + accountType + ", " : "")
 				+ (depositSet != null ? "depositSet=" + depositSet + ", " : "")
-				+ (entryRegisterDbtSet != null ? "entryRegisterDbtSet="
-						+ entryRegisterDbtSet + ", " : "")
-				+ (entryRegisterCrdtSet != null ? "entryRegisterCrdtSet="
-						+ entryRegisterCrdtSet + ", " : "")
-				+ (ruleDbtAccSet != null ? "ruleDbtAccSet=" + ruleDbtAccSet
-						+ ", " : "")
-				+ (ruleCrdtAccSet != null ? "ruleCrdtAccSet=" + ruleCrdtAccSet
-						: "") + "]";
+				+ (entryRegisterDbtSet != null ? "entryRegisterDbtSet=" + entryRegisterDbtSet + ", " : "")
+				+ (entryRegisterCrdtSet != null ? "entryRegisterCrdtSet=" + entryRegisterCrdtSet + ", " : "")
+				+ (ruleDbtAccSet != null ? "ruleDbtAccSet=" + ruleDbtAccSet + ", " : "")
+				+ (ruleCrdtAccSet != null ? "ruleCrdtAccSet=" + ruleCrdtAccSet : "") + "]";
 	}
 
 	public boolean hasFunds(BigDecimal value) {
@@ -339,6 +338,7 @@ public class Account implements Serializable, DBObject<Account> {
 
 		balance = balance.subtract(value);
 		ret = true;
+		
 		return ret;
 	}
 

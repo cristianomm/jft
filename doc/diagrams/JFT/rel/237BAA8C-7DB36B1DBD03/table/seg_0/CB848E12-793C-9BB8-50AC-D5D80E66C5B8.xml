@@ -1,11 +1,11 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="CB848E12-793C-9BB8-50AC-D5D80E66C5B8" name="JournalEntry">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="CB848E12-793C-9BB8-50AC-D5D80E66C5B8" schemaObject="C3DD7DCD-2777-B839-3D01-7A52DFB4FD1E" name="JournalEntry">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
-<schemaObject>C3DD7DCD-2777-B839-3D01-7A52DFB4FD1E</schemaObject>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
 <Column name="entryID" id="CA5836DA-33BA-8255-518C-212995B0702E">
 <createdBy>Cristiano</createdBy>
@@ -14,6 +14,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="EntryDate" id="18491216-AB18-69F1-7C20-5AC6ABCEEA06">
@@ -23,6 +24,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT015</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="EntryClose" id="7172C397-9477-55DE-B8D1-8E8628303DBC">
@@ -35,6 +37,7 @@
 <logicalDatatype>LOGDT015</logicalDatatype>
 <dataTypePrecision>6</dataTypePrecision>
 <dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,6,0</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Description" id="FC84FA9A-27AE-3FEB-5DC3-66EE6872523E">
@@ -46,9 +49,10 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="EntryStatus" id="3F10829E-667D-0F02-9884-20AF94015EE3">
+<Column name="JournalStatus" id="3F10829E-667D-0F02-9884-20AF94015EE3">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -56,6 +60,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>

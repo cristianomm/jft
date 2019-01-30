@@ -38,38 +38,49 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 		@NamedQuery(name = "EntryRegister.findByDescription", query = "SELECT e FROM EntryRegister e WHERE e.description = :description"),
 		@NamedQuery(name = "EntryRegister.findByOperationID", query = "SELECT e FROM EntryRegister e WHERE e.operationID = :operationID") })
 public class EntryRegister implements Serializable, DBObject<EntryRegister> {
+	
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@SequenceGenerator(name = "ENTRYREGISTER_SEQ", sequenceName = "ENTRYREGISTER_SEQ", allocationSize = 1, initialValue = 1)
 	@GeneratedValue(generator = "ENTRYREGISTER_SEQ", strategy = GenerationType.AUTO)
 	@Basic(optional = false)
 	@Column(name = "entryRegisterID", nullable = false)
 	private Long entryRegisterID;
+	
 	@Enumerated(EnumType.STRING)
 	@Basic(optional = false)
 	@Column(name = "EntryType", nullable = false)
 	private EntryType entryType;
+	
 	// @Max(value=?) @Min(value=?)//if you know range of your decimal fields
 	// consider using these annotations to enforce field validation
 	@Basic(optional = false)
 	@Column(name = "Credit", nullable = false, precision = 19, scale = 6)
 	private double credit;
+	
 	@Basic(optional = false)
 	@Column(name = "Debit", nullable = false, precision = 19, scale = 6)
 	private double debit;
+	
 	@Column(name = "Description", length = 255)
 	private String description;
+	
 	@Column(name = "OperationID", length = 20)
 	private String operationID;
+	
 	@JoinColumn(name = "entryID", referencedColumnName = "entryID", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private JournalEntry entryID;
+	
 	@JoinColumn(name = "currencyID", referencedColumnName = "currencyID", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Currency currencyID;
+	
 	@JoinColumn(name = "debitAccountID", referencedColumnName = "accountID", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Account debitAccountID;
+	
 	@JoinColumn(name = "creditAccountID", referencedColumnName = "accountID", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Account creditAccountID;

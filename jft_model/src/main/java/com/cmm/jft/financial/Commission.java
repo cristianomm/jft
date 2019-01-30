@@ -28,7 +28,7 @@ import com.cmm.jft.trading.enums.ValueTypes;
  * 
  * @author Cristiano M Martins
  * @version 09/08/2014 01:10:06
- *
+ * 
  */
 @Entity
 @Table(name = "Commission", schema="Financial")

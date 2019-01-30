@@ -38,7 +38,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 		@NamedQuery(name = "JournalEntry.findByDescription", query = "SELECT e FROM JournalEntry e WHERE e.description = :description"),
 		@NamedQuery(name = "JournalEntry.findByEntryStatus", query = "SELECT e FROM JournalEntry e WHERE e.journalStatus = :journalStatus") })
 public class JournalEntry implements Serializable, DBObject<JournalEntry> {
+	
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@SequenceGenerator(name = "JOURNALENTRY_SEQ", sequenceName = "JOURNALENTRY_SEQ", allocationSize = 1, initialValue = 1)
 	@GeneratedValue(generator = "JOURNALENTRY_SEQ", strategy = GenerationType.AUTO)

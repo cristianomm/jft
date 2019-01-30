@@ -53,9 +53,6 @@ public class Currency implements Serializable, DBObject<Currency> {
 
 	@Column(name = "Description", length = 255)
 	private String description;
-
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "currencyID", fetch = FetchType.LAZY)
-	private Set<CurrencyQuote> currencyQuoteSet;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "currencyID", fetch = FetchType.LAZY)
 	private Set<Account> accountSet;
@@ -69,7 +66,6 @@ public class Currency implements Serializable, DBObject<Currency> {
 	
 	public Currency() {
 		this.accountSet = new HashSet<Account>();
-		this.currencyQuoteSet = new HashSet<CurrencyQuote>();
 		this.entryRegisterSet = new HashSet<EntryRegister>();
 		this.securityInfoList = new ArrayList<SecurityInfo>();
 	}
@@ -77,7 +73,6 @@ public class Currency implements Serializable, DBObject<Currency> {
 	public Currency(String currencyID) {
 		this.currencyID = currencyID;
 		this.accountSet = new HashSet<Account>();
-		this.currencyQuoteSet = new HashSet<CurrencyQuote>();
 		this.entryRegisterSet = new HashSet<EntryRegister>();
 		this.securityInfoList = new ArrayList<SecurityInfo>();
 	}
@@ -150,13 +145,6 @@ public class Currency implements Serializable, DBObject<Currency> {
 	}
 
 	/**
-	 * @return the currencyQuoteSet
-	 */
-	public Set<CurrencyQuote> getCurrencyQuoteSet() {
-		return this.currencyQuoteSet;
-	}
-
-	/**
 	 * @return the accountSet
 	 */
 	public Set<Account> getAccountSet() {
@@ -185,7 +173,6 @@ public class Currency implements Serializable, DBObject<Currency> {
 		return "Currency [currencyID=" + this.currencyID + ", currSymbol="
 				+ this.currSymbol + ", sign=" + this.sign + ", fractionalUnit="
 				+ this.fractionalUnit + ", description=" + this.description
-				+ ", currencyQuoteSet=" + this.currencyQuoteSet
 				+ ", accountSet=" + this.accountSet + ", entryRegisterSet="
 				+ this.entryRegisterSet + ", securityInfoList="
 				+ this.securityInfoList + "]";
