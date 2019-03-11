@@ -12,15 +12,15 @@ import java.util.List;
 import java.util.Queue;
 
 import com.cmm.jft.core.Configuration;
-import com.cmm.jft.marketdata.MDEntry;
-import com.cmm.jft.marketdata.MDSnapshot;
 import com.cmm.jft.messaging.MarketDataMessageEncoder;
 import com.cmm.jft.messaging.enums.DepthTypes;
 import com.cmm.jft.messaging.enums.EntryTypes;
-import com.cmm.jft.trading.enums.MarketPhase;
-import com.cmm.jft.trading.enums.UpdateActions;
-import com.cmm.jft.security.Security;
-import com.cmm.jft.trading.Orders;
+import com.cmm.jft.model.marketdata.MDEntry;
+import com.cmm.jft.model.marketdata.MDSnapshot;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.MarketPhase;
+import com.cmm.jft.model.trading.enums.UpdateActions;
 
 import quickfix.ConfigError;
 import quickfix.DataDictionary;
@@ -99,7 +99,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	}
 
 	private void putSecurity(Security security, FieldMap entry) {
-		entry.setInt(48, security.getSecurityID());
+		entry.setInt(48, security.getSecurityId());
 		entry.setString(22, "8");
 		entry.setString(207, "BVMF");
 	}
@@ -146,10 +146,10 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 
 				g.setString(107, securities[i].getDescription());
 
-				g.setDouble(969, securities[i].getSecurityInfoID().getTickSize());
-				g.setInt(9749, securities[i].getSecurityInfoID().getMinVolume());
-				g.setInt(9748, securities[i].getSecurityInfoID().getMaxVolume());
-				g.setInt(5151, securities[i].getSecurityInfoID().getDigits());
+				g.setDouble(969, securities[i].getSecurityInfoId().getTickSize());
+				g.setInt(9749, securities[i].getSecurityInfoId().getMinVolume());
+				g.setInt(9748, securities[i].getSecurityInfoId().getMaxVolume());
+				g.setInt(5151, securities[i].getSecurityInfoId().getDigits());
 
 				list.addGroup(g);
 			}
@@ -263,14 +263,14 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#bidEntryIncMBO(
-	 * com.cmm.jft.trading.Orders, int, com.cmm.jft.messaging.enums.UpdateActions)
+	 * com.cmm.jft.model.trading.Orders, int, com.cmm.jft.messaging.enums.UpdateActions)
 	 */
 	@Override
 	public NoMDEntries bidEntryIncMBO(Orders order, int positionNo, UpdateActions updateAction, int rptSeq) {
 
 		MarketDataIncrementalRefresh.NoMDEntries entry = new MarketDataIncrementalRefresh.NoMDEntries();
 
-		putSecurity(order.getSecurityID(), entry);
+		putSecurity(order.getSecurityId(), entry);
 
 		LocalDate ld = LocalDate.now();
 		LocalTime lt = LocalTime.now();
@@ -285,10 +285,10 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 		entry.setUtcDateOnly(37016, order.getInsertDateTime().toLocalDate());
 		entry.setUtcTimeOnly(37017, order.getInsertDateTime().toLocalTime());
 
-		entry.set(new MDEntryBuyer(order.getBrokerID()));
+		entry.set(new MDEntryBuyer(order.getBrokerId()));
 
 		entry.set(new MDEntryPositionNo(positionNo));
-		entry.set(new OrderID(order.getOrderID().toString()));
+		entry.set(new OrderID(order.getOrderId().toString()));
 
 		return entry;
 	}
@@ -297,7 +297,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#bidEntryIncMBP( double,
-	 * int, int, com.cmm.jft.security.Security, int,
+	 * int, int, com.cmm.jft.model.security.Security, int,
 	 * com.cmm.jft.messaging.enums.UpdateActions)
 	 */
 	@Override
@@ -337,14 +337,14 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#offerEntryIncMBO(
-	 * com.cmm.jft.trading.Orders, int, com.cmm.jft.messaging.enums.UpdateActions)
+	 * com.cmm.jft.model.trading.Orders, int, com.cmm.jft.messaging.enums.UpdateActions)
 	 */
 	@Override
 	public NoMDEntries offerEntryIncMBO(Orders order, int positionNo, UpdateActions updateAction, int rptSeq) {
 
 		MarketDataIncrementalRefresh.NoMDEntries entry = new MarketDataIncrementalRefresh.NoMDEntries();
 
-		putSecurity(order.getSecurityID(), entry);
+		putSecurity(order.getSecurityId(), entry);
 
 		LocalDate ld = LocalDate.now();
 		LocalTime lt = LocalTime.now();
@@ -359,10 +359,10 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 		entry.setUtcDateOnly(37016, order.getInsertDateTime().toLocalDate());
 		entry.setUtcTimeOnly(37017, order.getInsertDateTime().toLocalTime());
 
-		entry.set(new MDEntryBuyer(order.getBrokerID()));
+		entry.set(new MDEntryBuyer(order.getBrokerId()));
 
 		entry.set(new MDEntryPositionNo(positionNo));
-		entry.set(new OrderID(order.getOrderID().toString()));
+		entry.set(new OrderID(order.getOrderId().toString()));
 
 		return entry;
 	}
@@ -371,7 +371,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#offerEntryIncMBP( double,
-	 * int, int, com.cmm.jft.security.Security, int,
+	 * int, int, com.cmm.jft.model.security.Security, int,
 	 * com.cmm.jft.messaging.enums.UpdateActions)
 	 */
 	@Override
@@ -412,7 +412,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#tradeEntryInc(
-	 * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security,
+	 * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.model.security.Security,
 	 * java.lang.String, java.lang.String, double, int, java.util.Date,
 	 * java.util.Date, java.lang.String, int)
 	 */
@@ -451,7 +451,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#openPriceEntryInc(
-	 * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security,
+	 * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.model.security.Security,
 	 * double)
 	 */
 	@Override
@@ -479,7 +479,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#closePriceEntryInc(
-	 * com.cmm.jft.security.Security, double)
+	 * com.cmm.jft.model.security.Security, double)
 	 */
 	@Override
 	public MarketDataIncrementalRefresh.NoMDEntries closePriceEntryInc(Security security, double closePrice,
@@ -506,7 +506,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#highPriceEntryInc(
-	 * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security,
+	 * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.model.security.Security,
 	 * double)
 	 */
 	@Override
@@ -534,7 +534,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#lowPriceEntryInc(
-	 * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security,
+	 * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.model.security.Security,
 	 * double)
 	 */
 	@Override
@@ -562,7 +562,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#vwapPriceEntryInc(
-	 * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.security.Security,
+	 * com.cmm.jft.messaging.enums.UpdateActions, com.cmm.jft.model.security.Security,
 	 * double)
 	 */
 	@Override
@@ -590,7 +590,7 @@ public class Fix50SP2MDMessageEncoder implements MarketDataMessageEncoder {
 	 * (non-Javadoc)
 	 * 
 	 * @see com.cmm.jft.messaging.MarketDataMessageEncoder#tradeVolumeEntryInc(
-	 * com.cmm.jft.security.Security, double)
+	 * com.cmm.jft.model.security.Security, double)
 	 */
 	@Override
 	public MarketDataIncrementalRefresh.NoMDEntries tradeVolumeEntryInc(Security security, int numOfTrades,

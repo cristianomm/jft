@@ -4,6 +4,7 @@
 <createdTime>2018-08-04 15:55:39 UTC</createdTime>
 <generatorID>Gerado pelo usuário</generatorID>
 <ownerDesignName>JFT</ownerDesignName>
+<ordsEnable>true</ordsEnable>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <parsed>true</parsed>
@@ -28,7 +29,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>15</dataTypeSize>
-<ownDataTypeParameters>15,,</ownDataTypeParameters>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="B444E7A5-774C-CCE3-3217-4C343AD88860" referredColumn="844E69DE-6C4D-1B0C-C576-4A5356BC7FB4"/>
@@ -56,6 +57,42 @@
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>255</dataTypeSize>
 <ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CETIPCode" id="D90CD736-0AA5-036C-5BA0-68B15EFC8101">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-22 02:15:39 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CVMCode" id="F738C944-AF8A-5E1F-CD7D-0F0FB6E08B89">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-22 02:15:39 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12</dataTypeSize>
+<ownDataTypeParameters>12,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="SELICCode" id="F19DEAD2-C8F0-92E5-0C03-9C2BA6C53EEC">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-23 02:10:08 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>6,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>

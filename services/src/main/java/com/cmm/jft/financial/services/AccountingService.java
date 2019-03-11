@@ -8,17 +8,17 @@ import java.util.Date;
 
 import org.apache.log4j.Level;
 
-import com.cmm.jft.financial.Account;
-import com.cmm.jft.financial.AccountPlan;
-import com.cmm.jft.financial.Currency;
-import com.cmm.jft.financial.Deposit;
-import com.cmm.jft.financial.JournalEntry;
-import com.cmm.jft.financial.enums.AccountCategories;
-import com.cmm.jft.financial.enums.AccountTypes;
-import com.cmm.jft.financial.exceptions.AccountException;
-import com.cmm.jft.financial.exceptions.RegistrationException;
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
+import com.cmm.jft.model.financial.Account;
+import com.cmm.jft.model.financial.AccountPlan;
+import com.cmm.jft.model.financial.Currency;
+import com.cmm.jft.model.financial.Deposit;
+import com.cmm.jft.model.financial.JournalEntry;
+import com.cmm.jft.model.financial.enums.AccountCategories;
+import com.cmm.jft.model.financial.enums.AccountTypes;
+import com.cmm.jft.model.financial.exceptions.AccountException;
+import com.cmm.jft.model.financial.exceptions.RegistrationException;
 import com.cmm.logging.Logging;
 
 /**

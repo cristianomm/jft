@@ -16,26 +16,26 @@ import com.cmm.jft.core.Configuration;
 import com.cmm.jft.core.enums.Objects;
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
-import com.cmm.jft.financial.Broker;
-import com.cmm.jft.financial.Brokerage;
-import com.cmm.jft.financial.Commission;
-import com.cmm.jft.financial.DistributionRule;
-import com.cmm.jft.financial.ExchangeTax;
-import com.cmm.jft.financial.JournalEntry;
-import com.cmm.jft.financial.Rule;
-import com.cmm.jft.financial.exceptions.RegistrationException;
 import com.cmm.jft.financial.services.JournalService;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageDecoder;
-import com.cmm.jft.security.Security;
+import com.cmm.jft.model.financial.Broker;
+import com.cmm.jft.model.financial.Brokerage;
+import com.cmm.jft.model.financial.Commission;
+import com.cmm.jft.model.financial.DistributionRule;
+import com.cmm.jft.model.financial.ExchangeTax;
+import com.cmm.jft.model.financial.JournalEntry;
+import com.cmm.jft.model.financial.Rule;
+import com.cmm.jft.model.financial.exceptions.RegistrationException;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.trading.OrderEvent;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.Position;
+import com.cmm.jft.model.trading.enums.OrderTypes;
+import com.cmm.jft.model.trading.enums.OrderValidityTypes;
+import com.cmm.jft.model.trading.enums.Side;
+import com.cmm.jft.model.trading.enums.TradeTypes;
+import com.cmm.jft.model.trading.exceptions.OrderException;
 import com.cmm.jft.services.security.SecurityService;
-import com.cmm.jft.trading.OrderEvent;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.Position;
-import com.cmm.jft.trading.enums.OrderTypes;
-import com.cmm.jft.trading.enums.OrderValidityTypes;
-import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.enums.TradeTypes;
-import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
 
 import javafx.collections.FXCollections;
@@ -172,7 +172,7 @@ public class TradingService {
 			// searches for open trades with the brokerid
 			String query = String.format(
 					"select tradeID from Position " + "where tradestatus = 'OPEN' and brokerID = %d",
-					brokerID.getBrokerID());
+					brokerID.getBrokerId());
 			List<?> rs = DBFacade.getInstance().queryNative(query);
 			for (Position tr : (List<Position>) rs) {
 				positions.put(tr.getSymbol(), tr);
@@ -302,7 +302,7 @@ public class TradingService {
 		try {
 			// cancela as ordens abertas
 			for (Orders order : position.getOrdersList()) {
-				cancelOrder(order.getClOrdID());
+				cancelOrder(order.getClOrdId());
 			}
 
 			// cria ordem de acordo com posicao aberta
@@ -392,10 +392,10 @@ public class TradingService {
 		connection.newOrderSingle(ordr);
 		// verifica o retorno
 		// if(retev.getValue(EventFields.EventType) == Events.ORDER_SEND){
-		// Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() +
+		// Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdId() +
 		// " has sent to market.", Level.INFO);
 		// }else{
-		// throw new OrderException("Error sending order " + ordr.getClOrdID() +
+		// throw new OrderException("Error sending order " + ordr.getClOrdId() +
 		// retev.getValue(EventFields.Message));
 		// }
 
@@ -405,10 +405,10 @@ public class TradingService {
 		connection.cancelRequest(ordr);
 		// Event ret = null;//connection.sendEvent(event);
 		// if(ret.getValue(EventFields.EventType) == Events.ORDER_CANCEL){
-		// Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() +
+		// Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdId() +
 		// " has cancelled.", Level.INFO);
 		// }else{
-		// throw new OrderException("Error sending order " + ordr.getClOrdID() +
+		// throw new OrderException("Error sending order " + ordr.getClOrdId() +
 		// ret.getValue(EventFields.Message));
 		// }
 
@@ -418,10 +418,10 @@ public class TradingService {
 		connection.cancelReplaceRequest(ordr);
 		// Event ret = null;//connection.sendEvent(event);
 		// if(ret.getValue(EventFields.EventType) == Events.ORDER_UPDATE){
-		// Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdID() +
+		// Logging.getInstance().log(getClass(), "Order " + ordr.getClOrdId() +
 		// " has changed.", Level.INFO);
 		// }else{
-		// throw new OrderException("Error sending order " + ordr.getClOrdID() +
+		// throw new OrderException("Error sending order " + ordr.getClOrdId() +
 		// ret.getValue(EventFields.Message));
 		// }
 	}
@@ -512,8 +512,8 @@ public class TradingService {
 
 							if (valaux > comm.getValueMin() && valaux <= comm.getValueMax()) {
 								double commValue = comm.getCommValue();
-								JournalService.getInstance().registerEntry(je, rule.getCreditAccountID(),
-										rule.getDebitAccountID(), commValue, "Commission");
+								JournalService.getInstance().registerEntry(je, rule.getCreditAccountId(),
+										rule.getDebitAccountId(), commValue, "Commission");
 								break;
 							}
 						}
@@ -536,8 +536,8 @@ public class TradingService {
 								break;
 							}
 
-							JournalService.getInstance().registerEntry(je, rule.getCreditAccountID(),
-									rule.getDebitAccountID(), taxValue, et.getTaxName());
+							JournalService.getInstance().registerEntry(je, rule.getCreditAccountId(),
+									rule.getDebitAccountId(), taxValue, et.getTaxName());
 						}
 					}
 
@@ -559,8 +559,8 @@ public class TradingService {
 						String descr = "Profit register";
 						double profit = (buyPrice - sellPrice) * volume;
 
-						JournalService.getInstance().registerEntry(je, rule.getCreditAccountID(),
-								rule.getDebitAccountID(), profit, descr);
+						JournalService.getInstance().registerEntry(je, rule.getCreditAccountId(),
+								rule.getDebitAccountId(), profit, descr);
 					}
 				}
 
@@ -574,13 +574,13 @@ public class TradingService {
 	}
 
 	private void storeOrder(Orders order) {
-		orders.put(order.getClOrdID(), order);
+		orders.put(order.getClOrdId(), order);
 		ordersData.add(order);
 
 		try {
 			DBFacade.getInstance()._persist(order);
 		} catch (DataBaseException e) {
-			Logging.getInstance().log(getClass(), "Erro ao atualizar Ordem: " + order.getClOrdID(), e, Level.ERROR,
+			Logging.getInstance().log(getClass(), "Erro ao atualizar Ordem: " + order.getClOrdId(), e, Level.ERROR,
 					false);
 		}
 

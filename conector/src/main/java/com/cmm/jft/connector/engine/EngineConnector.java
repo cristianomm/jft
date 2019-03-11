@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.messaging.handlers.RouterMessageHandler;
-import com.cmm.jft.trading.Orders;
+import com.cmm.jft.model.trading.Orders;
 
 import quickfix.Application;
 import quickfix.DataDictionary;

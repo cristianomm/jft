@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 import org.apache.log4j.Level;
 
-import com.cmm.jft.trading.enums.OrderTypes;
+import com.cmm.jft.model.trading.enums.OrderTypes;
 import com.cmm.logging.Logging;
 
 /**

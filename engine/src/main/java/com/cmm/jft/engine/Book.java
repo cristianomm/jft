@@ -15,26 +15,26 @@ import com.cmm.jft.engine.marketdata.recovery.SnapshotRecoveryStream;
 import com.cmm.jft.engine.match.OrderMatcher;
 import com.cmm.jft.engine.match.OrdersTable;
 import com.cmm.jft.engine.match.Summary;
-import com.cmm.jft.marketdata.BandLimits;
-import com.cmm.jft.marketdata.MDSnapshot;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.MessageSender;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
-import com.cmm.jft.security.Security;
+import com.cmm.jft.model.marketdata.BandLimits;
+import com.cmm.jft.model.marketdata.MDSnapshot;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.trading.OrderEvent;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.CancelTypes;
+import com.cmm.jft.model.trading.enums.ExecutionTypes;
+import com.cmm.jft.model.trading.enums.MarketPhase;
+import com.cmm.jft.model.trading.enums.OrderStatus;
+import com.cmm.jft.model.trading.enums.OrderTypes;
+import com.cmm.jft.model.trading.enums.OrderValidityTypes;
+import com.cmm.jft.model.trading.enums.RejectTypes;
+import com.cmm.jft.model.trading.enums.Side;
+import com.cmm.jft.model.trading.enums.WorkingIndicator;
+import com.cmm.jft.model.trading.exceptions.OrderException;
 import com.cmm.jft.services.security.SecurityService;
-import com.cmm.jft.trading.OrderEvent;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.CancelTypes;
-import com.cmm.jft.trading.enums.ExecutionTypes;
-import com.cmm.jft.trading.enums.MarketPhase;
-import com.cmm.jft.trading.enums.OrderStatus;
-import com.cmm.jft.trading.enums.OrderTypes;
-import com.cmm.jft.trading.enums.OrderValidityTypes;
-import com.cmm.jft.trading.enums.RejectTypes;
-import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.enums.WorkingIndicator;
-import com.cmm.jft.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
 
 import quickfix.FixVersions;
@@ -62,8 +62,8 @@ public class Book implements MessageSender {
 
 	private BandLimits bandLimits;
 
-	private IdGenerator orderIDs;
-	private IdGenerator eventIDs;
+	private IdGenerator orderIds;
+	private IdGenerator eventIds;
 
 	private OrdersTable buyTable;
 	private OrdersTable sellTable;
@@ -73,14 +73,14 @@ public class Book implements MessageSender {
 
 	public static void main(String args[]) {
 
-		long orderID = 1;
+		long orderId = 1;
 		String symbol = "WDOV17";
 		Security security = SecurityService.getInstance().provideSecurity(symbol);
 		SessionID sessionID = new SessionID(FixVersions.BEGINSTRING_FIX44, "SENDER", "TARGET");
 
-		String traderIDB = "";
-		String traderIDS = "";
-		String brokerID = "";
+		String traderIdB = "";
+		String traderIdS = "";
+		String brokerId = "";
 		String sLct = "";
 
 		Book book = new Book(symbol, .20);
@@ -88,17 +88,17 @@ public class Book implements MessageSender {
 		long t0 = System.currentTimeMillis();
 		try {
 
-			Orders ord = new Orders(orderID++, "123456", security, Side.BUY, 3321.5, 2, OrderTypes.Limit, traderIDB,
-					brokerID, sLct);
-			ord.setBrokerID("308");
-			ord.setTraderID("123456");
+			Orders ord = new Orders(orderId++, "123456", security, Side.BUY, 3321.5, 2, OrderTypes.Limit, traderIdB,
+					brokerId, sLct);
+			ord.setBrokerId("308");
+			ord.setTraderId("123456");
 
 			boolean added = book.addOrder(ord);
 
-			ord = new Orders(orderID++, "123455", security, Side.SELL, 3321.5, 1, OrderTypes.Limit, traderIDS, brokerID,
+			ord = new Orders(orderId++, "123455", security, Side.SELL, 3321.5, 1, OrderTypes.Limit, traderIdS, brokerId,
 					sLct);
-			ord.setBrokerID("154");
-			ord.setTraderID("654321");
+			ord.setBrokerId("154");
+			ord.setTraderId("654321");
 
 			added = book.addOrder(ord);
 
@@ -106,10 +106,10 @@ public class Book implements MessageSender {
 
 			double qt = -1000;
 			for (int i = 0; i < qt; i++) {
-				ord = new Orders(orderID++, "123457" + i, security, Side.BUY, 3321.5, 2, OrderTypes.Limit, traderIDB,
-						brokerID, sLct);
-				ord.setBrokerID("308");
-				ord.setTraderID("3" + i);
+				ord = new Orders(orderId++, "123457" + i, security, Side.BUY, 3321.5, 2, OrderTypes.Limit, traderIdB,
+						brokerId, sLct);
+				ord.setBrokerId("308");
+				ord.setTraderId("3" + i);
 
 				added = added && book.addOrder(ord);
 			}
@@ -137,17 +137,17 @@ public class Book implements MessageSender {
 		this.security = SecurityService.getInstance().provideSecurity(symbol);
 		this.phase = MarketPhase.Pause;
 
-		this.orderIDs = new IdGenerator(LocalDateTime.now());
-		this.eventIDs = new IdGenerator(LocalDateTime.now());
+		this.orderIds = new IdGenerator(LocalDateTime.now());
+		this.eventIds = new IdGenerator(LocalDateTime.now());
 
 		this.buyTable = new OrdersTable(Side.BUY);
 		this.sellTable = new OrdersTable(Side.SELL);
 		this.snapshot = new MDSnapshot(security);
 
-		double auctionBand = security.getSecurityInfoID().getAuctionBand();
-		double rejectHiBand = security.getSecurityInfoID().getRejectHiBand();
-		double rejectLoBand = security.getSecurityInfoID().getRejectLoBand();
-		int qtyLimit = security.getSecurityInfoID().getMaxVolume();
+		double auctionBand = security.getSecurityInfoId().getAuctionBand();
+		double rejectHiBand = security.getSecurityInfoId().getRejectHiBand();
+		double rejectLoBand = security.getSecurityInfoId().getRejectLoBand();
+		int qtyLimit = security.getSecurityInfoId().getMaxVolume();
 
 		this.bandLimits = new BandLimits(0, auctionBand, rejectHiBand, rejectLoBand, qtyLimit);
 
@@ -172,7 +172,7 @@ public class Book implements MessageSender {
 
 		boolean valid = true;
 		try {
-			switch (security.getSecurityInfoID().getObjectAsset()) {
+			switch (security.getSecurityInfoId().getObjectAsset()) {
 			case COMMODITIES:
 			case STOCK:
 				checkEquity(order);
@@ -201,12 +201,12 @@ public class Book implements MessageSender {
 	}
 
 	private void checkCommon(Orders order) throws OrderValidationException {
-		if (order.getClOrdID().isEmpty()) {
+		if (order.getClOrdId().isEmpty()) {
 			throw new OrderValidationException(1010, errCodes.getMessage(1010));
 		}
 
 		// verifica se a quantidade para o instrumento eh valida
-		if ((order.getVolume() % security.getSecurityInfoID().getMinVolume()) != 0d) {
+		if ((order.getVolume() % security.getSecurityInfoId().getMinVolume()) != 0d) {
 			throw new OrderValidationException(993502, errCodes.getMessage(993502));
 		}
 
@@ -299,7 +299,7 @@ public class Book implements MessageSender {
 		// ajusta parametros da ordem no recebimento da oferta
 		order.setInsertDateTime(LocalDateTime.now());
 
-		order.setOrderID(orderIDs.nextLong());
+		order.setOrderId(orderIds.nextLong());
 	}
 
 	public boolean addOrder(Orders order) {
@@ -327,7 +327,7 @@ public class Book implements MessageSender {
 				orderMatcher.match(order);
 
 				// envia market data
-				int mboPos = table.getOrderPosition(order.getOrderID());
+				int mboPos = table.getOrderPosition(order.getOrderId());
 				int mbpPos = table.getPricePosition(order.getPrice());
 				Summary sm = table.findSummary(order.getPrice());
 
@@ -361,10 +361,10 @@ public class Book implements MessageSender {
 			Orders bookOrder = null;
 			OrdersTable table = order.getSide() == Side.BUY ? buyTable : sellTable;
 
-			if (order.getOrderID() > 0) {
-				bookOrder = table.findByOrderID(order.getOrderID());
-			} else if (order.getOrigClOrdID() != null) {
-				bookOrder = table.findByClOrderID(order.getOrigClOrdID());
+			if (order.getOrderId() > 0) {
+				bookOrder = table.findByOrderId(order.getOrderId());
+			} else if (order.getOrigClOrdId() != null) {
+				bookOrder = table.findByClOrderId(order.getOrigClOrdId());
 			}
 
 			if (bookOrder != null) {
@@ -373,7 +373,7 @@ public class Book implements MessageSender {
 				sendMessage(
 						((Fix44EngineMessageEncoder) MessageEncoder.getEncoder(null)).orderCancelReject(order,
 								RejectTypes.OrderCancelRequest, 989001, ErrorCodes.getInstance().getMessage(989001)),
-						SessionRepository.getInstance().getTraderSession(order.getTraderID()));
+						SessionRepository.getInstance().getTraderSession(order.getTraderId()));
 			}
 
 		} catch (OrderException e) {
@@ -391,10 +391,10 @@ public class Book implements MessageSender {
 			Orders bookOrder = null;
 			OrdersTable table = order.getSide() == Side.BUY ? buyTable : sellTable;
 
-			if (order.getOrderID() > 0) {
-				bookOrder = table.findByOrderID(order.getOrderID());
-			} else if (order.getOrigClOrdID() != null) {
-				bookOrder = table.findByClOrderID(order.getOrigClOrdID());
+			if (order.getOrderId() > 0) {
+				bookOrder = table.findByOrderId(order.getOrderId());
+			} else if (order.getOrigClOrdId() != null) {
+				bookOrder = table.findByClOrderId(order.getOrigClOrdId());
 			}
 
 			if (bookOrder != null) {
@@ -448,21 +448,21 @@ public class Book implements MessageSender {
 				// caso a ordem tenha a prioridade alterada
 				if (bookOrder.getOrderDateTime().isAfter(priority)) {
 					// altera a prioridade da ordem, remove do book e re-insere
-					umdf.informDeleteOrder(bookOrder, table.getOrderPosition(bookOrder.getOrderID()));
-					table.remove(bookOrder.getOrderID());
+					umdf.informDeleteOrder(bookOrder, table.getOrderPosition(bookOrder.getOrderId()));
+					table.remove(bookOrder.getOrderId());
 
 					table.add(bookOrder);
-					umdf.informNewOrder(bookOrder, table.getOrderPosition(bookOrder.getOrderID()), null, 0);
+					umdf.informNewOrder(bookOrder, table.getOrderPosition(bookOrder.getOrderId()), null, 0);
 
 				} else {
 					// envia a alteracao da ordem
-					umdf.informChangeOrder(bookOrder, table.getOrderPosition(bookOrder.getOrderID()));
+					umdf.informChangeOrder(bookOrder, table.getOrderPosition(bookOrder.getOrderId()));
 				}
 
 			} else {// ordem desconhecida
 				sendMessage(((Fix44EngineMessageEncoder) MessageEncoder.getEncoder(null)).orderCancelReject(order,
 						RejectTypes.OrderCancelReplaceRequest, 989001, ErrorCodes.getInstance().getMessage(989001)),
-						SessionRepository.getInstance().getTraderSession(order.getTraderID()));
+						SessionRepository.getInstance().getTraderSession(order.getTraderId()));
 			}
 
 		} catch (OrderException e) {
@@ -491,14 +491,14 @@ public class Book implements MessageSender {
 		// add current orders in the snapshot
 		for (SortedMap<LocalDateTime, Orders> orders : buyTable.getOrders().values()) {
 			for (Orders ordr : orders.values()) {
-				int position = buyTable.getOrderPosition(ordr.getOrderID());
+				int position = buyTable.getOrderPosition(ordr.getOrderId());
 				snapshot.addOffer(umdf.createMBOEntry(ordr, null, position));
 			}
 		}
 
 		for (SortedMap<LocalDateTime, Orders> orders : sellTable.getOrders().values()) {
 			for (Orders ordr : orders.values()) {
-				int position = sellTable.getOrderPosition(ordr.getOrderID());
+				int position = sellTable.getOrderPosition(ordr.getOrderId());
 				snapshot.addOffer(umdf.createMBOEntry(ordr, null, position));
 			}
 		}
@@ -529,13 +529,13 @@ public class Book implements MessageSender {
 
 		try {
 			OrderEvent oe = new OrderEvent(exec, LocalDateTime.now(), order.getVolume(), order.getPrice());
-			oe.setOrderEventID(eventIDs.nextLong());
-			oe.setOrderID(order);
+			oe.setOrderEventId(eventIds.nextLong());
+			oe.setOrderId(order);
 			oe.setMessage(message);
 			oe.setOrdRejReason(ordRejReason);
 			order.addExecution(oe);
 
-			SessionID sessionID = SessionRepository.getInstance().getTraderSession(order.getTraderID());
+			SessionID sessionID = SessionRepository.getInstance().getTraderSession(order.getTraderId());
 			sendMessage(((Fix44EngineMessageEncoder) MessageEncoder.getEncoder(sessionID)).executionReport(oe),
 					sessionID);
 		} catch (OrderException e) {

@@ -7,9 +7,9 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.cmm.jft.marketdata.MDEntry;
+import com.cmm.jft.model.marketdata.MDEntry;
+import com.cmm.jft.model.trading.enums.Side;
 import com.cmm.jft.services.trading.TradingService;
-import com.cmm.jft.trading.enums.Side;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import com.cmm.jft.marketdata.MDEntry;
-import com.cmm.jft.trading.OrderEvent;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.ExecutionTypes;
-import com.cmm.jft.trading.enums.MDEntryTypes;
-import com.cmm.jft.trading.enums.OrderTypes;
-import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.enums.UpdateActions;
+import com.cmm.jft.model.marketdata.MDEntry;
+import com.cmm.jft.model.trading.OrderEvent;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.ExecutionTypes;
+import com.cmm.jft.model.trading.enums.MDEntryTypes;
+import com.cmm.jft.model.trading.enums.OrderTypes;
+import com.cmm.jft.model.trading.enums.Side;
+import com.cmm.jft.model.trading.enums.UpdateActions;
 
 /**
  * <p>
@@ -73,11 +73,11 @@ public class BookTable {
 	private MDEntry createMBOEntry(Orders order, UpdateActions updtAction) {
 		MDEntry mboEntry = new MDEntry();
 
-		mboEntry.setOrderID(order.getOrderID());
+		mboEntry.setOrderId(order.getOrderId());
 		if (side == Side.BUY) {
-			mboEntry.setMdEntryBuyer(order.getBrokerID());
+			mboEntry.setMdEntryBuyer(order.getBrokerId());
 		} else {
-			mboEntry.setMdEntrySeller(order.getBrokerID());
+			mboEntry.setMdEntrySeller(order.getBrokerId());
 		}
 		mboEntry.setMdEntryDateTime(order.getInsertDateTime());
 		mboEntry.setMdEntryType(side == Side.BUY ? MDEntryTypes.BID : MDEntryTypes.OFFER);
@@ -88,7 +88,7 @@ public class BookTable {
 
 		mboEntry.setMdEntryPx(order.getPrice());
 		mboEntry.setMdEntrySize((int) order.getVolume());
-		mboEntry.setMdEntryPosNo(orders.getOrderPosition(order.getOrderID()));
+		mboEntry.setMdEntryPosNo(orders.getOrderPosition(order.getOrderId()));
 
 		return mboEntry;
 	}
@@ -125,7 +125,7 @@ public class BookTable {
 			entries[0] = createMBOEntry(order, UpdateActions.Delete);
 
 			// remove a ordem
-			orders.remove(order.getOrderID());
+			orders.remove(order.getOrderId());
 
 			// --------------------------------------------------MBP
 			MDEntry mbpEntry = new MDEntry();
@@ -200,7 +200,7 @@ public class BookTable {
 
 					// cria a execucao para a ordem do book
 					OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, volumeToFill, priceToFill);
-					fill.setOrderID(bookOrder);
+					fill.setOrderId(bookOrder);
 					events.add(fill);
 				}
 			}
@@ -229,7 +229,7 @@ public class BookTable {
 
 					// cria a execucao para a ordem do book
 					OrderEvent fill = new OrderEvent(ExecutionTypes.TRADE, volumeToFill, priceToFill);
-					fill.setOrderID(bookOrder);
+					fill.setOrderId(bookOrder);
 					events.add(fill);
 				}
 			}

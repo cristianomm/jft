@@ -1,10 +1,10 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="09EF0E67-6147-B90E-B908-F40D405B0B92" name="HistoricalQuote">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="09EF0E67-6147-B90E-B908-F40D405B0B92" schemaObject="D8952EB8-558E-2218-16F1-0690431FB06D" name="HistoricalQuote">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
-<schemaObject>D8952EB8-558E-2218-16F1-0690431FB06D</schemaObject>
 <allowColumnReorder>false</allowColumnReorder>
+<parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
 <Column name="historicalQuoteID" id="E37620DC-946D-A0DC-485D-B7471C794C49">
 <createdBy>Cristiano</createdBy>
@@ -13,6 +13,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Column>
 <Column name="securityID" id="3716C5AD-6A9C-CE8C-7BCC-A3E1339F902A">
 <createdBy>Cristiano</createdBy>
@@ -21,7 +22,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT027</logicalDatatype>
-<delegate>37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14</delegate>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <associations>
 <colAssociation fkAssociation="E207CE51-E32B-5EB8-FF96-EF7A7DEEE809" referredColumn="37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14"/>
 </associations>
@@ -35,6 +36,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT015</logicalDatatype>
 <dataTypePrecision>6</dataTypePrecision>
+<ownDataTypeParameters>,6,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Open" id="C1C6A511-01BA-079D-0F04-C163F0EAA74E">
@@ -47,6 +49,7 @@
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Close" id="6C158F7B-83FA-20A3-1AF9-292664427F9B">
@@ -59,6 +62,7 @@
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="High" id="92C04709-7D06-3C0F-B1BD-4AC1CDA75021">
@@ -71,6 +75,7 @@
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Low" id="81E7C34E-3BF4-D73F-9595-D850C71D5EBD">
@@ -83,6 +88,7 @@
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Bid" id="CA74D683-B3EB-0689-64B3-56668AFE45B9">
@@ -95,6 +101,7 @@
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Ask" id="A2EBE803-03BF-DE31-6413-40971B354A9C">
@@ -107,6 +114,7 @@
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="AvgPrice" id="B5BC3439-2118-A170-8FE6-61F8FCC13DC8">
@@ -119,16 +127,7 @@
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="QuoteFactor" id="61063C6D-F38B-4E16-2029-6F7D4648001C">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-06-05 06:32:57 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Volume" id="E391E5FA-F323-2410-21AE-A19D4110608A">
@@ -142,6 +141,7 @@
 <logicalDatatype>LOGDT043</logicalDatatype>
 <dataTypePrecision>19</dataTypePrecision>
 <dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="TradedUnits" id="AF8460D2-1073-F766-6D2E-996BEA76A014">
@@ -153,6 +153,7 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="TradedQuantity" id="78A46A20-39A9-989A-91CB-3801FE197A68">
@@ -164,6 +165,18 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="QuoteFactor" id="61063C6D-F38B-4E16-2029-6F7D4648001C">
+<createdBy>Cristiano</createdBy>
+<createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>

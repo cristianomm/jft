@@ -2,6 +2,8 @@ package com.cmm.jft.init;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,28 +22,30 @@ import com.cmm.jft.data.files.CSV;
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.db.exceptions.DataBaseException;
-import com.cmm.jft.financial.Account;
-import com.cmm.jft.financial.Broker;
-import com.cmm.jft.financial.Brokerage;
-import com.cmm.jft.financial.Commission;
-import com.cmm.jft.financial.Currency;
-import com.cmm.jft.financial.ExchangeTax;
-import com.cmm.jft.financial.enums.AccountCategories;
-import com.cmm.jft.financial.enums.AccountTypes;
-import com.cmm.jft.marketdata.HistoricalQuote;
-import com.cmm.jft.security.Country;
-import com.cmm.jft.security.Isin;
-import com.cmm.jft.security.Security;
-import com.cmm.jft.security.SecurityInfo;
-import com.cmm.jft.security.StockExchange;
-import com.cmm.jft.trading.enums.AssetTypes;
-import com.cmm.jft.trading.enums.MarketTypes;
-import com.cmm.jft.trading.enums.OptionRights;
-import com.cmm.jft.trading.enums.OptionStyles;
-import com.cmm.jft.trading.enums.SecurityCategory;
-import com.cmm.jft.trading.enums.StockSpecifications;
-import com.cmm.jft.trading.enums.TradeTypes;
-import com.cmm.jft.trading.enums.ValueTypes;
+import com.cmm.jft.model.financial.Account;
+import com.cmm.jft.model.financial.Broker;
+import com.cmm.jft.model.financial.Brokerage;
+import com.cmm.jft.model.financial.Commission;
+import com.cmm.jft.model.financial.Currency;
+import com.cmm.jft.model.financial.ExchangeTax;
+import com.cmm.jft.model.financial.enums.AccountCategories;
+import com.cmm.jft.model.financial.enums.AccountTypes;
+import com.cmm.jft.model.marketdata.HistoricalQuote;
+import com.cmm.jft.model.security.Company;
+import com.cmm.jft.model.security.Country;
+import com.cmm.jft.model.security.Isin;
+import com.cmm.jft.model.security.MarketIndex;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.security.SecurityInfo;
+import com.cmm.jft.model.security.StockExchange;
+import com.cmm.jft.model.security.enums.AssetTypes;
+import com.cmm.jft.model.security.enums.MarketTypes;
+import com.cmm.jft.model.security.enums.OptionRights;
+import com.cmm.jft.model.security.enums.OptionStyles;
+import com.cmm.jft.model.security.enums.SecurityCategory;
+import com.cmm.jft.model.trading.enums.StockSpecifications;
+import com.cmm.jft.model.trading.enums.TradeTypes;
+import com.cmm.jft.model.trading.enums.ValueTypes;
 import com.cmm.logging.Logging;
 
 /**
@@ -56,39 +60,6 @@ import com.cmm.logging.Logging;
 public class DBInitialization {
 
 	public static void main(String[] args) {
-
-		//
-		// // String[] s = {"1\r"};
-		// // System.out.println(Long.parseLong(s[0].toString()));
-		// // System.exit(0);
-		//
-		// // String d = ";";
-		// // String[] v = "ABRL;;ABRIL COMUNICACOES
-		// SA;44597052000162;;;;1".split(d);
-		// // System.out.println(v.length);
-		// // System.out.println("ABRL;;ABRIL COMUNICACOES
-		// SA;44597052000162;;;;1".split(d).length);
-		// // System.exit(0);
-		// // 61984201000000.00
-		// // 61984201000000000
-		// //0000002800000
-		// //00000028000.00
-		// // String num = "00000028000.10";
-		// // //num = num.substring(0, 11)+"."+num.substring(11, num.length());
-		// //
-		// // System.out.println(Double.parseDouble(num));
-		// // BigDecimal bd = new BigDecimal(num);//.setScale(2);
-		// //
-		// // System.out.println(bd);
-		//
-		//
-		// // GregorianCalendar gc = new GregorianCalendar();
-		// // //8895447357
-		// // gc.setTimeInMillis(8895447357l);
-		// // System.out.println(gc.get(Calendar.HOUR));
-		// //
-		// // System.exit(0);
-		//
 
 		DBInitialization dbini = new DBInitialization();
 		dbini.initializeDB();
@@ -135,19 +106,20 @@ public class DBInitialization {
 		 * (DataBaseException e) { e.printStackTrace(); }
 		 */
 
-		// addCountries("../file/Country.csv");
+		addCountries("../file/Country.csv");
 		addCurrencies("../file/Currencies.csv");
 		addAccounts("../file/Accounts.csv");
-		// addExchanges("../file/Exchanges.csv");
-
 		addBrokers("../file/Brokers.csv");
 		addBrokerage("../file/Brokerage.csv");
-		// addIsin("../jft_core/file/Isin.csv");
+		addExchanges("../file/Exchanges.csv");
+		addMarketIndexes("../file/MarketIndexes.csv");
+		addCompanies("../file/isin/EMISSOR.txt");
+		///init/src/main/resources/datafiles/MarketIndexes.csv
+		addIsin("../file/Isin.csv");
 		addSecurities("../file/Symbols.csv");
 
-		// addHistoricalQuotes("../jft_core/file/HistoricalQuotes.csv");
+		addHistoricalQuotes("../jft_core/file/HistoricalQuotes.csv");
 		// inuteis
-		// addCompanies("../jft_core/file/Companies.csv");
 		// addMarketCodes("../jft_core/file/MarketCodes.csv");
 		// addSecurityTypes("../jft_core/file/SecurityTypes.csv");
 		// addDatesInCodes("../jft_core/file/CodesAndDates.csv");
@@ -290,7 +262,6 @@ public class DBInitialization {
 				Logging.getInstance().log(getClass(), "Erro ao adicionar Corretora.", e, Level.ERROR, false);
 			}
 		}
-
 	}
 
 	private void addBrokerage(String fileName) {
@@ -358,6 +329,110 @@ public class DBInitialization {
 
 	}
 
+	private void addExchanges(String fileName) {
+		String repName = "Exchanges";
+		try {
+			report.startReport(repName);
+			DBFacade.getInstance().beginTransaction();
+
+			HashMap<String, Country> countries = new HashMap<String, Country>();
+			DBFacade.getInstance().queryAsMap("Country.findAll", countries, Country.class, "getCountryName");
+
+			CSV csv = new CSV(fileName, ";", "#");
+			while (csv.hasNext()) {
+
+				String[] vs = csv.readLine();
+				if (countries.containsKey(vs[2])) {
+					StockExchange se = new StockExchange(vs[0], vs[1], countries.get(vs[2]));
+					DBFacade.getInstance()._persist(se);
+					report.count(repName);
+				}
+			}
+			DBFacade.getInstance().commit();
+
+		} catch (DataBaseException e) {
+			e.printStackTrace();
+			report.reportError(repName, e.getMessage());
+		}
+	}
+
+	private void addMarketIndexes(String fileName) {
+		String repName = "MarketIndex";
+		report.startReport(repName);
+		CSV csv = new CSV(fileName, ";", "#");
+		while (csv.hasNext()) {
+			try {
+				String[] vs = csv.readLine();
+				MarketIndex mi = new MarketIndex(vs[0]);
+				mi.setName(vs[1]);
+				DBFacade.getInstance()._persist(mi);
+				report.count(repName);
+			} catch (Exception | DataBaseException e) {
+				report.reportError(repName, e.getMessage());
+				Logging.getInstance().log(getClass(), "Erro ao adicionar Market Index.", e, Level.ERROR, false);
+			}
+		}
+	}
+
+	private void addCompanies(String fileName) {
+		String repName = "Companies";
+		try {
+			report.startReport(repName);
+			
+			HashMap<Long, StockExchange> exchanges = new HashMap<Long, StockExchange>();
+			StockExchange exchange = (StockExchange) DBFacade.getInstance()._findByKey(StockExchange.class, "BVMF");// queryAsMap("StockExchange.findByStockExchangeId", exchanges, StockExchange.class, "getStockExchangeID");
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FormatterTypes.DATE_F9.getFormat());
+			
+			HashMap<String, String> cvmCompanies = new HashMap<String, String>();
+			CSV cvmCSV = new CSV("../file/CVMCompanies.csv", ";","#");
+			while(cvmCSV.hasNext()) {
+				String line[] = cvmCSV.readLine();
+				String cnpj = line[0].replaceAll("\\.", "").replaceAll("/", "").replaceAll("-", "");
+				if(!cnpj.isEmpty()) {
+					cvmCompanies.put(cnpj, line[2]);
+				}
+			}
+						
+			//CodigoEmissor;NomePregao;NomeEmissor;CNPJ;QtON;QtPN;DataEmissor;StockExchange
+			//CODIGO DO EMISSOR CARACTER 4, NOME DO EMISSOR CARACTER 70, CNPJ DO EMISSOR CARACTER 14, DATA CRIAÇÃO DO EMISSOR DATA 8
+			CSV csv = new CSV(fileName, ",");
+			csv.setRemoveQuotes(true);
+			
+			while(csv.hasNext()) {
+				String[] vs = csv.readLine();
+
+				if(vs.length == 4) {
+					Company company = new Company();
+					company.setEmitterCode(vs[0]);
+					company.setCompanyName(vs[1]);
+					company.setCnpj(vs[2]);
+					company.setStatus(GeneralStatus.ACTIVE);
+					company.setStockExchangeID(exchange);
+					
+					if(cvmCompanies.containsKey(company.getCnpj())){
+						company.setCvmCode(cvmCompanies.get(company.getCnpj()));
+					}
+					
+					if(vs[3] != null && vs[3].length() == 8) {
+						LocalDate dataEmissor =  LocalDate.parse(vs[3], dateTimeFormatter);
+						company.setCompanyDate(dataEmissor);
+					}
+					
+					DBFacade.getInstance()._persist(company);
+					
+					report.count(repName);
+				}
+			}
+			//DBFacade.getInstance().finalizeBatch();
+
+		} catch (DataBaseException e) {
+			e.printStackTrace();
+			report.reportError(repName, e.getMessage());
+			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
+		}
+	}
+
+
 	private void addSecurities(String fileName) {
 		int line = 0;
 		String repName = "Securities";
@@ -367,9 +442,8 @@ public class DBInitialization {
 			HashMap<String, Currency> currencies = new HashMap<String, Currency>();
 			DBFacade.getInstance().queryAsMap("Currency.findAll", currencies, Currency.class, "getCurrencyID");
 
-			// HashMap<String, Isin> isins = new HashMap<String, Isin>();
-			// DBFacade.getInstance().queryAsMap("Isin.findAll", isins,
-			// Isin.class, "getIsin");
+			HashMap<String, Isin> isins = new HashMap<String, Isin>();
+			DBFacade.getInstance().queryAsMap("Isin.findAll", isins, Isin.class, "getIsin");
 
 			// HashMap<String, SecurityType> specis = new HashMap<String,
 			// SecurityType>();
@@ -382,10 +456,9 @@ public class DBInitialization {
 
 			DBFacade.getInstance().beginTransaction();
 
-			// StockExchange exchange = (StockExchange) DBFacade.getInstance()
-			// .findObject("StockExchange.findByStockExchangeID", "stockExchangeID",
-			// "BVMF");
-			String exchange = "BVMF";
+			StockExchange exchange = (StockExchange) DBFacade.getInstance()
+					.findObject("StockExchange.findByStockExchangeID", "stockExchangeID", "BVMF");
+			//String exchange = "BVMF";
 
 			Date defDate = new Date();
 			while (csv.hasNext()) {
@@ -440,11 +513,11 @@ public class DBInitialization {
 				Security security = new Security(symbol);
 				security.setDescription(description);
 
-				security.setSecurityExchange(exchange);
+				security.setStockExchangeId(exchange);
+				security.setIsin(ISIN); 
 
 				SecurityInfo info = new SecurityInfo(security, secCat);
-				info.setIsin(ISIN);
-				info.setCurrencyID(currencies.get(currency));
+				info.setCurrencyId(currencies.get(currency));
 				info.setContractSize(contractSize);
 				info.setTickSize(tickSize);
 				info.setTickValue(tickValue);
@@ -462,7 +535,7 @@ public class DBInitialization {
 
 				// info = (SecurityInfo) DBFacade.getInstance()._persist(info);
 
-				security.setSecurityInfoID(info);
+				security.setSecurityInfoId(info);
 				// DBFacade.getInstance().addToBatch(security);
 				DBFacade.getInstance()._persist(security);
 
@@ -477,33 +550,6 @@ public class DBInitialization {
 			System.out.println(line);
 			report.reportError(repName, e.getMessage());
 			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
-		}
-	}
-
-	private void addExchanges(String fileName) {
-		String repName = "Exchanges";
-		try {
-			report.startReport(repName);
-			DBFacade.getInstance().beginTransaction();
-
-			HashMap<String, Country> countries = new HashMap<String, Country>();
-			DBFacade.getInstance().queryAsMap("Country.findAll", countries, Country.class, "getCountryName");
-
-			CSV csv = new CSV(fileName, ";", "#");
-			while (csv.hasNext()) {
-
-				String[] vs = csv.readLine();
-				if (countries.containsKey(vs[2])) {
-					StockExchange se = new StockExchange(vs[0], vs[1], countries.get(vs[2]));
-					DBFacade.getInstance()._persist(se);
-					report.count(repName);
-				}
-			}
-			DBFacade.getInstance().commit();
-
-		} catch (DataBaseException e) {
-			e.printStackTrace();
-			report.reportError(repName, e.getMessage());
 		}
 	}
 
@@ -550,7 +596,7 @@ public class DBInitialization {
 					Long TradedQuantity = (Long) FormatterFactory.getFormatter(FormatterTypes.LONG).parse(vs[17]);
 
 					HistoricalQuote hqte = new HistoricalQuote();
-					hqte.setSecurityID(securities.get(vs[0]));
+					hqte.setSecurityId(securities.get(vs[0]));
 					hqte.setqDateTime(QDatetime);
 					hqte.setAsk(QAsk);
 					hqte.setBid(QBid);
@@ -577,54 +623,7 @@ public class DBInitialization {
 		}
 	}
 
-	// private void addCompanies(String fileName) {
-	// String repName = "Companies";
-	// try {
-	// report.startReport(repName);
-	// DBFacade.getInstance().beginTransaction();
-	//
-	// HashMap<Long, StockExchange> exchanges = new HashMap<Long,
-	// StockExchange>();
-	// DBFacade.getInstance().queryAsMap("StockExchange.findAll", exchanges,
-	// StockExchange.class, "getStockExchangeID");
-	//
-	// //CodigoEmissor;NomePregao;NomeEmissor;CNPJ;QtON;QtPN;DataEmissor;StockExchange
-	// CSV csv = new CSV(fileName, ";");
-	// while(csv.hasNext()) {
-	// String[] vs = csv.readLine();
-	// String se =
-	// vs[7];//((Long)FormatterFactory.getFormatter(FormatterTypes.LONG).parse(vs[7]));
-	// if(exchanges.containsKey(se)) {
-	// String codigoEmissor = vs[0];
-	// String nomePregao = vs[1];
-	// String nomeEmissor = vs[2];
-	// String CNPJ = vs[3];
-	// long qtON =
-	// ((Long)FormatterFactory.getFormatter(FormatterTypes.LONG).parse(vs[4]));
-	// long qtPN =
-	// ((Long)FormatterFactory.getFormatter(FormatterTypes.LONG).parse(vs[5]));
-	// Date dataEmissor =
-	// ((Date)FormatterFactory.getFormatter(FormatterTypes.DATE_F9).parse(vs[6]));
-	//
-	// Company comp = new Company(nomeEmissor, qtON, qtPN, exchanges.get(se));
-	// comp.setMarketName(nomePregao);
-	// comp.setCnpj(CNPJ);
-	// comp.setCompanyDate(dataEmissor);
-	// comp.setStatus(GeneralStatus.ACTIVE);
-	// comp = comp.add();
-	// new MarketCode(comp, codigoEmissor).add();
-	// report.count(repName);
-	// }
-	//
-	// }
-	// DBFacade.getInstance().commit();
-	//
-	// } catch (DataBaseException e) {
-	// e.printStackTrace();
-	// report.reportError(repName, e.getMessage());
-	// Logging.getInstance().log(this.getClass(), e, Level.ERROR);
-	// }
-	// }
+
 	//
 	// private void addMarketCodes(String fileName) {
 	// String repName = "MarketCodes";
@@ -808,7 +807,7 @@ public class DBInitialization {
 			}
 			// DBFacade.getInstance().commit();
 			DBFacade.getInstance().finalizeBatch();
-			*/
+			 */
 		} catch (Exception e) {
 			e.printStackTrace();
 			report.reportError(repName, e.getMessage());

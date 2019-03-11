@@ -1,0 +1,46 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="6CCBBAF0-6495-2A8A-4E94-95B55F941D6B" schemaObject="B563C57E-FB72-43A9-0A56-5A2A13D3C2DD" name="CompanyInfo">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-10 22:17:51 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<ordsAlias>table_24</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="companyInfoId" id="D6B25918-04DA-7F49-BD52-D25AEFBE4651">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-10 22:18:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="companyId" id="C2DBB3E5-621F-1177-AD24-590B4143F950">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-10 22:18:34 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="435F213A-F5BF-1AA9-6DDC-C55BE324A702" name="CompanyInfo_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-10 22:18:21 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D6B25918-04DA-7F49-BD52-D25AEFBE4651"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

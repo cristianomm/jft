@@ -28,11 +28,11 @@ import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.data.connection.Events;
 import com.cmm.jft.data.extractor.marketdata.BovespaOfferFileExtractor;
 import com.cmm.jft.data.extractor.marketdata.BovespaTradeFileExtractor;
-import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.model.marketdata.MDEntry;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.Side;
 import com.cmm.jft.vo.Extractable;
 
 /**

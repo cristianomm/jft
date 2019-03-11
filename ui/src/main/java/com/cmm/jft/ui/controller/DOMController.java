@@ -1,16 +1,14 @@
 package com.cmm.jft.ui.controller;
 
-import com.cmm.jft.marketdata.MDEntry;
-import com.cmm.jft.security.Security;
-
-import com.cmm.jft.security.SecurityInfo;
+import com.cmm.jft.model.marketdata.MDEntry;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.security.SecurityInfo;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.OrderTypes;
+import com.cmm.jft.model.trading.enums.OrderValidityTypes;
+import com.cmm.jft.model.trading.enums.Side;
+import com.cmm.jft.model.trading.enums.TradeTypes;
 import com.cmm.jft.services.trading.TradingService;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.OrderTypes;
-import com.cmm.jft.trading.enums.OrderValidityTypes;
-import com.cmm.jft.trading.enums.Side;
-
-import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.jft.ui.forms.model.DOMTableModel;
 
 import java.beans.PropertyChangeEvent;

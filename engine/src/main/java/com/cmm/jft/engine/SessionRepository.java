@@ -3,7 +3,7 @@ package com.cmm.jft.engine;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import com.cmm.jft.trading.enums.StreamTypes;
+import com.cmm.jft.model.trading.enums.StreamTypes;
 
 import quickfix.SessionID;
 

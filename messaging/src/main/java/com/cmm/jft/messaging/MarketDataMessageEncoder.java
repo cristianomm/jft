@@ -6,10 +6,10 @@ package com.cmm.jft.messaging;
 import java.time.LocalDateTime;
 import java.util.Queue;
 
-import com.cmm.jft.trading.enums.MarketPhase;
-import com.cmm.jft.trading.enums.UpdateActions;
-import com.cmm.jft.security.Security;
-import com.cmm.jft.trading.Orders;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.MarketPhase;
+import com.cmm.jft.model.trading.enums.UpdateActions;
 
 import quickfix.Message;
 import quickfix.field.MDUpdateAction;

@@ -20,6 +20,17 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column name="securityIDSrc" id="3209B14B-CA5B-B15D-21AB-F3F3CABD702B">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-08 00:58:42 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 <Column name="stockExchangeID" id="95818216-B66F-52AD-7F91-126F07ADF724">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
@@ -29,7 +40,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>15</dataTypeSize>
-<ownDataTypeParameters>15,,</ownDataTypeParameters>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="6863F71F-3D5A-E4FB-0484-1AA6E009D0E3" referredColumn="E7991A1F-AEAE-5FEE-7EF1-F8DFFD2C8BCA"/>
@@ -59,6 +70,42 @@
 <ownDataTypeParameters>255,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column name="ISIN" id="54980714-8A5E-74EF-2E44-0CCCB5395233">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:23:42 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12</dataTypeSize>
+<ownDataTypeParameters>12,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CETIPCode" id="9EC59AC6-C512-89D2-AB89-1E7E535AA080">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:24:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="SELICCode" id="1F6A6866-424E-2D24-3B27-833319B340E9">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-08 04:48:08 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>6</dataTypeSize>
+<ownDataTypeParameters>6,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
 <ind_PK_UK id="4BA0F3E2-EADE-CA98-68B3-16B5A5C202CE" name="ExchangeItem_PK">
@@ -71,6 +118,46 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="8CE66BFA-9829-860B-1961-030FB7B00DEE" name="Security_ISIN_UN">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:24:40 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="54980714-8A5E-74EF-2E44-0CCCB5395233"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3CA0DEC2-8B05-F769-436D-004066508A46" name="Security_CETIPCode_UN">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:24:59 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9EC59AC6-C512-89D2-AB89-1E7E535AA080"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="C51AC581-A375-0869-EBEB-03E8F31EF28A" name="Security_Symbol_UN">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:25:37 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="24415DEB-F60B-852F-E68D-F0758B7CDD36"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="08D8F7B0-A026-8813-CE8B-02278A20A7B4" name="Security_SELICCode_UN">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-08 04:49:13 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="1F6A6866-424E-2D24-3B27-833319B340E9"/>
 </indexColumnUsage>
 </ind_PK_UK>
 <ind_PK_UK id="7F0CA2C9-3B4D-4FEE-7E5B-F307927050C8" name="Security_StockExchange_FK">

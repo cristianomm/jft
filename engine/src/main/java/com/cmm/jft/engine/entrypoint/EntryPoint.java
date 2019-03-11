@@ -21,11 +21,11 @@ import com.cmm.jft.messaging.enums.FIXProtocols;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageDecoder;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.messaging.handlers.MessageHandler;
-import com.cmm.jft.trading.OrderEvent;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.ExecutionTypes;
-import com.cmm.jft.trading.enums.StreamTypes;
-import com.cmm.jft.trading.exceptions.OrderException;
+import com.cmm.jft.model.trading.OrderEvent;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.ExecutionTypes;
+import com.cmm.jft.model.trading.enums.StreamTypes;
+import com.cmm.jft.model.trading.exceptions.OrderException;
 
 import quickfix.ConfigError;
 import quickfix.DoNotSend;
@@ -240,7 +240,7 @@ public class EntryPoint extends Stream {
 		Book book = null;
 		Orders order = decoder.newOrderSingle(message);
 		if ((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null) {
-			SessionRepository.getInstance().addTraderSession(order.getTraderID(), sessionID);
+			SessionRepository.getInstance().addTraderSession(order.getTraderId(), sessionID);
 			// try to add the order in the book
 			book.addOrder(order);
 		} else {
@@ -314,13 +314,13 @@ public class EntryPoint extends Stream {
 
 		try {
 			OrderEvent oe = new OrderEvent(exec, LocalDateTime.now(), order.getVolume(), order.getPrice());
-			oe.setOrderEventID(messageIDs.nextLong());
-			oe.setOrderID(order);
+			oe.setOrderEventId(messageIDs.nextLong());
+			oe.setOrderId(order);
 			oe.setMessage(message);
 			oe.setOrdRejReason(ordRejReason);
 			order.addExecution(oe);
 
-			SessionID sessionID = SessionRepository.getInstance().getTraderSession(order.getTraderID());
+			SessionID sessionID = SessionRepository.getInstance().getTraderSession(order.getTraderId());
 			sendMessage(((Fix44EngineMessageEncoder) MessageEncoder.getEncoder(sessionID)).executionReport(oe),
 					sessionID);
 		} catch (OrderException e) {

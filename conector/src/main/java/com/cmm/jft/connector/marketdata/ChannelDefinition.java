@@ -6,7 +6,7 @@ package com.cmm.jft.connector.marketdata;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cmm.jft.trading.enums.StreamTypes;
+import com.cmm.jft.model.trading.enums.StreamTypes;
 
 /**
  * <p>

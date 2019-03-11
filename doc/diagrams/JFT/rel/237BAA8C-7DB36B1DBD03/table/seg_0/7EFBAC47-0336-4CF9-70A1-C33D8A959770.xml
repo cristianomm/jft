@@ -1,0 +1,84 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="7EFBAC47-0336-4CF9-70A1-C33D8A959770" schemaObject="B563C57E-FB72-43A9-0A56-5A2A13D3C2DD" name="MarketIndex">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:27:54 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<ordsAlias>table_22</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="marketIndexId" id="4D33FBFD-05D6-7D0F-F32C-55B90FF4AC2F">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:30:31 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>5</dataTypeSize>
+<ownDataTypeParameters>5,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Name" id="BAA0C285-B2A5-F1D0-250E-2CDDE6E3CE25">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:30:52 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Description" id="26A2F12A-A801-706A-3AE5-E8CD3A3CCF66">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:31:17 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Provider" id="F76A1C1B-B2E9-E1E2-88A0-E5FC34A6D108">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:33:25 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ProviderLink" id="66B71D02-C6FE-577A-52C0-FE484E8C6A02">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:33:44 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="777420DA-2735-0D36-B0BA-0714926190FD" name="MarketIndex_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:30:31 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4D33FBFD-05D6-7D0F-F32C-55B90FF4AC2F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E890B200-BD30-694F-25FD-BD873AB68864" schemaObject="9A22C48B-9F6D-F9CC-4C87-8045AC6B89B3" name="CustomerAccount">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E890B200-BD30-694F-25FD-BD873AB68864" schemaObject="9A22C48B-9F6D-F9CC-4C87-8045AC6B89B3" name="BankAccount">
 <createdBy>Cristiano M Martins</createdBy>
 <createdTime>2019-01-29 00:00:25 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -8,7 +8,7 @@
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
-<Column name="accountId" id="EC1FA69A-F665-3D15-76DE-706D0072600B">
+<Column name="bankAccountId" id="EC1FA69A-F665-3D15-76DE-706D0072600B">
 <createdBy>Cristiano M Martins</createdBy>
 <createdTime>2019-01-29 00:01:12 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -18,7 +18,7 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="customerId" id="D53E003A-5B58-85D8-000E-494A9E0B2784">
+<Column name="partnerId" id="D53E003A-5B58-85D8-000E-494A9E0B2784">
 <createdBy>Cristiano M Martins</createdBy>
 <createdTime>2019-01-29 00:00:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -77,9 +77,23 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column name="accountId" id="AA07E602-75DD-C8C4-5F15-151A7A00C764">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-09 16:38:14 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="E3520AB1-DA63-5D2A-FEEB-280A96273DFC" referredColumn="36293936-AE0A-B63B-0722-8495653EF297"/>
+</associations>
+</Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
-<ind_PK_UK id="526DF8DD-F149-674C-2DD2-5DA03DABA8FA" name="CustomerAccount_PK">
+<ind_PK_UK id="526DF8DD-F149-674C-2DD2-5DA03DABA8FA" name="BankAccount_PK">
 <createdBy>Cristiano M Martins</createdBy>
 <createdTime>2019-01-29 00:01:12 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -90,7 +104,7 @@
 <colUsage columnID="EC1FA69A-F665-3D15-76DE-706D0072600B"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="559AEEF1-17F4-75D6-A581-6BFB2E3C6972" name="CustomerAccount_Customer_FK">
+<ind_PK_UK id="559AEEF1-17F4-75D6-A581-6BFB2E3C6972" name="BankAccount_Customer_FK">
 <createdBy>Cristiano M Martins</createdBy>
 <createdTime>2019-01-29 00:05:14 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -98,6 +112,16 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="D53E003A-5B58-85D8-000E-494A9E0B2784"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="6DEF7DA1-58CD-9435-72C7-92C85AA8F8E2" name="BankAccount_Account_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-09 16:41:48 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="AA07E602-75DD-C8C4-5F15-151A7A00C764"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

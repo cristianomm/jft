@@ -5,7 +5,7 @@
  */
 package com.cmm.jft.ui.forms.trading;
 
-import com.cmm.jft.marketdata.MDNews;
+import com.cmm.jft.model.marketdata.MDNews;
 import com.cmm.jft.ui.forms.AbstractForm;
 
 /**

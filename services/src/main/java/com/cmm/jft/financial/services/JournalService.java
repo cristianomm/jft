@@ -10,17 +10,17 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 
-import com.cmm.jft.financial.Account;
-import com.cmm.jft.financial.Currency;
-import com.cmm.jft.financial.DistributionRule;
-import com.cmm.jft.financial.EntryRegister;
-import com.cmm.jft.financial.JournalEntry;
-import com.cmm.jft.financial.enums.EntryType;
-import com.cmm.jft.financial.enums.JournalStatus;
-import com.cmm.jft.financial.exceptions.RegistrationException;
 import com.cmm.jft.core.enums.Objects;
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
+import com.cmm.jft.model.financial.Account;
+import com.cmm.jft.model.financial.Currency;
+import com.cmm.jft.model.financial.DistributionRule;
+import com.cmm.jft.model.financial.EntryRegister;
+import com.cmm.jft.model.financial.JournalEntry;
+import com.cmm.jft.model.financial.enums.EntryType;
+import com.cmm.jft.model.financial.enums.JournalStatus;
+import com.cmm.jft.model.financial.exceptions.RegistrationException;
 import com.cmm.logging.Logging;
 
 /**
@@ -117,7 +117,7 @@ public class JournalService {
 	// for ( Rule rule : distRule.getRuleSet()) {
 	// try {
 	// //
-	// MapRegister reg = rule.getMapRegisterID();
+	// MapRegister reg = rule.getMapRegisterId();
 	// BigDecimal value = new BigDecimal(0);
 	// if(reg!=null && reg.getFormula()!=null) {
 	//
@@ -135,16 +135,16 @@ public class JournalService {
 	//
 	// if(rule.isApplyTax()) {
 	// value = value.multiply(new
-	// BigDecimal(rule.getTaxSetupID().getAliquota()));
+	// BigDecimal(rule.getTaxSetupId().getAliquota()));
 	// }
 	//
 	// if(rule.isApplyValue()) {
-	// value = value.add(rule.getTaxSetupID().getTaxValue());
+	// value = value.add(rule.getTaxSetupId().getTaxValue());
 	// }
 	//
 	// registerEntry(journalEntry,
-	// rule.getCreditAccountID(),
-	// rule.getDebitAccountID(), value, reg.getDescription());
+	// rule.getCreditAccountId(),
+	// rule.getDebitAccountId(), value, reg.getDescription());
 	//
 	// } catch (AccountException e) {
 	// Logging.getInstance().log(JournalService.class, e, Level.ERROR);
@@ -188,8 +188,8 @@ public class JournalService {
 		EntryRegister debitReg = new EntryRegister(EntryType.DEBIT, dbtv, crv, descr, defCurr, debitAccount,
 				creditAccount);
 
-		creditReg.setEntryID(journalEntry);
-		debitReg.setEntryID(journalEntry);
+		creditReg.setEntryId(journalEntry);
+		debitReg.setEntryId(journalEntry);
 
 		creditReg = (EntryRegister) DBFacade.getInstance()._persist(creditReg);
 		debitReg = (EntryRegister) DBFacade.getInstance()._persist(debitReg);
@@ -209,11 +209,11 @@ public class JournalService {
 			if (journalEntry.getJournalStatus() == JournalStatus.OPEN) {
 				try {
 					JournalEntry je = createEntry();
-					je.setDescription("Reverse of JournalEntry: " + journalEntry.getEntryID());
+					je.setDescription("Reverse of JournalEntry: " + journalEntry.getEntryId());
 
 					for (EntryRegister er : journalEntry.getEntryRegisterSet()) {
 						if (er.getEntryType() == EntryType.CREDIT) {
-							registerEntry(je, er.getDebitAccountID(), er.getCreditAccountID(), er.getCredit(),
+							registerEntry(je, er.getDebitAccountId(), er.getCreditAccountId(), er.getCredit(),
 									er.getDescription() + " - Reverse");
 						}
 					}
@@ -261,7 +261,7 @@ public class JournalService {
 				je.setJournalStatus(JournalStatus.CANCELED);
 				je = (JournalEntry) DBFacade.getInstance()._update(je);
 			} else {
-				Logging.getInstance().log(getClass(), "Não foi possível reverter o Lancamento: " + je.getEntryID(),
+				Logging.getInstance().log(getClass(), "Não foi possível reverter o Lancamento: " + je.getEntryId(),
 						Level.WARN);
 			}
 		} catch (DataBaseException e) {
@@ -284,7 +284,7 @@ public class JournalService {
 		EntryRegister creditReg = new EntryRegister(EntryType.CREDIT, crv, dbtv, description, defCurr, creditAccount,
 				null);
 
-		creditReg.setEntryID(journalEntry);
+		creditReg.setEntryId(journalEntry);
 
 		// creditReg = (EntryRegister)
 		// DBFacade.getInstance()._persist(creditReg);

@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E80FFD41-6770-B3B5-EC03-62F2C01DE42E" schemaObject="9A22C48B-9F6D-F9CC-4C87-8045AC6B89B3" name="Customer">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E80FFD41-6770-B3B5-EC03-62F2C01DE42E" schemaObject="9A22C48B-9F6D-F9CC-4C87-8045AC6B89B3" name="BusinessPartner">
 <createdBy>Cristiano M Martins</createdBy>
 <createdTime>2019-01-28 23:59:22 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -8,7 +8,7 @@
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
-<Column name="customerId" id="3296EA71-5E9F-8CA0-2236-B4E8E1562A73">
+<Column name="partnerId" id="3296EA71-5E9F-8CA0-2236-B4E8E1562A73">
 <createdBy>Cristiano M Martins</createdBy>
 <createdTime>2019-01-28 23:59:53 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -28,6 +28,30 @@
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>100</dataTypeSize>
 <ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="IDNumber" id="8B8A6E42-65C2-7424-74C6-31EE2D5C0A30">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-09 03:24:52 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PartnerType" id="6877F415-5685-6CC1-1DCE-3A075A9C933C">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-09 03:46:03 UTC</createdTime>
+<commentInRDBMS>Individual, Company</commentInRDBMS>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>

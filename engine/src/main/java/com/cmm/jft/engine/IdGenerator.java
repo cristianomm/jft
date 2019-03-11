@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.cmm.jft.security.Security;
+import com.cmm.jft.model.security.Security;
 /**
  * <p>
  * <code>IdGenerator.java</code>
@@ -22,7 +22,7 @@ public class IdGenerator {
 	private AtomicInteger seqNumericID;
 
 	public IdGenerator(Security security, LocalDateTime dateTime) {
-		this.seqNumericID = new AtomicInteger(security.getSecurityID() + dateTime.get(ChronoField.MILLI_OF_DAY));
+		this.seqNumericID = new AtomicInteger(security.getSecurityId() + dateTime.get(ChronoField.MILLI_OF_DAY));
 	}
 
 	/**

@@ -5,8 +5,8 @@ package com.cmm.jft.engine.match;
 
 import java.util.Comparator;
 
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.Side;
 
 /**
  * <p>

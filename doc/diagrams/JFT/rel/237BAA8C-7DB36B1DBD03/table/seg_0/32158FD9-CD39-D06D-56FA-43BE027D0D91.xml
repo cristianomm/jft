@@ -26,7 +26,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>5</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>5,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="9376BD69-EDA3-94C1-0134-4477743569F9" referredColumn="97E7232E-411E-0848-46E1-75AE8FE7FD6E"/>

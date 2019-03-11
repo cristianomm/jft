@@ -3,6 +3,7 @@
  */
 package com.cmm.jft.data.extractor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import com.cmm.jft.core.enums.GeneralStatus;
@@ -19,7 +20,7 @@ public class CVMCia implements Extractable {
 	private String cnpj;
 	private String name;
 	private String cvmCode;
-	private Date statusDate;
+	private LocalDate statusDate;
 	private GeneralStatus status;
 	
 	/**
@@ -29,8 +30,7 @@ public class CVMCia implements Extractable {
 	 * @param statusDate
 	 * @param status
 	 */
-	public CVMCia(String cnpj, String name, String cvmCode, Date statusDate,
-			GeneralStatus status) {
+	public CVMCia(String cnpj, String name, String cvmCode, LocalDate statusDate, GeneralStatus status) {
 		super();
 		this.cnpj = cnpj;
 		this.name = name;
@@ -70,7 +70,7 @@ public class CVMCia implements Extractable {
 	/**
 	 * @return the statusDate
 	 */
-	public Date getStatusDate() {
+	public LocalDate getStatusDate() {
 		return this.statusDate;
 	}
 
@@ -82,6 +82,11 @@ public class CVMCia implements Extractable {
 		return "CVMCia [cnpj=" + this.cnpj + ", name=" + this.name
 				+ ", cvmCode=" + this.cvmCode + ", statusDate="
 				+ this.statusDate + ", status=" + this.status + "]";
+	}
+	
+	public String toCSV() {
+		return this.cnpj + ";" + this.name + ";" + this.cvmCode + ";"
+				+ this.statusDate + ";" + this.status;
 	}
 	
 }

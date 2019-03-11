@@ -80,10 +80,10 @@ import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.messaging.MessageCounter;
 import com.cmm.jft.messaging.MessageEncoder;
-import com.cmm.jft.trading.OrderEvent;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.OrderStatus;
-import com.cmm.jft.trading.enums.RejectTypes;
+import com.cmm.jft.model.trading.OrderEvent;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.OrderStatus;
+import com.cmm.jft.model.trading.enums.RejectTypes;
 
 
 /**
@@ -350,30 +350,30 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	public ExecutionReport executionReport(OrderEvent execution) {
 		ExecutionReport execReport = null;
 		try {
-			execReport = new ExecutionReport(new OrderID(execution.getOrderID().getOrderID().toString()),
-					new ExecID(execution.getOrderEventID().toString()),
+			execReport = new ExecutionReport(new OrderID(execution.getOrderId().getOrderId().toString()),
+					new ExecID(execution.getOrderEventId().toString()),
 					new ExecType(execution.getExecutionType().getValue()),
-					new OrdStatus(execution.getOrderID().getOrderStatus().getValue()),
-					new Side(execution.getOrderID().getSide().getValue()),
-					new LeavesQty(execution.getOrderID().getLeavesVolume()),
-					new CumQty(execution.getOrderID().getExecutedVolume()), new AvgPx(0));
+					new OrdStatus(execution.getOrderId().getOrderStatus().getValue()),
+					new Side(execution.getOrderId().getSide().getValue()),
+					new LeavesQty(execution.getOrderId().getLeavesVolume()),
+					new CumQty(execution.getOrderId().getExecutedVolume()), new AvgPx(0));
 
-			execReport.set(new ClOrdID(execution.getOrderID().getClOrdID()));
+			execReport.set(new ClOrdID(execution.getOrderId().getClOrdId()));
 
-			if (execution.getOrderID().getOrigClOrdID() != null) {
-				execReport.set(new OrigClOrdID(execution.getOrderID().getOrigClOrdID()));
+			if (execution.getOrderId().getOrigClOrdId() != null) {
+				execReport.set(new OrigClOrdID(execution.getOrderId().getOrigClOrdId()));
 			}
 
-			if (execution.getOrderID().getSecOrderID() != null) {
-				execReport.set(new SecondaryClOrdID(execution.getOrderID().getSecOrderID().toString()));
+			if (execution.getOrderId().getSecOrderId() != null) {
+				execReport.set(new SecondaryClOrdID(execution.getOrderId().getSecOrderId().toString()));
 			}
 
-			boolean work = execution.getOrderID()
-					.getWorkingIndicator() == com.cmm.jft.trading.enums.WorkingIndicator.Working ? true : false;
+			boolean work = execution.getOrderId()
+					.getWorkingIndicator() == com.cmm.jft.model.trading.enums.WorkingIndicator.Working ? true : false;
 			execReport.set(new WorkingIndicator(work));
-			execReport.set(new Symbol(execution.getOrderID().getSecurityID().getSymbol()));
+			execReport.set(new Symbol(execution.getOrderId().getSecurityId().getSymbol()));
 
-			execReport.set(new OrderQty(execution.getOrderID().getVolume()));
+			execReport.set(new OrderQty(execution.getOrderId().getVolume()));
 			if (execution.getPrice() > 0) {
 				execReport.set(new LastPx(execution.getPrice()));
 				execReport.set(new LastQty(execution.getVolume()));
@@ -418,12 +418,12 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 	 */
 	public NewOrderSingle newOrderSingle(Orders order) {
 
-		NewOrderSingle orderSingle = new NewOrderSingle(new ClOrdID(order.getClOrdID()),
+		NewOrderSingle orderSingle = new NewOrderSingle(new ClOrdID(order.getClOrdId()),
 				new Side(order.getSide().getValue()), new TransactTime(), new OrdType(order.getOrderType().getValue()));
 
 		addIdFields(orderSingle);
 
-		orderSingle.set(new Symbol(order.getSecurityID().getSymbol()));
+		orderSingle.set(new Symbol(order.getSecurityId().getSymbol()));
 		orderSingle.set(exchange);
 
 		orderSingle.set(new OrderQty(order.getVolume()));
@@ -463,10 +463,10 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 		OrderCancelReject cancelReject = new OrderCancelReject();
 
 		if (order != null) {
-			cancelReject.set(new OrderID(order.getOrderID().toString()));
-			cancelReject.set(new SecondaryClOrdID(order.getSecOrderID().toString()));
-			cancelReject.set(new ClOrdID(order.getClOrdID()));
-			cancelReject.set(new OrigClOrdID(order.getOrigClOrdID()));
+			cancelReject.set(new OrderID(order.getOrderId().toString()));
+			cancelReject.set(new SecondaryClOrdID(order.getSecOrderId().toString()));
+			cancelReject.set(new ClOrdID(order.getClOrdId()));
+			cancelReject.set(new OrigClOrdID(order.getOrigClOrdId()));
 
 			cancelReject.set(new CxlRejResponseTo(rejectTypes.getValue()));
 			if (rejReason > 0) {
@@ -476,8 +476,8 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 			} else {
 				cancelReject.set(new OrdStatus(order.getOrderStatus().getValue()));
 			}
-			cancelReject.setString(55, order.getSecurityID().getSymbol());
-			addIdFields(cancelReject, order.getTraderID(), order.getBrokerID());
+			cancelReject.setString(55, order.getSecurityId().getSymbol());
+			addIdFields(cancelReject, order.getTraderId(), order.getBrokerId());
 
 		}
 
@@ -498,9 +498,9 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 		addIdFields(replaceRequest);
 
 		if (order != null) {
-			replaceRequest.set(new OrigClOrdID(order.getOrigClOrdID()));
-			replaceRequest.set(new ClOrdID(order.getClOrdID()));
-			replaceRequest.set(new Symbol(order.getSecurityID().getSymbol()));
+			replaceRequest.set(new OrigClOrdID(order.getOrigClOrdId()));
+			replaceRequest.set(new ClOrdID(order.getClOrdId()));
+			replaceRequest.set(new Symbol(order.getSecurityId().getSymbol()));
 			replaceRequest.set(new Side(order.getSide().getValue()));
 			replaceRequest.set(new TransactTime(order.getOrderDateTime()));
 			replaceRequest.set(new OrderQty(order.getExecutedVolume()));
@@ -522,9 +522,9 @@ public class Fix44EngineMessageEncoder implements MessageEncoder {
 
 		addIdFields(cancelRequest);
 
-		cancelRequest.set(new OrigClOrdID(order.getOrigClOrdID()));
-		cancelRequest.set(new ClOrdID(order.getClOrdID()));
-		cancelRequest.set(new Symbol(order.getSecurityID().getSymbol()));
+		cancelRequest.set(new OrigClOrdID(order.getOrigClOrdId()));
+		cancelRequest.set(new ClOrdID(order.getClOrdId()));
+		cancelRequest.set(new Symbol(order.getSecurityId().getSymbol()));
 		cancelRequest.set(new Side(order.getSide().getValue()));
 		cancelRequest.set(new TransactTime(LocalDateTime.now()));
 		cancelRequest.set(new OrderQty(order.getVolume()));

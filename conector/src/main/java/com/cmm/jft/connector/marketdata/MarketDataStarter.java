@@ -18,7 +18,7 @@ import quickfix.SessionSettings;
 import quickfix.SocketInitiator;
 
 import com.cmm.jft.core.services.Service;
-import com.cmm.jft.trading.enums.StreamTypes;
+import com.cmm.jft.model.trading.enums.StreamTypes;
 import com.cmm.logging.Logging;
 
 /**

@@ -7,9 +7,9 @@ import quickfix.Message;
 import quickfix.SessionID;
 import quickfix.field.MDEntryType;
 
-import com.cmm.jft.marketdata.MarketOrder;
-import com.cmm.jft.trading.OrderEvent;
-import com.cmm.jft.trading.Orders;
+import com.cmm.jft.model.marketdata.MarketOrder;
+import com.cmm.jft.model.trading.OrderEvent;
+import com.cmm.jft.model.trading.Orders;
 
 /**
  * <p><code>MessageDecoder.java</code></p>
