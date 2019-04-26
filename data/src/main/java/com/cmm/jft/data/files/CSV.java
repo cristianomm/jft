@@ -28,6 +28,7 @@ import com.cmm.logging.Logging;
 public class CSV {
 
 	private boolean skipHeader;
+	private boolean removeQuotes;
 	private String delimiter;
 	private String lineDelimiter;
 	private String headerPrefix;
@@ -152,6 +153,27 @@ public class CSV {
 	public String getEncoding() {
 		return this.encoding;
 	}
+	
+	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+	
+	/**
+	 * @return the removeQuotes
+	 */
+	public boolean isRemoveQuotes() {
+		return removeQuotes;
+	}
+	
+	/**
+	 * @param removeQuotes the removeQuotes to set
+	 */
+	public void setRemoveQuotes(boolean removeQuotes) {
+		this.removeQuotes = removeQuotes;
+	}
 
 	/**
 	 * @param encoding
@@ -242,9 +264,13 @@ public class CSV {
 
 				line = line.replaceAll("\r", "").replaceAll("\n", "");
 				ret = line.split(delimiter);
-
+				
 				for (int i = 0; i < ret.length; i++) {
 					ret[i] = removeWhite(ret[i]);
+					
+					if(removeQuotes) {
+						ret[i] = removeQuotes(ret[i]);
+					}
 				}
 
 			}
@@ -264,7 +290,6 @@ public class CSV {
 
 	private String removeWhite(String txt) {
 		try {
-
 			if (txt == null) {
 				txt = "";
 			} else {
@@ -273,15 +298,23 @@ public class CSV {
 					txt = matcher.group();
 				}
 			}
-			/*
-			 * while (txt.charAt(txt.length() - 1) == ' ') { txt =
-			 * txt.substring(0, txt.length() - 1); }
-			 */
-
 		} catch (StringIndexOutOfBoundsException e) {
 			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
 		}
 		return txt;
 	}
 
+	private String removeQuotes(String txt) {
+		try {
+			if (txt == null) {
+				txt = "";
+			} else {
+				txt = txt.replaceAll("^\"|\"$", "");
+			}
+		} catch (StringIndexOutOfBoundsException e) {
+			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
+		}
+		return txt;
+	}
+	
 }

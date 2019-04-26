@@ -3,8 +3,8 @@
  */
 package com.cmm.jft.services.marketdata;
 
-import com.cmm.jft.marketdata.MDEntry;
-import com.cmm.jft.trading.enums.MDEntryTypes;
+import com.cmm.jft.model.marketdata.MDEntry;
+import com.cmm.jft.model.trading.enums.MDEntryTypes;
 
 /**
  * <p>

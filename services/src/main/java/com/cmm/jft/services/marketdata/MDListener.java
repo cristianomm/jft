@@ -3,7 +3,7 @@
  */
 package com.cmm.jft.services.marketdata;
 
-import com.cmm.jft.marketdata.MDEntry;
+import com.cmm.jft.model.marketdata.MDEntry;
 
 /**
  * <p>

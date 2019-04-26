@@ -28,11 +28,11 @@ import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.data.connection.Events;
 import com.cmm.jft.data.extractor.marketdata.BovespaOfferFileExtractor;
 import com.cmm.jft.data.extractor.marketdata.BovespaTradeFileExtractor;
-import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.model.marketdata.MDEntry;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.Side;
 import com.cmm.jft.vo.Extractable;
 
 /**
@@ -212,16 +212,17 @@ public class FIXLogCreator {
 		// ordens que possuem dois eventos no mesmo tempo como por exemplo 1 e 3
 		// sao ordens do tipo Fill Or Kill
 		TreeMap<LocalDateTime, EventsEntry> mapentries = loadMDFiles(buyFileName, sellFileName, tradeFileName, symbol);
-
-
+		
 		for(EventsEntry ee : mapentries.values()){
 			//agrupa por tipo de evento
-			Map<Integer, List<MDEntry>> resB = ee.buy.stream().collect(
-					Collectors.groupingBy(MDEntry::getOrderEvent)
+			Map<Integer, List<MDEntry>> resB = ee.buy.stream()
+					.collect(
+							Collectors.groupingBy(MDEntry::getOrderEvent)
 					);
 
-			Map<Integer, List<MDEntry>> resS = ee.sell.stream().collect(
-					Collectors.groupingBy(MDEntry::getOrderEvent)
+			Map<Integer, List<MDEntry>> resS = ee.sell.stream()
+					.collect(
+							Collectors.groupingBy(MDEntry::getOrderEvent)
 					);
 
 			if(resB.size() > 0){
@@ -229,13 +230,9 @@ public class FIXLogCreator {
 			}
 
 			if(resS.size() > 0){
-
+				resS.values().stream().count();
 			}
-
-
 		}
-
-
 	}
 
 	/**

@@ -2,7 +2,7 @@ package com.cmm.jft.vo;
 
 import java.util.Date;
 
-import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.model.trading.enums.Side;
 
 
 /**

@@ -176,8 +176,7 @@ public class QuoteData implements Extractable {
 				this.symbol = data;
 				break;
 			case OPN:
-				this.open = (Double) FormatterFactory.getFormatter(
-						FormatterTypes.DOUBLE).parse(data);
+				this.open = (Double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(data);
 				break;
 			case NME:
 				this.name = data;
@@ -186,57 +185,45 @@ public class QuoteData implements Extractable {
 				date = data;
 				break;
 			case LST_CLOSE:
-				this.lstClose = (Double) FormatterFactory.getFormatter(
-						FormatterTypes.DOUBLE).parse(data);
+				this.lstClose = (Double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(data);
 				break;
 			case TIME:
 				time = data;
 				break;
 			case HIGH:
-				this.high = (Double) FormatterFactory.getFormatter(
-						FormatterTypes.DOUBLE).parse(data);
+				this.high = (Double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(data);
 				break;
 			case LOW:
-				this.low = (Double) FormatterFactory.getFormatter(
-						FormatterTypes.DOUBLE).parse(data);
+				this.low = (Double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(data);
 				break;
 			case TRADES:
-				this.trades = (Long) FormatterFactory.getFormatter(
-						FormatterTypes.LONG).parse(data);
+				this.trades = (Long) FormatterFactory.getFormatter(FormatterTypes.LONG).parse(data);
 				break;
 			case TRADED_QT:
-				this.tradedQt = (Long) FormatterFactory.getFormatter(
-						FormatterTypes.LONG).parse(data);
+				this.tradedQt = (Long) FormatterFactory.getFormatter(FormatterTypes.LONG).parse(data);
 				break;
 			case LST_PRICE:
-				this.lstPrice = (Double) FormatterFactory.getFormatter(
-						FormatterTypes.DOUBLE).parse(data);
+				this.lstPrice = (Double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(data);
 				break;
 			case LST_TRADE_QT:
-				this.lstTradeQt = (Long) FormatterFactory.getFormatter(
-						FormatterTypes.LONG).parse(data);
+				this.lstTradeQt = (Long) FormatterFactory.getFormatter(FormatterTypes.LONG).parse(data);
 				break;
 			case VAR:
-				this.variation = (Double) FormatterFactory.getFormatter(
-						FormatterTypes.DOUBLE).parse(data);
+				this.variation = (Double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(data);
 				break;
 			case FVT:
-				this.finVolume = (BigDecimal) FormatterFactory.getFormatter(
-						FormatterTypes.BIGDECIMAL).parse(data);
+				this.finVolume = (BigDecimal) FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(data);
 				break;
 			case VAP:
 				break;
 			case LFV:
-				this.lstFinVolume = (BigDecimal) FormatterFactory.getFormatter(
-						FormatterTypes.BIGDECIMAL).parse(data);
+				this.lstFinVolume = (BigDecimal) FormatterFactory.getFormatter(FormatterTypes.BIGDECIMAL).parse(data);
 				break;
 			case BOPx:
-				this.bid = (Double) FormatterFactory.getFormatter(
-						FormatterTypes.DOUBLE).parse(data);
+				this.bid = (Double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(data);
 				break;
 			case SOPx:
-				this.ask = (Double) FormatterFactory.getFormatter(
-						FormatterTypes.DOUBLE).parse(data);
+				this.ask = (Double) FormatterFactory.getFormatter(FormatterTypes.DOUBLE).parse(data);
 				break;
 			case BOQTx:
 				break;
@@ -268,8 +255,7 @@ public class QuoteData implements Extractable {
 			// this.qDateTime =
 			// break;
 			case ADT:
-				this.acquiredDateTime = (Long) FormatterFactory.getFormatter(
-						FormatterTypes.LONG).parse(data);
+				this.acquiredDateTime = (Long) FormatterFactory.getFormatter(FormatterTypes.LONG).parse(data);
 				break;
 
 			default:
@@ -277,8 +263,7 @@ public class QuoteData implements Extractable {
 			}
 		} catch (NumberFormatException e) {
 			Logging.getInstance().log(QuoteData.class, e, Level.ERROR);
-			throw new StreamException("Erro ao ler valor: " + data
-					+ " para o codigo " + code.name());
+			throw new StreamException("Erro ao ler valor: " + data + " para o codigo " + code.name());
 		}
 	}
 
@@ -447,24 +432,16 @@ public class QuoteData implements Extractable {
 	 */
 	@Override
 	public String toString() {
-		return (this.date != null ? this.date + ";" : ";")
-				+ (this.time != null ? this.time + ";" : ";")
-				+ this.elapsedTime + ";" + this.acquiredDateTime + ";"
-				+ (this.symbol != null ? this.symbol + ";" : ";")
-				+ (this.name != null ? this.name + ";" : ";")
-				+ (this.market != null ? this.market + ";" : ";")
-				+ (this.isin != null ? this.isin + ";" : ";")
-				+ (this.type != null ? this.type + ";" : ";")
-				+ (this.qDateTime != null ? this.qDateTime + ";" : ";")
-				+ this.open + ";" + this.lstClose + ";" + this.high + "; "
-				+ this.low + ";" + this.trades + ";" + this.tradedQt + ";"
-				+ this.lstTradeQt + ";" + this.lstPrice + ";" + this.buyOfferQt
-				+ ";" + this.sellOfferQt + ";" + this.buyOfferCount + ";"
-				+ this.sellOfferCount + ";" + this.variation + ";"
-				+ this.ptVariation + ";"
+		return (this.date != null ? this.date + ";" : ";") + (this.time != null ? this.time + ";" : ";")
+				+ this.elapsedTime + ";" + this.acquiredDateTime + ";" + (this.symbol != null ? this.symbol + ";" : ";")
+				+ (this.name != null ? this.name + ";" : ";") + (this.market != null ? this.market + ";" : ";")
+				+ (this.isin != null ? this.isin + ";" : ";") + (this.type != null ? this.type + ";" : ";")
+				+ (this.qDateTime != null ? this.qDateTime + ";" : ";") + this.open + ";" + this.lstClose + ";"
+				+ this.high + "; " + this.low + ";" + this.trades + ";" + this.tradedQt + ";" + this.lstTradeQt + ";"
+				+ this.lstPrice + ";" + this.buyOfferQt + ";" + this.sellOfferQt + ";" + this.buyOfferCount + ";"
+				+ this.sellOfferCount + ";" + this.variation + ";" + this.ptVariation + ";"
 				+ (this.finVolume != null ? this.finVolume + ";" : ";")
-				+ (this.lstFinVolume != null ? this.lstFinVolume + ";" : ";")
-				+ this.bid + ";" + this.ask;
+				+ (this.lstFinVolume != null ? this.lstFinVolume + ";" : ";") + this.bid + ";" + this.ask;
 	}
 
 }

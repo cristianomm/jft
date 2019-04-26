@@ -11,13 +11,13 @@ import org.apache.log4j.Level;
 import com.cmm.jft.data.files.CSV;
 import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.engine.Stream;
-import com.cmm.jft.marketdata.MDEntry;
-import com.cmm.jft.marketdata.MDSnapshot;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
-import com.cmm.jft.security.Security;
-import com.cmm.jft.security.SecurityInfo;
-import com.cmm.jft.trading.enums.StreamTypes;
+import com.cmm.jft.model.marketdata.MDEntry;
+import com.cmm.jft.model.marketdata.MDSnapshot;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.security.SecurityInfo;
+import com.cmm.jft.model.trading.enums.StreamTypes;
 import com.cmm.logging.Logging;
 
 import quickfix.ConfigError;
@@ -164,16 +164,16 @@ public class SnapshotRecoveryStream extends Stream {
 
 		for (MDEntry et : snap.getBuyEntries()) {
 			snpfr.addGroup(encoder.bidEntrySnp(et.getMdEntryPx(), et.getMdEntrySize(), et.getMdEntryDateTime(),
-					et.getOrderID(), et.getMdEntryBuyer(), et.getMdEntryPosNo()));
+					et.getOrderId(), et.getMdEntryBuyer(), et.getMdEntryPosNo()));
 		}
 
 		for (MDEntry et : snap.getSellEntries()) {
 			snpfr.addGroup(encoder.offerEntrySnp(et.getMdEntryPx(), et.getMdEntrySize(), et.getMdEntryDateTime(),
-					et.getOrderID(), et.getMdEntrySeller(), et.getMdEntryPosNo()));
+					et.getOrderId(), et.getMdEntrySeller(), et.getMdEntryPosNo()));
 		}
 
 		// encoder.tradeEntrySnp(buyer, seller, price, volume, tradeDate, tradeTime,
-		// tradeID, tradeVolume)
+		// tradeId, tradeVolume)
 		snpfr.addGroup(encoder.openPriceEntrySnp(snap.getOpenPrice()));
 		snpfr.addGroup(encoder.closePriceEntrySnp(snap.getClosePrice()));
 		snpfr.addGroup(encoder.highPriceEntrySnp(snap.getHighPrice()));

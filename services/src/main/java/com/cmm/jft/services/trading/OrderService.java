@@ -12,13 +12,13 @@ import org.apache.log4j.Level;
 import com.cmm.jft.core.Configuration;
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
-import com.cmm.jft.security.Security;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.OrderTypes;
-import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.enums.TradeTypes;
-import com.cmm.jft.trading.exceptions.InvalidOrderException;
-import com.cmm.jft.trading.exceptions.OrderException;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.OrderTypes;
+import com.cmm.jft.model.trading.enums.Side;
+import com.cmm.jft.model.trading.enums.TradeTypes;
+import com.cmm.jft.model.trading.exceptions.InvalidOrderException;
+import com.cmm.jft.model.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
 
 /**

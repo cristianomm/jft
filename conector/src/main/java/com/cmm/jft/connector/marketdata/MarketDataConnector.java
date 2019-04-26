@@ -22,7 +22,7 @@ import quickfix.fix44.SecurityStatus;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.cmm.jft.messaging.handlers.MarketDataMessageHandler;
-import com.cmm.jft.trading.enums.StreamTypes;
+import com.cmm.jft.model.trading.enums.StreamTypes;
 
 /**
  * @author Cristiano M Martins

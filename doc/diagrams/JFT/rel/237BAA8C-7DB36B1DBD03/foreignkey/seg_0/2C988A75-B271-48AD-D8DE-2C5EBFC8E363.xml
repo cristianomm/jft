@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="2C988A75-B271-48AD-D8DE-2C5EBFC8E363" containerWithKeyObject="465555DE-C27A-05D2-F7FC-08AB67E2445A" localFKIndex="3B507379-8637-1622-01E4-ABEBC8A06E3E" name="ParnerAccount_C_Account_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:10:48 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<referredTableLongName>Financial.Account</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>32158FD9-CD39-D06D-56FA-43BE027D0D91</referredTableID>
+<keyObject>13574AED-AD35-2C72-4848-DB8A68E44AE1</keyObject>
+<referredKeyID>13574AED-AD35-2C72-4848-DB8A68E44AE1</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>accountID</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

@@ -55,12 +55,11 @@ public class PreProcessFiles {
 	}
 
 	/**
-	 * Preprocessa os arquivos TickData, criando um unico arquivo para cada
-	 * layout existente: Ofertas de Compra, Ofertas de Venda e Negocios. Sera
-	 * criado um arquivo para cada mes
+	 * Preprocessa os arquivos TickData, criando um unico arquivo para cada layout
+	 * existente: Ofertas de Compra, Ofertas de Venda e Negocios. Sera criado um
+	 * arquivo para cada mes
 	 * 
-	 * @param dir
-	 *            Diretorio onde estao os arquivos.
+	 * @param dir Diretorio onde estao os arquivos.
 	 */
 	public void preProcessTickDataFiles(String dir, String destDir) {
 
@@ -273,9 +272,8 @@ public class PreProcessFiles {
 
 					if (sBuffer.capacity() <= 100000) {
 						/*
-						 * String line = dtf.format(sessionDate) + ";" +
-						 * tradeTime + ";" + securityID + ";" + price + ";" +
-						 * volume + ";" + buySeqID + ";" + sellSeqID + "\n";
+						 * String line = dtf.format(sessionDate) + ";" + tradeTime + ";" + securityID +
+						 * ";" + price + ";" + volume + ";" + buySeqID + ";" + sellSeqID + "\n";
 						 */
 						sBuffer.append(";");
 						sBuffer.append(dtf.format(sessionDate));
@@ -443,11 +441,9 @@ public class PreProcessFiles {
 
 					if (sBuffer.capacity() <= 100000) {
 						/*
-						 * String line = dtf.format(sessionDate) + ";" +
-						 * securityID + ";" + externalID + ";" + eventCode + ";"
-						 * + orderDate + ";" + orderTime + ";" + orderStatus +
-						 * ";" + price + ";" + volume + ";" + tradedVolume +
-						 * "\n";
+						 * String line = dtf.format(sessionDate) + ";" + securityID + ";" + externalID +
+						 * ";" + eventCode + ";" + orderDate + ";" + orderTime + ";" + orderStatus + ";"
+						 * + price + ";" + volume + ";" + tradedVolume + "\n";
 						 */
 						sBuffer.append(dtf.format(sessionDate));
 						sBuffer.append(";");
@@ -493,8 +489,7 @@ public class PreProcessFiles {
 	 * Pre-processa os arquivos historicos da bovespa, criando um novo e unico
 	 * arquivo onde tera os campos de interesse separados por ";"
 	 * 
-	 * @param dir
-	 *            Diretorio onde estao os arquivos historicos
+	 * @param dir Diretorio onde estao os arquivos historicos
 	 */
 	public void preProcessBovespaHistoricalFiles(String dir) {
 

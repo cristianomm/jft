@@ -15,14 +15,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cmm.jft.security.Security;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.trading.enums.OrderTypes;
+import com.cmm.jft.model.trading.enums.OrderValidityTypes;
+import com.cmm.jft.model.trading.enums.Side;
+import com.cmm.jft.model.trading.enums.TradeTypes;
 import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.services.trading.OrderService;
 import com.cmm.jft.services.trading.TradingService;
-import com.cmm.jft.trading.enums.OrderTypes;
-import com.cmm.jft.trading.enums.OrderValidityTypes;
-import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.enums.TradeTypes;
 import com.cmm.logging.Logging;
 
 /**
@@ -76,7 +76,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#newOrder(com.cmm.jft.trading.enums.OrderTypes, com.cmm.jft.trading.enums.Side, java.lang.String, double, double, double, double, java.util.Date, com.cmm.jft.trading.enums.TradeTypes, com.cmm.jft.trading.enums.OrderValidityTypes, java.lang.String)}.
+     * Test method for {@link com.cmm.jft.services.trading.TradingService#newOrder(com.cmm.jft.model.trading.enums.OrderTypes, com.cmm.jft.model.trading.enums.Side, java.lang.String, double, double, double, double, java.util.Date, com.cmm.jft.model.trading.enums.TradeTypes, com.cmm.jft.model.trading.enums.OrderValidityTypes, java.lang.String)}.
      */
     @Test(timeout=100)
     public void testNewOrder() {
@@ -106,7 +106,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#closePosition(com.cmm.jft.trading.Position)}.
+     * Test method for {@link com.cmm.jft.services.trading.TradingService#closePosition(com.cmm.jft.model.trading.Position)}.
      */
     @Test
     public void testClosePosition() {
@@ -146,7 +146,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#registerTrade(com.cmm.jft.trading.Position)}.
+     * Test method for {@link com.cmm.jft.services.trading.TradingService#registerTrade(com.cmm.jft.model.trading.Position)}.
      */
     @Test
     public void testRegisterTrade() {

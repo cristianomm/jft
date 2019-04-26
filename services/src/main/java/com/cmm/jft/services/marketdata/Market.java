@@ -16,10 +16,10 @@ import quickfix.Group;
 import quickfix.fix44.MarketDataIncrementalRefresh;
 import quickfix.fix44.MarketDataSnapshotFullRefresh;
 
-import com.cmm.jft.marketdata.MDEntry;
-import com.cmm.jft.security.Security;
-import com.cmm.jft.trading.enums.MDEntryTypes;
-import com.cmm.jft.trading.enums.MarketPhase;
+import com.cmm.jft.model.marketdata.MDEntry;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.trading.enums.MDEntryTypes;
+import com.cmm.jft.model.trading.enums.MarketPhase;
 import com.cmm.jft.vo.TradeVO;
 
 /**
@@ -79,7 +79,7 @@ public class Market {
 		MDEntry entry = new MDEntry();
 		entry.setMdEntryPx(message.getDouble(270));// MDEntryPx
 		entry.setMdEntrySize(message.getInt(271));// MDEntrySize
-		entry.setOrderID(Long.parseLong(message.getString(37)));// OrderID
+		entry.setOrderId(Long.parseLong(message.getString(37)));// OrderID
 		entry.setMdEntryPosNo(message.getInt(290));// MDEntryPosNo
 
 		entry.setMdEntryType(MDEntryTypes.BID);
@@ -96,7 +96,7 @@ public class Market {
 		MDEntry entry = new MDEntry();
 		entry.setMdEntryPx(message.getDouble(270));// MDEntryPx
 		entry.setMdEntrySize(message.getInt(271));// MDEntrySize
-		entry.setOrderID(Long.parseLong(message.getString(37)));// OrderID
+		entry.setOrderId(Long.parseLong(message.getString(37)));// OrderID
 		entry.setMdEntryPosNo(message.getInt(290));// MDEntryPosNo
 
 		entry.setMdEntryType(MDEntryTypes.OFFER);
@@ -295,7 +295,7 @@ public class Market {
 
     public void addSnapshot(MarketDataSnapshotFullRefresh fullRefresh) {
 	try {
-	    if(Integer.parseInt(fullRefresh.getSecurityID().getValue()) == security.getSecurityID()) {
+	    if(Integer.parseInt(fullRefresh.getSecurityID().getValue()) == security.getSecurityId()) {
 		//ajusta as colecoes e os indices de sequencia
 		//MDIncRefresh recebidos sera a partir de msgSeqNum e maior que rptSeq ajustados aqui
 		resetMarketData(fullRefresh.getInt(369), fullRefresh.getInt(83));

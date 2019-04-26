@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="4FBF89E9-3B1C-40F3-2D4B-0AC61C01CD51" containerWithKeyObject="465555DE-C27A-05D2-F7FC-08AB67E2445A" localFKIndex="842A998A-2609-B408-C1D8-971349284461" name="ParnerAccount_BusinessPartner_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:13:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<referredTableLongName>Partner.BusinessPartner</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>E80FFD41-6770-B3B5-EC03-62F2C01DE42E</referredTableID>
+<keyObject>EB99A37F-A36B-83E4-8F94-66C1BCD74F19</keyObject>
+<referredKeyID>EB99A37F-A36B-83E4-8F94-66C1BCD74F19</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>partnerId</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

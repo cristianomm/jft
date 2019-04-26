@@ -1,0 +1,119 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="465555DE-C27A-05D2-F7FC-08AB67E2445A" name="ParnerAccount">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:07:54 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<ordsAlias>table_21</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="partnerAccountId" id="484C2A67-E898-21E6-349D-592E14DBEB23">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:08:17 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="partnerId" id="44302DDF-54F7-A4BE-DE41-CC4208210A30">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:12:30 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="4FBF89E9-3B1C-40F3-2D4B-0AC61C01CD51" referredColumn="3296EA71-5E9F-8CA0-2236-B4E8E1562A73"/>
+</associations>
+</Column>
+<Column name="Balance" id="DD345F68-401C-2FEC-395C-F72523397E24">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:08:47 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="creditAccountId" id="F850BF3C-329F-6926-0142-61C10041FF2C">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:09:16 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="2C988A75-B271-48AD-D8DE-2C5EBFC8E363" referredColumn="36293936-AE0A-B63B-0722-8495653EF297"/>
+</associations>
+</Column>
+<Column name="debitAccountId" id="8C81A9A8-B3E0-DEE9-020F-C4359659FABA">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:09:31 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="A6832184-6CD2-D63D-E4D1-D161B550D022" referredColumn="36293936-AE0A-B63B-0722-8495653EF297"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="AAEDDD01-14EB-B50C-473B-9AA18ECC5D4E" name="ParnerAccount_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:08:17 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="484C2A67-E898-21E6-349D-592E14DBEB23"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3B507379-8637-1622-01E4-ABEBC8A06E3E" name="ParnerAccount_C_Account_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:10:48 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F850BF3C-329F-6926-0142-61C10041FF2C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="FD6AB64E-A55E-583A-6630-8D6F4FA21646" name="ParnerAccount_D_Account_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:10:59 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8C81A9A8-B3E0-DEE9-020F-C4359659FABA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="842A998A-2609-B408-C1D8-971349284461" name="ParnerAccount_BusinessPartner_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-17 20:13:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="44302DDF-54F7-A4BE-DE41-CC4208210A30"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

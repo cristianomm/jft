@@ -8,7 +8,7 @@
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
-<Column name="securityInfoID" id="DCB10BE5-FDF6-2447-47F6-710B4CA45C50">
+<Column name="securityInfoId" id="DCB10BE5-FDF6-2447-47F6-710B4CA45C50">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -18,7 +18,7 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="securityID" id="CDD44F26-ACCE-4687-DE59-9325E77A2968">
+<Column name="securityId" id="CDD44F26-ACCE-4687-DE59-9325E77A2968">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -31,7 +31,7 @@
 <colAssociation fkAssociation="027CACD8-FFD6-3D16-195D-1C2F3B87EA5C" referredColumn="37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14"/>
 </associations>
 </Column>
-<Column name="currencyID" id="D25A235E-3E9F-A351-A0B4-0B63F351173C">
+<Column name="currencyId" id="D25A235E-3E9F-A351-A0B4-0B63F351173C">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
@@ -45,16 +45,18 @@
 <colAssociation fkAssociation="BCB5B403-8F38-0EBC-6103-0DE328BF8D14" referredColumn="97E7232E-411E-0848-46E1-75AE8FE7FD6E"/>
 </associations>
 </Column>
-<Column name="ISIN" id="A7BCB5F5-834C-811C-9BF8-76DF06E08BB0">
-<createdBy>Cristiano</createdBy>
-<createdTime>2015-09-10 03:30:20 UTC</createdTime>
+<Column name="marketIndexId" id="402F9BF4-FE30-E52F-3B86-AE949DDC7489">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:35:36 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>12</dataTypeSize>
-<ownDataTypeParameters>12,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="274442CB-6270-4644-6297-A8DF68054438" referredColumn="4D33FBFD-05D6-7D0F-F32C-55B90FF4AC2F"/>
+</associations>
 </Column>
 <Column name="ContractSize" id="167F45A5-3EAB-5C02-3E4A-21F3F6A9F0A4">
 <createdBy>Cristiano</createdBy>
@@ -104,9 +106,20 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="MinimalVolume" id="E6A87AE3-FCB2-0C78-45B7-A1AECAB6A4BE">
+<Column name="MinVolume" id="E6A87AE3-FCB2-0C78-45B7-A1AECAB6A4BE">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT020</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MaxVolume" id="F9D5325B-72AA-8695-73D7-2022E311C19A">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-08 01:04:16 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -124,6 +137,45 @@
 <use>1</use>
 <logicalDatatype>LOGDT020</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="RejectHiBand" id="A4D0F34F-9186-2EAA-319F-D667E972EAA8">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-08 01:06:27 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="RejectLoBand" id="BB132CEA-E8F4-1AFE-B34F-C69C1821D115">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-08 01:06:27 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="AuctionBand" id="6703A9F7-86D0-292B-7CD9-F3541D90559D">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-08 01:06:27 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="ObjectAsset" id="46B444C8-4FF1-A1BB-0A00-A997C5B00C68">
@@ -209,6 +261,32 @@
 <ownDataTypeParameters>,19,6</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column name="Tax" id="FB117DFD-58A5-F480-BDD1-F016641FFAE0">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:26:29 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PercentualIndex" id="35EDDF67-EF0E-87F2-1D4B-433F858AC3B5">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:26:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
 <ind_PK_UK id="1DB132B7-A894-5AAF-991E-BBF4D681FAF5" name="SecurityInfo_PK">
@@ -251,6 +329,16 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="CDD44F26-ACCE-4687-DE59-9325E77A2968"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="95F23E08-85CA-99B3-E4B1-64B5D55D59DE" name="SecurityInfo_Index_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-02-20 03:36:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="402F9BF4-FE30-E52F-3B86-AE949DDC7489"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

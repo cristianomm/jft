@@ -3,7 +3,7 @@
  */
 package com.cmm.jft.engine.match;
 
-import com.cmm.jft.trading.Orders;
+import com.cmm.jft.model.trading.Orders;
 
 /**
  * <p>

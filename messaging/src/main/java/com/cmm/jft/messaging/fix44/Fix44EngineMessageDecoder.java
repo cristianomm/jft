@@ -31,15 +31,14 @@ import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.messaging.MessageDecoder;
-import com.cmm.jft.security.Security;
-//import com.cmm.jft.services.security.SecurityService;
-import com.cmm.jft.trading.OrderEvent;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.ExecutionTypes;
-import com.cmm.jft.trading.enums.OrderStatus;
-import com.cmm.jft.trading.enums.OrderTypes;
-import com.cmm.jft.trading.enums.OrderValidityTypes;
-import com.cmm.jft.trading.enums.Side;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.trading.OrderEvent;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.ExecutionTypes;
+import com.cmm.jft.model.trading.enums.OrderStatus;
+import com.cmm.jft.model.trading.enums.OrderTypes;
+import com.cmm.jft.model.trading.enums.OrderValidityTypes;
+import com.cmm.jft.model.trading.enums.Side;
 import com.cmm.logging.Logging;
 
 /**
@@ -72,12 +71,12 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 	    case 5:
 		break;
 	    case 7:
-		order.setBrokerID(partyID);
+		order.setBrokerId(partyID);
 		break;
 	    case 12:
 		break;
 	    case 36:
-		order.setTraderID(partyID);
+		order.setTraderId(partyID);
 		break;
 	    case 54:
 		order.setSenderLocation(partyID);
@@ -241,7 +240,7 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 		    event.setCumQty(er.getDouble(14));
 		    event.setLastQty(er.getDouble(32));
 		    event.setLeavesQty(er.getDouble(151));
-		    event.setTradeID(er.getString(6032));
+		    event.setTradeId(er.getString(6032));
 		    break;
 		case TRADE_CANCEL:
 		    break;
@@ -276,7 +275,7 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 	    if(message instanceof NewOrderSingle) {
 		ordr = new Orders();
 		NewOrderSingle orderSingle = (NewOrderSingle) message;
-		ordr.setClOrdID(orderSingle.getClOrdID().getValue());
+		ordr.setClOrdId(orderSingle.getClOrdID().getValue());
 
 		addPartyIDs(ordr, orderSingle);
 
@@ -323,7 +322,7 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 	OrderCancelReplaceRequest request = (OrderCancelReplaceRequest) message;
 	Orders ordr = new Orders();
 	try{
-	    ordr.setClOrdID(request.getClOrdID().getValue());
+	    ordr.setClOrdId(request.getClOrdID().getValue());
 	    //ordr.setOrigClOrdID(request.getOrigClOrdID().getValue());
 	    ordr.setMaxFloor(request.getMaxFloor().getValue());
 	    //ordr.setSecurityID(SecurityService.getInstance().provideSecurity(request.getSymbol().getValue()));
@@ -347,8 +346,8 @@ public class Fix44EngineMessageDecoder implements MessageDecoder {
 	OrderCancelRequest request = (OrderCancelRequest) message;
 	Orders ordr = new Orders();
 	try{
-	    ordr.setClOrdID(request.getClOrdID().getValue());
-	    ordr.setOrigClOrdID(request.getOrigClOrdID().getValue());
+	    ordr.setClOrdId(request.getClOrdID().getValue());
+	    ordr.setOrigClOrdId(request.getOrigClOrdID().getValue());
 
 	    addPartyIDs(ordr, request);
 

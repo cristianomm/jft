@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +22,7 @@ import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.core.format.IntFormatter;
 import com.cmm.jft.data.files.CSV;
-import com.cmm.jft.marketdata.MDEntry;
+import com.cmm.jft.model.marketdata.MDEntry;
 import com.cmm.jft.vo.Extractable;
 import com.cmm.jft.vo.OrderEventVO;
 import com.cmm.jft.vo.TradeVO;
@@ -42,12 +45,9 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 
 	List<Extractable> bsEvents = new ArrayList<>(1000000);
 	try {
-
-	    DateTimeFormatter dtmf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.DATE_F8);
-	    DateTimeFormatter tf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.TIME_F4);
-	    DoubleFormatter df = (DoubleFormatter) FormatterFactory.getFormatter(FormatterTypes.DOUBLE);
-	    IntFormatter intf = (IntFormatter) FormatterFactory.getFormatter(FormatterTypes.INT);
-
+	    java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern(FormatterTypes.DATE_F8.getFormat());
+	    java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern(FormatterTypes.TIME_F4.getFormat());
+			    
 	    CSV csv = new CSV(fileName, ";", "RT", "RH");
 	    while (csv.hasNext()) {
 		String[] vs = csv.readLine();
@@ -56,7 +56,8 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 		    
 
 		    MDEntry entry = new MDEntry();
-		    entry.setEntryDate(dtmf.parse(vs[0]));
+		    LocalDate date = LocalDate.parse(vs[0], dateFormatter);
+		    entry.setEntryDate(date);
 
 		    // layout dos arquivos foi alterado devido a mudanca para o
 		    // sistema de negociacao Puma
@@ -77,10 +78,10 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 			//[10]Seq.Oferta Venda               159       10  Número sequencial da oferta de venda
 
 			entry.setSymbol(vs[1]);
-			entry.setTradeID(String.format("%1$07d", Integer.parseInt(vs[2])));
+			entry.setTradeId(String.format("%1$07d", Integer.parseInt(vs[2])));
 			entry.setMdEntryPx(Double.parseDouble(vs[3]));
 			entry.setMdEntrySize(Integer.parseInt(vs[4]));
-			entry.setMdEntryDateTime(tf.parse(vs[5]));
+			entry.setMdEntryDateTime(LocalDateTime.of(date, LocalTime.parse(vs[5], timeFormatter)));
 			entry.setMdEntryBuyer(vs[8]);
 			entry.setMdEntrySeller(vs[10]);
 
@@ -108,13 +109,13 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 			//[17]Corretora Venda                   230        8   Codigo de identificaco da corretora de venda - Dispon�vel a partir de 03/2014
 
 			entry.setSymbol(vs[1]);
-			entry.setTradeID(String.format("%1$07d", Integer.parseInt(vs[2])));
+			entry.setTradeId(String.format("%1$07d", Integer.parseInt(vs[2])));
 			entry.setMdEntryPx(Double.parseDouble(vs[3]));
 			entry.setMdEntrySize(Integer.parseInt(vs[4]));
-			entry.setMdEntryDateTime(tf.parse(vs[5]));
+			entry.setMdEntryDateTime(LocalDateTime.of(date, LocalTime.parse(vs[5], timeFormatter)));
 			
-			entry.setBuyOrdID(Long.parseLong(vs[8]));
-			entry.setBuySecOrdID(Long.parseLong(vs[9]));
+			entry.setBuyOrdId(Long.parseLong(vs[8]));
+			entry.setBuySecOrdId(Long.parseLong(vs[9]));
 			if(vs[10].equals("1")) {
 			    entry.setAgressor('B');
 			}
@@ -122,8 +123,8 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 			    entry.setAgressor('S');
 			}
 			
-			entry.setSellOrdID(Long.parseLong(vs[12]));
-			entry.setSellSecOrdID(Long.parseLong(vs[13]));
+			entry.setSellOrdId(Long.parseLong(vs[12]));
+			entry.setSellSecOrdId(Long.parseLong(vs[13]));
 			
 			entry.setMdEntryBuyer(String.format("%1$04d", Integer.parseInt(vs[16])));
 			entry.setMdEntrySeller(String.format("%1$04d", Integer.parseInt(vs[17])));

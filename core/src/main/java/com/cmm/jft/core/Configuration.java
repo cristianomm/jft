@@ -8,6 +8,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map.Entry;
 import java.util.Properties;
 
@@ -58,11 +61,16 @@ public class Configuration implements DBObject<Configuration> {
 	private Configuration() {
 		this.properties = new Properties();
 		try {
-			propertyFileName = Thread.currentThread().getContextClassLoader().getResource("jftcfg.properties").getFile();
-			this.properties.load(new FileInputStream(propertyFileName));
+			Path path = Paths.get(Thread.currentThread().getContextClassLoader().getResource("jftcfg.properties").toURI());
+			
+			propertyFileName = path.toString();
+			this.properties.load(new FileInputStream(path.toFile()));
+			
 		} catch (FileNotFoundException e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		} catch (IOException e) {
+			Logging.getInstance().log(getClass(), e, Level.ERROR);
+		} catch (URISyntaxException e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		}
 	}

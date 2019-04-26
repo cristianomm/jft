@@ -14,9 +14,9 @@ import com.cmm.jft.engine.Stream;
 import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
-import com.cmm.jft.security.Security;
-import com.cmm.jft.security.SecurityInfo;
-import com.cmm.jft.trading.enums.StreamTypes;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.security.SecurityInfo;
+import com.cmm.jft.model.trading.enums.StreamTypes;
 import com.cmm.logging.Logging;
 
 import quickfix.ConfigError;
@@ -167,9 +167,9 @@ public class InstrumentStream extends Stream {
 
 			Security s = new Security(line[0]);
 			s.setDescription(line[1]);
-			s.setSecurityID(id++);
-			s.setSecurityInfoID(new SecurityInfo(s, null));
-			s.getSecurityInfoID().setIsin(line[2]);
+			s.setSecurityId(id++);
+			s.setSecurityInfoId(new SecurityInfo(s, null));
+			s.getSecurityInfoId().setIsin(line[2]);
 
 			securities.add(s);
 		}

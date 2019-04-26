@@ -17,20 +17,20 @@ import com.cmm.jft.engine.IdGenerator;
 import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.engine.Stream;
 import com.cmm.jft.engine.match.Summary;
-import com.cmm.jft.marketdata.MDEntry;
-import com.cmm.jft.marketdata.MDSnapshot;
 import com.cmm.jft.messaging.MarketDataMessageEncoder;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.MessageSender;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
-import com.cmm.jft.security.Security;
+import com.cmm.jft.model.marketdata.MDEntry;
+import com.cmm.jft.model.marketdata.MDSnapshot;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.trading.OrderEvent;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.MDEntryTypes;
+import com.cmm.jft.model.trading.enums.Side;
+import com.cmm.jft.model.trading.enums.StreamTypes;
+import com.cmm.jft.model.trading.enums.UpdateActions;
 import com.cmm.jft.services.security.SecurityService;
-import com.cmm.jft.trading.OrderEvent;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.MDEntryTypes;
-import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.enums.StreamTypes;
-import com.cmm.jft.trading.enums.UpdateActions;
 import com.cmm.logging.Logging;
 
 import quickfix.Application;
@@ -93,7 +93,7 @@ public class MarketDataStream extends Stream {
 	private MarketDataStream() {
 		encoder = Fix50SP2MDMessageEncoder.getInstance();
 		// this.security = security;
-		// securityID = new SecurityID(security.getSecurityID()+"");
+		// securityID = new SecurityID(security.getSecurityId()+"");
 		// securityIDSrc = new SecurityIDSource(security.getSecurityIDSrc()+"");
 		// exchangeID = new SecurityExchange(security.getSecurityExchange());
 
@@ -156,11 +156,11 @@ public class MarketDataStream extends Stream {
 		MDEntry mboEntry = new MDEntry();
 
 		if (position > 0) {
-			mboEntry.setOrderID(order.getOrderID());
+			mboEntry.setOrderId(order.getOrderId());
 			if (order.getSide() == Side.BUY) {
-				mboEntry.setMdEntryBuyer(order.getBrokerID());
+				mboEntry.setMdEntryBuyer(order.getBrokerId());
 			} else {
-				mboEntry.setMdEntrySeller(order.getBrokerID());
+				mboEntry.setMdEntrySeller(order.getBrokerId());
 			}
 			mboEntry.setMdEntryDateTime(order.getInsertDateTime());
 			mboEntry.setMdEntryType(order.getSide() == Side.BUY ? MDEntryTypes.BID : MDEntryTypes.OFFER);
@@ -196,18 +196,18 @@ public class MarketDataStream extends Stream {
 				MarketDataIncrementalRefresh.NoMDEntries entry = null;
 				if (order.getSide() == Side.BUY) {
 					mboPackets.put(encoder.bidEntryIncMBO(order, posMBO, UpdateActions.New,
-							getRptSeq(order.getSecurityID().getSymbol())));
+							getRptSeq(order.getSecurityId().getSymbol())));
 					/*
 					 * mbpPackets.put(encoder.bidEntryIncMBP( summary.getPrice(),
-					 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityID(),
+					 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityId(),
 					 * posMBO, UpdateActions.New, idGen.actualInt()) );
 					 */
 				} else {
 					mboPackets.put(encoder.offerEntryIncMBO(order, posMBO, UpdateActions.New,
-							getRptSeq(order.getSecurityID().getSymbol())));
+							getRptSeq(order.getSecurityId().getSymbol())));
 					/*
 					 * mbpPackets.put(encoder.bidEntryIncMBP( summary.getPrice(),
-					 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityID(),
+					 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityId(),
 					 * posMBO, UpdateActions.New, idGen.actualInt()) );
 					 */
 				}
@@ -222,18 +222,18 @@ public class MarketDataStream extends Stream {
 		try {
 			if (order.getSide() == Side.BUY) {
 				mboPackets.put(encoder.bidEntryIncMBO(order, posMBO, UpdateActions.Change,
-						getRptSeq(order.getSecurityID().getSymbol())));
+						getRptSeq(order.getSecurityId().getSymbol())));
 				/*
 				 * mbpPackets.put(encoder.bidEntryIncMBP( summary.getPrice(),
-				 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityID(),
+				 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityId(),
 				 * posMBO, UpdateActions.New, idGen.actualInt()) );
 				 */
 			} else {
 				mboPackets.put(encoder.offerEntryIncMBO(order, posMBO, UpdateActions.Change,
-						getRptSeq(order.getSecurityID().getSymbol())));
+						getRptSeq(order.getSecurityId().getSymbol())));
 				/*
 				 * mbpPackets.put(encoder.bidEntryIncMBP( summary.getPrice(),
-				 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityID(),
+				 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityId(),
 				 * posMBO, UpdateActions.New, idGen.actualInt()) );
 				 */
 			}
@@ -246,18 +246,18 @@ public class MarketDataStream extends Stream {
 		try {
 			if (order.getSide() == Side.BUY) {
 				mboPackets.put(encoder.bidEntryIncMBO(order, posMBO, UpdateActions.Delete,
-						getRptSeq(order.getSecurityID().getSymbol())));
+						getRptSeq(order.getSecurityId().getSymbol())));
 				/*
 				 * mbpPackets.put(encoder.bidEntryIncMBP( summary.getPrice(),
-				 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityID(),
+				 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityId(),
 				 * posMBO, UpdateActions.New, idGen.actualInt()) );
 				 */
 			} else {
 				mboPackets.put(encoder.offerEntryIncMBO(order, posMBO, UpdateActions.Delete,
-						getRptSeq(order.getSecurityID().getSymbol())));
+						getRptSeq(order.getSecurityId().getSymbol())));
 				/*
 				 * mbpPackets.put(encoder.bidEntryIncMBP( summary.getPrice(),
-				 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityID(),
+				 * summary.getOrderVolume(), summary.getOrderCount(), order.getSecurityId(),
 				 * posMBO, UpdateActions.New, idGen.actualInt()) );
 				 */
 			}
@@ -274,7 +274,7 @@ public class MarketDataStream extends Stream {
 			MarketDataIncrementalRefresh.NoMDEntries entry = encoder.tradeEntryInc(trade.getMdUpdateAction(),
 					SecurityService.getInstance().provideSecurity(trade.getSymbol()), trade.getMdEntryBuyer(),
 					trade.getMdEntrySeller(), trade.getMdEntryPx(), trade.getMdEntrySize(), trade.getMdEntryDateTime(),
-					trade.getTradeID(), trade.getTradeVolume(), getRptSeq(trade.getSymbol()));
+					trade.getTradeId(), trade.getTradeVolume(), getRptSeq(trade.getSymbol()));
 			mboPackets.put(entry);
 			mbpPackets.put(entry);
 

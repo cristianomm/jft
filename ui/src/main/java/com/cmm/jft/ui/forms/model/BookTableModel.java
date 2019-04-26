@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.cmm.jft.marketdata.MDEntry;
+import com.cmm.jft.model.marketdata.MDEntry;
 import com.cmm.jft.services.marketdata.MDListener;
 import com.cmm.jft.services.marketdata.Market;
 import com.cmm.jft.services.marketdata.MarketDataService;

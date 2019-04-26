@@ -13,7 +13,7 @@ import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.engine.Stream;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.fix50sp2.Fix50SP2MDMessageEncoder;
-import com.cmm.jft.trading.enums.StreamTypes;
+import com.cmm.jft.model.trading.enums.StreamTypes;
 import com.cmm.logging.Logging;
 
 import quickfix.ConfigError;

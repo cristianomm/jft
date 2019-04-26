@@ -16,22 +16,22 @@ import quickfix.SessionID;
 import com.cmm.jft.engine.IdGenerator;
 import com.cmm.jft.engine.SessionRepository;
 import com.cmm.jft.engine.marketdata.incrementals.MarketDataStream;
-import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.messaging.MessageEncoder;
 import com.cmm.jft.messaging.MessageRepository;
 import com.cmm.jft.messaging.MessageSender;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
-import com.cmm.jft.trading.OrderEvent;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.CancelTypes;
-import com.cmm.jft.trading.enums.ExecutionTypes;
-import com.cmm.jft.trading.enums.OrderStatus;
-import com.cmm.jft.trading.enums.OrderTypes;
-import com.cmm.jft.trading.enums.Side;
-import com.cmm.jft.trading.enums.StreamTypes;
-import com.cmm.jft.trading.enums.UpdateActions;
-import com.cmm.jft.trading.enums.WorkingIndicator;
-import com.cmm.jft.trading.exceptions.OrderException;
+import com.cmm.jft.model.marketdata.MDEntry;
+import com.cmm.jft.model.trading.OrderEvent;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.CancelTypes;
+import com.cmm.jft.model.trading.enums.ExecutionTypes;
+import com.cmm.jft.model.trading.enums.OrderStatus;
+import com.cmm.jft.model.trading.enums.OrderTypes;
+import com.cmm.jft.model.trading.enums.Side;
+import com.cmm.jft.model.trading.enums.StreamTypes;
+import com.cmm.jft.model.trading.enums.UpdateActions;
+import com.cmm.jft.model.trading.enums.WorkingIndicator;
+import com.cmm.jft.model.trading.exceptions.OrderException;
 import com.cmm.logging.Logging;
 
 /**
@@ -180,13 +180,13 @@ public class OrderMatcher implements MessageSender {
 		case Expiration:
 			oe.setOrdRejReason(CancelTypes.Expiration.ordinal());
 			oe.setMessage("Order expired.");
-			sendExecutionReport(oe, ordr.getTraderID());
+			sendExecutionReport(oe, ordr.getTraderId());
 			break;
 
 		case Invalid:
 			oe.setMessage("Order Canceled due to invalid execution.");
 			oe.setOrdRejReason(CancelTypes.Invalid.ordinal());
-			sendExecutionReport(oe, ordr.getTraderID());
+			sendExecutionReport(oe, ordr.getTraderId());
 			break;
 
 		case Trade:
@@ -195,16 +195,16 @@ public class OrderMatcher implements MessageSender {
 			break;
 
 		case Requested:
-			sendExecutionReport(oe, ordr.getTraderID());
+			sendExecutionReport(oe, ordr.getTraderId());
 			break;
 
 		}
 		ordr.addExecution(oe);
-		int orderPos = table.getOrderPosition(ordr.getOrderID());
+		int orderPos = table.getOrderPosition(ordr.getOrderId());
 		// int pricePos = table.getPricePosition(ordr.getPrice());
 
 		// remove da tabela do book
-		table.remove(ordr.getOrderID());
+		table.remove(ordr.getOrderId());
 
 		// Summary sm = table.findSummary(ordr.getPrice());
 		// UpdateActions mbpAction = sm == null || sm.getOrderCount() == 0?
@@ -229,7 +229,7 @@ public class OrderMatcher implements MessageSender {
 				&& (bookOrder.getOrderStatus() == OrderStatus.NEW
 						|| bookOrder.getOrderStatus() == OrderStatus.PARTIALLY_FILLED
 						|| bookOrder.getOrderStatus() == OrderStatus.REPLACED)) {
-			String symbol = bookOrder.getSecurityID().getSymbol();
+			String symbol = bookOrder.getSecurityId().getSymbol();
 			OrderEvent orderFill = new OrderEvent(ExecutionTypes.TRADE, qtyToFill, priceToFill);
 			OrderEvent bookFill = new OrderEvent(ExecutionTypes.TRADE, qtyToFill, priceToFill);
 			try {
@@ -264,20 +264,20 @@ public class OrderMatcher implements MessageSender {
 
 					// envia os executionReport para os participantes
 					// executionreport da ordem agressora
-					sendExecutionReport(orderFill, newOrder.getTraderID());
+					sendExecutionReport(orderFill, newOrder.getTraderId());
 
 					// executionreport da ordem que estava no book
-					sendExecutionReport(bookFill, bookOrder.getTraderID());
+					sendExecutionReport(bookFill, bookOrder.getTraderId());
 
 					MDEntry trade = new MDEntry();
-					trade.setTradeID(tradeIds.nextNumericString());
+					trade.setTradeId(tradeIds.nextNumericString());
 					trade.setSymbol(symbol);
 					if (newOrder.getSide() == Side.BUY) {
-						trade.setMdEntryBuyer(newOrder.getBrokerID());
-						trade.setMdEntrySeller(bookOrder.getBrokerID());
+						trade.setMdEntryBuyer(newOrder.getBrokerId());
+						trade.setMdEntrySeller(bookOrder.getBrokerId());
 					} else {
-						trade.setMdEntryBuyer(bookOrder.getBrokerID());
-						trade.setMdEntrySeller(newOrder.getBrokerID());
+						trade.setMdEntryBuyer(bookOrder.getBrokerId());
+						trade.setMdEntrySeller(newOrder.getBrokerId());
 					}
 					trade.setMdEntryPx(priceToFill);
 					trade.setMdEntrySize((int) qtyToFill);
@@ -342,14 +342,14 @@ public class OrderMatcher implements MessageSender {
 					&& (order.getMaxFloor() % order.getLeavesVolume()) == 0) {
 
 				OrderEvent restate = new OrderEvent();
-				restate.setOrderID(order);
+				restate.setOrderId(order);
 				restate.setEventDateTime(LocalDateTime.now());
 				restate.setExecutionType(ExecutionTypes.RESTATED);
 
 				order.addExecution(restate);
 				getTable(order).restate(order);
 
-				sendExecutionReport(restate, order.getTraderID());
+				sendExecutionReport(restate, order.getTraderId());
 			}
 		} catch (OrderException e) {
 
@@ -615,7 +615,7 @@ public class OrderMatcher implements MessageSender {
 	// if (validateExecution(aggrOrdr, execs)) {
 	// for (OrderEvent ex : execs) {
 	// // recupera a ordem que esta no book
-	// Orders bookOrdr = ex.getOrderID();
+	// Orders bookOrdr = ex.getOrderId();
 	//
 	// // adiciona as execucoes e as informa para os participantes
 	// exec = fillOrders(aggrOrdr, bookOrdr, ex.getVolume(), ex.getPrice());
@@ -674,9 +674,9 @@ public class OrderMatcher implements MessageSender {
 				stpOrd.setOrderType(OrderTypes.Limit);
 				stpOrd.setWorkingIndicator(WorkingIndicator.Working);
 				OrderEvent limEvnt = new OrderEvent(ExecutionTypes.NEW, stpOrd.getVolume(), stpOrd.getPrice());
-				limEvnt.setOrderID(stpOrd);
+				limEvnt.setOrderId(stpOrd);
 
-				sendExecutionReport(limEvnt, stpOrd.getTraderID());
+				sendExecutionReport(limEvnt, stpOrd.getTraderId());
 
 				// insere a ordem no book
 				getTable(stpOrd).add(stpOrd);
@@ -722,10 +722,10 @@ public class OrderMatcher implements MessageSender {
 		return validExecution;
 	}
 
-	private void sendExecutionReport(OrderEvent event, String traderID) throws OrderException {
-		event.setOrderEventID(eventIds.nextLong());
+	private void sendExecutionReport(OrderEvent event, String traderId) throws OrderException {
+		event.setOrderEventId(eventIds.nextLong());
 
-		SessionID session = SessionRepository.getInstance().getTraderSession(traderID);
+		SessionID session = SessionRepository.getInstance().getTraderSession(traderId);
 		if (session != null) {
 			Fix44EngineMessageEncoder encoder = (Fix44EngineMessageEncoder) MessageEncoder.getEncoder(session);
 			sendMessage(encoder.executionReport(event), session);

@@ -3,7 +3,7 @@
  */
 package com.cmm.jft.ui.utils;
 
-import com.cmm.jft.security.Security;
+import com.cmm.jft.model.security.Security;
 import com.cmm.jft.vo.SecurityVO;
 
 import javafx.scene.control.TextField;

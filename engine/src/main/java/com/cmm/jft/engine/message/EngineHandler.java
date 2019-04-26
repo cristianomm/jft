@@ -7,7 +7,7 @@ import com.cmm.jft.engine.entrypoint.EntryPoint;
 import com.cmm.jft.messaging.MessageDecoder;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageDecoder;
 import com.cmm.jft.messaging.handlers.EngineMessageHandler;
-import com.cmm.jft.trading.Orders;
+import com.cmm.jft.model.trading.Orders;
 
 import quickfix.Application;
 import quickfix.FieldNotFound;
@@ -44,7 +44,7 @@ public class EngineHandler implements EngineMessageHandler {
 		Book book = null;
 		if ((book = BookRepository.getInstance().getBook(message.getString(Symbol.FIELD))) != null) {
 			Orders order = decoder.newOrderSingle(message);
-			SessionRepository.getInstance().addTraderSession(order.getTraderID(), sessionID);
+			SessionRepository.getInstance().addTraderSession(order.getTraderId(), sessionID);
 			// try to add the order in the book
 			book.addOrder(order);
 		}

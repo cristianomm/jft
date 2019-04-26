@@ -1,0 +1,21 @@
+#marketIndexId;Name;Description;Provider;ProviderLink
+PRE;Taxa Pre-Fixada;;;
+DOL;Cupom de Dolar (Dolar Comercial);;;
+TR;Taxa Referencial;;;
+SEL;Taxa Selic;;;
+ANB;Taxa ANBID;;;
+IGPD;Indice Geral de Precos - DI;;;
+TMS;Taxa TMS;;;
+DI1;Taxa CDI CETIP;;;
+CDI;CDI CETIP;;;
+DOF;Cupom de Dolar (Dolar Flutuante);;;
+IGP;Indice Geral de Precos;;;
+TBF;Taxa Basica de Juros;;;
+TJL;Taxa TJLP;;;
+INPC;Taxa INPC;;;
+DIF;Contrato Futuro Taxa DI;;;
+INCC;Indice Nacional de Custo da Construcao;;;
+IP;Indice de Poupanca;;;
+IPC;Indice de Precos ao Consumidor - FIPE;;;
+IPCA;Indice Nacional de Precos ao Consumidor Amplo - IBGE;;;
+JPY;IENE;;;

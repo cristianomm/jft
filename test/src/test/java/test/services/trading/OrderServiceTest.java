@@ -9,12 +9,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.cmm.jft.security.Security;
+import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.enums.OrderTypes;
+import com.cmm.jft.model.trading.enums.Side;
 import com.cmm.jft.services.security.SecurityService;
 import com.cmm.jft.services.trading.OrderService;
-import com.cmm.jft.trading.Orders;
-import com.cmm.jft.trading.enums.OrderTypes;
-import com.cmm.jft.trading.enums.Side;
 
 /**
  * <p><code>OrderServiceTest.java</code></p>
@@ -37,7 +37,7 @@ public class OrderServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.OrderService#newOrder(com.cmm.jft.trading.enums.OrderTypes, com.cmm.jft.security.Security, com.cmm.jft.trading.enums.Side, double, double, double, double, double)}.
+     * Test method for {@link com.cmm.jft.services.trading.OrderService#newOrder(com.cmm.jft.model.trading.enums.OrderTypes, com.cmm.jft.model.security.Security, com.cmm.jft.model.trading.enums.Side, double, double, double, double, double)}.
      */
     @Test
     public void testNewOrder() {
@@ -77,7 +77,7 @@ public class OrderServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.OrderService#newLimitOrder(com.cmm.jft.security.Security, com.cmm.jft.trading.enums.Side, double, double)}.
+     * Test method for {@link com.cmm.jft.services.trading.OrderService#newLimitOrder(com.cmm.jft.model.security.Security, com.cmm.jft.model.trading.enums.Side, double, double)}.
      */
     @Test
     public void testNewLimitOrder() {
@@ -100,7 +100,7 @@ public class OrderServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.OrderService#newStopOrder(com.cmm.jft.security.Security, com.cmm.jft.trading.enums.Side, double, double)}.
+     * Test method for {@link com.cmm.jft.services.trading.OrderService#newStopOrder(com.cmm.jft.model.security.Security, com.cmm.jft.model.trading.enums.Side, double, double)}.
      */
     @Test
     public void testNewStopOrder() {
@@ -133,7 +133,7 @@ public class OrderServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.OrderService#newMarketOrder(com.cmm.jft.security.Security, com.cmm.jft.trading.enums.Side, double)}.
+     * Test method for {@link com.cmm.jft.services.trading.OrderService#newMarketOrder(com.cmm.jft.model.security.Security, com.cmm.jft.model.trading.enums.Side, double)}.
      */
     @Test
     public void testNewMarketOrder() {
