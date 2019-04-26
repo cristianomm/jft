@@ -8,10 +8,10 @@ import java.util.TreeMap;
 
 import javax.swing.table.AbstractTableModel;
 
+import com.cmm.jft.marketdata.service.MDListener;
+import com.cmm.jft.marketdata.service.Market;
+import com.cmm.jft.marketdata.service.MarketDataService;
 import com.cmm.jft.model.marketdata.MDEntry;
-import com.cmm.jft.services.marketdata.MDListener;
-import com.cmm.jft.services.marketdata.Market;
-import com.cmm.jft.services.marketdata.MarketDataService;
 
 /**
  * <p>
@@ -139,7 +139,7 @@ public class BookTableModel extends AbstractTableModel implements MDListener {
 
 
     /* (non-Javadoc)
-     * @see com.cmm.jft.services.marketdata.MDListener#marketDataEvent()
+     * @see com.cmm.jft.marketdata.service.MDListener#marketDataEvent()
      */
     @Override
     public void marketDataEvent() {

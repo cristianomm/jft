@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.services.marketdata;
+package com.cmm.jft.marketdata.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

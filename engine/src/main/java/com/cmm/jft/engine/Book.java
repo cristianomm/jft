@@ -34,7 +34,7 @@ import com.cmm.jft.model.trading.enums.RejectTypes;
 import com.cmm.jft.model.trading.enums.Side;
 import com.cmm.jft.model.trading.enums.WorkingIndicator;
 import com.cmm.jft.model.trading.exceptions.OrderException;
-import com.cmm.jft.services.security.SecurityService;
+import com.cmm.jft.security.service.SecurityService;
 import com.cmm.logging.Logging;
 
 import quickfix.FixVersions;

@@ -1,0 +1,36 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="CC6263C6-84A5-6D85-58FC-7DF0A987AFFF" schemaObject="B563C57E-FB72-43A9-0A56-5A2A13D3C2DD" name="Isin">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-17 03:00:32 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<ordsAlias>table_25</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ISIN" id="5ED9287A-5EEE-2612-4BBF-EF077879DFCA">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-17 03:01:12 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12</dataTypeSize>
+<ownDataTypeParameters>12,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="EDDC3ADF-4F77-B19B-9EB8-A39C65C7D61C" name="Isin_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-17 03:01:12 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5ED9287A-5EEE-2612-4BBF-EF077879DFCA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

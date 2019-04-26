@@ -1,0 +1,197 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="D8E9408B-6FA7-EB3C-C309-9A803EBD180E" schemaObject="1A48C32D-DFAE-0EE0-B56E-1F544E09C671" name="Position">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 13:57:49 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<ordsAlias>table_30</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="positionId" id="7E64C87B-5584-8A4A-900D-64E313DFAE9C">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 13:58:19 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="appliedAllocationId" id="1CA1F865-5341-6740-6120-B7A185660A47">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 13:58:53 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="C58A8D62-47C6-8BA9-9E3E-A36E396ECC1A" referredColumn="61FAED79-F7BC-AE31-A8FB-855DF37C71EB"/>
+</associations>
+</Column>
+<Column name="OpenDate" id="FBB35417-4280-988C-C6A0-BFDF0DCBBB7D">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:00:14 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CloseDate" id="3E90EC5F-DE86-AF00-5B83-7AAF5ABE7A37">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:00:39 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Quantity" id="CAE6FCB2-6383-4031-ADF9-30D8C3A19271">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:43:48 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="OpenPrice" id="80BC9B82-6C87-3A85-7529-11A4648C8188">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:45:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Price" id="CC0B134B-D3CA-7B35-E972-0C072B62DC7A">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:45:45 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ClosePrice" id="8A6CF4C5-38DB-20C4-2FBF-ED7C3B2358DD">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:46:01 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="OpenValue" id="C5432F21-9942-8072-3A93-F13BB59254E5">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:01:45 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PresentValue" id="B97C70A3-6173-368A-8531-A5A435FDE18E">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:02:26 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CloseValue" id="A481C01E-DEDD-1520-59F5-DC869571D71F">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:02:40 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Earnings" id="C0EFA34A-ACE6-E28A-DE45-8E819940C50D">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:17:43 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Variation" id="36A5AE8A-E672-3F93-7910-186E75DEB3CE">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:47:47 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="734C7E9F-B1D2-79AA-AA48-DCB6CE2E4797" name="Position_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 13:58:19 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="7E64C87B-5584-8A4A-900D-64E313DFAE9C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="D6F34922-D41B-36AF-2D73-EEE2CE32A984" name="Position_AppliedAllocation_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:56:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="1CA1F865-5341-6740-6120-B7A185660A47"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

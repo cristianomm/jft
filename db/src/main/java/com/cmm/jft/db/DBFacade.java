@@ -66,7 +66,9 @@ public class DBFacade {
 	private ExecutorService exe;
 	private LinkedBlockingQueue<DBObject> batchQueue;
 	//    private LinkedBlockingQueue<Callable<Integer>> threads;
-
+	
+	public static List<Class> mappedClasses = new ArrayList<Class>();
+	
 	public DBFacade() {
 		this.sem = new Semaphore(1);
 		this.exe = Executors.newFixedThreadPool(6);
@@ -76,50 +78,17 @@ public class DBFacade {
 			configuration.configure(DEFAULT_CONFIG_FILE_LOCATION);
 			//ServiceRegistry sr = new ServiceRegistryBuilder().buildServiceRegistry();
 			//sessionFactory = configuration.buildSessionFactory(sr);
-
-			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-					.applySettings(configuration.getProperties()).build();
-			//sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-			sessionFactory = HibernateUtil.getSessionFactory(DEFAULT_CONFIG_FILE_LOCATION );
+			
+			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+			
+			//HibernateUtil.mappedClasses = mappedClasses;
+			//sessionFactory = HibernateUtil.getSessionFactory(DEFAULT_CONFIG_FILE_LOCATION );
 			
 		} catch (Exception e) {
 			throw e;
 		}
-
 	}
-
-	public static SessionFactory getSessionFactory() {
-
-		if (sessionFactory == null) {
-			try {
-				Configuration configuration = new Configuration();
-
-				// Hibernate settings equivalent to hibernate.cfg.xml's properties
-				Properties settings = new Properties();
-
-				settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-				settings.put(Environment.URL, "jdbc:mysql://localhost:3306/hibernate_db?useSSL=false");
-				settings.put(Environment.USER, "root");
-				settings.put(Environment.PASS, "root");
-				settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
-				settings.put(Environment.SHOW_SQL, "true");
-				settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-				settings.put(Environment.HBM2DDL_AUTO, "create-drop");
-
-				configuration.setProperties(settings);
-				//configuration.addAnnotatedClass(Student.class);
-				ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-
-				sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		return sessionFactory;
-	}
-
 
 	//    public EntityManager getEntityManager() {
 	//	return emf.createEntityManager();
@@ -254,7 +223,7 @@ public class DBFacade {
 		//	spaces = spaces.replaceFirst(" ", "");
 		try {
 			Transaction tx = threadTransaction.get();
-			if(tx != null && !tx.isActive() && !tx.getRollbackOnly() && level==1){
+			if(tx != null && !tx.isActive() && !tx.wasRolledBack() && level==1){
 				tx.rollback();
 				threadTransaction.set(null);
 			}
@@ -273,7 +242,7 @@ public class DBFacade {
 		//	spaces = spaces.replaceFirst(" ", "");
 		try {
 			Transaction tx = threadTransaction.get();
-			if(tx != null && !tx.isActive() && !tx.getRollbackOnly() && level ==1){
+			if(tx != null && !tx.isActive() && !tx.wasRolledBack() && level ==1){
 				tx.commit();
 				threadTransaction.set(null);
 				//closeSession();
@@ -286,9 +255,6 @@ public class DBFacade {
 		}
 		level--;
 	}
-
-
-
 
 	public Object queryByRange(String jpqlStmt, int firstResult, int maxResults) {
 		//	Query query = getEntityManager().createQuery(jpqlStmt);
@@ -317,7 +283,6 @@ public class DBFacade {
 		//	    }
 		//	}
 		return null;
-
 	}
 
 	public Object _persist(Object entity) throws DataBaseException {
@@ -403,18 +368,14 @@ public class DBFacade {
 						}
 					}
 				}
-
 			}
 		}catch(Exception e) {
 			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
 		}
-
 	}
-
 
 	public void queryAsMap(String query, String idColumn, HashMap map, Class cls) throws DataBaseException {
 		try {
-
 			if(map==null) {
 				map = new HashMap<>();
 			}
@@ -439,9 +400,7 @@ public class DBFacade {
 		}catch(Exception e) {
 			Logging.getInstance().log(this.getClass(), e, Level.ERROR);
 		}
-
 	}
-
 
 	public List _listResults(String namedQuery, HashMap<String, Object> params) throws DataBaseException {
 		List ret = null;
@@ -486,7 +445,6 @@ public class DBFacade {
 		//	}
 
 		return ret;
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -534,7 +492,6 @@ public class DBFacade {
 				closeSession();
 			}
 		}
-
 	}
 
 	public Object findObject(String namedQuery, String paramName, Object paramValue) {
@@ -631,10 +588,13 @@ public class DBFacade {
 		System.out.println("inserindo batch " + batchNum++);
 		try {
 			session = getCurrentSession();
-			tx = session.beginTransaction();
+			if(!session.getTransaction().isActive()) {
+				session.getTransaction().begin();
+			}
+			tx = session.getTransaction();
 			ArrayList<DBObject> temp = new ArrayList<DBObject>(flushSize);
 			while (!objs.isEmpty()) {
-				if(!session.isOpen()||tx.getRollbackOnly()) {
+				if(!session.isOpen()||tx.wasRolledBack()) {
 					session = getCurrentSession();
 					tx = session.beginTransaction();
 				}
@@ -642,7 +602,7 @@ public class DBFacade {
 				obj=objs.poll();
 				try {
 					temp.add(obj);
-					session.merge(obj);// merge(obj);
+					session.merge(obj);
 					count++;
 
 					if (count % flushSize == 0 ) { //50, same as the JDBC batch size
@@ -725,7 +685,7 @@ public class DBFacade {
 
 	public synchronized void addToBatch(DBObject obj) {
 
-		if(batchQueue.size()>=batchSize) {
+		if(batchQueue.size() >= batchSize) {
 			LinkedBlockingQueue<DBObject> l = new LinkedBlockingQueue<DBObject>(batchSize);
 
 			while(!batchQueue.isEmpty()) {
@@ -733,10 +693,14 @@ public class DBFacade {
 			}
 
 			//threads.offer(new BatchWorker(l));
-			batchInsert(l);
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					batchInsert(l);
+				}				
+			}).start();
 		}
 		batchQueue.offer(obj);
-
 	}
 
 	public synchronized void finalizeBatch() {

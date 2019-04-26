@@ -5,6 +5,7 @@
 
 package com.cmm.jft.model.trading;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +33,11 @@ import com.cmm.logging.Logging;
  * </p>
  * Any Order is identified by three identifiers when it is created:
  * <code>brokerId</code> Entering Firm: <code>traderId</code> Entering Trader:
- * <code>senderLocation</code> Sender Location this fields are required and are
+ * <code>senderLocation</code> this fields are required and are
  * used to identify market participants.
  * 
  * After that, orders can be identified as a group of orders related to an
- * trader. To address this, fields are used:
+ * trader. This fields are used for grouping:
  * 
  * <code>clOrdId</code> <code>origClOrdId</code>
  * 
@@ -51,14 +52,11 @@ import com.cmm.logging.Logging;
 											 */)
 @NamedQueries({ @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
 		@NamedQuery(name = "Orders.findByOrderId", query = "SELECT o FROM Orders o WHERE o.orderId = :orderId"), })
-public class Orders implements DBObject<Orders> {
+public class Orders implements Serializable/*DBObject<Orders>*/ {
 	private static final long serialVersionUId = 1L;
 
-	// @SequenceGenerator(name = "ORDERS_SEQ", sequenceName = "ORDERS_SEQ",
-	// allocationSize = 1, initialValue = 1)
-	// @GeneratedValue(generator = "ORDERS_SEQ", strategy = GenerationType.AUTO)
 	@Id
-	@Basic(optional = false)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "orderId", nullable = false)
 	private Long orderId;
 
@@ -100,10 +98,10 @@ public class Orders implements DBObject<Orders> {
 	@Column(name = "Account", length = 10, updatable = false)
 	private String account;
 
-	@Column(name = "Price", precision = 19, scale = 6)
+	@Column(name = "Price", precision = 19, scale = 8)
 	private double price;
 
-	@Column(name = "StopPrice", precision = 19, scale = 6)
+	@Column(name = "StopPrice", precision = 19, scale = 8)
 	private double stopPrice;
 
 	@Basic(optional = false)
@@ -124,44 +122,44 @@ public class Orders implements DBObject<Orders> {
 
 	// @Max(value=?) @Min(value=?)//if you know range of your decimal fields
 	// consider using these annotations to enforce field validation
-	@Column(name = "AvgPrice", precision = 19, scale = 6)
+	@Column(name = "AvgPrice", precision = 19, scale = 8)
 	private double avgPrice;
 
-	@Column(name = "ProtectionPrice", precision = 19, scale = 6)
+	@Column(name = "ProtectionPrice", precision = 19, scale = 8)
 	private double protectionPrice;
 
-	@Column(name = "Duration", nullable = false)
+	@Column(name = "Duration", nullable = false, columnDefinition = "DATE")
 	private LocalDateTime duration;
 
-	@Column(name = "OrderDateTime", nullable = false)
+	@Column(name = "OrderDateTime", nullable = false, columnDefinition = "DATE")
 	private LocalDateTime orderDateTime;
 
-	@Column(name = "InsertDateTime")
+	@Column(name = "InsertDateTime", columnDefinition = "TIMESTAMP")
 	private LocalDateTime insertDateTime;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "OrderStatus", nullable = false)
 	private OrderStatus orderStatus;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "WorkingIndicator", nullable = false)
 	private WorkingIndicator workingIndicator;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "OrderValidityType", nullable = false)
 	private OrderValidityTypes validityType;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Basic(optional = false)
 	@Column(name = "OrderType", nullable = false)
 	private OrderTypes orderType;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Basic(optional = false)
 	@Column(name = "TradeType", nullable = false, updatable = false)
 	private TradeTypes tradeType;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Basic(optional = false)
 	@Column(name = "Side", nullable = false, updatable = false)
 	private Side side;
@@ -171,6 +169,10 @@ public class Orders implements DBObject<Orders> {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orderId")
 	private List<OrderEvent> eventsList;
+	
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="positionId", referencedColumnName="positionId")
+	private Position positionId;
 
 	public Orders() {
 		this.price = 0d;
@@ -668,6 +670,20 @@ public class Orders implements DBObject<Orders> {
 	public void setInsertDateTime(LocalDateTime insertDateTime) {
 		this.insertDateTime = insertDateTime;
 	}
+		
+	/**
+	 * @return the positionId
+	 */
+	public Position getPositionId() {
+		return positionId;
+	}
+
+	/**
+	 * @param positionId the positionId to set
+	 */
+	public void setPositionId(Position positionId) {
+		this.positionId = positionId;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -765,7 +781,6 @@ public class Orders implements DBObject<Orders> {
 		setOrderStatus(OrderStatus.CANCELED);
 		workingIndicator = WorkingIndicator.No_Working;
 		refreshOrder();
-
 	}
 
 	private void expireOrder(OrderEvent execution) throws OrderException {
@@ -773,14 +788,12 @@ public class Orders implements DBObject<Orders> {
 		setOrderStatus(OrderStatus.EXPIRED);
 		workingIndicator = WorkingIndicator.No_Working;
 		refreshOrder();
-
 	}
 
 	private void newOrder(OrderEvent execution) throws OrderException {
 
 		setOrderStatus(OrderStatus.NEW);
 		refreshOrder();
-
 	}
 
 	private void rejectOrder(OrderEvent execution) throws OrderException {
@@ -788,7 +801,6 @@ public class Orders implements DBObject<Orders> {
 		setOrderStatus(OrderStatus.REJECTED);
 		workingIndicator = WorkingIndicator.No_Working;
 		refreshOrder();
-
 	}
 
 	private void replaceOrder(OrderEvent replace) throws OrderException {

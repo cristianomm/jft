@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 
 import com.cmm.jft.model.marketdata.MDEntry;
 import com.cmm.jft.model.trading.enums.Side;
-import com.cmm.jft.services.trading.TradingService;
+import com.cmm.jft.trading.service.ExchangeTradingService;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -271,7 +271,7 @@ public class DOMTableModel extends AbstractTableModel {
     public int getOrderCount(double price, Side side){
         int qty = 0;
         
-        TradingService.getInstance().getOrderCount(price);
+        ExchangeTradingService.getInstance().getOrderCount(price);
         
         return qty;
     }

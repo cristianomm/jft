@@ -46,6 +46,19 @@
 <colAssociation fkAssociation="6863F71F-3D5A-E4FB-0484-1AA6E009D0E3" referredColumn="E7991A1F-AEAE-5FEE-7EF1-F8DFFD2C8BCA"/>
 </associations>
 </Column>
+<Column name="companyId" id="6ACA80B5-B66F-01DC-3A2A-2F4CE1C7B629">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-24 03:39:14 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="79853ABC-BD7F-DCCE-BE95-C57F86E554F4" referredColumn="1BAF7E82-7C88-9CB6-AB8E-2FFB6532CE8A"/>
+</associations>
+</Column>
 <Column name="Symbol" id="24415DEB-F60B-852F-E68D-F0758B7CDD36">
 <createdBy>Cristiano</createdBy>
 <createdTime>2015-06-05 06:32:57 UTC</createdTime>
@@ -104,6 +117,18 @@
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>6</dataTypeSize>
 <ownDataTypeParameters>6,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CVMCode" id="EB360209-DF35-8B69-5817-82470DF8000C">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-24 01:28:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>
@@ -168,6 +193,16 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="95818216-B66F-52AD-7F91-126F07ADF724"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="6F12C2B6-784E-CA92-08D3-445BFC68760B" name="Security_Company_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-24 03:39:33 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6ACA80B5-B66F-01DC-3A2A-2F4CE1C7B629"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

@@ -28,7 +28,7 @@
 		</dependency>
 		<dependency>
 			<groupId>jft</groupId>
-			<artifactId>services</artifactId>
+			<artifactId>service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

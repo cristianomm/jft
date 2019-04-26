@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.services.marketdata;
+package com.cmm.jft.marketdata.service;
 
 import com.cmm.jft.model.marketdata.MDEntry;
 

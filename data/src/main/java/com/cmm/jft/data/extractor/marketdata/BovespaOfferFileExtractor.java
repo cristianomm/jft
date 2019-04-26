@@ -6,6 +6,7 @@ package com.cmm.jft.data.extractor.marketdata;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +14,7 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Level;
 
-import com.cmm.jft.core.format.DateTimeFormatter;
-import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
-import com.cmm.jft.core.format.IntFormatter;
 import com.cmm.jft.data.files.CSV;
 import com.cmm.jft.messaging.fix44.Fix44EngineMessageEncoder;
 import com.cmm.jft.model.marketdata.MDEntry;
@@ -28,7 +26,6 @@ import com.cmm.jft.model.trading.enums.Side;
 import com.cmm.jft.model.trading.exceptions.OrderException;
 import com.cmm.jft.vo.Extractable;
 import com.cmm.logging.Logging;
-import com.ibm.icu.text.SimpleDateFormat;
 
 /**
  * <p>
@@ -121,12 +118,10 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 				// FOK
 				if (lstEvt.getOrderEvent() == 3 && lstEvt.getOrderStatus() == 0 && lstEvt.getOrderStatus() == 4) {
 					o.setValidityType(OrderValidityTypes.FOK);
-
 				}
 				// ordem enviada e totamente executada no instante que eh disponibilizada
 				else if (lstEvt.getOrderEvent() == 4 && lstEvt.getOrderStatus() == 2) {
 					o.setValidityType(OrderValidityTypes.FOK);
-
 				}
 
 				// caso a ordem seja enviada e nao tenha sido completamente executada, sera uma
@@ -142,22 +137,20 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 					o.setPrice(lstEvt.getMdEntryPx());
 				}
 			} else {
-
 				/*
 				 * caso a ordem seja executada em mais de um nivel de preco, em tempos
 				 * diferentes, sera uma ordem limitada, neutra ou agredida, que eh enviada e
 				 * permanece no book ate a sua completa execucao
 				 */
 				o.setValidityType(OrderValidityTypes.DAY);
-
 			}
 
 			System.out.println(encoder.newOrderSingle(o));
 
 		} catch (OrderException e) {
 			e.printStackTrace();
+			Logging.getInstance().log(BovespaOfferFileExtractor.class, e, Level.ERROR);
 		}
-
 	}
 
 	/*
@@ -170,9 +163,9 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 
 		List<Extractable> bsEvents = new ArrayList<>(1000000);
 		try {
-			java.time.format.DateTimeFormatter df = java.time.format.DateTimeFormatter.ofPattern(FormatterTypes.DATE_F8.getFormat());
-			java.time.format.DateTimeFormatter tf = java.time.format.DateTimeFormatter.ofPattern(FormatterTypes.TIME_F4.getFormat());
-			java.time.format.DateTimeFormatter dtf = java.time.format.DateTimeFormatter.ofPattern(FormatterTypes.DATE_TIME_F8.getFormat());
+			DateTimeFormatter df = DateTimeFormatter.ofPattern(FormatterTypes.DATE_F8.getFormat());
+			DateTimeFormatter tf = DateTimeFormatter.ofPattern(FormatterTypes.TIME_F4.getFormat());
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern(FormatterTypes.DATE_TIME_F8.getFormat());
 						
 			CSV csv = new CSV(fileName, ";", "RT", "RH");
 			while (csv.hasNext()) {
@@ -183,7 +176,7 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 				if (vs != null && vs[0] != null) {
 					MDEntry entry = new MDEntry();
 					
-					var date = LocalDate.parse(vs[0], df);
+					LocalDate date = LocalDate.parse(vs[0], df);
 					entry.setEntryDate(date);
 					matcher = pTime.matcher(vs[6]);
 					if (matcher.find()) {

@@ -81,11 +81,8 @@ public class BovespaHistoricalFileExtractor extends BovespaFileExtractor {
 					
 					//adiciona na lista
 					prices.add(quote);
-					
 				}
-
 			}
-
 		} catch (Exception e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		} finally{

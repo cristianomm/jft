@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="AB04B5CA-3682-EF0D-4B8C-7F7A02C0BE2C" containerWithKeyObject="B527ED00-D92B-08D6-98A6-D0CCD6D881D9" localFKIndex="3ECAA554-C7FF-6948-FD93-38739259C321" name="MarketIndexQuote_MarketIndex_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-30 01:22:52 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<referredTableLongName>Security.MarketIndex</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>7EFBAC47-0336-4CF9-70A1-C33D8A959770</referredTableID>
+<keyObject>777420DA-2735-0D36-B0BA-0714926190FD</keyObject>
+<referredKeyID>777420DA-2735-0D36-B0BA-0714926190FD</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>marketIndexId</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

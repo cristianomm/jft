@@ -17,7 +17,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import com.cmm.jft.data.extractor.marketdata.BovespaTradeFileExtractor;
-import com.cmm.jft.services.marketdata.Market;
+import com.cmm.jft.marketdata.service.Market;
 import com.cmm.jft.ui.forms.AbstractForm;
 import com.cmm.jft.ui.models.TimesTradesTableModel;
 import com.cmm.jft.ui.utils.FormatRenderer;

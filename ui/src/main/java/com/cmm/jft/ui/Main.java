@@ -3,9 +3,9 @@ package com.cmm.jft.ui;
 import com.cmm.jft.connector.engine.EngineConnector;
 import com.cmm.jft.connector.engine.EngineStarter;
 import com.cmm.jft.db.DBFacade;
-import com.cmm.jft.services.marketdata.MarketDataService;
-import com.cmm.jft.services.security.SecurityService;
-import com.cmm.jft.services.trading.TradingService;
+import com.cmm.jft.marketdata.service.MarketDataService;
+import com.cmm.jft.security.service.SecurityService;
+import com.cmm.jft.trading.service.ExchangeTradingService;
 import com.cmm.jft.ui.forms.FormsFactory;
 import com.cmm.jft.ui.forms.ObjectForms;
 
@@ -33,7 +33,7 @@ public class Main {
 
 	    //inicializa a conexao
 	    DBFacade.getInstance();
-	    TradingService.getInstance().connect();
+	    ExchangeTradingService.getInstance().connect();
 	    MarketDataService.getInstance().connect();
 	    //SecurityService.getInstance();
 	    

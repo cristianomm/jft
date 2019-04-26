@@ -8,7 +8,7 @@ import com.cmm.jft.model.trading.enums.OrderTypes;
 import com.cmm.jft.model.trading.enums.OrderValidityTypes;
 import com.cmm.jft.model.trading.enums.Side;
 import com.cmm.jft.model.trading.enums.TradeTypes;
-import com.cmm.jft.services.trading.TradingService;
+import com.cmm.jft.trading.service.ExchangeTradingService;
 import com.cmm.jft.ui.forms.model.DOMTableModel;
 
 import java.beans.PropertyChangeEvent;
@@ -173,11 +173,11 @@ public class DOMController {
             tblModel.addPendingOrder(ordPrice, side, qty);
 
             //envia a ordem
-            int ret = TradingService.getInstance().newOrder(ordType, side, security.getSymbol(), 
+            int ret = ExchangeTradingService.getInstance().newOrder(ordType, side, security.getSymbol(), 
         	    qty, ordPrice, os.loss, os.gain, LocalDateTime.now(), 
         	    TradeTypes.DAY_TRADE, OrderValidityTypes.DAY, "");
 
-            setOpenQty(TradingService.getInstance().getPosition());
+            setOpenQty(ExchangeTradingService.getInstance().getPosition());
             setPrice(ordPrice);
         }
         

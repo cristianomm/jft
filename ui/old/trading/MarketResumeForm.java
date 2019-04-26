@@ -9,8 +9,8 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import com.cmm.jft.services.marketdata.Market;
-import com.cmm.jft.services.marketdata.MarketDataService;
+import com.cmm.jft.marketdata.service.Market;
+import com.cmm.jft.marketdata.service.MarketDataService;
 import com.cmm.jft.ui.ObjectForms;
 import com.cmm.jft.ui.forms.AbstractForm;
 import com.cmm.jft.ui.forms.Events;

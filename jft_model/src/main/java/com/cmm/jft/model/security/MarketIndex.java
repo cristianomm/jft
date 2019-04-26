@@ -3,12 +3,21 @@
  */
 package com.cmm.jft.model.security;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.cmm.jft.db.DBObject;
+import com.cmm.jft.model.marketdata.MarketIndexQuote;
 
 /**
  * <p>
@@ -21,7 +30,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "MarketIndex", schema = "Security")
-public class MarketIndex {
+public class MarketIndex implements DBObject<MarketIndex>{
 	
 	@Id
 	@Column(name = "marketIndexId", length = 5)
@@ -39,11 +48,15 @@ public class MarketIndex {
 	@Column(name = "ProviderLink", length = 255)
 	private String providerLink;
 	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="marketIndexId", referencedColumnName = "marketIndexId")
+	private List<MarketIndexQuote> quoteList;
+	
 	/**
 	 * 
 	 */
 	public MarketIndex() {
-		
+		this.quoteList = new ArrayList<>();
 	}
 	
 	public MarketIndex(String marketIndexCode) {
@@ -149,6 +162,20 @@ public class MarketIndex {
 	 */
 	public void setProviderLink(String providerLink) {
 		this.providerLink = providerLink;
+	}
+	
+	/**
+	 * @return the quoteList
+	 */
+	public List<MarketIndexQuote> getQuoteList() {
+		return quoteList;
+	}
+	
+	/**
+	 * @param quoteList the quoteList to set
+	 */
+	public void setQuoteList(List<MarketIndexQuote> quoteList) {
+		this.quoteList = quoteList;
 	}
 		
 }

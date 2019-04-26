@@ -3,11 +3,15 @@
  */
 package com.cmm.jft.model.security;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Converter;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,9 +30,11 @@ import javax.persistence.TemporalType;
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.model.financial.Currency;
 import com.cmm.jft.model.security.enums.AssetTypes;
+import com.cmm.jft.model.security.enums.MarketTypes;
 import com.cmm.jft.model.security.enums.OptionRights;
 import com.cmm.jft.model.security.enums.OptionStyles;
 import com.cmm.jft.model.security.enums.SecurityCategory;
+import com.cmm.jft.model.util.JpaConverters;
 
 /**
  * <p>
@@ -44,10 +50,8 @@ import com.cmm.jft.model.security.enums.SecurityCategory;
 public class SecurityInfo implements DBObject<SecurityInfo> {
 
     @Id
-    @SequenceGenerator(name = "SECURITYINFO_SEQ", sequenceName = "SECURITYINFO_SEQ", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(generator = "SECURITYINFO_SEQ", strategy = GenerationType.AUTO)
-    @Basic(optional = false)
-    @Column(name = "securityInfoId", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "securityInfoId")
     private Long securityInfoId;
 
     @OneToOne(mappedBy = "securityInfoId")
@@ -108,37 +112,45 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
     @Column(name="AuctionBand")
     private double auctionBand;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Column(name="ISINAsset")
+    private String ISINAsset;
+
+    
+    @Enumerated(EnumType.STRING)
     @Column(name = "ObjectAsset")
     private AssetTypes objectAsset;	
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "Category")
     private SecurityCategory category;	
-
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "MarketType")
+    private MarketTypes marketType;	
+    
     /**
      * Date of the symbol trade beginning (usually used for futures)
      */
-    @Temporal(TemporalType.DATE)
+    @Convert(converter=JpaConverters.LocalDateConverter.class)
     @Column(name = "EmissionDate")
-    private Date emissionDate;
+    private LocalDate emissionDate;
 
     /**
      * Date of the symbol trade end (usually used for futures)
      */
-    @Temporal(TemporalType.DATE)
+    @Convert(converter=JpaConverters.LocalDateConverter.class)
     @Column(name = "ExpirationDate")
-    private Date expirationDate;
+    private LocalDate expirationDate;
 
     //-------------------------------OptionSpecific
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "OptionStyle")
     private OptionStyles optionStyle;
 
     /**
      * Option right (Call/Put)
      */
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name="OptionRight")
     private OptionRights optionRight;
 
@@ -150,14 +162,11 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
      */
     @Column(name = "StrikePrice", precision = 19, scale = 6)
     private double strikePrice;
-
-
-
-
+    
+    
     public SecurityInfo() {
 
     }
-
 
     /**
      * @param securityId
@@ -328,7 +337,7 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
     /**
      * @return the emissionDate
      */
-    public Date getEmissionDate() {
+    public LocalDate getEmissionDate() {
 	return this.emissionDate;
     }
 
@@ -336,7 +345,7 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
     /**
      * @param emissionDate the emissionDate to set
      */
-    public void setEmissionDate(Date emissionDate) {
+    public void setEmissionDate(LocalDate emissionDate) {
 	this.emissionDate = emissionDate;
     }
 
@@ -344,7 +353,7 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
     /**
      * @return the expirationDate
      */
-    public Date getExpirationDate() {
+    public LocalDate getExpirationDate() {
 	return this.expirationDate;
     }
 
@@ -352,7 +361,7 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
     /**
      * @param expirationDate the expirationDate to set
      */
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(LocalDate expirationDate) {
 	this.expirationDate = expirationDate;
     }
 
@@ -463,4 +472,37 @@ public class SecurityInfo implements DBObject<SecurityInfo> {
 	this.rejectLoBand = rejectLoBand;
     }
 
+	/**
+	 * @return the marketType
+	 */
+	public MarketTypes getMarketType() {
+		return marketType;
+	}
+
+	/**
+	 * @param marketType the marketType to set
+	 */
+	public void setMarketType(MarketTypes marketType) {
+		this.marketType = marketType;
+	}
+
+	/**
+	 * @param securityId the securityId to set
+	 */
+	public void setSecurityId(Security securityId) {
+		this.securityId = securityId;
+	}
+	
+	/**
+	 * @return the iSINAsset
+	 */
+	public String getISINAsset() {
+		return ISINAsset;
+	}
+	/**
+	 * @param iSINAsset the iSINAsset to set
+	 */
+	public void setISINAsset(String iSINAsset) {
+		ISINAsset = iSINAsset;
+	}
 }

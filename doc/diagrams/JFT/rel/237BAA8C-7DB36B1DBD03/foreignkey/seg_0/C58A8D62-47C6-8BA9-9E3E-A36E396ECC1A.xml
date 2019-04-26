@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="C58A8D62-47C6-8BA9-9E3E-A36E396ECC1A" containerWithKeyObject="D8E9408B-6FA7-EB3C-C309-9A803EBD180E" localFKIndex="D6F34922-D41B-36AF-2D73-EEE2CE32A984" name="Position_AppliedAllocation_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:56:09 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<referredTableLongName>Trading.AppliedAllocation</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>04627638-AE75-B987-B32E-A86B93AA7744</referredTableID>
+<keyObject>ADAF5FE6-20FA-3FE0-85A3-351B644041A0</keyObject>
+<referredKeyID>ADAF5FE6-20FA-3FE0-85A3-351B644041A0</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>appliedAllocationId</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

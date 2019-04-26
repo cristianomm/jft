@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.model.partner.enums.PartnerTypes;
+import com.cmm.jft.model.trading.Portfolio;
 
 @Entity
 @Table(name = "BusinessPartner", schema="Partner")
@@ -32,16 +33,19 @@ public class BusinessPartner implements DBObject<BusinessPartner> {
 	@Column(name="ID_Number", length=30, unique = true, nullable = false)
 	private String idNumber;
 	
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "PartnerType")
 	private PartnerTypes partnerType;
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="partnerId")
 	private List<PartnerAccount> accounts;
 	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="partnerId")
+	private List<Portfolio> portfolios;
 	
 	public BusinessPartner() {
 		this.accounts = new ArrayList<>();
+		this.portfolios = new ArrayList<>();
 	}
 	
 	public BusinessPartner(String name, String idNumber, PartnerTypes partnerType) {
@@ -49,6 +53,7 @@ public class BusinessPartner implements DBObject<BusinessPartner> {
 		this.idNumber = idNumber;
 		this.partnerType = partnerType;
 		this.accounts = new ArrayList<>();
+		this.portfolios = new ArrayList<>();
 	}
 
 	/**
@@ -98,6 +103,20 @@ public class BusinessPartner implements DBObject<BusinessPartner> {
 	 */
 	public Long getPartnerId() {
 		return partnerId;
+	}
+	
+	/**
+	 * @return the accounts
+	 */
+	public List<PartnerAccount> getAccounts() {
+		return accounts;
+	}
+	
+	/**
+	 * @return the portfolios
+	 */
+	public List<Portfolio> getPortfolios() {
+		return portfolios;
 	}
 
 	/* (non-Javadoc)

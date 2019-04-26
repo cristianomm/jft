@@ -8,13 +8,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.zip.ZipException;
 
-import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.core.util.InputRowReport;
@@ -30,28 +35,37 @@ import com.cmm.jft.core.util.InputRowReport;
  */
 public class PreProcessFiles {
 
-	private class CD {
-		String symbol;
+	private class Line {
 		String code;
-		LocalDateTime date;
+		LocalDateTime date;		
+		
+		String securityID = "";
+		double price;
+		int volume;
+		String sessionDate = "";
+		String tradeDate = "";
+		String tradeTime = "";
+		int tradeNum;
+		int tradedVolume;
+		long buySeqID;
+		long sellSeqID;
+		char isDirect;
+		
+		int eventCode;
+		long externalID;
+		String orderTime = "";
+		String orderDate = "";
+		String orderStatus="";
 	}
 
 	public static void main(String[] args) {
-
-		System.exit(0);
-
-		// new
-		// PreProcessFiles().reLayoutBuySellTickData("C:\\Users\\Cristiano
-		// Martins\\Downloads\\BM&F Bovespa Tick
-		// Data\\072013\\OFER_CPA_20130701.TXT");
-		// new
-		// PreProcessFiles().extractCodesAndDates("C:\\Disco\\Workspaces\\JFT\\jft_core\\file\\HistoricalQuotes.csv");
-		// new
-		// PreProcessFiles().preProcessBovespaHistoricalFiles("C:\\Disco\\Bancos\\Bolsa\\BM&FBovespa\\Historico
-		// Bovespa\\COTAHIST");
+		/*
 		new PreProcessFiles().preProcessTickDataFiles(
-				"C:\\Users\\Cristiano Martins\\Downloads\\BM&F Bovespa Tick Data\\Vista",
-				"C:\\Users\\Cristiano Martins\\Downloads\\BM&F Bovespa Tick Data\\Vista\\All\\");
+				"C:\\Users\\Cristiano M Martins\\Data\\B3",
+				"C:\\Users\\Cristiano M Martins\\Data\\B3\\Consolidated");
+		*/
+		new PreProcessFiles().preProcessBovespaHistoricalFiles("C:\\Users\\Cristiano M Martins\\Downloads\\MarketData\\Bovespa-Historico\\Consolidated");
+				
 	}
 
 	/**
@@ -83,6 +97,8 @@ public class PreProcessFiles {
 				} else {
 					reLayoutBuySellTickData(fName);
 				}
+				
+				new File(fName).delete();
 			}
 		}
 
@@ -96,7 +112,7 @@ public class PreProcessFiles {
 			StringBuffer buffer = new StringBuffer(len);
 			List<String> files = Zimp.extract(zipFile, "");
 			fName = destDir;
-			fName += zipFile.substring(zipFile.lastIndexOf('\\'), zipFile.lastIndexOf('.')) + ".csv";
+			fName += zipFile.substring(zipFile.lastIndexOf('\\')+1, zipFile.lastIndexOf('.')) + ".csv";
 			FileOutputStream fos = new FileOutputStream(new File(fName));
 
 			for (String fn : files) {
@@ -142,21 +158,16 @@ public class PreProcessFiles {
 		try {
 			StringBuffer sBuffer = new StringBuffer(100000);
 			FileOutputStream fos = new FileOutputStream(new File(fileName + ".re"));
-			DateTimeFormatter dtf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.DATE_F8);
-
+			SimpleDateFormat sdf = new SimpleDateFormat(FormatterTypes.DATE_F8.getFormat());
+			
 			CSV csv = new CSV(fileName, ";", "RT", "RH");
 			while (csv.hasNext()) {
 				String[] vs = csv.readLine();
 
 				if (vs != null && vs[0] != null) {
-					LocalDateTime sessionDate = dtf.parse(vs[0]);
-					String securityID = "";
-					String price = "";
-					String volume = "";
-					String tradeDate = "";
-					String tradeTime = "";
-					String buySeqID = "";
-					String sellSeqID = "";
+					LocalDate sessionDate = sdf.parse(vs[0]).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					
+					Line line = new Line();
 
 					// layout dos arquivos foi alterado devido a mudanca para o
 					// sistema de negociacao Puma
@@ -196,14 +207,14 @@ public class PreProcessFiles {
 						// Seq.Oferta Venda 159 10 N�mero sequencial da oferta
 						// de
 						// venda
-
-						securityID = vs[1];
-						price = vs[3];
-						volume = vs[4];
-						tradeTime = vs[5];
-						tradeDate = vs[0];
-						buySeqID = vs[8];
-						sellSeqID = vs[10];
+						line.securityID = vs[1];
+						line.tradeNum = Integer.parseInt(vs[2]);
+						line.price = Double.parseDouble(vs[3]);
+						line.volume = Integer.parseInt(vs[4]);
+						line.tradeTime = vs[5];
+						line.tradeDate = vs[0];
+						line.buySeqID = Long.parseLong(vs[8]);
+						line.sellSeqID = Long.parseLong(vs[10]);
 
 					} else if (vs.length >= 15) {
 						// -----------------------------------------------------------
@@ -258,46 +269,43 @@ public class PreProcessFiles {
 						// [17]Corretora Venda 230 8 C�digo de identifica��o da
 						// corretora de venda - Dispon�vel a partir de 03/2014
 
-						tradeDate = vs[0];
-						securityID = vs[1];
-						// tradeNum = vs[2];
-						price = vs[3];
-						volume = vs[4];
-						tradeTime = vs[5];
+						line.tradeDate = vs[0];
+						line.securityID = vs[1];
+						line.tradeNum = Integer.parseInt(vs[2]);
+						line.price = Double.parseDouble(vs[3]);
+						line.volume = Integer.parseInt(vs[4]);
+						line.tradeTime = vs[5];
 
-						buySeqID = vs[8];
-						sellSeqID = vs[12];
-
+						line.buySeqID = Long.parseLong(vs[8]);
+						line.sellSeqID = Long.parseLong(vs[12]);
+						line.isDirect = vs[15].charAt(0);
 					}
 
-					if (sBuffer.capacity() <= 100000) {
-						/*
-						 * String line = dtf.format(sessionDate) + ";" + tradeTime + ";" + securityID +
-						 * ";" + price + ";" + volume + ";" + buySeqID + ";" + sellSeqID + "\n";
-						 */
-						sBuffer.append(";");
-						sBuffer.append(dtf.format(sessionDate));
-						sBuffer.append(";");
-						sBuffer.append(tradeTime);
-						sBuffer.append(";");
-						sBuffer.append(securityID);
-						sBuffer.append(";");
-						sBuffer.append(price);
-						sBuffer.append(";");
-						sBuffer.append(volume);
-						sBuffer.append(";");
-						sBuffer.append(buySeqID);
-						sBuffer.append(";");
-						sBuffer.append(sellSeqID);
-						sBuffer.append("\n");
-
-					} else {
-						fos.write(sBuffer.toString().getBytes());
-						sBuffer = new StringBuffer(100000);
-					}
+					sBuffer.append(line.tradeDate);
+					sBuffer.append(";");
+					sBuffer.append(line.tradeTime);
+					sBuffer.append(";");
+					sBuffer.append(line.tradeNum);
+					sBuffer.append(";");
+					sBuffer.append(line.securityID);
+					sBuffer.append(";");
+					sBuffer.append(line.price);
+					sBuffer.append(";");
+					sBuffer.append(line.volume);
+					sBuffer.append(";");
+					sBuffer.append(line.buySeqID);
+					sBuffer.append(";");
+					sBuffer.append(line.sellSeqID);
+					sBuffer.append(";");
+					sBuffer.append(line.isDirect);
+					sBuffer.append("\n");
+					
+					saveBuffer(fos, sBuffer, false);					
 				}
 			}
-
+			
+			saveBuffer(fos, sBuffer, true);
+			
 			fos.close();
 
 		} catch (FileNotFoundException e) {
@@ -307,32 +315,32 @@ public class PreProcessFiles {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
-
+		
+	private void saveBuffer(FileOutputStream stream, StringBuffer buffer, boolean isClosing) throws IOException {
+		
+		if(buffer.capacity() > 100000 || isClosing) {
+			stream.write(buffer.toString().getBytes());
+			buffer.delete(0, buffer.capacity());
+		}
+	}
+	
 	private void reLayoutBuySellTickData(String fileName) {
 
 		try {
 			StringBuffer sBuffer = new StringBuffer(100000);
 			FileOutputStream fos = new FileOutputStream(new File(fileName + ".re"));
-			DateTimeFormatter dtf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.DATE_F8);
-
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern(FormatterTypes.DATE_F8.getFormat());
+			SimpleDateFormat sdf = new SimpleDateFormat(FormatterTypes.DATE_F8.getFormat());
+			
 			CSV csv = new CSV(fileName, ";", "RT", "RH");
 			while (csv.hasNext()) {
 				String[] vs = csv.readLine();
 
 				if (vs != null && vs[0] != null) {
-					LocalDateTime sessionDate = dtf.parse(vs[0]);
-					String price = "";
-					String externalID = "";
-					String securityID = "";
-					String volume = "";
-					String orderDate = "";
-					String orderTime = "";
-					String orderStatus = "";
-					String eventCode = "";
-					String tradedVolume = "";
-
+					LocalDate sessionDate = sdf.parse(vs[0]).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();;
+					Line line = new Line();					
+					
 					// layout dos arquivos foi alterado devido a mudanca para o
 					// sistema de negociacao Puma
 					if (vs.length == 12) {// /....!fk
@@ -370,14 +378,15 @@ public class PreProcessFiles {
 						// Hora Fim Tratam. Of.Compra 193 19 Hora de Fim de
 						// Tratamento (cont�m Hora da Anula��o quando Indicador
 						// de Estado da Orderm for igual a "A")
-						securityID = vs[1];
-						externalID = vs[2];
-						price = vs[3];
-						volume = vs[4];
-						tradedVolume = vs[5];
-						orderTime = vs[6];
-						orderDate = vs[7].split(" ")[0];
-						orderStatus = vs[8];
+						line.sessionDate = vs[0];
+						line.securityID = vs[1];
+						line.externalID = Long.parseLong(vs[2]);
+						line.price = Double.parseDouble(vs[3]);
+						line.volume = Integer.parseInt(vs[4]);
+						line.tradedVolume = Integer.parseInt(vs[5]);
+						line.orderTime = vs[6];
+						line.orderDate = vs[7].split(" ")[0];
+						line.orderStatus = vs[8];
 
 					} else if (vs.length >= 14) {
 						// -----------------------------------------------------------
@@ -428,50 +437,44 @@ public class PreProcessFiles {
 						// ingressa no mercado para fechar com uma oferta
 						// existente. / 2 - Oferta Agredida - � a oferta
 						// (existente) que � fechada com uma oferta agressora.
-						securityID = vs[1];
-						externalID = vs[3];
-						eventCode = vs[5];
-						orderTime = vs[6];
-						price = vs[8];
-						volume = vs[9];
-						tradedVolume = vs[10];
-						orderDate = vs[11];
-						orderStatus = vs[13];
+						line.sessionDate = vs[0];
+						line.securityID = vs[1];
+						line.externalID = Long.parseLong(vs[3]);
+						line.eventCode = Integer.parseInt(vs[5]);
+						line.orderTime = vs[6];
+						line.price = Double.parseDouble(vs[8]);
+						line.volume = Integer.parseInt(vs[9]);
+						line.tradedVolume = Integer.parseInt(vs[10]);
+						line.orderDate = vs[11];
+						line.orderStatus = vs[13];
 					}
 
-					if (sBuffer.capacity() <= 100000) {
-						/*
-						 * String line = dtf.format(sessionDate) + ";" + securityID + ";" + externalID +
-						 * ";" + eventCode + ";" + orderDate + ";" + orderTime + ";" + orderStatus + ";"
-						 * + price + ";" + volume + ";" + tradedVolume + "\n";
-						 */
-						sBuffer.append(dtf.format(sessionDate));
-						sBuffer.append(";");
-						sBuffer.append(securityID);
-						sBuffer.append(";");
-						sBuffer.append(externalID);
-						sBuffer.append(";");
-						sBuffer.append(eventCode);
-						sBuffer.append(";");
-						sBuffer.append(orderDate);
-						sBuffer.append(";");
-						sBuffer.append(orderTime);
-						sBuffer.append(";");
-						sBuffer.append(orderStatus);
-						sBuffer.append(";");
-						sBuffer.append(price);
-						sBuffer.append(";");
-						sBuffer.append(volume);
-						sBuffer.append(";");
-						sBuffer.append(tradedVolume);
-						sBuffer.append(";\n");
-
-					} else {
-						fos.write(sBuffer.toString().getBytes());
-						sBuffer = new StringBuffer(100000);
-					}
+					sBuffer.append(line.sessionDate);
+					sBuffer.append(";");
+					sBuffer.append(line.securityID);
+					sBuffer.append(";");
+					sBuffer.append(line.externalID);
+					sBuffer.append(";");
+					sBuffer.append(line.eventCode);
+					sBuffer.append(";");
+					sBuffer.append(line.orderDate);
+					sBuffer.append(";");
+					sBuffer.append(line.orderTime);
+					sBuffer.append(";");
+					sBuffer.append(line.orderStatus);
+					sBuffer.append(";");
+					sBuffer.append(line.price);
+					sBuffer.append(";");
+					sBuffer.append(line.volume);
+					sBuffer.append(";");
+					sBuffer.append(line.tradedVolume);
+					sBuffer.append(";\n");
+					
+					saveBuffer(fos, sBuffer, false);
 				}
 			}
+			
+			saveBuffer(fos, sBuffer, true);
 
 			fos.close();
 
@@ -509,7 +512,7 @@ public class PreProcessFiles {
 			impr.startReport("Consolidated");
 
 			HashMap<String, String> types = new HashMap<String, String>();
-			CSV csv = new CSV("C:\\Disco\\Workspaces\\JFT\\jft_core\\file\\SecurityTypes.csv", ";");
+			CSV csv = new CSV(dir + "SecurityTypes.csv", ";");
 			while (csv.hasNext()) {
 				String[] vs = csv.readLine();
 				// speci.add(vs[0]);
@@ -517,10 +520,6 @@ public class PreProcessFiles {
 			}
 
 			for (File file : new File(dir).listFiles()) {
-				// System.out.println(file.getName());
-				// if(Integer.parseInt(file.getName().substring(10,
-				// 14))>=2011)continue;
-
 				System.out.println("Lendo arquivo: " + file.getName());
 
 				int linecount = 0;
@@ -533,23 +532,28 @@ public class PreProcessFiles {
 					// para cada linha do arquivo
 					while (sc.hasNext()) {
 
-						line = sc.next();
+						line = sc.nextLine();
 
 						// registros que iniciam com 01....
 						if (line.startsWith("01")) {
 							linecount++;
 							fileLineCount++;
 
-							String Isin = (removeWhite(line.substring(230, 242), linecount));
+							String isin = (line.substring(230, 242).stripTrailing());
 
-							if (Isin.length() == 12) {
+							if (isin.length() == 12) {
 
 								impr.count("Consolidated");
 
 								// tenta encontrar o papel e a empresa
-								String Symbol = (removeWhite(line.substring(12, 24), linecount));
-								String stockcode = removeWhite(line.substring(12, 16), linecount).replace("'", "''");
-								String companyName = removeWhite(line.substring(27, 39), linecount).replace("'", "''");
+								String symbol = (line.substring(12, 24).stripTrailing());
+								
+								if(symbol.contains(" ")) {
+									symbol = isin.substring(2, 6) + symbol.substring(4); 
+								}
+								
+								String stockcode = line.substring(12, 16).stripTrailing().replace("'", "''");
+								String companyName = line.substring(27, 39).stripTrailing().replace("'", "''");
 								String CurrencyID = (line.substring(52, 56).trim());
 								Integer MarketTypeID = (Integer.parseInt(line.substring(24, 27)));
 
@@ -601,31 +605,47 @@ public class PreProcessFiles {
 								value = line.substring(188, 201);
 								value = value.substring(0, 11) + "." + value.substring(11, value.length());
 								BigDecimal PreExe = (new BigDecimal(value));
-								BigDecimal PtoExe = (new BigDecimal(
-										"" + Double.parseDouble(line.substring(217, 230)) / 10000000f));
+								BigDecimal PtoExe = (new BigDecimal("" + Double.parseDouble(line.substring(217, 230)) / 10000000f));
 								String ExpDate = line.substring(202, 210);
-								ExpDate = ExpDate.substring(0, 4) + "-" + ExpDate.substring(4, 6) + "-"
-										+ ExpDate.substring(6, 8);
+								ExpDate = ExpDate.substring(0, 4) + "-" + ExpDate.substring(4, 6) + "-"	+ ExpDate.substring(6, 8);
 								String Prazot = line.substring(49, 52);
 								String secType = "";
 								String secSpeci = "";// removeWhite(line.substring(39,49),
 								// linecount);
 
-								String[] r = getSecType(Isin, types);
+								String[] r = getSecType(isin, types);
 								secType = r[0];
 								secSpeci = r[1];
 
 								// armazena a linha no buffer
-								buffer.append(Symbol + ";" + stockcode + ";" + Isin + ";" + companyName + ";"
-										+ CurrencyID + ";" + MarketTypeID + ";" + QDatetime + ";" + Fatquote + ";"
-										+ QHigh + ";" + QLow + ";" + QOpen + ";" + QClose + ";" + QAsk + ";" + QBid
-										+ ";" + PreMed + ";" + Volume + ";" + TradedUnits + ";" + TradedQuantity + ";"
-										+ PreExe + ";" + PtoExe + ";" + ExpDate + ";" + Prazot + ";" + secType + ";"
-										+ secSpeci + ";BM&FBOVESPA" + "\n");
+								buffer.append(
+								symbol + ";" + 
+								stockcode + ";" + 
+								isin + ";" + 
+								companyName + ";" + 
+								CurrencyID + ";" + 
+								MarketTypeID + ";" + 
+								QDatetime + ";" + 
+								Fatquote + ";"+ 
+								QHigh + ";" + 
+								QLow + ";" + 
+								QOpen + ";" + 
+								QClose + ";" + 
+								QAsk + ";" + 
+								QBid + ";" + 
+								PreMed + ";" + 
+								Volume + ";" + 
+								TradedUnits + ";" + 
+								TradedQuantity + ";" + 
+								PreExe + ";" + 
+								PtoExe + ";" + 
+								ExpDate + ";" + 
+								Prazot + ";" + 
+								secType + ";" + 
+								secSpeci + ";B3" + "\n");
 
 							}
 						}
-
 					}
 
 				} catch (FileNotFoundException e) {
@@ -638,17 +658,18 @@ public class PreProcessFiles {
 				// +" inserido com sucesso, n� de registros adicionados: " +
 				// regcont + " linhas: " + linecount);
 				System.out.println("Resgistros no arquivo:" + fileLineCount);
-				fos.write(buffer.toString().getBytes());
-				buffer = new StringBuffer(10000);
+				saveBuffer(fos, buffer, false);
+				
 				fileLineCount = 0;
-
 			}
 
+			saveBuffer(fos, buffer, true);
+			
 			fos.close();
 			System.out.println(impr.reportAll());
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 
 	}
@@ -685,33 +706,34 @@ public class PreProcessFiles {
 	public void extractCodesAndDates(String fileName) {
 		CSV csv = new CSV(fileName, ";");
 
-		HashMap<String, CD> codes = new HashMap<String, CD>();
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FormatterTypes.DATE_F8.getFormat());
+		HashMap<String, Line> codes = new HashMap<String, Line>();
 		while (csv.hasNext()) {
 			String[] line = csv.readLine();
 
-			CD cd = new CD();
+			Line cd = new Line();
 			cd.code = line[1];
-			cd.date = (LocalDateTime) FormatterFactory.getFormatter(FormatterTypes.DATE_F8).parse(line[6]);
-			cd.symbol = line[0];
+			cd.date = LocalDateTime.parse(line[6], dateTimeFormatter);
+			cd.securityID = line[0];
 
-			if (codes.containsKey(cd.symbol)) {
-				if (codes.get(cd.symbol).date.isAfter(cd.date)) {
-					codes.put(cd.symbol, cd);
+			if (codes.containsKey(cd.securityID)) {
+				if (codes.get(cd.securityID).date.isAfter(cd.date)) {
+					codes.put(cd.securityID, cd);
 				}
 			} else {
-				codes.put(cd.symbol, cd);
+				codes.put(cd.securityID, cd);
 			}
-
 		}
 
 		try {
 			FileOutputStream fos = new FileOutputStream(
 					new File("C:\\Disco\\Workspaces\\JFT\\jft_core\\file\\CodesAndDates.csv"));
-			DateTimeFormatter dtf = (DateTimeFormatter) FormatterFactory.getFormatter(FormatterTypes.DATE_F8);
-			for (CD s : codes.values()) {
+			SimpleDateFormat sdf = new SimpleDateFormat(FormatterTypes.DATE_F8.getFormat());
+			
+			for (Line s : codes.values()) {
 				try {
 					if (s.date != null) {
-						fos.write((s.symbol + ";" + s.code + ";" + dtf.format(s.date) + "\n").getBytes());
+						fos.write((s.securityID + ";" + s.code + ";" + sdf.format(s.date) + "\n").getBytes());
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -726,16 +748,4 @@ public class PreProcessFiles {
 		}
 
 	}
-
-	private String removeWhite(String txt, int line) {
-		try {
-			while (txt.charAt(txt.length() - 1) == ' ') {
-				txt = txt.substring(0, txt.length() - 1);
-			}
-		} catch (StringIndexOutOfBoundsException e) {
-			System.out.println("Empresa " + txt + " nao possui codigo de negociacao. Linha:" + line);
-		}
-		return txt;
-	}
-
 }

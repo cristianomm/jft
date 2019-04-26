@@ -25,7 +25,7 @@ import javax.persistence.*;
  * @version Aug 6, 2013 2:00:41 AM
  */
 @Entity
-@Table(name = "Company", schema = "Security")
+@Table(name = "Company", schema = "Security", uniqueConstraints= {@UniqueConstraint(columnNames= {"EmitterCode", "CNPJ"})})
 @NamedQueries({
 		@NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c"),
 		@NamedQuery(name = "Company.findByCompanyID", query = "SELECT c FROM Company c WHERE c.companyID = :companyID"),
@@ -35,7 +35,6 @@ public class Company implements DBObject<Company> {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Basic(optional = false)
 	@Column(name = "companyID", nullable = false)
 	private Long companyID;
 
@@ -49,22 +48,23 @@ public class Company implements DBObject<Company> {
 	@Column(name = "CompanyName", nullable = false, length = 255)
 	private String companyName;
 	
-	@Column(name = "EmitterCode", length = 4, unique = true)
+	@Column(name = "EmitterCode", length = 4)
 	private String emitterCode;
 	
-	@Column(name = "CVMCode", length = 10, unique = true)
+	@Column(name = "CVMCode", length = 10)
 	private String cvmCode;
 	
-	@Column(name = "CNPJ", length = 14, unique = true)
+	@Column(name = "CNPJ", length = 14)
 	private String cnpj;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "Status")
 	private GeneralStatus status;
 
 	
-	@Column(name = "CompanyDate", columnDefinition="DATE")
-	private LocalDate companyDate;
+	@Column(name = "CompanyDate")
+	@Temporal(TemporalType.DATE)
+	private Date companyDate;
 
 	//@JoinTable(name = "CompanySegment", joinColumns = { @JoinColumn(name = "companyID", referencedColumnName = "companyID", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "segmentID", referencedColumnName = "segmentID", nullable = false) })
 	//@ManyToMany(fetch = FetchType.LAZY)
@@ -165,14 +165,14 @@ public class Company implements DBObject<Company> {
 	/**
 	 * @return the companyDate
 	 */
-	public LocalDate getCompanyDate() {
+	public Date getCompanyDate() {
 		return companyDate;
 	}
 
 	/**
 	 * @param companyDate the companyDate to set
 	 */
-	public void setCompanyDate(LocalDate companyDate) {
+	public void setCompanyDate(Date companyDate) {
 		this.companyDate = companyDate;
 	}
 

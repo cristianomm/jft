@@ -1,0 +1,106 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="2F52BE68-0228-DE5A-3FE8-FCF9A147B8A2" name="SeucurityEvent">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-18 02:11:22 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<ordsAlias>table_26</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="securityEventId" id="E2B2BB7B-624C-4B68-DF1F-6672FCF5E756">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-18 02:11:48 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="securityId" id="8BC3AABE-0EA0-22E3-80A6-46C8C5B20A48">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-18 02:12:06 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="DF69F878-FD16-6EA2-8597-B40DB6E35812" referredColumn="37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14"/>
+</associations>
+</Column>
+<Column name="Type" id="BFDDDB40-9401-697B-3537-4948743BE16E">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-18 02:12:27 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Description" id="8C4FB9B6-E68C-1AF4-AD60-CB551DA849C8">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-18 02:12:44 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Date" id="58655856-259E-9CD1-BBB9-13592EE42A54">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-18 02:13:03 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Value" id="E9564A19-2FD7-78CF-EF44-0FF2BE95BF74">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-18 02:13:19 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>6</dataTypeScale>
+<ownDataTypeParameters>,19,6</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="60F07ED3-F317-59DA-4CAD-C593E55BB6DB" name="SeucurityEvent_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-18 02:11:48 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E2B2BB7B-624C-4B68-DF1F-6672FCF5E756"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="13924CB5-F8B3-4606-40B0-130C7B288F06" name="SeucurityEvent_Security_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-18 03:07:54 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8BC3AABE-0EA0-22E3-80A6-46C8C5B20A48"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

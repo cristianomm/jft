@@ -1,309 +1,269 @@
-
-package com.cmm.jft.model.trading;
-
-import com.cmm.jft.db.DBObject;
-import com.cmm.jft.model.financial.Brokerage;
-import com.cmm.jft.model.trading.enums.OrderStatus;
-import com.cmm.jft.model.trading.enums.Side;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-
 /**
  * 
- * <p>
- * <code>Position</code>
- * </p>
- * 
- * @author Cristiano M Martins
- * @version Aug 6, 2013 2:00:40 AM
  */
-public class Position implements DBObject<Position> {
+package com.cmm.jft.model.trading;
 
-	private String positionSerial;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-	private String symbol;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-	private Date openDate;
+/**
+ * <p>
+ * <code>Position.java</code>
+ * </p>
+ *
+ * @author Cristiano M Martins
+ * @version Mar 23, 2019
+ * 
+ */
+@Entity
+@Table(name="Position", schema="Trading")
+public class Position {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private long positionId;
+	
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="appliedAllocationId", referencedColumnName="appliedAllocationId")
+	private AppliedAllocation appliedAllocationId;
+	
+	@Column(name="OpenDate", columnDefinition="timestamp")
+	private LocalDateTime openDate; 
+	
+	@Column(name="CloseDate", columnDefinition="timestamp")
+	private LocalDateTime closeDate;
+	
+	@Column(name="Quantity", precision = 19, scale = 8)
+	private double quantity;
+	
+	@Column(name="OpenPrice", precision = 19, scale = 8)
+	private double openPrice;
+	
+	@Column(name="Price", precision = 19, scale = 8)
+	private double price;
+	
+	@Column(name="ClosePrice", precision = 19, scale = 8)
+	private double closePrice;
+	
+	@Column(name="OpenValue", precision = 19, scale = 8)
+	private double openValue;
+	
+	@Column(name="PresentValue", precision = 19, scale = 8)
+	private double PresentValue;
 
-	private Date closeDate;
+	@Column(name="CloseValue", precision = 19, scale = 8)
+	private double closeValue;
 
-	private double profit;
+	@Column(name="Earnings", precision = 19, scale = 8)
+	private double earnings;
 
-	private boolean open;
-
-	private List<Orders> ordersList;
-
+	@Column(name="Variation", precision = 19, scale = 8)
+	private double variation;
+	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="orderId")
+	private List<Orders> orders;
+	
 	/**
-	 * @param symbol
-	 */
-	public Position(String symbol) {
-		this.open = false;
-		this.symbol = symbol;
-		this.openDate = new Date();
-		this.positionSerial = UUID.randomUUID().toString();
-		this.ordersList = new ArrayList<Orders>();
-	}
-
-	public void refreshTrade() {
-
-		// calcula o lucro
-		getProfit();
-
-	}
-
-	public double getProfit() {
-		double buy = 0;
-		double sell = 0;
-
-		Iterator<Orders> itOrd = ordersList.iterator();
-		while (itOrd.hasNext()) {
-			Orders o = itOrd.next();
-			if (o.getOrderStatus() == OrderStatus.FILLED) {
-				if (o.getSide() == Side.BUY) {
-					buy = buy + o.getExecutedOrderValue();
-				} else {
-					sell = sell + o.getExecutedOrderValue();
-				}
-				profit = sell - buy;
-			}
-		}
-		return profit;
-	}
-
-	/**
-	 * Calcula a posicao de ordens de compra executadas.
 	 * 
-	 * @return
 	 */
-	public int getBuyTradedVolume() {
-		int volume = 0;
-
-		Iterator<Orders> itOrd = ordersList.iterator();
-		while (itOrd.hasNext()) {
-			Orders o = itOrd.next();
-			if (o.getOrderStatus() == OrderStatus.FILLED) {
-				if (o.getSide() == Side.BUY) {
-					volume += o.getExecutedVolume();
-				}
-			}
-		}
-
-		return volume;
+	public Position() {
+		this.orders = new ArrayList<>();
 	}
 
 	/**
-	 * Calcula a posicao de ordens de venda executadas.
-	 * 
-	 * @return
+	 * @return the positionId
 	 */
-	public int getSellTradedVolume() {
-		int volume = 0;
-
-		Iterator<Orders> itOrd = ordersList.iterator();
-		while (itOrd.hasNext()) {
-			Orders o = itOrd.next();
-			if (o.getOrderStatus() == OrderStatus.FILLED) {
-				if (o.getSide() == Side.SELL) {
-					volume += o.getExecutedVolume();
-				}
-			}
-		}
-
-		return volume;
+	public long getPositionId() {
+		return positionId;
 	}
 
 	/**
-	 * Calcula o volume negociado das ordens de compra e venda que foram totalmente
-	 * executadas. O volume retornado esta relacionado ao ciclo compra - venda um
-	 * volume sera considerado somente se existir um volume de compra e um volume de
-	 * venda. - Caso tenha executado mais compras do que vendas, retorna o volume
-	 * das ordens de venda executadas. - Caso tenha realizado maior numero de vendas
-	 * , retorna o numero de compras realizadas.
-	 * 
-	 * @return
+	 * @param positionId the positionId to set
 	 */
-	public int getTradedVolume() {
-		int volume = 0;
-
-		int bt = getBuyTradedVolume();
-		int st = getSellTradedVolume();
-
-		volume = bt;
-		if (bt > st) {
-			volume = st;
-		} else {
-			volume = bt;
-		}
-
-		return volume;
+	public void setPositionId(long positionId) {
+		this.positionId = positionId;
 	}
 
 	/**
-	 * Calcula o valor das negociacoes, de acordo com todas as ordens de venda
-	 * executadas.
-	 * 
-	 * @return Valor das vendas para o trade.
+	 * @return the appliedAllocationId
 	 */
-	public double getTradeValue() {
-		double val = 0;
-
-		Iterator<Orders> itOrd = ordersList.iterator();
-		while (itOrd.hasNext()) {
-			Orders o = itOrd.next();
-			if (o.getOrderStatus() == OrderStatus.FILLED) {
-				if (o.getSide() == Side.SELL) {
-					val = val + o.getExecutedOrderValue();
-				}
-			}
-		}
-		return val;
+	public AppliedAllocation getAppliedAllocationId() {
+		return appliedAllocationId;
 	}
 
 	/**
-	 * @return the symbol
+	 * @param appliedAllocationId the appliedAllocationId to set
 	 */
-	public String getSymbol() {
-		return this.symbol;
-	}
-
-	public void addOrder(Orders orders) {
-		if (symbol.isEmpty()) {
-			symbol = orders.getSecurityId().getSymbol();
-		}
-		open = true;
-		ordersList.add(orders);
-	}
-
-	public Orders getOrder(String orderSerial) {
-		for (Orders o : ordersList) {
-			if (o.getClOrdId().equalsIgnoreCase(orderSerial)) {
-				return o;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Calcula a posicao atual do volume executado para as ordens ativas
-	 * 
-	 * @return Posicao atual do volume executado
-	 */
-	public int getPosition() {
-		int buy = 0, sell = 0;
-		for (Orders o : ordersList) {
-			if (o.getOrderStatus() == OrderStatus.NEW || o.getOrderStatus() == OrderStatus.FILLED
-					|| o.getOrderStatus() == OrderStatus.PARTIALLY_FILLED) {
-				buy += o.getSide() == Side.BUY ? o.getExecutedVolume() : 0;
-				sell += o.getSide() == Side.SELL ? o.getExecutedVolume() : 0;
-			}
-		}
-
-		return buy - sell;
-	}
-
-	// /**
-	// * Calcula a posicao atual das ordens que ainda nao foram totalmente
-	// executadas
-	// * @return
-	// */
-	// public int getOpenPosition() {
-	// int buy = 0, sell = 0;
-	// for (Orders o : ordersList) {
-	// if (o.getOrderStatus() == OrderStatus.NEW || o.getOrderStatus() ==
-	// OrderStatus.PARTIALLY_FILLED) {
-	// buy += o.getSide() == Side.BUY ? o.getExecutedVolume() : 0;
-	// sell += o.getSide() == Side.SELL ? o.getExecutedVolume() : 0;
-	// }
-	// }
-	//
-	// return buy - sell;
-	// }
-
-	public Brokerage getBrokerage() {
-
-		Brokerage brokerage = null;
-		// Orders ordr = ordersList.iterator().next();
-		// for (Brokerage brkg : brokerId.getBrokerageList()) {
-		// if (tradeType == brkg.getTradeType()) {
-		// if (ordr.getSecurityId().getSecurityInfoId().getCategory() ==
-		// brkg.getCategory()) {
-		// brokerage = brkg;
-		// break;
-		// }
-		// }
-		// }
-
-		return brokerage;
-	}
-
-	/**
-	 * @return the closeDate
-	 */
-	public Date getCloseDate() {
-		return this.closeDate;
+	public void setAppliedAllocationId(AppliedAllocation appliedAllocationId) {
+		this.appliedAllocationId = appliedAllocationId;
 	}
 
 	/**
 	 * @return the openDate
 	 */
-	public Date getOpenDate() {
-		return this.openDate;
-	}
-
-	/**
-	 * @param closeDate the closeDate to set
-	 */
-	public void setCloseDate(Date closeDate) {
-		this.closeDate = closeDate;
+	public LocalDateTime getOpenDate() {
+		return openDate;
 	}
 
 	/**
 	 * @param openDate the openDate to set
 	 */
-	public void setOpenDate(Date openDate) {
+	public void setOpenDate(LocalDateTime openDate) {
 		this.openDate = openDate;
 	}
 
 	/**
-	 * @return the ordersList
+	 * @return the closeDate
 	 */
-	public List<Orders> getOrdersList() {
-		return this.ordersList;
+	public LocalDateTime getCloseDate() {
+		return closeDate;
 	}
 
-	public boolean isOpen() {
-		return open;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
+	/**
+	 * @param closeDate the closeDate to set
 	 */
-	@Override
-	public String toString() {
-		final int maxLen = 10;
-		return "Position [positionSerial=" + this.positionSerial + ", ordersSet="
-				+ (this.ordersList != null ? this.toString(this.ordersList, maxLen) : null) + ", symbol=" + this.symbol
-				+ ", openDate=" + this.openDate + ", closeDate=" + this.closeDate + "]";
+	public void setCloseDate(LocalDateTime closeDate) {
+		this.closeDate = closeDate;
 	}
 
-	private String toString(Collection<?> collection, int maxLen) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("[");
-		int i = 0;
-		for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
-			if (i > 0)
-				builder.append(", ");
-			builder.append(iterator.next());
-		}
-		builder.append("]");
-		return builder.toString();
+	/**
+	 * @return the quantity
+	 */
+	public double getQuantity() {
+		return quantity;
 	}
 
+	/**
+	 * @param quantity the quantity to set
+	 */
+	public void setQuantity(double quantity) {
+		this.quantity = quantity;
+	}
+
+	/**
+	 * @return the openPrice
+	 */
+	public double getOpenPrice() {
+		return openPrice;
+	}
+
+	/**
+	 * @param openPrice the openPrice to set
+	 */
+	public void setOpenPrice(double openPrice) {
+		this.openPrice = openPrice;
+	}
+
+	/**
+	 * @return the price
+	 */
+	public double getPrice() {
+		return price;
+	}
+
+	/**
+	 * @param price the price to set
+	 */
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	/**
+	 * @return the closePrice
+	 */
+	public double getClosePrice() {
+		return closePrice;
+	}
+
+	/**
+	 * @param closePrice the closePrice to set
+	 */
+	public void setClosePrice(double closePrice) {
+		this.closePrice = closePrice;
+	}
+
+	/**
+	 * @return the openValue
+	 */
+	public double getOpenValue() {
+		return openValue;
+	}
+
+	/**
+	 * @param openValue the openValue to set
+	 */
+	public void setOpenValue(double openValue) {
+		this.openValue = openValue;
+	}
+
+	/**
+	 * @return the presentValue
+	 */
+	public double getPresentValue() {
+		return PresentValue;
+	}
+
+	/**
+	 * @param presentValue the presentValue to set
+	 */
+	public void setPresentValue(double presentValue) {
+		PresentValue = presentValue;
+	}
+
+	/**
+	 * @return the closeValue
+	 */
+	public double getCloseValue() {
+		return closeValue;
+	}
+
+	/**
+	 * @param closeValue the closeValue to set
+	 */
+	public void setCloseValue(double closeValue) {
+		this.closeValue = closeValue;
+	}
+
+	/**
+	 * @return the earnings
+	 */
+	public double getEarnings() {
+		return earnings;
+	}
+
+	/**
+	 * @param earnings the earnings to set
+	 */
+	public void setEarnings(double earnings) {
+		this.earnings = earnings;
+	}
+
+	/**
+	 * @return the variation
+	 */
+	public double getVariation() {
+		return variation;
+	}
+
+	/**
+	 * @param variation the variation to set
+	 */
+	public void setVariation(double variation) {
+		this.variation = variation;
+	}
+	
 }

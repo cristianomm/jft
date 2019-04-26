@@ -4,10 +4,12 @@
 package com.cmm.jft.model.marketdata;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,6 +24,7 @@ import javax.persistence.TemporalType;
 
 import com.cmm.jft.db.DBObject;
 import com.cmm.jft.model.security.Security;
+import com.cmm.jft.model.util.JpaConverters;
 
 /**
  * <p>
@@ -37,15 +40,13 @@ import com.cmm.jft.model.security.Security;
 public class HistoricalQuote implements DBObject<HistoricalQuote> {
 
 	@Id
-	@SequenceGenerator(name = "HISTORICALQUOTE_SEQ", sequenceName = "HISTORICALQUOTE_SEQ", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(generator = "HISTORICALQUOTE_SEQ", strategy = GenerationType.AUTO)
-	@Basic(optional = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "historicalQuoteId", nullable = false)
 	private Long historicalQuoteId;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Convert(converter=JpaConverters.LocalDateConverter.class)
 	@Column(name = "QDateTime", nullable = false)
-	private Date qDateTime;
+	private LocalDate qDateTime;
 
 	@Column(name = "Open", precision = 19, scale = 6, nullable = false)
 	private BigDecimal open;
@@ -94,7 +95,7 @@ public class HistoricalQuote implements DBObject<HistoricalQuote> {
 	/**
 	 * @return the qDateTime
 	 */
-	public Date getqDateTime() {
+	public LocalDate getqDateTime() {
 		return this.qDateTime;
 	}
 
@@ -102,7 +103,7 @@ public class HistoricalQuote implements DBObject<HistoricalQuote> {
 	 * @param qDateTime
 	 *            the qDateTime to set
 	 */
-	public void setqDateTime(Date qDateTime) {
+	public void setqDateTime(LocalDate qDateTime) {
 		this.qDateTime = qDateTime;
 	}
 
