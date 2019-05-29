@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="0585EF0B-1302-9BC1-CE25-0DD98E893A9C" containerWithKeyObject="04627638-AE75-B987-B32E-A86B93AA7744" localFKIndex="BF268167-1230-3E35-EF5C-27DD274AB0A5" name="AppliedAllocation_Closure_FK">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 21:59:47 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<referredTableLongName>Trading.Closure</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>7A0ADB71-46CF-458F-DD72-A8A514DB3C98</referredTableID>
+<keyObject>09BE02CF-51F0-A116-C486-41C87D447622</keyObject>
+<referredKeyID>09BE02CF-51F0-A116-C486-41C87D447622</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>clousureId</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

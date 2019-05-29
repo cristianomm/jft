@@ -24,22 +24,22 @@ import com.cmm.jft.vo.Extractable;
  *
  */
 public interface Extractor {
-	
-	
+
+
 	static boolean checkKeyWords(Properties properties, String ...keyWords){
 		boolean ret = false;
 		try{
 			ret = properties.keySet().containsAll(Arrays.asList(keyWords));
 		}catch(ClassCastException e){
-			
+
 		}catch(NullPointerException e){
-			
+
 		}
-		
+
 		return ret;
 	}
-	
-	
+
+
 	/**
 	 * Realiza a configuracao do <code>Extractor</code> de acordo com as informacoes contidas
 	 * no objeto <code>Properties</code>.
@@ -47,7 +47,7 @@ public interface Extractor {
 	 * @return <code>true</code> caso tenha realizado a configuracao do extrator com sucesso ou <code>false</code> caso contrario.
 	 */
 	boolean config(Properties properties);
-	
+
 	/**
 	 * Realiza a extracao de informacoes de uma fonte, retornando uma lista com os
 	 * objetos extraidos. Caso nao exista nada para ser extraido ou ocorra algum erro
@@ -56,5 +56,5 @@ public interface Extractor {
 	 * caso nao exista nada para extrair ou ocorra erro.
 	 */
 	List<Extractable> extract();
-	
+
 }

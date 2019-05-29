@@ -20,9 +20,9 @@ import com.cmm.jft.model.trading.enums.OrderTypes;
 import com.cmm.jft.model.trading.enums.OrderValidityTypes;
 import com.cmm.jft.model.trading.enums.Side;
 import com.cmm.jft.model.trading.enums.TradeTypes;
-import com.cmm.jft.services.security.SecurityService;
-import com.cmm.jft.services.trading.OrderService;
-import com.cmm.jft.services.trading.TradingService;
+import com.cmm.jft.security.service.SecurityService;
+import com.cmm.jft.trading.service.OrderService;
+import com.cmm.jft.trading.service.ExchangeTradingService;
 import com.cmm.logging.Logging;
 
 /**
@@ -38,7 +38,7 @@ public class TradingServiceTest {
 
     private SecurityService securityService;
     private OrderService orderService;
-    private TradingService tradingService;
+    private ExchangeTradingService tradingService;
 
     /**
      * @throws java.lang.Exception
@@ -46,13 +46,13 @@ public class TradingServiceTest {
     @After
     public void setUp() throws Exception {
 	orderService = OrderService.getInstance();
-	tradingService = TradingService.getInstance();
+	tradingService = ExchangeTradingService.getInstance();
 	securityService = SecurityService.getInstance();
 	security = securityService.provideSecurity("WDOH17");
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#getInstance()}.
+     * Test method for {@link com.cmm.jft.trading.service.ExchangeTradingService#getInstance()}.
      */
     @Test
     public void testGetInstance() {
@@ -60,7 +60,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#getOrdersData()}.
+     * Test method for {@link com.cmm.jft.trading.service.ExchangeTradingService#getOrdersData()}.
      */
     @Test
     public void testGetOrdersData() {
@@ -68,7 +68,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#loadOpenTrades()}.
+     * Test method for {@link com.cmm.jft.trading.service.ExchangeTradingService#loadOpenTrades()}.
      */
     @Test
     public void testLoadOpenTrades() {
@@ -76,7 +76,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#newOrder(com.cmm.jft.model.trading.enums.OrderTypes, com.cmm.jft.model.trading.enums.Side, java.lang.String, double, double, double, double, java.util.Date, com.cmm.jft.model.trading.enums.TradeTypes, com.cmm.jft.model.trading.enums.OrderValidityTypes, java.lang.String)}.
+     * Test method for {@link com.cmm.jft.trading.service.ExchangeTradingService#newOrder(com.cmm.jft.model.trading.enums.OrderTypes, com.cmm.jft.model.trading.enums.Side, java.lang.String, double, double, double, double, java.util.Date, com.cmm.jft.model.trading.enums.TradeTypes, com.cmm.jft.model.trading.enums.OrderValidityTypes, java.lang.String)}.
      */
     @Test(timeout=100)
     public void testNewOrder() {
@@ -106,7 +106,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#closePosition(com.cmm.jft.model.trading.Position)}.
+     * Test method for {@link com.cmm.jft.trading.service.ExchangeTradingService#closePosition(com.cmm.jft.model.trading.TradePosition)}.
      */
     @Test
     public void testClosePosition() {
@@ -114,7 +114,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#cancelOrder(java.lang.String)}.
+     * Test method for {@link com.cmm.jft.trading.service.ExchangeTradingService#cancelOrder(java.lang.String)}.
      */
     @Test
     public void testCancelOrder() {
@@ -122,7 +122,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#changePrice(java.lang.String, double, double)}.
+     * Test method for {@link com.cmm.jft.trading.service.ExchangeTradingService#changePrice(java.lang.String, double, double)}.
      */
     @Test
     public void testChangePrice() {
@@ -130,7 +130,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#changeVolume(java.lang.String, int)}.
+     * Test method for {@link com.cmm.jft.trading.service.ExchangeTradingService#changeVolume(java.lang.String, int)}.
      */
     @Test
     public void testChangeVolume() {
@@ -138,7 +138,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#addExecution(java.lang.String, java.util.Date, int, double)}.
+     * Test method for {@link com.cmm.jft.trading.service.ExchangeTradingService#addExecution(java.lang.String, java.util.Date, int, double)}.
      */
     @Test
     public void testAddExecution() {
@@ -146,7 +146,7 @@ public class TradingServiceTest {
     }
 
     /**
-     * Test method for {@link com.cmm.jft.services.trading.TradingService#registerTrade(com.cmm.jft.model.trading.Position)}.
+     * Test method for {@link com.cmm.jft.trading.service.ExchangeTradingService#registerTrade(com.cmm.jft.model.trading.TradePosition)}.
      */
     @Test
     public void testRegisterTrade() {

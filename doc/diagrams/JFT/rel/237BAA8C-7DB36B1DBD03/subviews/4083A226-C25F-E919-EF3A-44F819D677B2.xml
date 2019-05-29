@@ -56,4 +56,12 @@
 </points>
 </Connector>
 </connectors>
+<diagramViews>
+<DiagramView class="oracle.dbtools.crest.swingui.TVDiagramView" oid="D09A9147-7CE5-CA37-1949-70A381F8C0B2" dpv_id="1815A5D5-6A58-6C75-7DB9-5395B389F7C0" vid="D711FF33-4E33-D38D-A3DD-9A351D6BB881">
+<hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
+<bounds x="171" y="431" width="139" height="100"/>
+<rdiagramName>JFT - Financial</rdiagramName>
+<rdiagramID>1815A5D5-6A58-6C75-7DB9-5395B389F7C0</rdiagramID>
+</DiagramView>
+</diagramViews>
 </Diagram>

@@ -166,10 +166,11 @@ public class InstrumentStream extends Stream {
 			String[] line = csv.readLine();
 
 			Security s = new Security(line[0]);
+			s.setIsin(line[2]);
 			s.setDescription(line[1]);
 			s.setSecurityId(id++);
 			s.setSecurityInfoId(new SecurityInfo(s, null));
-			s.getSecurityInfoId().setIsin(line[2]);
+			s.getSecurityInfoId();
 
 			securities.add(s);
 		}

@@ -81,20 +81,20 @@ public class OrderEvent implements DBObject<OrderEvent> {
     @Column(name = "LastQty")
     private double lastQty;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name="ExecutionType")
     private ExecutionTypes executionType;
     
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name="OrderStatus")
     private OrderStatus orderStatus;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Basic(optional = false)
     @Column(name = "OrderType")
     private OrderTypes orderType;
     
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name="Validity")
     private OrderValidityTypes validity;
 

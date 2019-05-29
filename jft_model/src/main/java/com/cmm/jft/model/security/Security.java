@@ -5,17 +5,23 @@
 
 package com.cmm.jft.model.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
 import com.cmm.jft.db.DBObject;
+import com.cmm.jft.model.marketdata.ContractAdjust;
 import com.cmm.jft.model.marketdata.HistoricalQuote;
 import com.cmm.jft.model.marketdata.MarketOrder;
+import com.cmm.jft.model.trading.Allocation;
+import com.cmm.jft.model.trading.AppliedAllocation;
 import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.Position;
 
 /**
  *
@@ -41,11 +47,9 @@ import com.cmm.jft.model.trading.Orders;
 public class Security implements DBObject<Security> {
 
 	@Id
-	@SequenceGenerator(name = "SECURITY_SEQ", sequenceName = "SECURITY_SEQ", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(generator = "SECURITY_SEQ", strategy = GenerationType.AUTO)
-	@Basic(optional = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "securityId", nullable = false)
-	private int securityId;
+	private Integer securityId;
 
 	@Column(name = "SecurityIdSrc", nullable = true, length = 1)
 	private char securityIdSrc;
@@ -54,10 +58,13 @@ public class Security implements DBObject<Security> {
 	@Column(name = "Symbol", nullable = false, length = 50, unique=true)
 	private String symbol;
 
+	@Column(name = "MarketName", length = 100)
+	private String marketName;
+		
 	@Column(name = "Description", length = 255)
 	private String description;
 	
-	@Column(name="ISIN", length=12, unique=true)
+	@Column(name="ISIN", length=12)
     private String isin;
 	
 	@Column(name="CETIPCode", length=20, unique=true)
@@ -77,7 +84,7 @@ public class Security implements DBObject<Security> {
 
 	@OrderBy(value = "QDateTime")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "securityId", fetch = FetchType.LAZY)
-	private Set<HistoricalQuote> historicalQuoteSet;
+	private List<HistoricalQuote> historicalQuoteList;
 
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="securityInfoId", referencedColumnName="securityInfoId")
@@ -86,20 +93,43 @@ public class Security implements DBObject<Security> {
 	@JoinColumn(name = "stockExchangeId", referencedColumnName = "stockExchangeId", nullable = false)
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private StockExchange stockExchangeId;
+	
+	@OrderBy(value = "Date")
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="securityId", fetch=FetchType.LAZY)
+	private Set<SecurityEvent> eventSet;
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="securityId", fetch=FetchType.LAZY)
+	private Set<Allocation> allocationSet;
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="securityId", fetch=FetchType.LAZY)
+	private Set<AppliedAllocation> appliedAllocationSet;
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="securityId", fetch=FetchType.LAZY)
+	private List<ContractAdjust> contractAdjustList;
 
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="securityId", fetch=FetchType.LAZY)
+	private Set<Position> positionSet;
+	
 	public Security() {
-		this.securityIdSrc = '0';
-		this.ordersSet = new HashSet<Orders>();
-		this.marketOrderSet = new HashSet<MarketOrder>();
-		this.historicalQuoteSet = new HashSet<HistoricalQuote>();
+		init();
 	}
 
 	public Security(String symbol) {
 		this.symbol = symbol;
+		init();
+	}
+	
+	private void init() {
 		this.securityIdSrc = '0';
+		this.eventSet = new HashSet<>();
+		this.allocationSet = new HashSet<>();
 		this.ordersSet = new HashSet<Orders>();
+		this.positionSet = new HashSet<Position>();
+		this.contractAdjustList = new ArrayList<>();
+		this.appliedAllocationSet = new HashSet<>();
 		this.marketOrderSet = new HashSet<MarketOrder>();
-		this.historicalQuoteSet = new HashSet<HistoricalQuote>();
+		this.historicalQuoteList = new ArrayList<HistoricalQuote>();
+		
 	}
 
 	/**
@@ -127,7 +157,7 @@ public class Security implements DBObject<Security> {
 	/**
 	 * @return the securityId
 	 */
-	public int getSecurityId() {
+	public Integer getSecurityId() {
 		return this.securityId;
 	}
 
@@ -143,11 +173,8 @@ public class Security implements DBObject<Security> {
 		this.securityIdSrc = securityIdSrc;
 	}
 
-	/**
-	 * @return the historicalQuoteSet
-	 */
-	public Set<HistoricalQuote> getHistoricalQuoteSet() {
-		return this.historicalQuoteSet;
+	public List<HistoricalQuote> getHistoricalQuoteList() {
+		return historicalQuoteList;
 	}
 
 	/**
@@ -163,7 +190,21 @@ public class Security implements DBObject<Security> {
 	public String getDescription() {
 		return this.description;
 	}
-
+	
+	/**
+	 * @param marketName the marketName to set
+	 */
+	public void setMarketName(String marketName) {
+		this.marketName = marketName;
+	}
+	
+	/**
+	 * @return the marketName
+	 */
+	public String getMarketName() {
+		return marketName;
+	}
+	
 	/**
 	 * @param description
 	 *            the description to set
@@ -226,6 +267,80 @@ public class Security implements DBObject<Security> {
 		SELICCode = sELICCode;
 	}
 	
+	/**
+	 * @return the eventSet
+	 */
+	public Set<SecurityEvent> getEventSet() {
+		return eventSet;
+	}
+	
+	/**
+	 * @return the allocationSet
+	 */
+	public Set<Allocation> getAllocationSet() {
+		return allocationSet;
+	}
+	
+	/**
+	 * @return the appliedAllocationSet
+	 */
+	public Set<AppliedAllocation> getAppliedAllocationSet() {
+		return appliedAllocationSet;
+	}
+	
+	/**
+	 * @return the contractAdjustList
+	 */
+	public List<ContractAdjust> getContractAdjustList() {
+		return contractAdjustList;
+	}
+		
+	/**
+	 * @param ordersSet the ordersSet to set
+	 */
+	public void setOrdersSet(Set<Orders> ordersSet) {
+		this.ordersSet = ordersSet;
+	}
+
+	/**
+	 * @param marketOrderSet the marketOrderSet to set
+	 */
+	public void setMarketOrderSet(Set<MarketOrder> marketOrderSet) {
+		this.marketOrderSet = marketOrderSet;
+	}
+
+	public void setHistoricalQuoteList(List<HistoricalQuote> historicalQuoteList) {
+		this.historicalQuoteList = historicalQuoteList;
+	}
+
+	/**
+	 * @param eventSet the eventSet to set
+	 */
+	public void setEventSet(Set<SecurityEvent> eventSet) {
+		this.eventSet = eventSet;
+	}
+
+	/**
+	 * @param allocationSet the allocationSet to set
+	 */
+	public void setAllocationSet(Set<Allocation> allocationSet) {
+		this.allocationSet = allocationSet;
+	}
+
+	/**
+	 * @param appliedAllocationSet the appliedAllocationSet to set
+	 */
+	public void setAppliedAllocationSet(Set<AppliedAllocation> appliedAllocationSet) {
+		this.appliedAllocationSet = appliedAllocationSet;
+	}
+
+	/**
+	 * @param contractAdjustList the contractAdjustList to set
+	 */
+	public void setContractAdjustList(List<ContractAdjust> contractAdjustList) {
+		this.contractAdjustList = contractAdjustList;
+	}
+
 	@Override
 	public String toString() {
 		return "Security [securityId=" + securityId + ", securityIdSrc=" + securityIdSrc + ", "
@@ -233,7 +348,7 @@ public class Security implements DBObject<Security> {
 				+ (description != null ? "description=" + description + ", " : "")
 				+ (ordersSet != null ? "ordersSet=" + ordersSet + ", " : "")
 				+ (marketOrderSet != null ? "marketOrderSet=" + marketOrderSet + ", " : "")
-				+ (historicalQuoteSet != null ? "historicalQuoteSet=" + historicalQuoteSet + ", " : "")
+				+ (historicalQuoteList != null ? "historicalQuoteList=" + historicalQuoteList + ", " : "")
 				+ (securityInfoId != null ? "securityInfoId=" + securityInfoId + ", " : "")
 				+ (stockExchangeId != null ? "stockExchangeId=" + stockExchangeId : "") + "]";
 	}

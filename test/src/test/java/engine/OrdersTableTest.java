@@ -15,7 +15,7 @@ import com.cmm.jft.model.trading.enums.OrderTypes;
 import com.cmm.jft.model.trading.enums.Side;
 import com.cmm.jft.model.trading.enums.TradeTypes;
 import com.cmm.jft.model.trading.exceptions.OrderException;
-import com.cmm.jft.services.security.SecurityService;
+import com.cmm.jft.security.service.SecurityService;
 
 /**
  * <p>

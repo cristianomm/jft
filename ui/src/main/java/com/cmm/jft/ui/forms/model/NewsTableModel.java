@@ -8,9 +8,9 @@ import java.util.Date;
 
 import javax.swing.table.AbstractTableModel;
 
+import com.cmm.jft.marketdata.service.MDListener;
+import com.cmm.jft.marketdata.service.MarketDataService;
 import com.cmm.jft.model.marketdata.MDNews;
-import com.cmm.jft.services.marketdata.MDListener;
-import com.cmm.jft.services.marketdata.MarketDataService;
 
 /**
  * <p>
@@ -143,7 +143,7 @@ public class NewsTableModel extends AbstractTableModel implements MDListener {
     }
 
     /* (non-Javadoc)
-     * @see com.cmm.jft.services.marketdata.MDListener#marketDataEvent()
+     * @see com.cmm.jft.marketdata.service.MDListener#marketDataEvent()
      */
     @Override
     public void marketDataEvent() {

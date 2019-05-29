@@ -42,6 +42,7 @@ public class InputRowReport {
 
 	public void startReport(String report) {
 		reports.put(report, new Report(report));
+		System.out.println(report);
 	}
 
 	public void count(String report) {

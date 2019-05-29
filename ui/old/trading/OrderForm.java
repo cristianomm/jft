@@ -10,7 +10,7 @@ import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
 import com.cmm.jft.security.Security;
-import com.cmm.jft.services.trading.TradingService;
+import com.cmm.jft.trading.service.ExchangeTradingService;
 import com.cmm.jft.trading.OrderEvent;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.enums.MarketEvents;

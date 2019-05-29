@@ -1,0 +1,146 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="04627638-AE75-B987-B32E-A86B93AA7744" schemaObject="1A48C32D-DFAE-0EE0-B56E-1F544E09C671" name="AppliedAllocation">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 13:53:54 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<ordsAlias>table_29</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="appliedAllocationId" id="61FAED79-F7BC-AE31-A8FB-855DF37C71EB">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 13:54:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="securityId" id="07690B90-39B2-2210-09D2-11ABFB211801">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 13:55:19 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="837C1C58-9C29-EE1C-6461-8639349D12C0" referredColumn="37BCC6AC-FA85-E5E5-4CFE-F4E4395B1F14"/>
+</associations>
+</Column>
+<Column name="closureId" id="6C036C33-FBAE-1486-3B31-5FE76F902F46">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:48:34 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="0585EF0B-1302-9BC1-CE25-0DD98E893A9C" referredColumn="C75FB059-5461-7F14-C0DD-DBC57F5E2FB5"/>
+</associations>
+</Column>
+<Column name="Percentual" id="9F9D1FA0-3A95-599F-F0DE-B4DF78161431">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 13:55:42 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Value" id="13DDD74C-DF1A-A973-0289-6DE3AD16D0DA">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-02 00:14:00 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LastValue" id="BC5B3DBC-7D89-247A-80BE-1663AC218061">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-02 00:42:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Earnings" id="A8DFDFD9-91E4-F3B2-0619-55977510836F">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-02 00:10:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Variation" id="57EA1A9B-3AC2-BA23-6787-C0F2D2AC50A7">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-02 00:12:45 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="ADAF5FE6-20FA-3FE0-85A3-351B644041A0" name="AppliedAllocation_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 13:54:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="61FAED79-F7BC-AE31-A8FB-855DF37C71EB"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="04581356-1E18-6130-E88E-08DDE4E50C78" name="AppliedAllocation_Security_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 15:00:24 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="07690B90-39B2-2210-09D2-11ABFB211801"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="BF268167-1230-3E35-EF5C-27DD274AB0A5" name="AppliedAllocation_Closure_FK">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 21:59:47 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6C036C33-FBAE-1486-3B31-5FE76F902F46"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

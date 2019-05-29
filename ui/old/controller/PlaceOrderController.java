@@ -15,8 +15,8 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Level;
 
 import com.cmm.jft.security.Security;
-import com.cmm.jft.services.security.SecurityService;
-import com.cmm.jft.services.trading.TradingService;
+import com.cmm.jft.security.service.SecurityService;
+import com.cmm.jft.trading.service.ExchangeTradingService;
 import com.cmm.jft.trading.enums.OrderTypes;
 import com.cmm.jft.trading.enums.OrderValidityTypes;
 import com.cmm.jft.trading.enums.Side;

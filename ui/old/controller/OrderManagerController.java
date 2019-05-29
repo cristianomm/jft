@@ -26,7 +26,7 @@ import javafx.scene.image.ImageView;
 import com.cmm.jft.core.format.DateTimeFormatter;
 import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
-import com.cmm.jft.services.trading.TradingService;
+import com.cmm.jft.trading.service.ExchangeTradingService;
 import com.cmm.jft.trading.Orders;
 import com.cmm.jft.trading.Position;
 import com.cmm.jft.trading.enums.OrderStatus;

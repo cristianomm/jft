@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="837C1C58-9C29-EE1C-6461-8639349D12C0" containerWithKeyObject="04627638-AE75-B987-B32E-A86B93AA7744" localFKIndex="04581356-1E18-6130-E88E-08DDE4E50C78" name="AppliedAllocation_Security_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 15:00:24 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<referredTableLongName>Security.Security</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>D5C64FFC-A18E-D07A-08EB-91A25F3A357B</referredTableID>
+<keyObject>4BA0F3E2-EADE-CA98-68B3-16B5A5C202CE</keyObject>
+<referredKeyID>4BA0F3E2-EADE-CA98-68B3-16B5A5C202CE</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>securityID</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

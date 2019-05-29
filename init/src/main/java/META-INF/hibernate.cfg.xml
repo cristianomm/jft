@@ -64,8 +64,11 @@
 		
 		<!-- MarketData -->
 		
+		<mapping class="com.cmm.jft.model.marketdata.ContractAdjust"/>
 		<mapping class="com.cmm.jft.model.marketdata.HistoricalQuote"/>
+		<mapping class="com.cmm.jft.model.marketdata.Holiday"/>
 		<mapping class="com.cmm.jft.model.marketdata.MarketEvent"/>
+		<mapping class="com.cmm.jft.model.marketdata.MarketIndexQuote"/>
 		<mapping class="com.cmm.jft.model.marketdata.MarketOrder"/>
 		<mapping class="com.cmm.jft.model.marketdata.MarketTrade"/>
 		
@@ -85,13 +88,19 @@
 		<mapping class="com.cmm.jft.model.security.Isin"/>
 		<mapping class="com.cmm.jft.model.security.MarketIndex"/>
 		<mapping class="com.cmm.jft.model.security.Security"/>
+		<mapping class="com.cmm.jft.model.security.SecurityEvent"/>
 		<mapping class="com.cmm.jft.model.security.SecurityInfo"/>
 		<mapping class="com.cmm.jft.model.security.StockExchange"/>
 		
 		<!-- Trading -->		
 		
+		<mapping class="com.cmm.jft.model.trading.Allocation"/>
+		<mapping class="com.cmm.jft.model.trading.AppliedAllocation"/>
 		<mapping class="com.cmm.jft.model.trading.OrderEvent"/>
 		<mapping class="com.cmm.jft.model.trading.Orders"/>
+		<mapping class="com.cmm.jft.model.trading.Operation"/>
+		<mapping class="com.cmm.jft.model.trading.Portfolio"/>
+		<mapping class="com.cmm.jft.model.trading.Position"/>
 						
 		<!--		
 		<mapping class="com.cmm.jft.securities.Earning"/>

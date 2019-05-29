@@ -8,6 +8,7 @@
 	</classpathentry>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
@@ -28,9 +29,9 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jdde"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jxl"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ftp4j"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jdde"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jxl"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

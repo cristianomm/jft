@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="185FA541-8114-FC1A-931A-7725DCF25F64" containerWithKeyObject="15925B56-7E83-E90C-E656-26148E050FB7" localFKIndex="7424DF9C-FF90-DA9E-F12C-56E5BF7F3367" name="Allocation_Portfolio_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-23 14:49:00 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<referredTableLongName>Trading.Portfolio</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>531882D2-6DEF-8B2C-8ED7-571FBBB14F7B</referredTableID>
+<keyObject>9B332796-74FC-13A2-6D5F-DB27DAEB744F</keyObject>
+<referredKeyID>9B332796-74FC-13A2-6D5F-DB27DAEB744F</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>portfolioId</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

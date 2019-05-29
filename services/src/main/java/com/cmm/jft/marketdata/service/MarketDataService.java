@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cmm.jft.services.marketdata;
+package com.cmm.jft.marketdata.service;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +20,7 @@ import org.apache.log4j.Level;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.loader.MessageTemplateLoader;
 import org.openfast.template.loader.XMLMessageTemplateLoader;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import quickfix.DataDictionary;
 import quickfix.FieldException;
@@ -43,7 +44,7 @@ import com.cmm.jft.model.security.Security;
 import com.cmm.jft.model.security.SecurityInfo;
 import com.cmm.jft.model.trading.enums.MarketPhase;
 import com.cmm.jft.model.trading.enums.StreamTypes;
-import com.cmm.jft.services.security.SecurityService;
+import com.cmm.jft.security.service.SecurityService;
 import com.cmm.logging.Logging;
 
 /**
@@ -83,6 +84,8 @@ public class MarketDataService {
 	private static MarketDataService instance;
 	private ConcurrentLinkedQueue<MarketDataSnapshotFullRefresh> snapshots;
 
+	@Autowired
+	private SecurityService securityService;
 
 	public static void main(String[] args){
 		try{
@@ -102,8 +105,6 @@ public class MarketDataService {
 				int msgLength = msgHeader[8] | msgHeader[9];;
 				System.out.println(msgHeader);
 			}
-
-
 
 
 			//(\d+)+=([\w|.|,|:|\-|\s]+)
@@ -264,7 +265,7 @@ public class MarketDataService {
 
 	private void buildBook(int securityID) {
 		try {
-			Security security = SecurityService.getInstance().findSecurity(securityID, '8', "BVMF");
+			Security security = securityService.findSecurity(securityID, '8', "BVMF");
 			Market mrkt = new Market(security);
 			markets.put(security.getSecurityId(), mrkt);
 			refreshSnapshot();
@@ -283,7 +284,6 @@ public class MarketDataService {
 		}catch(FieldNotFound e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void synchronizeBook(int securityID) {
@@ -297,7 +297,6 @@ public class MarketDataService {
 						while(!connector.getMarketDataStream().isEmpty()) {
 							consumeMarketDataStream();
 						}
-
 					}
 				}
 			}
@@ -316,11 +315,9 @@ public class MarketDataService {
 				consumeSnapshotStream();
 				connector.exitSnapshotStream();
 			}
-
 		}catch(FieldNotFound e) {
 			e.printStackTrace();
 		}
-
 	}
 
 
@@ -567,14 +564,14 @@ public class MarketDataService {
 
 			if(mdMsgSeq == 1) {
 				receivingInstruments = true;
-				SecurityService.getInstance().restartSecurityList();
+				//securityService.restartSecurityList();
 			}
 
 			if(mdMsgSeq >= 1 && receivingInstruments){
 
 				//verifica se recebeu todos instrumentos
 				int totNumRelSym = securityList.getTotNoRelatedSym().getValue();
-				if(totNumRelSym > SecurityService.getInstance().getSecurityList().size()) {
+				if(totNumRelSym > securityService.getSecurityList().size()) {
 
 					//quantidade de simbolos nesta msg
 					//int related = securityList.getNoRelatedSym().getValue();
@@ -596,18 +593,18 @@ public class MarketDataService {
 							si.setDigits(g.getInt(5151));
 							sec.setSecurityInfoId(si);
 
-							SecurityService.getInstance().loadSecurity(sec);
+							securityService.loadSecurity(sec);
 						}
 					}
 				}
 				//se ja recebeu todos instrumentos, sai do stream
-				if(lstFrag && totNumRelSym == SecurityService.getInstance().getSecurityList().size()){
+				if(lstFrag && totNumRelSym == securityService.getSecurityList().size()){
 					step = MDSynchronizationSteps.MARKETRECOVERY_STEP;
 					connector.exitInstrumentDefinition();
 					receivingInstruments = false;
 				}
 
-				System.out.println("SecurityList size: " + SecurityService.getInstance().getSecurityList().size());
+				System.out.println("SecurityList size: " + securityService.getSecurityList().size());
 			}
 
 		} catch(FieldNotFound e) {
@@ -669,11 +666,7 @@ public class MarketDataService {
 		}catch(FieldNotFound e) {
 			e.printStackTrace();
 		}
-
 	}
-
-
-
 
 	/**
 	 * @return the newsFeed

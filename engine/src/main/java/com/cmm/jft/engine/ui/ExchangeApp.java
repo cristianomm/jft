@@ -3,10 +3,6 @@
  */
 package com.cmm.jft.engine.ui;
 
-import com.cmm.jft.db.DBFacade;
-import com.cmm.jft.db.exceptions.DataBaseException;
-import com.cmm.jft.services.security.SecurityService;
-import com.cmm.jft.services.trading.OrderService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -69,11 +65,11 @@ public class ExchangeApp extends Application {
 	 */
 	@Override
 	public void stop() throws Exception {
-//	try {
-//	    DBFacade.getInstance().closeSession();
-//	} catch (DataBaseException e) {
-//	    e.printStackTrace();
-//	}
+		// try {
+		// DBFacade.getInstance().closeSession();
+		// } catch (DataBaseException e) {
+		// e.printStackTrace();
+		// }
 		super.stop();
 	}
 

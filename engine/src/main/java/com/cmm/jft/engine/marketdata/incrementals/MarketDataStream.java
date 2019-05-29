@@ -30,7 +30,7 @@ import com.cmm.jft.model.trading.enums.MDEntryTypes;
 import com.cmm.jft.model.trading.enums.Side;
 import com.cmm.jft.model.trading.enums.StreamTypes;
 import com.cmm.jft.model.trading.enums.UpdateActions;
-import com.cmm.jft.services.security.SecurityService;
+import com.cmm.jft.security.service.SecurityService;
 import com.cmm.logging.Logging;
 
 import quickfix.Application;

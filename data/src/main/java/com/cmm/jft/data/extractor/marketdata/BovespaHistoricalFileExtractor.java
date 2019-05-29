@@ -19,8 +19,7 @@ import com.cmm.logging.Logging;
  * @version 06/03/2015 14:11:49
  *
  */
-public class BovespaHistoricalFileExtractor extends BovespaFileExtractor {
-	
+public class BovespaHistoricalFileExtractor extends BovespaFileExtractor {	
 		
 	/* (non-Javadoc)
 	 * @see com.cmm.jft.data.extractor.Extractor#extract()
@@ -81,11 +80,8 @@ public class BovespaHistoricalFileExtractor extends BovespaFileExtractor {
 					
 					//adiciona na lista
 					prices.add(quote);
-					
 				}
-
 			}
-
 		} catch (Exception e) {
 			Logging.getInstance().log(getClass(), e, Level.ERROR);
 		} finally{
@@ -100,7 +96,6 @@ public class BovespaHistoricalFileExtractor extends BovespaFileExtractor {
 
 		return prices;
 	}
-
 	
 	private String removeWhite(String txt) {
 		if(txt!=null){

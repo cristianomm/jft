@@ -34,7 +34,7 @@ public enum ObjectForms {
     //ORDER("Order"),
     //ORDER_MANAGEMENT("Order Management"),
     //PLACE_ORDER("Place Order"),
-    //POSITION("Position"),
+    //POSITION("TradePosition"),
     //
     //REPORTS("Reports"),
     //RULE("Rule"),

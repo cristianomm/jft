@@ -1,7 +1,10 @@
 package com.cmm.jft.db;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
+//import org.hibernate.boot.Metadata;
+//import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
@@ -11,6 +14,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 public class HibernateUtil {
 	private static StandardServiceRegistry registry;
 	private static SessionFactory sessionFactory;
+	
+	public static List<Class> mappedClasses = new ArrayList<Class>();
 
 	public static SessionFactory getSessionFactory(String fileName) {
 		if (sessionFactory == null) {
@@ -21,13 +26,15 @@ public class HibernateUtil {
 						.build();
 
 				// Create MetadataSources
-				MetadataSources sources = new MetadataSources(registry);
-
+				//MetadataSources sources = new MetadataSources(registry);
+				
+				//mappedClasses.forEach(c -> sources.addAnnotatedClass(c));
+				
 				// Create Metadata
-				Metadata metadata = sources.getMetadataBuilder().build();
-
+				//Metadata metadata = sources.getMetadataBuilder().build();
+				
 				// Create SessionFactory
-				sessionFactory = metadata.getSessionFactoryBuilder().build();
+				//sessionFactory = metadata.getSessionFactoryBuilder().build();
 
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -30,7 +30,7 @@ import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
 import com.cmm.jft.data.extractor.marketdata.BovespaTradeFileExtractor;
 import com.cmm.jft.security.Security;
-import com.cmm.jft.services.security.SecurityService;
+import com.cmm.jft.security.service.SecurityService;
 import com.cmm.jft.ui.utils.ImageIcons;
 import com.cmm.jft.vo.Extractable;
 import com.cmm.jft.vo.TimeSalesVO;

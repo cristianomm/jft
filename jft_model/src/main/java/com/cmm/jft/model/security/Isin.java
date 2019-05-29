@@ -3,36 +3,18 @@
  */
 package com.cmm.jft.model.security;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import com.cmm.jft.core.enums.GeneralStatus;
 import com.cmm.jft.db.DBObject;
-import com.cmm.jft.model.financial.Currency;
-import com.cmm.jft.model.security.enums.AssetTypes;
 
 /**
  * <p>
@@ -49,18 +31,15 @@ import com.cmm.jft.model.security.enums.AssetTypes;
 public class Isin implements DBObject<Isin> {
 
 	@Id
-	@SequenceGenerator(name = "ISIN_SEQ", sequenceName = "ISIN_SEQ", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(generator = "ISIN_SEQ", strategy = GenerationType.AUTO)
-	@Basic(optional = false)
-	@Column(name = "isinId", nullable = false)
-	private Long isinId;
-
 	@Column(name = "ISIN", length = 12, unique=true)
 	private String isin;
 
-	@Column(name = "Description", length = 255)
-	private String description;
-
+	@Column(name="CFICode", length = 6)
+	private String CFICode;
+	
+	@Column(name = "Description", length = 120)
+	private String description;	
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "Status", length = 50)
 	private GeneralStatus status;
@@ -71,14 +50,7 @@ public class Isin implements DBObject<Isin> {
 	public Isin(String isin) {
 		this.isin = isin;
 	}
-
-	/**
-	 * @return the isinId
-	 */
-	public Long getIsinId() {
-		return this.isinId;
-	}
-
+	
 	/**
 	 * @return the isin
 	 */

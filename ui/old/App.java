@@ -2,8 +2,8 @@ package com.cmm.jft.ui;
 
 import com.cmm.jft.db.DBFacade;
 import com.cmm.jft.db.exceptions.DataBaseException;
-import com.cmm.jft.services.security.SecurityService;
-import com.cmm.jft.services.trading.OrderService;
+import com.cmm.jft.security.service.SecurityService;
+import com.cmm.jft.trading.service.OrderService;
 import com.cmm.jft.ui.utils.ImageIcons;
 
 import javafx.application.Application;

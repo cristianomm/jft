@@ -1,0 +1,80 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="3D7D0B54-B14A-1B5F-5DE5-E3BFE01566CC" schemaObject="1A48C32D-DFAE-0EE0-B56E-1F544E09C671" name="Operation">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-04-01 02:02:59 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<ordsAlias>table_34</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="operationId" id="C448EEA1-A5E3-ABD5-99F5-153AED26E74F">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-04-01 02:03:22 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="portfolioId" id="4DA4479A-B8EF-7315-0DC9-5343AF6253E6">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-04-01 02:12:28 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Value" id="74A189CF-7552-377A-0CB1-B6644D674DCA">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-04-01 02:04:05 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="OperationType" id="54F2222F-CCED-1644-1D76-2A8A74584B0E">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-04-01 02:05:05 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="954FB2CF-95F5-987F-F19E-1889E5891333" name="PortfolioOperation_PK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-04-01 02:03:22 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C448EEA1-A5E3-ABD5-99F5-153AED26E74F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="2B35DE48-BD2E-B7DC-A6AE-0B5DCB1CDECE" name="Operation_Portfolio_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-04-01 02:17:50 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4DA4479A-B8EF-7315-0DC9-5343AF6253E6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

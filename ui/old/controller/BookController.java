@@ -10,8 +10,8 @@ import org.apache.log4j.Level;
 
 import com.cmm.jft.marketdata.MDEntry;
 import com.cmm.jft.security.Security;
-import com.cmm.jft.services.marketdata.Market;
-import com.cmm.jft.services.marketdata.MarketDataService;
+import com.cmm.jft.marketdata.service.Market;
+import com.cmm.jft.marketdata.service.MarketDataService;
 import com.cmm.jft.ui.utils.FormUtils;
 import com.cmm.jft.ui.utils.ImageIcons;
 import com.cmm.jft.ui.utils.Memory;

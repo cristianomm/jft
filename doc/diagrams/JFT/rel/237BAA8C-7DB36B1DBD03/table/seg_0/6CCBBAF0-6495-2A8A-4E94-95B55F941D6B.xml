@@ -22,12 +22,14 @@
 <createdBy>Cristiano M Martins</createdBy>
 <createdTime>2019-03-10 22:18:34 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT027</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="2BF65B64-BC56-BC85-50CE-B652634568BD" referredColumn="1BAF7E82-7C88-9CB6-AB8E-2FFB6532CE8A"/>
+</associations>
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
@@ -40,6 +42,16 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="D6B25918-04DA-7F49-BD52-D25AEFBE4651"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="AC181B1C-F273-0F8A-072B-4C158B32C85E" name="CompanyInfo_Company_FK">
+<createdBy>Cristiano M Martins</createdBy>
+<createdTime>2019-03-18 03:08:57 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C2DBB3E5-621F-1177-AD24-590B4143F950"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

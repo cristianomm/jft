@@ -7,10 +7,10 @@
 		<artifactId>jft_modules</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>services</artifactId>
+	<artifactId>service</artifactId>
 	<name>services</name>
 	<dependencies>
-		<dependency>
+		<dependency>		
 			<groupId>jft_model</groupId>
 			<artifactId>jft_model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
@@ -26,14 +26,43 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>jft</groupId>
-			<artifactId>conector</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
 			<version>12-ea+2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.openhft/chronicle-map -->
+		<dependency>
+			<groupId>net.openhft</groupId>
+			<artifactId>chronicle-map</artifactId>
+			<version>3.17.1</version>
+			<exclusions>
+                <exclusion>
+                    <groupId>com.sun.java</groupId>
+                    <artifactId>tools</artifactId>
+                </exclusion>
+            </exclusions>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.openhft/chronicle-queue -->
+		<dependency>
+			<groupId>net.openhft</groupId>
+			<artifactId>chronicle-queue</artifactId>
+			<version>5.17.12</version>
+			<exclusions>
+                <exclusion>
+                    <groupId>com.sun.java</groupId>
+                    <artifactId>tools</artifactId>
+                </exclusion>
+            </exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.cmm.jft</groupId>
+			<artifactId>repository</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>jft</groupId>
+			<artifactId>conector</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>

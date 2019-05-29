@@ -1,0 +1,57 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="32D0962C-9B7F-06FB-920E-2152FB920532" name="Holiday">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-19 22:23:15 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="holidayId" id="0F24591B-0C70-4EF2-1B28-5D0F08045EFD">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-19 22:39:49 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Date" id="C54C95E5-B6D6-6B83-43FA-C9EFE00769E2">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-19 22:40:29 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Description" id="EF1A9409-766E-4247-55F1-ED8E12DF01B0">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-19 22:40:43 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="822CB7DA-0AD5-FEAD-F2ED-B0F63D608F23" name="Holiday_PK">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-19 22:39:49 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0F24591B-0C70-4EF2-1B28-5D0F08045EFD"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

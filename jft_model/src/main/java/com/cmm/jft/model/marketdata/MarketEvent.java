@@ -45,7 +45,7 @@ public class MarketEvent implements DBObject<MarketEvent> {
 	@Column(name = "marketEventId", nullable = false)
 	private Long marketEventId;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "EventType")
 	private MarketEvents eventType;
 
