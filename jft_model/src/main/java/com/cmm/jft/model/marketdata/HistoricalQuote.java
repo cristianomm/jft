@@ -48,28 +48,37 @@ public class HistoricalQuote implements DBObject<HistoricalQuote> {
 	@Column(name = "QDateTime", nullable = false)
 	private LocalDate qDateTime;
 
-	@Column(name = "Open", precision = 19, scale = 6, nullable = false)
+	@Column(name = "Open", precision = 19, scale = 10, nullable = false)
 	private BigDecimal open;
 
-	@Column(name = "Close", precision = 19, scale = 6, nullable = false)
+	@Column(name = "Close", precision = 19, scale = 10, nullable = false)
 	private BigDecimal close;
 
-	@Column(name = "AdjClose", precision = 19, scale = 6)
-	private BigDecimal adjClose;
-
-	@Column(name = "High", precision = 19, scale = 6, nullable = false)
+	@Column(name = "High", precision = 19, scale = 10, nullable = false)
 	private BigDecimal high;
 
-	@Column(name = "Low", precision = 19, scale = 6, nullable = false)
+	@Column(name = "Low", precision = 19, scale = 10, nullable = false)
 	private BigDecimal low;
 
-	@Column(name = "Bid", precision = 19, scale = 6, nullable = false)
+	@Column(name = "Bid", precision = 19, scale = 10, nullable = false)
 	private BigDecimal bid;
 
-	@Column(name = "Ask", precision = 19, scale = 6, nullable = false)
+	@Column(name = "Ask", precision = 19, scale = 10, nullable = false)
 	private BigDecimal ask;
+	
+	@Column(name = "AdjOpen", precision = 19, scale = 10, nullable = false)
+	private BigDecimal adjOpen;
 
-	@Column(name = "AvgPrice", precision = 19, scale = 6, nullable = false)
+	@Column(name = "AdjClose", precision = 19, scale = 10, nullable = false)
+	private BigDecimal adjClose;
+
+	@Column(name = "AdjHigh", precision = 19, scale = 10, nullable = false)
+	private BigDecimal adjHigh;
+
+	@Column(name = "AdjLow", precision = 19, scale = 10, nullable = false)
+	private BigDecimal adjLow;
+
+	@Column(name = "AvgPrice", precision = 19, scale = 10, nullable = false)
 	private BigDecimal avgPrice;
 
 	@Column(name = "Volume", precision = 19, scale = 2, nullable = false)
@@ -180,6 +189,69 @@ public class HistoricalQuote implements DBObject<HistoricalQuote> {
 	 */
 	public void setLow(BigDecimal low) {
 		this.low = low;
+	}
+
+	/**
+	 * @return the adjOpen
+	 */
+	public BigDecimal getAdjOpen() {
+		return adjOpen;
+	}
+
+	/**
+	 * @param adjOpen the adjOpen to set
+	 */
+	public void setAdjOpen(BigDecimal adjOpen) {
+		this.adjOpen = adjOpen;
+	}
+
+	/**
+	 * @return the adjHigh
+	 */
+	public BigDecimal getAdjHigh() {
+		return adjHigh;
+	}
+
+	/**
+	 * @param adjHigh the adjHigh to set
+	 */
+	public void setAdjHigh(BigDecimal adjHigh) {
+		this.adjHigh = adjHigh;
+	}
+	
+	/**
+	 * @return the adjLow
+	 */
+	public BigDecimal getAdjLow() {
+		return adjLow;
+	}
+
+	/**
+	 * @param adjLow the adjLow to set
+	 */
+	public void setAdjLow(BigDecimal adjLow) {
+		this.adjLow = adjLow;
+	}
+
+	/**
+	 * @return the quoteFactor
+	 */
+	public int getQuoteFactor() {
+		return quoteFactor;
+	}
+
+	/**
+	 * @param quoteFactor the quoteFactor to set
+	 */
+	public void setQuoteFactor(int quoteFactor) {
+		this.quoteFactor = quoteFactor;
+	}
+
+	/**
+	 * @param historicalQuoteId the historicalQuoteId to set
+	 */
+	public void setHistoricalQuoteId(Long historicalQuoteId) {
+		this.historicalQuoteId = historicalQuoteId;
 	}
 
 	/**
@@ -294,20 +366,13 @@ public class HistoricalQuote implements DBObject<HistoricalQuote> {
 		return this.historicalQuoteId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "HistoricalQuote [historicalQuoteId=" + this.historicalQuoteId
-				+ ", qDateTime=" + this.qDateTime + ", open=" + this.open
-				+ ", close=" + this.close + ", high=" + this.high + ", low="
-				+ this.low + ", bid=" + this.bid + ", ask=" + this.ask
-				+ ", volume=" + this.volume + ", tradedUnits="
-				+ this.tradedUnits + ", tradedQuantity=" + this.tradedQuantity
-				+ ", securityId=" + this.securityId + "]";
+		return "HistoricalQuote [historicalQuoteId=" + historicalQuoteId + ", qDateTime=" + qDateTime + ", open=" + open
+				+ ", close=" + close + ", high=" + high + ", low=" + low + ", bid=" + bid + ", ask=" + ask
+				+ ", adjOpen=" + adjOpen + ", adjClose=" + adjClose + ", adjHigh=" + adjHigh + ", adjLow=" + adjLow
+				+ ", avgPrice=" + avgPrice + ", volume=" + volume + ", tradedUnits=" + tradedUnits + ", tradedQuantity="
+				+ tradedQuantity + ", quoteFactor=" + quoteFactor + ", securityId=" + securityId + "]";
 	}
 
 }

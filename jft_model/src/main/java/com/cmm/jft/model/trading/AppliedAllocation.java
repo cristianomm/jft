@@ -3,6 +3,10 @@
  */
 package com.cmm.jft.model.trading;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.cmm.jft.model.security.Security;
@@ -37,18 +42,36 @@ public class AppliedAllocation {
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private Security securityId;
 	
-	@JoinColumn(name="portfolioId", referencedColumnName = "portfolioId")
+	@JoinColumn(name="closureId", referencedColumnName = "closureId")
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	private Portfolio portfolioId;
+	private Closure closureId;
+	
+	@Column(name="Date", columnDefinition="timestamp")
+	private LocalDateTime date;
+	
+	@Column(name="Percentual", precision=19, scale=8)
+	private double percentual;
 	
 	@Column(name="Value", precision=19, scale=8)
 	private double value;
+	
+	@Column(name="LastValue", precision=19, scale=8)
+	private double lastValue;
+	
+	@Column(name="Earnings", precision=19, scale=8)
+	private double earnings;
+
+	@Column(name="Variation", precision=19, scale=8)
+	private double variation;
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="positionId", fetch=FetchType.LAZY)
+	private List<Position> positions;
 	
 	/**
 	 * 
 	 */
 	public AppliedAllocation() {
-		// TODO Auto-generated constructor stub
+		this.positions = new ArrayList<Position>();
 	}
 
 	/**
@@ -80,17 +103,19 @@ public class AppliedAllocation {
 	}
 
 	/**
-	 * @return the portfolioId
+	 * 
+	 * @return the closureId
 	 */
-	public Portfolio getPortfolioId() {
-		return portfolioId;
+	public Closure getClosureId() {
+		return closureId;
 	}
 
 	/**
-	 * @param portfolioId the portfolioId to set
+	 * 
+	 * @param closureId the closure to set
 	 */
-	public void setPortfolioId(Portfolio portfolioId) {
-		this.portfolioId = portfolioId;
+	public void setClosureId(Closure closureId) {
+		this.closureId = closureId;
 	}
 
 	/**
@@ -106,5 +131,76 @@ public class AppliedAllocation {
 	public void setValue(double value) {
 		this.value = value;
 	}
+
+	/**
+	 * @return the lastValue
+	 */
+	public double getLastValue() {
+		return lastValue;
+	}
+
+	/**
+	 * @param lastValue the lastValue to set
+	 */
+	public void setLastValue(double lastValue) {
+		this.lastValue = lastValue;
+	}
+
+	/**
+	 * @return the percentual
+	 */
+	public double getPercentual() {
+		return percentual;
+	}
+
+	/**
+	 * @param percentual the percentual to set
+	 */
+	public void setPercentual(double percentual) {
+		this.percentual = percentual;
+	}
+
+	/**
+	 * @return the earnings
+	 */
+	public double getEarnings() {
+		return earnings;
+	}
+
+	/**
+	 * @param earnings the earnings to set
+	 */
+	public void setEarnings(double earnings) {
+		this.earnings = earnings;
+	}
+
+	/**
+	 * @return the variation
+	 */
+	public double getVariation() {
+		return variation;
+	}
+
+	/**
+	 * @param variation the variation to set
+	 */
+	public void setVariation(double variation) {
+		this.variation = variation;
+	}
 	
+	public LocalDateTime getDate() {
+		return date;
+	}
+	
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
+	
+	public List<Position> getPositions() {
+		return positions;
+	}
+	
+	public void setPositions(List<Position> positions) {
+		this.positions = positions;
+	}
 }

@@ -1,0 +1,121 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="7A0ADB71-46CF-458F-DD72-A8A514DB3C98" schemaObject="1A48C32D-DFAE-0EE0-B56E-1F544E09C671" name="Closure">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 21:55:00 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<ordsAlias>table_35</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="clousureId" id="C75FB059-5461-7F14-C0DD-DBC57F5E2FB5">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 21:55:31 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="portfolioId" id="BDB2DD07-E2DF-BA8C-6832-E9C6E888D6F1">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 21:55:53 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="0567E25F-7A9D-ADE9-9AF3-47D605CCCB3C" referredColumn="6E5FF423-4039-AE24-EB5B-6A32296A44D5"/>
+</associations>
+</Column>
+<Column name="Date" id="88849752-188C-6E54-8460-1C7424578B71">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 21:56:10 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Value" id="448A2A2B-5C4E-B78E-669E-0ACB675476E6">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 21:56:27 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LastValue" id="40FC97E4-00B2-560B-11F6-B81D3CC698D1">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-02 00:52:47 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Variation" id="AC91930D-05B1-33D3-04D3-7A123712B69A">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 21:57:02 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Earnings" id="B7145DCD-408A-35D0-4B42-52FEA345FB00">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 21:57:23 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT043</logicalDatatype>
+<dataTypePrecision>19</dataTypePrecision>
+<dataTypeScale>8</dataTypeScale>
+<ownDataTypeParameters>,19,8</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="09BE02CF-51F0-A116-C486-41C87D447622" name="Closure_PK">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 21:55:31 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C75FB059-5461-7F14-C0DD-DBC57F5E2FB5"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="748723B3-0D75-4D7D-719A-4170140083AE" name="Closure_Portfolio_FK">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 21:57:55 UTC</createdTime>
+<ownerDesignName>JFT</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BDB2DD07-E2DF-BA8C-6832-E9C6E888D6F1"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

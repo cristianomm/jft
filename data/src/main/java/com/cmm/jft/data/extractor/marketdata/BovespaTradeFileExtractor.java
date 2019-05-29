@@ -54,7 +54,6 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 
 				if (vs != null && vs[0] != null) {
 
-
 					MDEntry entry = new MDEntry();
 					LocalDate date = LocalDate.parse(vs[0], dateFormatter);
 					entry.setEntryDate(date);
@@ -98,15 +97,15 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 						//[6]Ind.Anulacao                       127        1   Indicador de Anulacao: "1" - ativo / "2" - cancelado
 						//[7]Data Oferta Compra                 129       10   Data da oferta de compra
 						//[8]Seq.Oferta Compra                  140       15   Numero sequencial da oferta de compra
-						//[9]GenerationID - Of.Compra           156       15   Numero de geracao (GenerationID) da Oferta de compra. Quando um neg�cio for gerado por 2 ofertas com quantidade escondida e isso gerar "n" linhas ser� gravado aqui a maior gera��o
-						//[10]CondicaoOferta de Compra          172        1   Codigo que identifica a condico da oferta de compra. Pode ser: 0 - Oferta Neutra - � aquela que entra no mercado e n�o fecha com oferta existente. / 1 - Oferta Agressora - � aquela que ingressa no mercado para fechar com uma oferta existente. / 2 - Oferta Agredida - � a oferta (existente) que � fechada com uma oferta agressora.
+						//[9]GenerationID - Of.Compra           156       15   Numero de geracao (GenerationID) da Oferta de compra. Quando um negocio for gerado por 2 ofertas com quantidade escondida e isso gerar "n" linhas sera gravado aqui a maior geracao
+						//[10]CondicaoOferta de Compra          172        1   Codigo que identifica a condico da oferta de compra. Pode ser: 0 - Oferta Neutra - e aquela que entra no mercado e nao fecha com oferta existente. / 1 - Oferta Agressora - � aquela que ingressa no mercado para fechar com uma oferta existente. / 2 - Oferta Agredida - � a oferta (existente) que � fechada com uma oferta agressora.
 						//[11]Data Oferta Venda                 174       10   Data da oferta de venda
 						//[12]Seq.Oferta Venda                  185       15   Numero sequencial da oferta de venda
-						//[13]GenerationID - Of.Venda           201       15   Numero de geraco (GenerationID) da Oferta de venda. Quando um neg�cio for gerado por 2 ofertas com quantidade escondida e isso gerar "n" linhas ser� gravado aqui a maior gera��o
-						//[14]Condicao Oferta de Venda          217        1   Codigo que identifica a condico da oferta de venda. Pode ser: 0 - Oferta Neutra - � aquela que entra no mercado e n�o fecha com oferta existente. / 1 - Oferta Agressora - � aquela que ingressa no mercado para fechar com uma oferta existente. / 2 - Oferta Agredida - � a oferta (existente) que � fechada com uma oferta agressora.
-						//[15]Indicador de direto               219        1   Codigo que identifica se o negocio direto foi intencional: 1 - Intencional / 0 - N�o Intencional
-						//[16]Corretora Compra                  221        8   Codigo de identificaco da corretora de compra - Dispon�vel a partir de 03/2014
-						//[17]Corretora Venda                   230        8   Codigo de identificaco da corretora de venda - Dispon�vel a partir de 03/2014
+						//[13]GenerationID - Of.Venda           201       15   Numero de geraco (GenerationID) da Oferta de venda. Quando um negocio for gerado por 2 ofertas com quantidade escondida e isso gerar "n" linhas sera gravado aqui a maior geracao
+						//[14]Condicao Oferta de Venda          217        1   Codigo que identifica a condico da oferta de venda. Pode ser: 0 - Oferta Neutra - h aquela que entra no mercado e nao fecha com oferta existente. / 1 - Oferta Agressora - � aquela que ingressa no mercado para fechar com uma oferta existente. / 2 - Oferta Agredida - � a oferta (existente) que � fechada com uma oferta agressora.
+						//[15]Indicador de direto               219        1   Codigo que identifica se o negocio direto foi intencional: 1 - Intencional / 0 - Nao Intencional
+						//[16]Corretora Compra                  221        8   Codigo de identificaco da corretora de compra - Disponivel a partir de 03/2014
+						//[17]Corretora Venda                   230        8   Codigo de identificaco da corretora de venda - Disponivel a partir de 03/2014
 
 						entry.setSymbol(vs[1]);
 						entry.setTradeId(String.format("%1$07d", Integer.parseInt(vs[2])));
@@ -131,7 +130,6 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 					}
 
 					bsEvents.add(entry);
-
 				}
 			}
 

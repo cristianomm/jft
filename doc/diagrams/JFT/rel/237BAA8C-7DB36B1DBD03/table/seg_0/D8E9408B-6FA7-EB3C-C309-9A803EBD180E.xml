@@ -31,9 +31,9 @@
 <colAssociation fkAssociation="C58A8D62-47C6-8BA9-9E3E-A36E396ECC1A" referredColumn="61FAED79-F7BC-AE31-A8FB-855DF37C71EB"/>
 </associations>
 </Column>
-<Column name="OpenDate" id="FBB35417-4280-988C-C6A0-BFDF0DCBBB7D">
-<createdBy>Cristiano M Martins</createdBy>
-<createdTime>2019-03-23 14:00:14 UTC</createdTime>
+<Column name="PositionDate" id="41783F53-1F2E-88B2-A4D1-021C4392592D">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 20:29:52 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -42,33 +42,21 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="CloseDate" id="3E90EC5F-DE86-AF00-5B83-7AAF5ABE7A37">
-<createdBy>Cristiano M Martins</createdBy>
-<createdTime>2019-03-23 14:00:39 UTC</createdTime>
+<Column name="Status" id="3F9091C8-60A3-039E-341C-F6C5665CA562">
+<createdBy>cristiano</createdBy>
+<createdTime>2019-05-01 20:30:13 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT015</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Quantity" id="CAE6FCB2-6383-4031-ADF9-30D8C3A19271">
 <createdBy>Cristiano M Martins</createdBy>
 <createdTime>2019-03-23 14:43:48 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT019</logicalDatatype>
-<dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>8</dataTypeScale>
-<ownDataTypeParameters>,19,8</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="OpenPrice" id="80BC9B82-6C87-3A85-7529-11A4648C8188">
-<createdBy>Cristiano M Martins</createdBy>
-<createdTime>2019-03-23 14:45:09 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -92,48 +80,9 @@
 <ownDataTypeParameters>,19,8</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="ClosePrice" id="8A6CF4C5-38DB-20C4-2FBF-ED7C3B2358DD">
-<createdBy>Cristiano M Martins</createdBy>
-<createdTime>2019-03-23 14:46:01 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT019</logicalDatatype>
-<dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>8</dataTypeScale>
-<ownDataTypeParameters>,19,8</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="OpenValue" id="C5432F21-9942-8072-3A93-F13BB59254E5">
-<createdBy>Cristiano M Martins</createdBy>
-<createdTime>2019-03-23 14:01:45 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT019</logicalDatatype>
-<dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>8</dataTypeScale>
-<ownDataTypeParameters>,19,8</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="PresentValue" id="B97C70A3-6173-368A-8531-A5A435FDE18E">
+<Column name="Value" id="B97C70A3-6173-368A-8531-A5A435FDE18E">
 <createdBy>Cristiano M Martins</createdBy>
 <createdTime>2019-03-23 14:02:26 UTC</createdTime>
-<ownerDesignName>JFT</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT019</logicalDatatype>
-<dataTypePrecision>19</dataTypePrecision>
-<dataTypeScale>8</dataTypeScale>
-<ownDataTypeParameters>,19,8</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="CloseValue" id="A481C01E-DEDD-1520-59F5-DC869571D71F">
-<createdBy>Cristiano M Martins</createdBy>
-<createdTime>2019-03-23 14:02:40 UTC</createdTime>
 <ownerDesignName>JFT</ownerDesignName>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>

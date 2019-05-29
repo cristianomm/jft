@@ -39,8 +39,7 @@ import com.cmm.logging.Logging;
 public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 
 	private volatile static long rowCount; 
-	 
-	
+		
 	public static void main(String[] args) {
 
 		BovespaOfferFileExtractor bfe = new BovespaOfferFileExtractor();
@@ -84,7 +83,6 @@ public class BovespaOfferFileExtractor extends BovespaFileExtractor {
 		// agrupa por sequenceid e cria ofertas baseado no comportamento registrado no
 		// log
 		orders.forEach((id, lst) -> processEvents(lst));
-
 	}
 
 	private static void processEvents(List<MDEntry> events) {

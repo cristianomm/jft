@@ -20,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.cmm.jft.model.partner.BusinessPartner;
@@ -57,17 +58,18 @@ public class Portfolio {
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="allocationId", fetch=FetchType.LAZY)
 	private List<Allocation> allocations;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="appliedAllocationId", fetch=FetchType.LAZY)
-	private List<AppliedAllocation> appliedAllocations;
-	
+	@OrderBy(value = "Date")
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="closureId", fetch=FetchType.LAZY)
+	private List<Closure> closures;
+		
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="operationId")
 	private List<Operation> operationList;
 	
 	
 	public Portfolio() {
+		this.closures = new ArrayList<Closure>();
 		this.allocations = new ArrayList<>();
-		this.appliedAllocations = new ArrayList<>();
-		this.operationList = new ArrayList<>();
+		this.operationList = new ArrayList<>();		
 	}
 
 	/**
@@ -153,21 +155,21 @@ public class Portfolio {
 	public void setAllocations(List<Allocation> allocations) {
 		this.allocations = allocations;
 	}
-	
+		
 	/**
-	 * @return the appliedAllocations
+	 * @return the closures
 	 */
-	public List<AppliedAllocation> getAppliedAllocations() {
-		return appliedAllocations;
+	public List<Closure> getClosures() {
+		return closures;
 	}
 
 	/**
-	 * @param appliedAllocations the appliedAllocations to set
+	 * @param closures the closures to set
 	 */
-	public void setAppliedAllocations(List<AppliedAllocation> appliedAllocations) {
-		this.appliedAllocations = appliedAllocations;
+	public void setClosures(List<Closure> closures) {
+		this.closures = closures;
 	}
-	
+
 	/**
 	 * @return the operationList
 	 */

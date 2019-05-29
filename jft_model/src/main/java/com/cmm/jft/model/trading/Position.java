@@ -11,6 +11,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +21,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.cmm.jft.core.enums.GeneralStatus;
+import com.cmm.jft.model.security.Security;
 
 /**
  * <p>
@@ -37,36 +42,29 @@ public class Position {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long positionId;
 	
+	@JoinColumn(name="securityId", referencedColumnName = "securityId")
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private Security securityId;
+		
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="appliedAllocationId", referencedColumnName="appliedAllocationId")
 	private AppliedAllocation appliedAllocationId;
 	
-	@Column(name="OpenDate", columnDefinition="timestamp")
-	private LocalDateTime openDate; 
+	@Column(name="PositionDate", columnDefinition="timestamp")
+	private LocalDateTime positionDate;
 	
-	@Column(name="CloseDate", columnDefinition="timestamp")
-	private LocalDateTime closeDate;
-	
+	@Enumerated(EnumType.STRING)
+	@Column(name="Status")
+	private GeneralStatus status;
+			
 	@Column(name="Quantity", precision = 19, scale = 8)
 	private double quantity;
-	
-	@Column(name="OpenPrice", precision = 19, scale = 8)
-	private double openPrice;
 	
 	@Column(name="Price", precision = 19, scale = 8)
 	private double price;
 	
-	@Column(name="ClosePrice", precision = 19, scale = 8)
-	private double closePrice;
-	
-	@Column(name="OpenValue", precision = 19, scale = 8)
-	private double openValue;
-	
-	@Column(name="PresentValue", precision = 19, scale = 8)
-	private double PresentValue;
-
-	@Column(name="CloseValue", precision = 19, scale = 8)
-	private double closeValue;
+	@Column(name="Value", precision = 19, scale = 8)
+	private double value;
 
 	@Column(name="Earnings", precision = 19, scale = 8)
 	private double earnings;
@@ -99,6 +97,20 @@ public class Position {
 	}
 
 	/**
+	 * @return the securityId
+	 */
+	public Security getSecurityId() {
+		return securityId;
+	}
+
+	/**
+	 * @param securityId the securityId to set
+	 */
+	public void setSecurityId(Security securityId) {
+		this.securityId = securityId;
+	}
+
+	/**
 	 * @return the appliedAllocationId
 	 */
 	public AppliedAllocation getAppliedAllocationId() {
@@ -113,31 +125,31 @@ public class Position {
 	}
 
 	/**
-	 * @return the openDate
+	 * @return the positionDate
 	 */
-	public LocalDateTime getOpenDate() {
-		return openDate;
+	public LocalDateTime getPositionDate() {
+		return positionDate;
 	}
 
 	/**
-	 * @param openDate the openDate to set
+	 * @param positionDate the positionDate to set
 	 */
-	public void setOpenDate(LocalDateTime openDate) {
-		this.openDate = openDate;
+	public void setPositionDate(LocalDateTime positionDate) {
+		this.positionDate = positionDate;
 	}
 
 	/**
-	 * @return the closeDate
+	 * @return the status
 	 */
-	public LocalDateTime getCloseDate() {
-		return closeDate;
+	public GeneralStatus getStatus() {
+		return status;
 	}
 
 	/**
-	 * @param closeDate the closeDate to set
+	 * @param status the status to set
 	 */
-	public void setCloseDate(LocalDateTime closeDate) {
-		this.closeDate = closeDate;
+	public void setStatus(GeneralStatus status) {
+		this.status = status;
 	}
 
 	/**
@@ -155,20 +167,6 @@ public class Position {
 	}
 
 	/**
-	 * @return the openPrice
-	 */
-	public double getOpenPrice() {
-		return openPrice;
-	}
-
-	/**
-	 * @param openPrice the openPrice to set
-	 */
-	public void setOpenPrice(double openPrice) {
-		this.openPrice = openPrice;
-	}
-
-	/**
 	 * @return the price
 	 */
 	public double getPrice() {
@@ -183,59 +181,17 @@ public class Position {
 	}
 
 	/**
-	 * @return the closePrice
+	 * @return the value
 	 */
-	public double getClosePrice() {
-		return closePrice;
+	public double getValue() {
+		return value;
 	}
 
 	/**
-	 * @param closePrice the closePrice to set
+	 * @param value the value to set
 	 */
-	public void setClosePrice(double closePrice) {
-		this.closePrice = closePrice;
-	}
-
-	/**
-	 * @return the openValue
-	 */
-	public double getOpenValue() {
-		return openValue;
-	}
-
-	/**
-	 * @param openValue the openValue to set
-	 */
-	public void setOpenValue(double openValue) {
-		this.openValue = openValue;
-	}
-
-	/**
-	 * @return the presentValue
-	 */
-	public double getPresentValue() {
-		return PresentValue;
-	}
-
-	/**
-	 * @param presentValue the presentValue to set
-	 */
-	public void setPresentValue(double presentValue) {
-		PresentValue = presentValue;
-	}
-
-	/**
-	 * @return the closeValue
-	 */
-	public double getCloseValue() {
-		return closeValue;
-	}
-
-	/**
-	 * @param closeValue the closeValue to set
-	 */
-	public void setCloseValue(double closeValue) {
-		this.closeValue = closeValue;
+	public void setValue(double value) {
+		this.value = value;
 	}
 
 	/**
@@ -265,5 +221,19 @@ public class Position {
 	public void setVariation(double variation) {
 		this.variation = variation;
 	}
-	
+
+	/**
+	 * @return the orders
+	 */
+	public List<Orders> getOrders() {
+		return orders;
+	}
+
+	/**
+	 * @param orders the orders to set
+	 */
+	public void setOrders(List<Orders> orders) {
+		this.orders = orders;
+	}
+				
 }

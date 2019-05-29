@@ -21,6 +21,7 @@ import com.cmm.jft.model.marketdata.MarketOrder;
 import com.cmm.jft.model.trading.Allocation;
 import com.cmm.jft.model.trading.AppliedAllocation;
 import com.cmm.jft.model.trading.Orders;
+import com.cmm.jft.model.trading.Position;
 
 /**
  *
@@ -83,7 +84,7 @@ public class Security implements DBObject<Security> {
 
 	@OrderBy(value = "QDateTime")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "securityId", fetch = FetchType.LAZY)
-	private Set<HistoricalQuote> historicalQuoteSet;
+	private List<HistoricalQuote> historicalQuoteList;
 
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="securityInfoId", referencedColumnName="securityInfoId")
@@ -106,6 +107,9 @@ public class Security implements DBObject<Security> {
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="securityId", fetch=FetchType.LAZY)
 	private List<ContractAdjust> contractAdjustList;
 
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="securityId", fetch=FetchType.LAZY)
+	private Set<Position> positionSet;
+	
 	public Security() {
 		init();
 	}
@@ -120,10 +124,12 @@ public class Security implements DBObject<Security> {
 		this.eventSet = new HashSet<>();
 		this.allocationSet = new HashSet<>();
 		this.ordersSet = new HashSet<Orders>();
+		this.positionSet = new HashSet<Position>();
 		this.contractAdjustList = new ArrayList<>();
 		this.appliedAllocationSet = new HashSet<>();
 		this.marketOrderSet = new HashSet<MarketOrder>();
-		this.historicalQuoteSet = new HashSet<HistoricalQuote>();
+		this.historicalQuoteList = new ArrayList<HistoricalQuote>();
+		
 	}
 
 	/**
@@ -167,11 +173,8 @@ public class Security implements DBObject<Security> {
 		this.securityIdSrc = securityIdSrc;
 	}
 
-	/**
-	 * @return the historicalQuoteSet
-	 */
-	public Set<HistoricalQuote> getHistoricalQuoteSet() {
-		return this.historicalQuoteSet;
+	public List<HistoricalQuote> getHistoricalQuoteList() {
+		return historicalQuoteList;
 	}
 
 	/**
@@ -291,7 +294,53 @@ public class Security implements DBObject<Security> {
 	public List<ContractAdjust> getContractAdjustList() {
 		return contractAdjustList;
 	}
-	
+		
+	/**
+	 * @param ordersSet the ordersSet to set
+	 */
+	public void setOrdersSet(Set<Orders> ordersSet) {
+		this.ordersSet = ordersSet;
+	}
+
+	/**
+	 * @param marketOrderSet the marketOrderSet to set
+	 */
+	public void setMarketOrderSet(Set<MarketOrder> marketOrderSet) {
+		this.marketOrderSet = marketOrderSet;
+	}
+
+	public void setHistoricalQuoteList(List<HistoricalQuote> historicalQuoteList) {
+		this.historicalQuoteList = historicalQuoteList;
+	}
+
+	/**
+	 * @param eventSet the eventSet to set
+	 */
+	public void setEventSet(Set<SecurityEvent> eventSet) {
+		this.eventSet = eventSet;
+	}
+
+	/**
+	 * @param allocationSet the allocationSet to set
+	 */
+	public void setAllocationSet(Set<Allocation> allocationSet) {
+		this.allocationSet = allocationSet;
+	}
+
+	/**
+	 * @param appliedAllocationSet the appliedAllocationSet to set
+	 */
+	public void setAppliedAllocationSet(Set<AppliedAllocation> appliedAllocationSet) {
+		this.appliedAllocationSet = appliedAllocationSet;
+	}
+
+	/**
+	 * @param contractAdjustList the contractAdjustList to set
+	 */
+	public void setContractAdjustList(List<ContractAdjust> contractAdjustList) {
+		this.contractAdjustList = contractAdjustList;
+	}
+
 	@Override
 	public String toString() {
 		return "Security [securityId=" + securityId + ", securityIdSrc=" + securityIdSrc + ", "
@@ -299,7 +348,7 @@ public class Security implements DBObject<Security> {
 				+ (description != null ? "description=" + description + ", " : "")
 				+ (ordersSet != null ? "ordersSet=" + ordersSet + ", " : "")
 				+ (marketOrderSet != null ? "marketOrderSet=" + marketOrderSet + ", " : "")
-				+ (historicalQuoteSet != null ? "historicalQuoteSet=" + historicalQuoteSet + ", " : "")
+				+ (historicalQuoteList != null ? "historicalQuoteList=" + historicalQuoteList + ", " : "")
 				+ (securityInfoId != null ? "securityInfoId=" + securityInfoId + ", " : "")
 				+ (stockExchangeId != null ? "stockExchangeId=" + stockExchangeId : "") + "]";
 	}
