@@ -5,6 +5,7 @@ package com.cmm.jft.trading.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +110,7 @@ public class PortfolioService {
 		Closure lastClosure = portfolio.getClosures()
 				.stream()
 				.max(new Closure.ClosureComparator())
-				.orElse(null);
+				.orElse(new Closure());
 		
 		List<Security> securities = lastClosure
 				.getAppliedAllocations()
@@ -119,8 +120,11 @@ public class PortfolioService {
 		//find quote for security allocations
 		TreeMap<String, BigDecimal> secQuotes = new TreeMap<>();
 		for(Security s : securities) {
-			int count = s.getHistoricalQuoteList().size();
-			HistoricalQuote quote = s.getHistoricalQuoteList().get(count-1);
+			HistoricalQuote quote = s.getHistoricalQuoteList()
+					.stream()
+					.filter(h->h.getqDateTime().compareTo(ChronoLocalDate.from(dateTime)) == 0)
+					.findFirst()
+					.orElse(null);
 			
 			secQuotes.put(s.getSymbol(), quote.getAdjClose());
 		}
@@ -160,7 +164,7 @@ public class PortfolioService {
 		Closure lastClosure = portfolio.getClosures()
 				.stream()
 				.max(new Closure.ClosureComparator())
-				.orElse(null);
+				.orElse(new Closure());
 		
 		List<Position> lastPositions = new ArrayList<Position>();
 		lastClosure.getAppliedAllocations().forEach(a -> lastPositions.addAll(a.getPositions()));		
@@ -190,7 +194,8 @@ public class PortfolioService {
 		//adjust percentual allocation		
 		double totalValue = allocations.stream().mapToDouble(a -> a.getValue()).sum();
 		
-		allocations.forEach(a -> {
+		allocations
+		.forEach(a -> {
 			a.setPercentual(a.getValue()/totalValue);
 		});
 		

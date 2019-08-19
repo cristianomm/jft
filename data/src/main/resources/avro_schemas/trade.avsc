@@ -21,8 +21,12 @@
 		"type":"int"
 		},		
 		{
-		"name":"entrydatetime",
-		"type":"string"
+		"name":"entrydate",
+		"type":"int"
+		},
+		{
+		"name":"entrytime",
+		"type":"long"
 		},
 		{
 		"name":"buyordid",

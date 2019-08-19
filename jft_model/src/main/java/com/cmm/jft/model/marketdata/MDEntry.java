@@ -25,7 +25,7 @@ public class MDEntry implements Extractable {
 	private LocalDateTime mdEntryDateTime;
 	private char securityTradingStatus;
 	private long orderId;
-	private String tradeId;
+	private long tradeId;
 	private String mdEntrySeller;
 	private String mdEntryBuyer;
 	private int mdEntryPosNo;
@@ -134,11 +134,11 @@ public class MDEntry implements Extractable {
 		this.orderId = orderId;
 	}
 
-	public String getTradeId() {
+	public long getTradeId() {
 		return tradeId;
 	}
 
-	public void setTradeId(String tradeId) {
+	public void setTradeId(long tradeId) {
 		this.tradeId = tradeId;
 	}
 

@@ -3,24 +3,14 @@
  */
 package com.cmm.jft.data.extractor.marketdata;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Level;
-
-import com.cmm.jft.core.format.DateTimeFormatter;
-import com.cmm.jft.core.format.DoubleFormatter;
-import com.cmm.jft.core.format.FormatterFactory;
 import com.cmm.jft.core.format.FormatterTypes;
-import com.cmm.jft.core.format.IntFormatter;
 import com.cmm.jft.data.files.CSV;
 import com.cmm.jft.model.marketdata.MDEntry;
 import com.cmm.jft.vo.Extractable;
@@ -45,8 +35,8 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 
 		List<Extractable> bsEvents = new ArrayList<>(1000000);
 		try {
-			java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern(FormatterTypes.DATE_F8.getFormat());
-			java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern(FormatterTypes.TIME_F4.getFormat());
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(FormatterTypes.DATE_F8.getFormat());
+			DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
 
 			CSV csv = new CSV(fileName, ";", "RT", "RH");
 			while (csv.hasNext()) {
@@ -77,10 +67,17 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 						//[10]Seq.Oferta Venda              159       10  Número sequencial da oferta de venda
 
 						entry.setSymbol(vs[1]);
-						entry.setTradeId(String.format("%1$07d", Integer.parseInt(vs[2])));
+						entry.setTradeId(Long.parseLong(String.format("%1$07d", Integer.parseInt(vs[2]))));
 						entry.setMdEntryPx(Double.parseDouble(vs[3]));
 						entry.setMdEntrySize(Integer.parseInt(vs[4]));
-						entry.setMdEntryDateTime(LocalDateTime.of(date, LocalTime.parse(vs[5], timeFormatter)));
+						
+						if(vs[5].length() == 8) {
+							entry.setMdEntryDateTime(LocalDateTime.of(date, LocalTime.parse(vs[5], DateTimeFormatter.ofPattern("HH:mm:ss"))));
+						}
+						else if(vs[5].length() > 9) {
+							entry.setMdEntryDateTime(LocalDateTime.of(date, LocalTime.parse(vs[5], DateTimeFormatter.ofPattern("HH:mm:ss.SSS"))));
+						}
+						
 						entry.setMdEntryBuyer(vs[8]);
 						entry.setMdEntrySeller(vs[10]);
 
@@ -108,11 +105,17 @@ public class BovespaTradeFileExtractor extends BovespaFileExtractor {
 						//[17]Corretora Venda                   230        8   Codigo de identificaco da corretora de venda - Disponivel a partir de 03/2014
 
 						entry.setSymbol(vs[1]);
-						entry.setTradeId(String.format("%1$07d", Integer.parseInt(vs[2])));
+						entry.setTradeId(Long.parseLong(String.format("%1$07d", Integer.parseInt(vs[2]))));
 						entry.setMdEntryPx(Double.parseDouble(vs[3]));
 						entry.setMdEntrySize(Integer.parseInt(vs[4]));
-						entry.setMdEntryDateTime(LocalDateTime.of(date, LocalTime.parse(vs[5], timeFormatter)));
-
+						
+						if(vs[5].length() == 8) {
+							entry.setMdEntryDateTime(LocalDateTime.of(date, LocalTime.parse(vs[5], DateTimeFormatter.ofPattern("HH:mm:ss"))));
+						}
+						else if(vs[5].length() > 9) {
+							entry.setMdEntryDateTime(LocalDateTime.of(date, LocalTime.parse(vs[5], DateTimeFormatter.ofPattern("HH:mm:ss.SSS"))));
+						}
+						
 						entry.setBuyOrdId(Long.parseLong(vs[8]));
 						entry.setBuySecOrdId(Long.parseLong(vs[9]));
 						if(vs[10].equals("1")) {
