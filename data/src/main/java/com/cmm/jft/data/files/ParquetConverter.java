@@ -10,7 +10,10 @@ import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
@@ -91,32 +94,44 @@ public class ParquetConverter implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
-	public static List<GenericData.Record> convertTrades(List<MDEntry> entries) throws IOException {
+	
+	public static Map<String, List<GenericData.Record>> convertTrades(List<MDEntry> entries) throws IOException {
 		Schema schema = new Schema.Parser().parse(Resources.getResource("avro_schemas/trade.avsc").openStream());
 
-		List<GenericData.Record> records = new ArrayList<GenericData.Record>();
-
-		for (MDEntry entry : entries) {
-
-			GenericData.Record record = new GenericData.Record(schema);
+		Map<String, List<GenericData.Record>> records = new TreeMap<>();
+		
+		Map<String, List<MDEntry>> symbols = 
+			entries.stream()
+			.collect(Collectors
+					.groupingBy(MDEntry::getSymbol));
+				
+		symbols.forEach((s,l) -> 
+		{			
+			if(!records.containsKey(s)) {
+				records.put(s, new ArrayList<>());
+			}			
 			
-			record.put("symbol", entry.getSymbol());
-			record.put("tradeid", entry.getTradeId());
-			record.put("price", entry.getMdEntryPx());
-			record.put("size", entry.getMdEntrySize());
-			record.put("entrydate",	Integer.parseInt(entry.getMdEntryDateTime().format(DateTimeFormatter.ofPattern("yyyyMMdd"))));
-			record.put("entrytime",	Date.from(entry.getMdEntryDateTime().atZone(ZoneId.systemDefault()).toInstant()).getTime());//entry.getMdEntryDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS")));
-			record.put("buyordid", entry.getBuyOrdId());
-			record.put("buysecordid", entry.getBuySecOrdId());
-			record.put("sellordid", entry.getSellOrdId());
-			record.put("sellsecordid", entry.getSellSecOrdId());
-			record.put("agressor", entry.getAgressor() + "");
-			record.put("buyer", entry.getMdEntryBuyer());
-			record.put("seller", entry.getMdEntrySeller());
+			for (MDEntry entry : l) {
 
-			records.add(record);
-		}
+				GenericData.Record record = new GenericData.Record(schema);
+				
+				record.put("symbol", entry.getSymbol());
+				record.put("tradeid", entry.getTradeId());
+				record.put("price", entry.getMdEntryPx());
+				record.put("size", entry.getMdEntrySize());
+				record.put("entrydate",	Integer.parseInt(entry.getMdEntryDateTime().format(DateTimeFormatter.ofPattern("yyyyMMdd"))));
+				record.put("entrytime",	Date.from(entry.getMdEntryDateTime().atZone(ZoneId.systemDefault()).toInstant()).getTime());//entry.getMdEntryDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS")));
+				record.put("buyordid", entry.getBuyOrdId());
+				record.put("buysecordid", entry.getBuySecOrdId());
+				record.put("sellordid", entry.getSellOrdId());
+				record.put("sellsecordid", entry.getSellSecOrdId());
+				record.put("agressor", entry.getAgressor() + "");
+				record.put("buyer", entry.getMdEntryBuyer());
+				record.put("seller", entry.getMdEntrySeller());
+
+				records.get(s).add(record);
+			}
+		});
 
 		return records;
 	}

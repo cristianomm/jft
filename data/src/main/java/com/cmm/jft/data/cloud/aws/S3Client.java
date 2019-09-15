@@ -52,11 +52,11 @@ public class S3Client {
 
     public static void main(String[] args) throws IOException {
         
-    	String s3Folder = "MarketData/Bovespa-Vista/";
+    	String s3Folder = "MarketData/Bovespa-Opcoes/";
     	
         S3Client client = S3Client.startClient();
         
-        client.uploadBatch("/media/cristiano/Disco/Disco/Data/BMFBovespa/MarketData/Bovespa-Vista", s3Folder);
+        client.uploadBatch("/media/cristiano/Disco/Disco/Data/BMFBovespa/MarketData/Bovespa-Opcoes", s3Folder);
     }
     
     
@@ -73,7 +73,6 @@ public class S3Client {
 					properties.getProperty("awsSecretKey"));
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
