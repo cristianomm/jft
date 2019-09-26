@@ -5,7 +5,7 @@ services:
     image: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-287463}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
       PGDATA: /data/postgres
     volumes:
        - postgres:/data/postgres
@@ -23,7 +23,7 @@ services:
       - postgres
     environment:
       PGADMIN_DEFAULT_EMAIL: "cristiano.mrmartins@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "287463"
+      PGADMIN_DEFAULT_PASSWORD: "123456"
     volumes:
        - pgadmin:/root/.pgadmin
     ports:

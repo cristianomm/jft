@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres
     environment:
-      POSTGRES_PASSWORD: "287463"
+      POSTGRES_PASSWORD: "123456"
     ports:
       - "5432:5432"
     volumes:
@@ -16,7 +16,7 @@ services:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: "cristiano.mrmartins@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "287463"
+      PGADMIN_DEFAULT_PASSWORD: "123456"
     ports:
       - "16543:80"
     depends_on:
